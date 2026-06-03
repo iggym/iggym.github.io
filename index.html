@@ -5,19 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iggy.m — AI Systems Architect & Software Factories</title>
     
-    <!-- Premium Editorial & Technical Typography Selection -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-base: #0A0A0C;
-            --bg-surface: #121216;
-            --border-subtle: #1E1E24;
-            --text-main: #F4F4F6;
-            --text-muted: #8A8A93;
-            --accent-warm: #C5A880; /* Premium Champagne Gold */
+            --bg-base: #FFFFFF;
+            --bg-surface: #FBFBFB;
+            --border-subtle: #EBEBEB;
+            --text-main: #1D1D1F;
+            --text-muted: #6E6E73;
+            --accent-warm: #C5A880; /* Muted Champagne Gold */
             --font-serif: 'Cormorant Garamond', serif;
             --font-sans: 'Inter', sans-serif;
             --font-mono: 'Space Grotesk', sans-serif;
@@ -39,9 +38,9 @@
         }
 
         .container {
-            max-width: 1240px;
+            max-width: 1300px;
             margin: 0 auto;
-            padding: 0 2.5rem;
+            padding: 0 3rem;
         }
 
         /* Fixed Navigation Minimalist Boundary */
@@ -49,7 +48,7 @@
             border-bottom: 1px solid var(--border-subtle);
             position: sticky;
             top: 0;
-            background: rgba(10, 10, 12, 0.85);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(20px);
             z-index: 100;
         }
@@ -58,7 +57,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 5.5rem;
+            height: 6rem;
         }
 
         .brand-logo {
@@ -75,7 +74,7 @@
             text-decoration: none;
             font-size: 0.85rem;
             font-family: var(--font-mono);
-            margin-left: 2.5rem;
+            margin-left: 3rem;
             transition: color 0.3s ease;
         }
 
@@ -85,14 +84,14 @@
 
         /* Editorial Section Layouts with Ample Negative Space */
         section {
-            padding: 11rem 0;
+            padding: 12rem 0;
             border-bottom: 1px solid var(--border-subtle);
         }
 
         .asymmetric-layout {
             display: grid;
-            grid-template-columns: 1.25fr 0.75fr;
-            gap: 5rem;
+            grid-template-columns: 1.3fr 0.7fr;
+            gap: 6rem;
             align-items: start;
         }
 
@@ -108,11 +107,11 @@
 
         .hero-display-text {
             font-family: var(--font-serif);
-            font-size: clamp(3.2rem, 6.5vw, 5.2rem);
-            line-height: 1.05;
+            font-size: clamp(3.5rem, 7vw, 5.5rem);
+            line-height: 1.0;
             font-weight: 400;
             letter-spacing: -0.02em;
-            margin-bottom: 2.5rem;
+            margin-bottom: 3rem;
         }
 
         .hero-display-text em {
@@ -124,7 +123,7 @@
             font-size: 1.2rem;
             color: var(--text-muted);
             font-weight: 300;
-            max-width: 560px;
+            max-width: 580px;
             line-height: 1.7;
         }
 
@@ -136,7 +135,7 @@
             font-family: var(--font-mono);
             font-size: 0.85rem;
             color: var(--text-muted);
-            border-radius: 4px;
+            border-radius: 2px;
         }
 
         .telemetry-line {
@@ -157,16 +156,12 @@
         .simulator-module {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            padding: 2.5rem;
-            border-radius: 4px;
+            padding: 3rem;
+            border-radius: 2px;
         }
 
         .input-parameter-wrapper {
-            margin-bottom: 2rem;
-        }
-
-        .input-parameter-wrapper:last-of-type {
-            margin-bottom: 0;
+            margin-bottom: 2.5rem;
         }
 
         .input-parameter-wrapper label {
@@ -196,12 +191,12 @@
         }
 
         .output-metrics-grid {
-            margin-top: 2.5rem;
-            padding-top: 2rem;
+            margin-top: 3rem;
+            padding-top: 2.5rem;
             border-top: 1px solid var(--border-subtle);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
         }
 
         .metric-unit h4 {
@@ -215,7 +210,7 @@
 
         .metric-unit p {
             font-family: var(--font-serif);
-            font-size: 2.8rem;
+            font-size: 3rem;
             color: var(--text-main);
             line-height: 1;
         }
@@ -234,9 +229,9 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-top: 2.5rem;
+            margin-top: 3rem;
             border-bottom: 1px solid var(--accent-warm);
-            padding-bottom: 0.4rem;
+            padding-bottom: 0.5rem;
             transition: opacity 0.2s ease;
         }
 
@@ -253,7 +248,7 @@
 
         .network-node {
             background: var(--bg-base);
-            padding: 1.75rem 0;
+            padding: 2rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -268,12 +263,12 @@
         }
 
         .network-node:hover {
-            padding-left: 0.75rem;
+            padding-left: 1rem;
         }
 
         .network-node h4 {
             font-family: var(--font-serif);
-            font-size: 1.6rem;
+            font-size: 1.75rem;
             font-weight: 400;
         }
 
@@ -284,7 +279,7 @@
         }
 
         footer {
-            padding: 5rem 0;
+            padding: 6rem 0;
             display: flex;
             justify-content: space-between;
             font-family: var(--font-mono);
@@ -299,10 +294,10 @@
                 gap: 4rem;
             }
             section {
-                padding: 7rem 0;
+                padding: 8rem 0;
             }
             .hero-display-text {
-                font-size: 3.2rem;
+                font-size: 3.5rem;
             }
         }
     </style>
@@ -322,18 +317,17 @@
 
     <main class="container">
         
-        <!-- CORE ARCHITECTURE THESIS -->
         <section id="thesis">
             <div class="asymmetric-layout">
                 <div>
                     <span class="section-label">Core Philosophy</span>
                     <h1 class="hero-display-text">Architecting high-yield <em>AI software factories</em> to bypass legacy limits.</h1>
                     <p class="editorial-paragraph">Engineering production environments where autonomous intelligent agent swarms continuously write, optimize, and deploy cross-infrastructure systems. Turning pure computation into scalable asset engines.</p>
-                    <a href="#engine" class="action-link">Access Engine Simulation</a>
+                    <a href="#engine" class="action-link">Access Production Model</a>
                 </div>
                 <div>
                     <div class="telemetry-frame">
-                        <div class="telemetry-line"><span>Engine Core:</span><span class="telemetry-value">Autonomous Swarms</span></div>
+                        <div class="telemetry-line"><span>Engine Core:</span><span class="telemetry-value">Autonomous</span></div>
                         <div class="telemetry-line"><span>Architecture:</span><span class="telemetry-value">Zero-Dependency</span></div>
                         <div class="telemetry-line"><span>Throughput Optimization:</span><span class="telemetry-value">Continuous Sync</span></div>
                         <div class="telemetry-line"><span>Status Matrix:</span><span class="telemetry-value" style="color: #10B981;">Nominal // Active</span></div>
@@ -342,12 +336,11 @@
             </div>
         </section>
 
-        <!-- FACTORY ECONOMIC SIMULATOR -->
         <section id="engine">
             <div class="asymmetric-layout">
                 <div>
                     <span class="section-label">System Simulation</span>
-                    <h2 class="hero-display-text" style="font-size: clamp(2.3rem, 5vw, 3.3rem);">The structural mechanics of infinite output.</h2>
+                    <h2 class="hero-display-text" style="font-size: clamp(2.5rem, 5vw, 3.5rem);">The structural mechanics of infinite output.</h2>
                     <p class="editorial-paragraph" style="margin-bottom: 2rem;">Adjust the scale of active operational nodes and swarm integration parameters to test asset output speed and resource reduction limits.</p>
                 </div>
                 
@@ -376,23 +369,22 @@
             </div>
         </section>
 
-        <!-- NETWORK DIRECTORY / ARCHITECTURAL LINKS -->
         <section id="directory">
             <div class="asymmetric-layout">
                 <div>
                     <span class="section-label">External Sync</span>
-                    <h2 class="hero-display-text" style="font-size: clamp(2.3rem, 5vw, 3.3rem);">Knowledge <br>Leadership.</h2>
+                    <h2 class="hero-display-text" style="font-size: clamp(2.5rem, 5vw, 3.5rem);">Knowledge <br>Leadership.</h2>
                     <p class="editorial-paragraph">Verifiable data feeds, structural source repositories, and corporate governance updates mapped across primary communication pipelines.</p>
                 </div>
                 <div>
                     <div class="network-directory">
                         <a href="https://github.com/iggym" target="_blank" class="network-node">
                             <h4>GitHub</h4>
-                            <span>iggym // Source Repositories</span>
+                            <span>iggym // Source Hub</span>
                         </a>
                         <a href="https://www.linkedin.com/in/iggym" target="_blank" class="network-node">
                             <h4>LinkedIn</h4>
-                            <span>iggym // Professional Blueprint</span>
+                            <span>iggym // Executive Blueprint</span>
                         </a>
                         <a href="https://x.com/iggym" target="_blank" class="network-node">
                             <h4>X Terminal</h4>
@@ -412,7 +404,6 @@
         </footer>
     </div>
 
-    <!-- Independent, Safe Logic Layer -->
     <script>
         const nodesSlider = document.getElementById('agent-slider');
         const matrixSlider = document.getElementById('complexity-slider');
