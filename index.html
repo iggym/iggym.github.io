@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>iggy.m — AI Systems Architect & Software Factories</title>
     
-    <!-- Premium Editorial Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -27,6 +26,10 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -108,8 +111,8 @@
         .hero-display-text {
             font-family: var(--font-serif);
             font-size: clamp(3.5rem, 7vw, 5.5rem);
-            line-height: 1.0;
-            font-weight: 400;
+            line-height: 1.05;
+            font-weight: 300;
             letter-spacing: -0.02em;
             margin-bottom: 3rem;
         }
@@ -120,7 +123,7 @@
         }
 
         .editorial-paragraph {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: var(--text-muted);
             font-weight: 300;
             max-width: 580px;
@@ -131,7 +134,7 @@
         .telemetry-frame {
             background-color: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            padding: 2rem;
+            padding: 2.5rem;
             font-family: var(--font-mono);
             font-size: 0.85rem;
             color: var(--text-muted);
@@ -139,13 +142,22 @@
         }
 
         .telemetry-line {
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.85rem;
             display: flex;
             justify-content: space-between;
+            border-bottom: 1px dashed rgba(36, 36, 42, 0.5);
+            padding-bottom: 0.5rem;
+        }
+
+        .telemetry-line:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
         .telemetry-value {
             color: var(--text-main);
+            font-weight: 500;
         }
 
         /* Interactive Factory Simulator Engine */
@@ -205,9 +217,10 @@
 
         .metric-unit p {
             font-family: var(--font-serif);
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--text-main);
             line-height: 1;
+            font-weight: 300;
         }
 
         .metric-unit p.accented-metric {
@@ -243,13 +256,18 @@
 
         .network-node {
             background: var(--bg-base);
-            padding: 2rem 0;
+            padding: 2.5rem 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             text-decoration: none;
             color: var(--text-main);
+            border-bottom: 1px solid var(--border-subtle);
             transition: padding-left 0.3s ease;
+        }
+
+        .network-node:last-child {
+            border-bottom: none;
         }
 
         .network-node:hover {
@@ -258,14 +276,19 @@
 
         .network-node h4 {
             font-family: var(--font-serif);
-            font-size: 1.75rem;
-            font-weight: 400;
+            font-size: 2rem;
+            font-weight: 300;
         }
 
         .network-node span {
             font-family: var(--font-mono);
             font-size: 0.85rem;
             color: var(--text-muted);
+            transition: color 0.3s ease;
+        }
+
+        .network-node:hover span {
+            color: var(--accent-warm);
         }
 
         footer {
@@ -290,6 +313,9 @@
             .hero-display-text {
                 font-size: 3.5rem;
             }
+            .container {
+                padding: 0 2rem;
+            }
         }
     </style>
 </head>
@@ -308,33 +334,32 @@
 
     <main class="container">
         
-        <!-- CORE ARCHITECTURE THESIS -->
         <section id="thesis">
             <div class="asymmetric-layout">
                 <div>
                     <span class="section-label">Core Philosophy</span>
-                    <h1 class="hero-display-text">Architecting high-yield <em>AI software factories</em> to bypass legacy limits.</h1>
-                    <p class="editorial-paragraph">Engineering production systems where autonomous agents continuously write, optimize, and scale cross-infrastructure code. Transforming computational intelligence into absolute, compounding asset generation.</p>
+                    <h1 class="hero-display-text">Architecting high-yield <em>AI software factories</em> to bypass legacy execution limits.</h1>
+                    <p class="editorial-paragraph">Engineering production paradigms where autonomous multi-agent systems continuously write, test, scale, and optimize core business software. Shifting logic production into an infinite margins model.</p>
                     <a href="#engine" class="action-link">Access Production Model</a>
                 </div>
                 <div>
                     <div class="telemetry-frame">
-                        <div class="telemetry-line"><span>Engine Core:</span><span class="telemetry-value">Autonomous</span></div>
-                        <div class="telemetry-line"><span>Framework:</span><span class="telemetry-value">Multi-Agent RAG</span></div>
-                        <div class="telemetry-line"><span>Infrastructure:</span><span class="telemetry-value">Zero-Dependency</span></div>
-                        <div class="telemetry-line"><span>System State:</span><span class="telemetry-value" style="color: #10B981;">Active</span></div>
+                        <div class="telemetry-line"><span>Engine Core</span><span class="telemetry-value">Autonomous Swarm</span></div>
+                        <div class="telemetry-line"><span>Code Synthesis</span><span class="telemetry-value">Zero-Dependency JS</span></div>
+                        <div class="telemetry-line"><span>Framework Layer</span><span class="telemetry-value">Deep RAG Topology</span></div>
+                        <div class="telemetry-line"><span>System Architecture</span><span class="telemetry-value">Single-File Static</span></div>
+                        <div class="telemetry-line"><span>Operational State</span><span class="telemetry-value" style="color: #C5A880;">Nominal</span></div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- FACTORY ECONOMIC SIMULATOR -->
         <section id="engine">
             <div class="asymmetric-layout">
                 <div>
                     <span class="section-label">System Simulation</span>
-                    <h2 class="hero-display-text" style="font-size: clamp(2.5rem, 5vw, 3.5rem);">The economic architecture of infinite throughput.</h2>
-                    <p class="editorial-paragraph" style="margin-bottom: 2rem;">Adjust the active node capacity and engine logic parameters to compute system yield, reduction overhead, and autonomous production scalability.</p>
+                    <h2 class="hero-display-text" style="font-size: clamp(2.5rem, 5vw, 3.5rem);">The economic architecture of continuous code delivery.</h2>
+                    <p class="editorial-paragraph" style="margin-bottom: 2rem;">Vary your target node allocation and processing matrices to visualize how shifting engineering loads to multi-agent swarms accelerates real-time delivery metrics.</p>
                 </div>
                 
                 <div class="simulator-module">
@@ -362,27 +387,26 @@
             </div>
         </section>
 
-        <!-- NETWORK DIRECTORY / SOCIAL BOUNDARIES -->
         <section id="directory">
             <div class="asymmetric-layout">
                 <div>
                     <span class="section-label">External Sync</span>
-                    <h2 class="hero-display-text" style="font-size: clamp(2.5rem, 5vw, 3.5rem);">Knowledge <br>Leadership.</h2>
-                    <p class="editorial-paragraph">Verifiable data feeds, structural source repositories, and daily market telemetry updates across primary channels.</p>
+                    <h2 class="hero-display-text" style="font-size: clamp(2.5rem, 5vw, 3.5rem);">Knowledge <br>Leadership Hub.</h2>
+                    <p class="editorial-paragraph">Direct nodes into structural code architectures, executive distribution networks, and daily telemetry tracking.</p>
                 </div>
                 <div>
                     <div class="network-directory">
                         <a href="https://github.com/iggym" target="_blank" class="network-node">
                             <h4>GitHub</h4>
-                            <span>iggym // Source Hub</span>
+                            <span>iggym // Open Source Ecosystem</span>
                         </a>
                         <a href="https://www.linkedin.com/in/iggym" target="_blank" class="network-node">
                             <h4>LinkedIn</h4>
-                            <span>iggym // Executive Summary</span>
+                            <span>iggym // Professional Blueprint</span>
                         </a>
                         <a href="https://x.com/iggym" target="_blank" class="network-node">
                             <h4>X Terminal</h4>
-                            <span>@iggym // Live Telemetry</span>
+                            <span>@iggym // Agent Telemetry</span>
                         </a>
                     </div>
                 </div>
@@ -394,46 +418,47 @@
     <div class="container">
         <footer>
             <p>iggy.m &mdash; System Paradigm 2026</p>
-            <p>Status: Continuous Execution</p>
+            <p>Telemetry: Active</p>
         </footer>
     </div>
 
-    <!-- Clean, Independent Logic Layer -->
     <script>
-        const nodesSlider = document.getElementById('agent-slider');
-        const matrixSlider = document.getElementById('complexity-slider');
-        const nodeDisplay = document.getElementById('agent-count-val');
-        const matrixDisplay = document.getElementById('matrix-type-val');
-        const throughputDisplay = document.getElementById('throughput-val');
-        const overheadDisplay = document.getElementById('overhead-val');
+        (function() {
+            const nodesSlider = document.getElementById('agent-slider');
+            const matrixSlider = document.getElementById('complexity-slider');
+            const nodeDisplay = document.getElementById('agent-count-val');
+            const matrixDisplay = document.getElementById('matrix-type-val');
+            const throughputDisplay = document.getElementById('throughput-val');
+            const overheadDisplay = document.getElementById('overhead-val');
 
-        const matrixModes = ['Isolated Sub-System', 'Standard Integration', 'Global Swarm Architecture'];
+            const matrixModes = ['Isolated Sub-System', 'Standard Integration', 'Global Swarm Architecture'];
 
-        function computeSystemYield() {
-            const nodes = parseInt(nodesSlider.value);
-            const matrixIndex = parseInt(matrixSlider.value);
-            
-            nodeDisplay.textContent = nodes;
-            matrixDisplay.textContent = matrixModes[matrixIndex - 1];
+            function computeSystemYield() {
+                const nodes = parseInt(nodesSlider.value, 10);
+                const matrixIndex = parseInt(matrixSlider.value, 10);
+                
+                nodeDisplay.textContent = nodes;
+                matrixDisplay.textContent = matrixModes[matrixIndex - 1];
 
-            // Linear Scalability Compounding Equations
-            let productionModifier = matrixIndex === 1 ? 1.2 : matrixIndex === 2 ? 1.0 : 0.75;
-            let totalYield = Math.round((nodes * 5) * productionModifier);
-            
-            let structuralReduction = 55 + (nodes * 0.5) + (matrixIndex * 6);
-            if (structuralReduction > 98) {
-                structuralReduction = 98;
+                // Computational Logic Equations
+                let productionModifier = matrixIndex === 1 ? 1.25 : matrixIndex === 2 ? 1.0 : 0.75;
+                let totalYield = Math.round((nodes * 5) * productionModifier);
+                
+                let structuralReduction = 58 + (nodes * 0.45) + (matrixIndex * 5.5);
+                if (structuralReduction > 98) {
+                    structuralReduction = 98;
+                }
+
+                throughputDisplay.textContent = totalYield;
+                overheadDisplay.textContent = Math.round(structuralReduction) + '%';
             }
 
-            throughputDisplay.textContent = totalYield;
-            overheadDisplay.textContent = Math.round(structuralReduction) + '%';
-        }
-
-        nodesSlider.addEventListener('input', computeSystemYield);
-        matrixSlider.addEventListener('input', computeSystemYield);
-        
-        // Boot execution sequence
-        computeSystemYield();
+            nodesSlider.addEventListener('input', computeSystemYield);
+            matrixSlider.addEventListener('input', computeSystemYield);
+            
+            // Boot sequence initiation
+            computeSystemYield();
+        })();
     </script>
 </body>
 </html>
