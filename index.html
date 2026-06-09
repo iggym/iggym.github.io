@@ -3,187 +3,366 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>72-Hour Brand Execution Plan</title>
+    <title>Iggy | AI Systems Architect & Context Engineer</title>
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-color: #f8fafc;
-            --muted-text: #94a3b8;
-            --border-color: #334155;
+            --bg-dark: #090d16;
+            --bg-card: #131926;
+            --bg-card-hover: #1b2336;
+            --accent-cyan: #00f2fe;
+            --accent-blue: #4facfe;
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(0, 242, 254, 0.15);
+            --border-dim: #1e293b;
         }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+
+        * {
+            box-sizing: border-box;
             margin: 0;
-            padding: 20px;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
             display: flex;
             justify-content: center;
         }
-        .container {
-            max-width: 800px;
+
+        .wrapper {
+            max-width: 1000px;
             width: 100%;
         }
-        h1 {
-            color: var(--accent-color);
-            font-size: 1.8rem;
-            margin-bottom: 5px;
+
+        /* --- HEADER SECTION --- */
+        header {
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border-dim);
+            padding-bottom: 35px;
         }
-        .subtitle {
-            color: var(--muted-text);
-            margin-bottom: 25px;
-            font-size: 0.95rem;
-        }
-        .selector-box {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 25px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        @media(max-width: 600px) {
-            .selector-box { grid-template-columns: 1fr; }
-        }
-        label {
-            display: block;
+
+        .brand-meta {
             font-size: 0.85rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--accent-color);
-            margin-bottom: 8px;
-            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            margin-bottom: 10px;
+            font-weight: 700;
         }
-        select {
-            width: 100%;
-            padding: 10px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--accent-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 750px;
+            margin-bottom: 25px;
+        }
+
+        .cta-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
             border-radius: 6px;
-            font-size: 0.95rem;
-            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
-        .timeline {
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-dim);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-cyan);
+            background-color: rgba(0, 242, 254, 0.05);
+        }
+
+        /* --- TWO COLUMN MODULE LAYOUT --- */
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 850px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        section h2 {
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        section h2::after {
+            content: '';
+            flex-grow: 1;
+            height: 1px;
+            background-color: var(--border-dim);
+        }
+
+        /* --- ARCHITECTURAL BLUEPRINTS (LEFT) --- */
+        .blueprint-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-dim);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s ease;
+        }
+
+        .blueprint-card:hover {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px var(--border-glow);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .card-badge {
+            font-size: 0.75rem;
+            background-color: rgba(0, 242, 254, 0.1);
+            color: var(--accent-cyan);
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            font-family: monospace;
+        }
+
+        .card-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .card-tech-stack {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tech-tag {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid var(--border-dim);
+        }
+
+        /* --- BRAND PILLARS / METRICS (RIGHT) --- */
+        .pillar-list {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-        .phase-card {
-            background-color: var(--card-bg);
-            border-left: 4px solid var(--accent-color);
-            border-radius: 0 8px 8px 0;
-            padding: 20px;
-            border-top: 1px solid var(--border-color);
-            border-right: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
+
+        .pillar-item {
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 15px;
+            margin-bottom: 5px;
         }
-        .phase-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
+
+        .pillar-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 2px;
         }
-        .phase-time {
-            color: var(--accent-color);
-            font-size: 0.85rem;
+
+        .pillar-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
         }
-        .phase-desc {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: var(--text-color);
+
+        /* --- BOTTOM FULL-WIDTH TEXT BLOCK --- */
+        .philosophy-section {
+            background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+            border: 1px solid var(--border-dim);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
         }
-        .highlight {
-            color: var(--accent-color);
-            font-weight: 500;
+
+        .philosophy-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 850px;
+        }
+
+        .philosophy-text strong {
+            color: var(--text-main);
+        }
+
+        footer {
+            text-align: center;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-dim);
+            padding-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>72-Hour Execution Planner</h1>
-    <div class="subtitle">Select your focus areas to dynamically build a high-leverage brand-building sprint.</div>
+    <div class="wrapper">
+        
+        <header>
+            <div class="brand-meta">Systems Operator // Strategy & Deployment</div>
+            <h1>Iggy</h1>
+            <div class="tagline">
+                Senior AI Systems Architect & Context Engineer. I design and build multi-agent orchestration layers, precision context architectures, and rapid single-file software pipelines for enterprise systems.
+            </div>
+            <div class="cta-links">
+                <a href="https://www.linkedin.com/in/iggym/" class="btn btn-primary" target="_blank" rel="noopener">Connect on LinkedIn</a>
+                <a href="mailto:your-email@example.com" class="btn btn-secondary">Direct Advisory Brief</a>
+            </div>
+        </header>
 
-    <div class="selector-box">
-        <div>
-            <label for="techSelect">Core Technology</label>
-            <select id="techSelect" onchange="updatePlan()">
-                <option value="Agentic Multi-Agent Frameworks">Agentic AI Workflows</option>
-                <option value="Context Engineering Matrices">Context Engineering</option>
-                <option value="Intent-Driven Vibe Coding">AI-Assisted Coding</option>
-                <option value="Single-File Portable Architectures">Single-File Architecture</option>
-                <option value="Advanced Knowledge Retrieval (RAG)">Knowledge Systems (RAG)</option>
-            </select>
+        <div class="grid-layout">
+            
+            <section>
+                <h2>Core Architectures</h2>
+                
+                <div class="blueprint-card">
+                    <div class="card-header">
+                        <div class="card-title">AI Builder Command Center</div>
+                        <div class="card-badge">PRODUCTION</div>
+                    </div>
+                    <div class="card-desc">
+                        A clean, single-file management environment designed for technical operators tracking automated agent fleet behavior and real-time prompt engineering workflows.
+                    </div>
+                    <div class="card-tech-stack">
+                        <span class="tech-tag">Vanilla JS</span>
+                        <span class="tech-tag">Context Windows</span>
+                        <span class="tech-tag">Zero-Dependency Architecture</span>
+                    </div>
+                </div>
+
+                <div class="blueprint-card">
+                    <div class="card-header">
+                        <div class="card-title">CloudSpec Generator</div>
+                        <div class="card-badge">PORTABLE ASSET</div>
+                    </div>
+                    <div class="card-desc">
+                        Static web platform generating structured JSON context specs directly translating architectural topology into production-ready infrastructure templates.
+                    </div>
+                    <div class="card-tech-stack">
+                        <span class="tech-tag">JSON Spec</span>
+                        <span class="tech-tag">Static Micro-App</span>
+                        <span class="tech-tag">Prompt Matrix</span>
+                    </div>
+                </div>
+
+                <div class="blueprint-card">
+                    <div class="card-header">
+                        <div class="card-title">Autonomous Agent Frameworks</div>
+                        <div class="card-badge">RESEARCH</div>
+                    </div>
+                    <div class="card-desc">
+                        Multi-agent coordination workflows built to minimize tokens, eradicate loop hallucinations, and force rigorous output structural integrity.
+                    </div>
+                    <div class="card-tech-stack">
+                        <span class="tech-tag">RAG</span>
+                        <span class="tech-tag">Memory Anchors</span>
+                        <span class="tech-tag">Intent Pipelines</span>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>Brand Pillars</h2>
+                <div class="pillar-list">
+                    
+                    <div class="pillar-item">
+                        <div class="pillar-title">01 // Context Engineering</div>
+                        <div class="pillar-desc">Structuring foundational environment rules, dynamic variable windows, and memory guardrails to dictate clean AI execution.</div>
+                    </div>
+
+                    <div class="pillar-item">
+                        <div class="pillar-title">02 // Multi-Agent Orchestration</div>
+                        <div class="pillar-desc">Wiring distributed intelligence systems into production pipelines that act autonomously without technical drift.</div>
+                    </div>
+
+                    <div class="pillar-item">
+                        <div class="pillar-title">03 // High-Velocity Productization</div>
+                        <div class="pillar-desc">Deconstructing ambiguous macro problems into hyper-focused, shippable micro-SaaS properties built in hours, not sprints.</div>
+                    </div>
+
+                    <div class="pillar-item">
+                        <div class="pillar-title">04 // Systems Thinking</div>
+                        <div class="pillar-desc">Leveraging 25+ years of full-stack engineering to optimize second-order feedback loops, infrastructure spend, and computational scale.</div>
+                    </div>
+
+                </div>
+            </section>
+
         </div>
-        <div>
-            <label for="skillSelect">Human / Business Skill</label>
-            <select id="skillSelect" onchange="updatePlan()">
-                <option value="Systems Thinking">Systems Thinking</option>
-                <option value="Problem Deconstruction">Problem Deconstruction</option>
-                <option value="Service Productization">Service Productization</option>
-                <option value="Asymmetric Sales & Persuasion">Sales & Communication</option>
-            </select>
-        </div>
+
+        <section class="philosophy-section">
+            <h2>The Engineering Philosophy</h2>
+            <div class="philosophy-text">
+                Modern software engineering has collapsed under the weight of unneeded configuration and bloated dependency matrices. I practice **Inverted Intelligence** and **Vanilla Development**: building software with pure web technologies, single-file transportability, and clear human-centric prompt constraints. This strategy results in hyper-performant, zero-maintenance digital assets requiring zero infrastructure setup overhead.
+            </div>
+        </section>
+
+        <footer>
+            // CONTEXT ENGINE ACTIVATED // BASED IN DALLAS, TX // 
+        </footer>
+
     </div>
-
-    <div class="timeline">
-        <div class="phase-card">
-            <div class="phase-title">
-                <span>Phase 1: Deep Isolation & Asset Building</span>
-                <span class="phase-time">Hours 0 - 24</span>
-            </div>
-            <div class="phase-desc" id="phase1Text">
-                Isolate yourself with a complex, real-world dataset or workflow challenge. Use <span class="highlight" id="p1Tech">Agentic AI Workflows</span> to engineer a lightning-fast, zero-overhead solution. Apply strict <span class="highlight" id="p1Skill">Systems Thinking</span> to map the feedback loops, ensure your architecture is flawless, and build a concrete single-file demonstration tool.
-            </div>
-        </div>
-
-        <div class="phase-card">
-            <div class="phase-title">
-                <span>Phase 2: Stress Testing & Productization</span>
-                <span class="phase-time">Hours 24 - 48</span>
-            </div>
-            <div class="phase-desc" id="phase2Text">
-                Actively try to break your creation. Aggressively test boundaries, eliminate hallucinations, and streamline configurations. Package the result into a clean, standalone digital asset or service delivery framework. Document your entire process, emphasizing how your mastery of <span class="highlight" id="p2Tech">Agentic AI Workflows</span> solved a structural issue that standard tools fail to address.
-            </div>
-        </div>
-
-        <div class="phase-card">
-            <div class="phase-title">
-                <span>Phase 3: Public Distribution & Brand Launch</span>
-                <span class="phase-time">Hours 48 - 72</span>
-            </div>
-            <div class="phase-desc" id="phase3Text">
-                Execute your LinkedIn profile transition using your updated core pillars. Write and publish a comprehensive teardown or visual case study explaining how you deployed <span class="highlight" id="p3Tech">Agentic AI Workflows</span>. Package the narrative using <span class="highlight" id="p3Skill">Systems Thinking</span> to frame yourself as an elite consultant capable of delivering rapid, high-potency enterprise leverage.
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function updatePlan() {
-        const tech = document.getElementById('techSelect').value;
-        const skill = document.getElementById('skillSelect').value;
-
-        // Update Phase 1
-        document.getElementById('p1Tech').innerText = tech;
-        document.getElementById('p1Skill').innerText = skill;
-
-        // Update Phase 2
-        document.getElementById('p2Tech').innerText = tech;
-
-        // Update Phase 3
-        document.getElementById('p3Tech').innerText = tech;
-        document.getElementById('p3Skill').innerText = skill;
-    }
-    // Initialize
-    updatePlan();
-</script>
 
 </body>
 </html>
