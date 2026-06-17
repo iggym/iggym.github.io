@@ -1,17 +1,17 @@
 [
   {
     "id": "agent-orchestrator-v1",
-    "title": "AetherFlow: Event-Driven Multi-Agent Runtime",
-    "description": "A zero-dependency edge runtime coordinating specialized agent worker loops via structured JSON-RPC over WebSockets.",
+    "title": "Multi-Agent Runtime Engine",
+    "description": "An asynchronous edge runtime designed to coordinate multi-agent tasks using highly deterministic worker loops.",
     "type": "tool",
     "path": "content/tools/aetherflow.html",
-    "tags": ["Agents & Orchestration", "Edge Systems"],
+    "tags": ["Agents & Orchestration", "Systems"],
     "date": "2026-05-14"
   },
   {
     "id": "context-slicer-pro",
-    "title": "ContextSlicer: Token-Aware Memory Windowing",
-    "description": "Dynamic context-window sliding engine utilizing semantic chunk density maps to preserve attention focus.",
+    "title": "Token-Aware Context Windows",
+    "description": "A dynamic client-side memory layout engine that manages long-context insertion patterns during inference.",
     "type": "tool",
     "path": "content/tools/contextslicer.html",
     "tags": ["Context Engineering", "Performance"],
@@ -19,11 +19,11 @@
   },
   {
     "id": "interpretability-weights-v1",
-    "title": "Decomposing Residual Streams in TinyLlama",
-    "description": "A mechanistic interpretability study isolating induction head behaviors during out-of-distribution tasks.",
+    "title": "Decomposing TinyLlama Residual Streams",
+    "description": "An empirical analysis tracking structural attention anomalies and activation variations under out-of-distribution loads.",
     "type": "article",
     "path": "content/articles/residual-streams.html",
-    "tags": ["Mechanistic Interpretability", "Research"],
+    "tags": ["Interpretability", "Research"],
     "date": "2026-04-20"
   }
 ]
