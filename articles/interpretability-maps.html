@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Anatomy of an Attention Head: A Layer-by-Layer Walkthrough</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <style>
+        /* Article-Specific Extensions mapping to Editorial Light Spec */
+        .article-body {
+            max-width: 680px;
+            margin: var(--space-48) auto var(--space-96) auto;
+        }
+        .article-body p {
+            font-size: var(--size-body);
+            color: var(--text-body);
+            line-height: 1.7;
+            margin-bottom: var(--space-24);
+        }
+        .article-body h2 {
+            font-family: var(--font-display);
+            font-size: var(--size-h2);
+            font-weight: 700;
+            color: var(--text-title);
+            margin-top: var(--space-48);
+            margin-bottom: var(--space-16);
+            letter-spacing: -0.02em;
+        }
+        
+        /* Interactive Attention Matrix Component */
+        .matrix-sandbox {
+            border: 1px solid var(--border-subtle);
+            background: var(--bg-surface-1);
+            border-radius: 12px;
+            padding: var(--space-32);
+            margin: var(--space-48) 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .matrix-container {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: var(--space-12);
+            margin-top: var(--space-24);
+        }
+        .matrix-labels-y {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            text-align: right;
+            padding-right: var(--space-8);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .matrix-grid-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-12);
+        }
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+        }
+        .matrix-labels-x {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .matrix-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            border: 1px solid var(--border-subtle);
+            cursor: pointer;
+            transition: all var(--duration-micro) var(--ease-premium);
+        }
+        
+        /* Dynamic Inspector Module */
+        .matrix-inspector {
+            margin-top: var(--space-24);
+            padding: var(--space-16);
+            background: var(--bg-core);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: var(--size-small);
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="nav-container container" aria-label="Primary Navigation">
+            <a href="../../index.html" class="logo-text">AI_SYS.ENG</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Core Capabilities</a></li>
+                <li><a href="../../portfolio.html" class="active">Asset Registry</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: var(--space-64);">
+        
+        <a href="../../portfolio.html" style="text-decoration: none; color: var(--text-muted); font-size: var(--size-small); font-family: var(--font-mono); display: inline-flex; align-items: center; gap: var(--space-4);">
+            &larr; BACK TO REGISTRY
+        </a>
+
+        <article style="margin-top: var(--space-32);">
+            <span style="font-family: var(--font-mono); font-size: var(--size-small); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Mechanistic Interpretability // Essay 01</span>
+            <h1 class="hero-title" style="font-size: var(--size-display); margin-top: var(--space-8); margin-bottom: var(--space-24); line-height: 1.05;">The Anatomy of an Attention Head: A Layer-by-Layer Walkthrough</h1>
+            
+            <div style="display: flex; gap: var(--space-24); font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-24);">
+                <span>Published: June 12, 2026</span>
+                <span>Reading Time: 8 min</span>
+                <span>Target: Mechanistic Auditing</span>
+            </div>
+
+            <div class="article-body">
+                <p>To understand how transformer architectures execute complex task routing logic, engineers must move past treating hidden representations as uniform, unreadable fields. Instead, we can apply mechanistic interpretability frameworks to break open the network stack, isolating the explicit calculations happening within an individual attention head.</p>
+
+                <h2>The Projection Mechanics: $Q$, $K$, and $V$</h2>
+                <p>Every token in our input context window starts as a high-dimensional activation vector within the network residual stream. As the frame propagates through a given transformer layer, it is multiplied against three distinct matrix weights: the Query ($W_Q$), Key ($W_K$), and Value ($W_V$) weight distributions.</p>
+                
+                <p>The core relationship calculation is straightforward: the dot product of the Query matrix with the transposed Key matrix dictates the horizontal attention allocation. Formally, this routing calculation maps directly to the standard attention equation:</p>
+
+                <div style="margin: var(--space-32) 0; text-align: center; font-size: var(--size-h3); font-family: var(--font-mono); color: var(--text-title);">
+                    $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+                </div>
+
+                <p>This output weight acts as a routing layout, deciding exactly how much structural information from individual source paths gets mixed back onto the target token during the final value aggregation step.</p>
+
+                <section class="matrix-sandbox" aria-label="Interactive Attention Matrix Matrix">
+                    <span style="display:block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Live Activation Matrix Map // Layer 04, Head 02</span>
+                    <h3 style="font-family: var(--font-display); font-size: var(--size-h3); color: var(--text-title); margin-top: var(--space-4); margin-bottom: var(--space-8); font-weight: 600;">Hover cells to audit alignment scores</h3>
+                    <p style="font-size: 14px; margin-bottom: 0;">This matrix maps the real-time calculated attention scoring over a sample sequence loop. Darker grids indicate stronger concepts tracking scores.</p>
+
+                    <div class="matrix-container">
+                        <div class="matrix-labels-y">
+                            <div>Model</div>
+                            <div>Context</div>
+                            <div>Window</div>
+                            <div>Routing</div>
+                            <div>Engine</div>
+                        </div>
+                        <div class="matrix-grid-wrapper">
+                            <div id="attention-grid" class="matrix-grid">
+                                </div>
+                            <div class="matrix-labels-x">
+                                <div>Model</div>
+                                <div>Context</div>
+                                <div>Window</div>
+                                <div>Routing</div>
+                                <div>Engine</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="matrix-inspector">
+                        <span>Target Connection: <strong id="inspect-path" style="color: var(--text-title);">-</strong></span>
+                        <span>Routing Weight: <strong id="inspect-weight" style="color: var(--text-title);">-</strong></span>
+                    </div>
+                </section>
+
+                <h2>Tracking Induction Heads</h2>
+                <p>By auditing token interaction frames natively through this matrix grid model, we can trace the precise development of high-leverage capabilities, such as induction loops. Induction heads are dedicated pairs of operations across sequential layers that look backward into past token indices to anticipate exact context repetitions.</p>
+
+                <p>When an induction mechanism detects a sequence match (e.g., matching a sequence like <code>[A][B]</code> to replicate it later in the token stream), it aggressively weights that specific path. This exact mechanical behavior forms the baseline infrastructure that allows advanced language networks to handle zero-shot in-context learning with total architectural precision.</p>
+            </div>
+        </article>
+
+    </main>
+
+    <footer>
+        <div class="container footer-container">
+            <p>System Architecture Hub &copy; 2026. Zero build pipeline overhead.</p>
+            <div class="footer-links">
+                <a href="../../index.html">Capabilities Hub</a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub Link</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Structural token dataset array mapping
+        const tokens = ["Model", "Context", "Window", "Routing", "Engine"];
+        
+        // Static Mock Attention Activation Scores Matrix Array
+        const activationScores = [
+            [0.75, 0.12, 0.05, 0.03, 0.05],
+            [0.10, 0.68, 0.12, 0.04, 0.06],
+            [0.02, 0.15, 0.72, 0.08, 0.03],
+            [0.05, 0.05, 0.10, 0.55, 0.25],
+            [0.03, 0.04, 0.03, 0.20, 0.70]
+        ];
+
+        const gridContainer = document.getElementById('attention-grid');
+        const inspectPath = document.getElementById('inspect-path');
+        const inspectWeight = document.getElementById('inspect-weight');
+
+        // Populate Matrix Architecture Elements
+        for (let row = 0; row < tokens.length; row++) {
+            for (let col = 0; col < tokens.length; col++) {
+                const cellValue = activationScores[row][col];
+                const cell = document.createElement('div');
+                cell.className = 'matrix-cell';
+                
+                // Set high contrast ink variant mapping to the calculated float weight value
+                cell.style.backgroundColor = `rgba(0, 0, 0, ${cellValue.toFixed(2)})`;
+                
+                // Track mouse movement actions
+                cell.addEventListener('mouseenter', () => {
+                    inspectPath.innerText = `"${tokens[row]}" → "${tokens[col]}"`;
+                    inspectWeight.innerText = `${(cellValue * 100).toFixed(0)}%`;
+                    cell.style.borderColor = 'var(--border-hover)';
+                });
+
+                cell.addEventListener('mouseleave', () => {
+                    inspectPath.innerText = '-';
+                    inspectWeight.innerText = '-';
+                    cell.style.borderColor = 'var(--border-subtle)';
+                });
+
+                gridContainer.appendChild(cell);
+            }
+        }
+    </script>
+</body>
+</html>
