@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Single-File Automated Component Factory</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <style>
+        /* Tool-Specific Extensions mapping to Light Spec */
+        .factory-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-32);
+            margin-top: var(--space-48);
+        }
+        @media (min-width: 1024px) {
+            .factory-grid {
+                grid-template-columns: 340px 1fr;
+            }
+        }
+        .sidebar-controls {
+            background: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: var(--space-24);
+            height: fit-content;
+        }
+        .ide-frame {
+            background: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .ide-tabs {
+            background: var(--bg-core);
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+        }
+        .ide-tab {
+            background: transparent;
+            border: none;
+            border-right: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: var(--space-12) var(--space-24);
+            cursor: pointer;
+            transition: all var(--duration-micro) var(--ease-premium);
+        }
+        .ide-tab.active {
+            background: var(--bg-surface-1);
+            color: var(--text-title);
+            font-weight: 500;
+        }
+        .ide-body {
+            padding: var(--space-24);
+            flex-grow: 1;
+            min-height: 380px;
+            background: #FAFAFA;
+        }
+        .code-display {
+            font-family: var(--font-mono);
+            font-size: var(--size-small);
+            color: #24292e;
+            white-space: pre-wrap;
+            line-height: 1.5;
+            display: none;
+        }
+        .code-display.active {
+            display: block;
+        }
+
+        /* Test Result Matrix Visuals */
+        .test-matrix {
+            margin-top: var(--space-16);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-8);
+        }
+        .test-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            padding: var(--space-8) var(--space-12);
+            background: var(--bg-core);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+        }
+        .status-badge {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 10px;
+        }
+        .status-badge.pass { color: #28a745; }
+        .status-badge.wait { color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="nav-container container" aria-label="Primary Navigation">
+            <a href="../../index.html" class="logo-text">AI_SYS.ENG</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Core Capabilities</a></li>
+                <li><a href="../../portfolio.html" class="active">Asset Registry</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: var(--space-64); padding-bottom: var(--space-96);">
+        
+        <a href="../../portfolio.html" style="text-decoration: none; color: var(--text-muted); font-size: var(--size-small); font-family: var(--font-mono); display: inline-flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-24);">
+            &larr; BACK TO REGISTRY
+        </a>
+
+        <h1 class="hero-title" style="font-size: var(--size-h1); margin-bottom: var(--space-8);">Automated Component Factory</h1>
+        <p class="card-desc" style="font-size: var(--size-body); max-width: 720px;">A mock compilation pipeline synthesizing self-contained, portable software primitives. Select a target component template to compile the code package alongside its automated test assertions sequentially.</p>
+
+        <div class="factory-grid">
+            
+            <div class="sidebar-controls">
+                <div style="margin-bottom: var(--space-24);">
+                    <span style="display:block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: var(--space-8); text-transform: uppercase; letter-spacing: 0.05em;">Target Blueprint Architecture</span>
+                    <select id="factory-blueprint" class="tab-btn" style="width:100%; border: 1px solid var(--border-subtle); padding: 0 var(--space-12); border-radius:6px; background: var(--bg-core); font-size:var(--size-small); text-align:left; color: var(--text-title);">
+                        <option value="toggle">Accessible Light/Dark Toggle</option>
+                        <option value="table">Data Grid with Column Sort</option>
+                    </select>
+                </div>
+
+                <button id="factory-compile-btn" class="btn btn-primary" style="width: 100%;">Synthesize Component</button>
+
+                <div style="margin-top: var(--space-32);">
+                    <span style="display:block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: var(--space-8); text-transform: uppercase; letter-spacing: 0.05em;">Automated Code Quality Tests</span>
+                    <div class="test-matrix">
+                        <div class="test-row"><span>AST Structural Match</span><span id="test-ast" class="status-badge wait">WAITING</span></div>
+                        <div class="test-row"><span>A11y ARIA Verification</span><span id="test-aria" class="status-badge wait">WAITING</span></div>
+                        <div class="test-row"><span>State Mutability Suite</span><span id="test-state" class="status-badge wait">WAITING</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ide-frame">
+                <div class="ide-tabs" role="tablist">
+                    <button class="ide-tab active" data-pane="pane-code">Component.html</button>
+                    <button class="ide-tab" data-pane="pane-test">Component.test.js</button>
+                </div>
+                <div class="ide-body">
+                    <pre id="pane-code" class="code-display active"><code>// Select a target blueprint and click "Synthesize Component" to start the factory execution loop...</code></pre>
+                    <pre id="pane-test" class="code-display"><code>// Test assertions path updates dynamically upon source output generation...</code></pre>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const blueprints = {
+            toggle: {
+                code: `\n<template id="theme-toggle-blueprint">\n  <button id="theme-toggle" aria-pressed="false" class="ui-toggle">\n    <span class="sr-only">Toggle visual mode interface</span>\n    <svg class="icon-sun" aria-hidden="true"></svg>\n  </button>\n</template>\n\n<script>\n  class ThemeToggle extends HTMLElement {\n    connectedCallback() {\n      this.button = this.querySelector('#theme-toggle');\n      this.button.addEventListener('click', () => {\n        const isPressed = this.button.getAttribute('aria-pressed') === 'true';\n        this.button.setAttribute('aria-pressed', !isPressed);\n        document.documentElement.classList.toggle('light-theme', isPressed);\n      });\n    }\n  }\n  customElements.define('theme-toggle', ThemeToggle);\n<\/script>`,
+                test: `// Automated Test Suites: Accessibility Guardrails\ndescribe('Theme Toggle Assembly Validation', () => {\n  test('AST verification handles structural shadow constraints', () => {\n    const node = parseComponentTree('<theme-toggle>');\n    expect(node.hasAttribute('aria-pressed')).toBe(true);\n  });\n\n  test('State transition modifies root document tokens perfectly', () => {\n    const instance = triggerClickEvent('#theme-toggle');\n    expect(document.classList.contains('light-theme')).toBe(true);\n  });\n});`
+            },
+            table: {
+                code: `\n<div class="data-grid-wrapper">\n  <table id="sortable-matrix" role="grid">\n    <thead>\n      <tr>\n        <th scope="col"><button data-sort="id" aria-sort="none">Asset ID</button></th>\n        <th scope="col"><button data-sort="metric" aria-sort="none">Execution Cost</button></th>\n      </tr>\n    </thead>\n    <tbody id="matrix-payload"></tbody>\n  </table>\n</div>`,
+                test: `// Automated Test Suites: Mutability Suite\ndescribe('Data Grid Sorting Engine Assertions', () => {\n  test('Enforces uniform relational alignment on vector arrays', () => {\n    const sample = [{id: 'A', metric: 40}, {id: 'B', metric: 12}];\n    const results = sortCollection(sample, 'metric', 'desc');\n    expect(results[0].metric).toEqual(40);\n  });\n});`
+            }
+        };
+
+        const compileBtn = document.getElementById('factory-compile-btn');
+        const blueprintSelect = document.getElementById('factory-blueprint');
+        const codePane = document.getElementById('pane-code');
+        const testPane = document.getElementById('pane-test');
+        
+        const badgeAst = document.getElementById('test-ast');
+        const badgeAria = document.getElementById('test-aria');
+        const badgeState = document.getElementById('test-state');
+
+        // Layout Navigation Logic
+        document.querySelectorAll('.ide-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                document.querySelectorAll('.ide-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.code-display').forEach(p => p.classList.remove('active'));
+                
+                e.target.classList.add('active');
+                document.getElementById(e.target.getAttribute('data-pane')).classList.add('active');
+            });
+        });
+
+        // Pipeline Compilation Simulation
+        compileBtn.addEventListener('click', () => {
+            compileBtn.disabled = true;
+            compileBtn.innerText = "Synthesizing AST Framework...";
+            
+            // Re-initialize code view status flags
+            badgeAst.className = "status-badge wait"; badgeAst.innerText = "WAITING";
+            badgeAria.className = "status-badge wait"; badgeAria.innerText = "WAITING";
+            badgeState.className = "status-badge wait"; badgeState.innerText = "WAITING";
+
+            const selectedKey = blueprintSelect.value;
+            const chosenAsset = blueprints[selectedKey];
+
+            codePane.innerText = chosenAsset.code;
+            testPane.innerText = chosenAsset.test;
+
+            // Step-by-step synthetic pipeline latency emulation
+            setTimeout(() => {
+                badgeAst.className = "status-badge pass"; badgeAst.innerText = "PASSED";
+                compileBtn.innerText = "Evaluating Accessibility Rules...";
+                
+                setTimeout(() => {
+                    badgeAria.className = "status-badge pass"; badgeAria.innerText = "PASSED";
+                    compileBtn.innerText = "Executing Isolation Tests...";
+                    
+                    setTimeout(() => {
+                        badgeState.className = "status-badge pass"; badgeState.innerText = "PASSED";
+                        compileBtn.disabled = false;
+                        compileBtn.innerText = "Synthesize Component";
+                    }, 800);
+                }, 800);
+            }, 800);
+        });
+    </script>
+</body>
+</html>
