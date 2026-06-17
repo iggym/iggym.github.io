@@ -11,8 +11,8 @@
     --text-muted: #64748B;
     
     --accent-primary: #475569;
-    --border-subtle: #CBD5E1; /* FIXED CONTRAST VALUE */
-    --border-hover: #64748B;
+    --border-subtle: #CBD5E1; /* High contrast variant */
+    --border-hover: #475569;
 
     --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-display: "Playfair Display", Georgia, serif;
@@ -30,11 +30,11 @@
 
     --size-small: 13px;
     --size-body: 16px;
+    --size-h1: 36px;
     --size-h2: 28px;
     --size-h3: 20px;
 
     --duration-micro: 0.15s;
-    --duration-ui: 0.3s;
     --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -59,7 +59,6 @@ body {
     padding: 0 var(--space-24);
 }
 
-/* Skip Link */
 .skip-link {
     position: absolute;
     top: -100px;
@@ -161,11 +160,13 @@ header {
     font-weight: 500;
     text-decoration: none;
     font-family: var(--font-mono);
+    cursor: pointer;
     transition: all var(--duration-micro) var(--ease-premium);
 }
 .btn-primary {
     background: var(--text-title);
     color: var(--bg-surface-1);
+    border: none;
 }
 .btn-primary:hover { background: #000000; }
 .btn-secondary {
@@ -217,6 +218,38 @@ header {
     gap: var(--space-16);
 }
 
+/* Portfolio Content Filtering Elements */
+.filter-tabs {
+    display: flex;
+    gap: var(--space-12);
+    margin-bottom: var(--space-32);
+    border-bottom: 1px solid var(--border-subtle);
+    padding-bottom: var(--space-16);
+}
+.tab-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--size-small);
+    padding: var(--space-8) var(--space-16);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--duration-micro) var(--ease-premium);
+}
+.tab-btn:hover { color: var(--text-title); }
+.tab-btn.active {
+    background: var(--bg-surface-2);
+    border-color: var(--border-subtle);
+    color: var(--text-title);
+    font-weight: 600;
+}
+.portfolio-master-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-24);
+}
+
 /* ==========================================================================
    Domain & Interactive Card Components
    ========================================================================== */
@@ -226,6 +259,9 @@ header {
     border-radius: 8px;
     padding: var(--space-24);
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     transition: all var(--duration-micro) var(--ease-premium);
 }
 .domain-meta {
@@ -246,26 +282,40 @@ header {
     font-size: 14px;
     color: var(--text-body);
     line-height: 1.5;
+    flex-grow: 1;
 }
 
-/* Dynamic JavaScript Card Inject Hooks FIXED */
+/* Dynamic Explicit Call To Action Layout Links */
 .card-interactive-wrapper {
     text-decoration: none;
-    display: block; /* Forces inline nodes to take block shape dimensions */
-    width: 100%;
+    display: flex;
+    flex-direction: column;
     color: inherit;
-    transition: transform var(--duration-micro) var(--ease-premium);
+    width: 100%;
     cursor: pointer;
+    transition: transform var(--duration-micro) var(--ease-premium);
 }
 .card-interactive-wrapper:hover {
     transform: translateY(-2px);
 }
 .card-interactive-wrapper:hover .domain-card {
     border-color: var(--border-hover);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
 }
-.card-interactive-wrapper:hover .domain-title {
-    color: var(--accent-primary);
+.card-interactive-wrapper:hover .card-action-link {
+    color: var(--text-title);
+    text-decoration: underline;
+}
+
+.card-action-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: var(--space-16);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color var(--duration-micro) var(--ease-premium);
 }
 
 .tag-pill {
