@@ -59,6 +59,29 @@ body {
     padding: 0 var(--space-24);
 }
 
+/* Skip Link */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--text-title);
+    color: white;
+    padding: var(--space-12);
+    z-index: 999;
+}
+.skip-link:focus { top: 0; }
+
+#neural-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 /* ==========================================================================
    Navigation Header Architecture
    ========================================================================== */
@@ -100,16 +123,70 @@ header {
 }
 
 /* ==========================================================================
+   Hero Cinematic Layout Components (NEW FIX)
+   ========================================================================== */
+.hero-section {
+    padding: var(--space-96) 0 var(--space-64) 0;
+    max-width: 840px;
+}
+.hero-title {
+    font-family: var(--font-sans);
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--text-title);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-24);
+}
+.hero-title span {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+.hero-subtitle {
+    font-size: 18px;
+    color: var(--text-body);
+    line-height: 1.6;
+    margin-bottom: var(--space-32);
+}
+.cta-group {
+    display: flex;
+    gap: var(--space-16);
+}
+.btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: var(--size-small);
+    font-weight: 500;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    transition: all var(--duration-micro) var(--ease-premium);
+}
+.btn-primary {
+    background: var(--text-title);
+    color: var(--bg-surface-1);
+}
+.btn-primary:hover { background: #000000; }
+.btn-secondary {
+    background: transparent;
+    color: var(--text-body);
+    border: 1px solid var(--border-subtle);
+}
+.btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-surface-2); }
+
+/* ==========================================================================
    Layout Structures & Grid Matrices
    ========================================================================== */
 .domain-section {
     padding: var(--space-64) 0;
     background: var(--bg-surface-1);
     border-bottom: 1px solid var(--border-subtle);
+    border-top: 1px solid var(--border-subtle);
 }
 .section-headline {
     font-family: var(--font-mono);
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     color: var(--text-muted);
     letter-spacing: 0.08em;
@@ -117,7 +194,7 @@ header {
 }
 .domain-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: var(--space-24);
 }
 
@@ -132,9 +209,7 @@ header {
     gap: var(--space-48);
 }
 @media (min-width: 900px) {
-    .feed-layout {
-        grid-template-columns: 1fr 1fr;
-    }
+    .feed-layout { grid-template-columns: 1fr 1fr; }
 }
 .card-stack {
     display: flex;
@@ -151,7 +226,7 @@ header {
     border-radius: 8px;
     padding: var(--space-24);
     height: 100%;
-    transition: border-color var(--duration-micro) var(--ease-premium);
+    transition: all var(--duration-micro) var(--ease-premium);
 }
 .domain-meta {
     display: block;
@@ -186,7 +261,7 @@ header {
 }
 .card-interactive-wrapper:hover .domain-card {
     border-color: var(--border-hover);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
 }
 .card-interactive-wrapper:hover .domain-title {
     color: var(--accent-primary);
@@ -204,3 +279,27 @@ header {
     border-radius: 4px;
     letter-spacing: 0.03em;
 }
+
+/* Sandbox Panel Section Configuration (NEW FIX) */
+.sandbox-section {
+    padding: var(--space-64) 0 var(--space-96) 0;
+}
+
+footer {
+    background: var(--bg-surface-1);
+    border-top: 1px solid var(--border-subtle);
+    padding: var(--space-32) 0;
+}
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+.footer-links a {
+    color: var(--text-muted);
+    margin-left: var(--space-16);
+    text-decoration: none;
+}
+.footer-links a:hover { color: var(--text-title); }
