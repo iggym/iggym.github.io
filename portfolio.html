@@ -6,27 +6,19 @@
     <title>Asset Registry | AI Systems Engineering</title>
     <style>
         :root {
-            --bg-core: #FAFAFA;
-            --bg-surface-1: #FFFFFF;
-            --bg-surface-2: #F1F5F9;
-            --text-title: #0F172A;
-            --text-body: #334155;
-            --text-muted: #64748B;
-            --accent-primary: #475569;
-            --border-subtle: #CBD5E1; 
-            --border-hover: #475569;
+            --bg-core: #FAFAFA; --bg-surface-1: #FFFFFF; --bg-surface-2: #F1F5F9;
+            --text-title: #0F172A; --text-body: #334155; --text-muted: #64748B;
+            --border-subtle: #CBD5E1; --border-hover: #475569;
             --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
-            --space-24: 24px; --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
-            --size-small: 13px; --size-body: 16px; --size-h1: 36px; --size-h2: 28px; --size-h3: 20px;
+            --space-8: 8px; --space-12: 12px; --space-16: 16px; --space-24: 24px; 
+            --space-32: 32px; --space-96: 96px;
+            --size-small: 13px; --size-body: 16px; --size-h1: 36px; --size-h3: 20px;
             --duration-micro: 0.15s; --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg-core); color: var(--text-body); font-family: var(--font-sans); font-size: var(--size-body); line-height: 1.5; -webkit-font-smoothing: antialiased; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-24); }
-        .skip-link { position: absolute; top: -100px; left: 0; background: var(--text-title); color: white; padding: var(--space-12); z-index: 999; }
-        .skip-link:focus { top: 0; }
         header { background: var(--bg-surface-1); border-bottom: 1px solid var(--border-subtle); position: sticky; top: 0; z-index: 100; }
         .nav-container { display: flex; justify-content: space-between; align-items: center; height: 72px; }
         .logo-text { font-family: var(--font-mono); font-weight: 700; font-size: 18px; color: var(--text-title); text-decoration: none; letter-spacing: -0.03em; }
@@ -36,28 +28,25 @@
         .hero-title { font-size: var(--size-h1); font-weight: 700; color: var(--text-title); line-height: 1.15; letter-spacing: -0.03em; margin-bottom: var(--space-24); }
         .hero-subtitle { font-size: var(--size-body); color: var(--text-body); line-height: 1.6; margin-bottom: var(--space-32); }
         .filter-tabs { display: flex; gap: var(--space-12); margin-bottom: var(--space-32); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-16); }
-        .tab-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: var(--font-mono); font-size: var(--size-small); padding: var(--space-8) var(--space-16); border-radius: 4px; cursor: pointer; transition: all var(--duration-micro) var(--ease-premium); }
+        .tab-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); font-family: var(--font-mono); font-size: var(--size-small); padding: var(--space-8) var(--space-16); border-radius: 4px; cursor: pointer; }
         .tab-btn:hover { color: var(--text-title); }
         .tab-btn.active { background: var(--bg-surface-2); border-color: var(--border-subtle); color: var(--text-title); font-weight: 600; }
         .portfolio-master-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-24); }
         .domain-card { background: var(--bg-surface-1); border: 1px solid var(--border-subtle); border-radius: 8px; padding: var(--space-24); height: 100%; display: flex; flex-direction: column; justify-content: space-between; transition: all var(--duration-micro) var(--ease-premium); }
-        .domain-title { font-size: var(--size-h3); font-weight: 600; color: var(--text-title); margin-bottom: var(--space-8); letter-spacing: -0.01em; }
+        .domain-title { font-size: var(--size-h3); font-weight: 600; color: var(--text-title); margin-bottom: var(--space-8); }
         .domain-desc { font-size: 14px; color: var(--text-body); line-height: 1.5; flex-grow: 1; }
-        .card-interactive-wrapper { text-decoration: none; display: flex; flex-direction: column; color: inherit; width: 100%; cursor: pointer; transition: transform var(--duration-micro) var(--ease-premium); scroll-margin-top: 100px; }
+        .card-interactive-wrapper { text-decoration: none; display: flex; flex-direction: column; color: inherit; width: 100%; cursor: pointer; transition: transform var(--duration-micro) var(--ease-premium); }
         .card-interactive-wrapper:hover { transform: translateY(-2px); }
         .card-interactive-wrapper:hover .domain-card { border-color: var(--border-hover); box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06); }
         .card-action-link { display: inline-flex; align-items: center; margin-top: var(--space-16); font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--text-muted); }
         .tag-pill { font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-transform: uppercase; background: var(--bg-surface-2); border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; margin-right: var(--space-4); }
         footer { background: var(--bg-surface-1); border-top: 1px solid var(--border-subtle); padding: var(--space-32) 0; margin-top: var(--space-96); }
         .footer-container { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
-        .footer-links a { color: var(--text-muted); margin-left: var(--space-16); text-decoration: none; }
-        .footer-links a:hover { color: var(--text-title); }
     </style>
 </head>
 <body>
-    <a href="#portfolio-content" class="skip-link">Skip to asset registry</a>
     <header>
-        <nav class="nav-container container" aria-label="Primary Navigation">
+        <nav class="nav-container container">
             <a href="index.html" class="logo-text">Iggy</a>
             <ul class="nav-links">
                 <li><a href="index.html">Core Capabilities</a></li>
@@ -65,14 +54,14 @@
             </ul>
         </nav>
     </header>
-    <main id="portfolio-content" class="container" style="padding-top: var(--space-96);">
-        <section aria-labelledby="portfolio-heading">
-            <h1 id="portfolio-heading" class="hero-title">Comprehensive Asset Inventory</h1>
+    <main class="container" style="padding-top: var(--space-96);">
+        <section>
+            <h1 class="hero-title">Comprehensive Asset Inventory</h1>
             <p class="hero-subtitle" style="max-width: 600px;">A transparent collection of active software tools, internal execution modules, and architectural design evaluations.</p>
             <div class="filter-tabs" role="tablist">
-                <button class="tab-btn" role="tab" aria-selected="false" data-filter="all">All Deliverables</button>
-                <button class="tab-btn" role="tab" aria-selected="false" data-filter="tool">Shipped Tools</button>
-                <button class="tab-btn" role="tab" aria-selected="false" data-filter="article">Research Deep-Dives</button>
+                <button class="tab-btn" data-filter="all">All Deliverables</button>
+                <button class="tab-btn" data-filter="tool">Shipped Tools</button>
+                <button class="tab-btn" data-filter="article">Research Deep-Dives</button>
             </div>
             <div id="master-portfolio-grid" class="portfolio-master-grid"></div>
         </section>
@@ -80,20 +69,10 @@
     <footer>
         <div class="container footer-container">
             <p>System Architecture Engine &copy; 2026. Clean vanilla execution.</p>
-            <div class="footer-links">
-                <a href="index.html">Capabilities Hub</a>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub</a>
-            </div>
         </div>
     </footer>
     <script>
-        document.addEventListener('DOMContentLoaded', () => { 
-            initializeRegistryFetch(); 
-        });
-
-        window.addEventListener('hashchange', () => {
-            executeHashRoutingJump();
-        });
+        document.addEventListener('DOMContentLoaded', initializeRegistryFetch);
 
         let cachedAssetsMatrix = [];
 
@@ -110,7 +89,6 @@
                     
                     updateActiveTabUI(initialFilter);
                     renderMasterPortfolioGrid(initialFilter);
-                    executeHashRoutingJump();
                     initializeFilterTabActions();
                 }
             } catch (e) {
@@ -132,19 +110,12 @@
 
         function createSemanticCard(asset) {
             const anchor = document.createElement('a');
+            
+            // Clean native routing to the content folder path
             anchor.href = asset.path;
+            
             anchor.className = 'card-interactive-wrapper';
-            anchor.id = asset.id;
-
-            if (asset.path === "#" || asset.path.includes(window.location.pathname)) {
-                anchor.addEventListener('click', (e) => {
-                    if (asset.path === "#") {
-                        e.preventDefault();
-                        alert(`Loading Runtime Platform Environment for: ${asset.title}`);
-                    }
-                });
-            }
-
+            
             const tagsHTML = asset.tags ? asset.tags.map(t => `<span class="tag-pill">${t}</span>`).join('') : '';
             anchor.innerHTML = `
                 <div class="domain-card">
@@ -159,50 +130,22 @@
             return anchor;
         }
 
-        function executeHashRoutingJump() {
-            if (window.location.hash) {
-                const targetElementId = window.location.hash.replace('#', '');
-                const targetCard = document.getElementById(targetElementId);
-                
-                if (targetCard) {
-                    document.querySelectorAll('.domain-card').forEach(card => {
-                        card.style.borderColor = '';
-                        card.style.boxShadow = '';
-                    });
-
-                    setTimeout(() => {
-                        targetCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        const internalCardNode = targetCard.querySelector('.domain-card');
-                        if (internalCardNode) {
-                            internalCardNode.style.borderColor = 'var(--text-title)';
-                            internalCardNode.style.boxShadow = '0 0 0 2px var(--border-subtle)';
-                        }
-                    }, 100);
-                }
-            }
-        }
-
         function updateActiveTabUI(filterValue) {
-            const tabs = document.querySelectorAll('.filter-tabs .tab-btn');
-            tabs.forEach(tab => {
+            document.querySelectorAll('.filter-tabs .tab-btn').forEach(tab => {
                 if (tab.getAttribute('data-filter') === filterValue) {
                     tab.classList.add('active');
-                    tab.setAttribute('aria-selected', 'true');
                 } else {
                     tab.classList.remove('active');
-                    tab.setAttribute('aria-selected', 'false');
                 }
             });
         }
 
         function initializeFilterTabActions() {
-            const tabs = document.querySelectorAll('.filter-tabs .tab-btn');
-            tabs.forEach(tab => {
+            document.querySelectorAll('.filter-tabs .tab-btn').forEach(tab => {
                 tab.addEventListener('click', (e) => {
-                    const currentTab = e.currentTarget;
-                    const filterSelection = currentTab.getAttribute('data-filter');
+                    const filterSelection = e.currentTarget.getAttribute('data-filter');
                     
-                    const newUrl = `${window.location.pathname}?filter=${filterSelection}${window.location.hash}`;
+                    const newUrl = `${window.location.pathname}?filter=${filterSelection}`;
                     window.history.pushState({ filter: filterSelection }, '', newUrl);
                     
                     updateActiveTabUI(filterSelection);
