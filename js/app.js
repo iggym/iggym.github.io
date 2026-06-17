@@ -16,17 +16,14 @@ async function initializeRegistryFetch() {
     const articlesStack = document.getElementById('live-articles-stack');
 
     try {
-        // Fetch centralized resource matrix array database
         const response = await fetch('manifest.json');
         if (!response.ok) throw new Error(`HTTP network error: status code ${response.status}`);
         
         const assets = await response.json();
 
-        // Flush layout target containers before execution loop
         if (toolsStack) toolsStack.innerHTML = '';
         if (articlesStack) articlesStack.innerHTML = '';
 
-        // Iterate flat matrix properties and inject structured markup nodes
         assets.forEach(asset => {
             const cardMarkup = createSemanticCard(asset);
 
@@ -51,7 +48,12 @@ function createSemanticCard(asset) {
     anchor.href = asset.path;
     anchor.className = 'card-interactive-wrapper';
     
-    // Process string tags array into distinct markup elements
+    // Explicit runtime defense fallback parameters
+    anchor.style.display = 'block';
+    anchor.style.width = '100%';
+    anchor.style.textDecoration = 'none';
+    anchor.style.color = 'inherit';
+    
     const tagsHTML = asset.tags 
         ? asset.tags.map(tag => `<span class="tag-pill">${tag}</span>`).join('') 
         : '';
@@ -82,9 +84,9 @@ function initializeInteractiveSandbox() {
                 Select a network layer dimension below to test linear projection vectors across localized weight spaces.
             </p>
             <div style="display: flex; gap: var(--space-12); flex-wrap: wrap; margin-bottom: var(--space-24);">
-                <button class="btn btn-secondary" onclick="simulateLayerProbing(12)">Layer 12 (Residual Stream)</button>
-                <button class="btn btn-secondary" onclick="simulateLayerProbing(24)">Layer 24 (Attention Output)</button>
-                <button class="btn btn-secondary" onclick="simulateLayerProbing(32)">Layer 32 (MLP Layer)</button>
+                <button class="btn btn-secondary" style="cursor:pointer;" onclick="simulateLayerProbing(12)">Layer 12 (Residual Stream)</button>
+                <button class="btn btn-secondary" style="cursor:pointer;" onclick="simulateLayerProbing(24)">Layer 24 (Attention Output)</button>
+                <button class="btn btn-secondary" style="cursor:pointer;" onclick="simulateLayerProbing(32)">Layer 32 (MLP Layer)</button>
             </div>
             <div id="sandbox-telemetry" style="font-family: var(--font-mono); font-size: var(--size-small); padding: var(--space-16); background: var(--bg-core); border: 1px dashed var(--border-subtle); border-radius: 6px; color: var(--text-muted);">
                 // System idle. Select a target matrix layer block to parse telemetry.
@@ -109,9 +111,6 @@ window.simulateLayerProbing = function(layerNumber) {
     `;
 };
 
-/**
- * Generates clear error alerts if the app experiences file-load faults
- */
 function fallbackErrorLayout(containerA, containerB) {
     const alertMsg = `<p style="font-family: var(--font-mono); font-size: var(--size-small); color: var(--text-muted);">Error loading assets from manifest database.</p>`;
     if (containerA) containerA.innerHTML = alertMsg;
