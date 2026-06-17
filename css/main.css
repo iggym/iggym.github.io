@@ -1,20 +1,20 @@
-/* --- Premium Web Design System Spec (v1.0) --- */
+/* --- Premium Web Design System Spec (v1.0) - Light Edition --- */
 :root {
-  /* Core Color System (Stripe / Linear / Premium Monochromatic) */
-  --bg-core: #070708;
-  --bg-surface-1: #0D0D11;
-  --bg-surface-2: #13131A;
-  --bg-surface-3: #1A1A24;
+  /* Core Color System (Stripe / Linear Light Precision / Notion Calm) */
+  --bg-core: #F8F9FA;
+  --bg-surface-1: #FFFFFF;
+  --bg-surface-2: #F1F3F5;
+  --bg-surface-3: #E9ECEF;
   
-  --accent-primary: #FFFFFF;
-  --accent-secondary: #E4E4E7;
-  --text-title: #F4F4F5;
-  --text-body: #A1A1AA;
-  --text-muted: #52525B;
+  --accent-primary: #000000;
+  --accent-secondary: #495057;
+  --text-title: #1A1A1A;
+  --text-body: #4A4A4A;
+  --text-muted: #7A7A7A;
   
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  --glow-primary: rgba(255, 255, 255, 0.02);
+  /* Highly Visible Defined Borders */
+  --border-subtle: #DDE1E5;
+  --border-hover: #1A1A1A;
 
   /* Typography System (Modern Grotesk + Mono Accent) */
   --font-display: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -22,14 +22,14 @@
   --font-mono: 'SFMono-Regular', Consolas, "Liberation Mono", Menlo, monospace;
 
   /* Typography Scale */
-  --size-display: clamp(2.5rem, 7vw, 4.5rem); /* 64-96px storytelling */
-  --size-h1: clamp(2rem, 5vw, 3rem);          /* 40-56px */
-  --size-h2: clamp(1.5rem, 3.5vw, 2rem);      /* 28-36px */
-  --size-h3: clamp(1.15rem, 2vw, 1.35rem);    /* 20-24px */
+  --size-display: clamp(2.5rem, 7vw, 4.5rem); 
+  --size-h1: clamp(2rem, 5vw, 3rem);          
+  --size-h2: clamp(1.5rem, 3.5vw, 2rem);      
+  --size-h3: clamp(1.15rem, 2vw, 1.35rem);    
   --size-body: 16px;
   --size-small: 13px;
 
-  /* Spacing Scale (Strict Architectural Intel) */
+  /* Spacing Scale */
   --space-4: 4px;
   --space-8: 8px;
   --space-12: 12px;
@@ -93,7 +93,7 @@ body {
   padding: 0 var(--space-32);
 }
 
-/* Interactive Cursor Physics Canvas */
+/* Mouse Interaction Canvas */
 #neural-canvas {
   position: fixed;
   top: 0;
@@ -102,18 +102,17 @@ body {
   height: 100vh;
   z-index: -1;
   pointer-events: none;
-  opacity: 0.25;
+  opacity: 0.6;
 }
 
 /* --- Navigation Architecture (Apple Simplicity) --- */
 header {
   border-bottom: 1px solid var(--border-subtle);
-  background: rgba(7, 7, 8, 0.75);
+  background: rgba(248, 249, 250, 0.8);
   backdrop-filter: blur(20px);
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: padding var(--duration-ui) var(--ease-premium);
 }
 .nav-container {
   display: flex;
@@ -138,7 +137,7 @@ header {
   color: var(--text-body);
   text-decoration: none;
   font-size: var(--size-small);
-  font-weight: 400;
+  font-weight: 500;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -148,9 +147,9 @@ header {
   color: var(--accent-primary);
 }
 
-/* --- Hero Cinematic Block (Apple / Tesla Style) --- */
+/* --- Hero Cinematic Block --- */
 .hero-section {
-  min-height: 75vh;
+  min-height: 70vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -160,7 +159,7 @@ header {
 .hero-title {
   font-family: var(--font-display);
   font-size: var(--size-display);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.1;
   color: var(--text-title);
   letter-spacing: -0.04em;
@@ -184,7 +183,7 @@ header {
   gap: var(--space-16);
 }
 
-/* --- Components: Buttons (Stripe + Linear Hybrid) --- */
+/* --- Buttons (Stripe / Linear Light) --- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -196,37 +195,34 @@ header {
   font-weight: 500;
   text-decoration: none;
   cursor: pointer;
-  box-sizing: border-box;
   transition: transform var(--duration-micro) var(--ease-premium),
               background-color var(--duration-micro) var(--ease-premium),
-              border-color var(--duration-micro) var(--ease-premium),
-              box-shadow var(--duration-micro) var(--ease-premium);
+              border-color var(--duration-micro) var(--ease-premium);
 }
 .btn-primary {
   background-color: var(--accent-primary);
-  color: var(--bg-core);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--bg-surface-1);
 }
 .btn-secondary {
   border: 1px solid var(--border-subtle);
   color: var(--text-title);
-  background-color: transparent;
+  background-color: var(--bg-surface-1);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
   }
   .btn-primary:hover {
-    background-color: var(--accent-secondary);
+    background-color: #2A2A2A;
   }
   .btn-secondary:hover {
-    background-color: var(--bg-surface-1);
-    border-color: var(--border-hover);
+    background-color: var(--bg-surface-2);
+    border-color: #A1A1AA;
   }
 }
 
-/* --- Core Domains Architecture (Stripe Feature Grid Style) --- */
+/* --- Core Domains & Capabilities Section --- */
 .domain-section {
   padding: var(--space-96) 0;
   border-top: 1px solid var(--border-subtle);
@@ -234,7 +230,7 @@ header {
 .section-headline {
   font-family: var(--font-display);
   font-size: var(--size-h1);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-title);
   letter-spacing: -0.03em;
   margin-bottom: var(--space-48);
@@ -250,23 +246,24 @@ header {
   }
 }
 
-/* --- Components: Cards (Notion + Airbnb Hybrid) --- */
+/* --- Defined Structural Cards (Notion Clean Outline Style) --- */
 .domain-card {
   background: var(--bg-surface-1);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
   padding: var(--space-32);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
   transition: border-color var(--duration-ui) var(--ease-premium),
-              background-color var(--duration-ui) var(--ease-premium),
-              transform var(--duration-ui) var(--ease-premium);
+              transform var(--duration-ui) var(--ease-premium),
+              box-shadow var(--duration-ui) var(--ease-premium);
 }
 .domain-card:hover {
   border-color: var(--border-hover);
-  background-color: var(--bg-surface-2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
 }
 @media (prefers-reduced-motion: no-preference) {
   .domain-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
   }
 }
 .domain-meta {
@@ -281,7 +278,7 @@ header {
 .domain-title {
   font-family: var(--font-display);
   font-size: var(--size-h3);
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-title);
   margin-bottom: var(--space-12);
   letter-spacing: -0.01em;
@@ -292,7 +289,7 @@ header {
   line-height: 1.5;
 }
 
-/* --- Dynamic Project Feed Layer (Linear Precision Tables) --- */
+/* --- Dynamic Asset Feed Tables --- */
 .feed-section {
   padding: var(--space-96) 0;
   border-top: 1px solid var(--border-subtle);
@@ -319,18 +316,19 @@ header {
   padding: var(--space-24);
   text-decoration: none;
   color: inherit;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.01);
   display: block;
   transition: border-color var(--duration-micro) var(--ease-premium),
               background-color var(--duration-micro) var(--ease-premium);
 }
 .asset-card:hover {
   border-color: var(--border-hover);
-  background-color: var(--bg-surface-2);
+  background-color: var(--bg-core);
 }
 .card-title {
   color: var(--text-title);
   font-size: var(--size-body);
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: var(--space-8);
   letter-spacing: -0.01em;
 }
@@ -346,16 +344,26 @@ header {
   gap: var(--space-8);
 }
 .tag {
-  background: transparent;
+  background: var(--bg-surface-2);
   border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
+  color: var(--accent-secondary);
   font-size: 11px;
   padding: var(--space-4) var(--space-8);
   border-radius: 4px;
   font-family: var(--font-mono);
 }
 
-/* --- Portfolio Hub Specific Elements --- */
+/* --- Interactive Exploration Sandbox --- */
+.sandbox-section {
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-surface-1);
+  border-radius: 12px;
+  padding: var(--space-32);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  margin-bottom: var(--space-96);
+}
+
+/* --- Portfolio Pipeline Subsections --- */
 .filter-tabs {
   display: flex;
   gap: var(--space-8);
@@ -377,6 +385,7 @@ header {
 }
 .tab-btn:hover, .tab-btn.active {
   color: var(--accent-primary);
+  font-weight: 500;
 }
 .portfolio-master-grid {
   display: grid;
@@ -393,7 +402,7 @@ header {
 footer {
   border-top: 1px solid var(--border-subtle);
   padding: var(--space-64) 0;
-  background: var(--bg-core);
+  background: var(--bg-surface-1);
 }
 .footer-container {
   display: flex;
@@ -423,7 +432,6 @@ footer {
   color: var(--accent-primary);
 }
 
-/* Global Focus Configurations */
 *:focus-visible {
   outline: 1px solid var(--accent-primary);
   outline-offset: 4px;
