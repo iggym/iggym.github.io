@@ -1,18 +1,10 @@
 [
   {
-    "id": "attention-head-l4",
-    "title": "Visualizing Attention Head Layer 4",
-    "description": "An interactive, client-side breakdown of key-value matrix alignment vectors during live context ingestion.",
-    "path": "content/lessons/layer-4.html",
-    "tags": ["Neural Networks", "Mechanistic Interpretability"],
-    "date": "2026-06-10"
-  },
-  {
-    "id": "factory-eval-harness",
-    "title": "Deterministic Code-Gen Evaluation Harness",
-    "description": "Understand how to isolate single-file script generators using strict AST parsing pipelines rather than loose LLM scoring.",
-    "path": "content/lessons/codegen-eval.html",
-    "tags": ["Software Factory", "AST Parsers"],
+    "id": "mechanistic-interp-101",
+    "title": "Visualizing Latent Spaces In-Browser",
+    "description": "Analyze internal vector alignment matrices under varied environmental constraints instantly using standard browser primitives.",
+    "path": "content/lessons/latent-explorer.html",
+    "tags": ["Interpretability", "AI Building AI"],
     "date": "2026-06-15"
   }
 ]
