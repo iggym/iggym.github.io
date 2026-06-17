@@ -1,50 +1,50 @@
 [
   {
-    "id": "multi-agent-router",
-    "title": "Multi-Agent Router Simulator",
-    "description": "An engineering workbench verifying deterministic state routing loops across specialized task executors.",
-    "path": "content/tools/orchestrator.html",
+    "id": "agents-orchestration",
     "type": "tool",
-    "tags": ["Multi-Agent", "State-Routing", "Orchestration"]
+    "title": "Agents & Multi‑Agent Orchestration",
+    "description": "Architecting agent teams, coordination patterns, and autonomous task execution loops within reliable runtime ecosystems.",
+    "path": "#",
+    "tags": ["Orchestration", "Multi-Agent", "Runtime"]
   },
   {
-    "id": "context-lifespan-visualizer",
-    "title": "Token-Aware Context Lifespan Visualizer",
-    "description": "A performance simulation inspecting memory layout lifecycles and tracking truncation risks.",
-    "path": "content/tools/context-window.html",
+    "id": "context-engineering",
+    "type": "article",
+    "title": "AI Context Engineering",
+    "description": "Designing programmatic context lifecycles, data flows, memory structures, and environmental constraints for reliable behavior on proprietary or niche datasets.",
+    "path": "#",
+    "tags": ["Context Windows", "Memory Graphs", "Data Flows"]
+  },
+  {
+    "id": "agentic-design",
     "type": "tool",
-    "tags": ["Context-Window", "Token-Budgeting", "Memory-Map"]
+    "title": "Agentic Systems Design",
+    "description": "Deploying robust multi-agent topologies, local/edge computing endpoints, and structured execution frameworks.",
+    "path": "#",
+    "tags": ["Topology", "Edge-AI", "Architecture"]
   },
   {
-    "id": "automated-component-factory",
-    "title": "Automated Component Factory",
-    "description": "A mock compilation pipeline synthesizing self-contained UI primitives alongside ad-hoc AST validation suites.",
-    "path": "content/tools/component-factory.html",
+    "id": "software-factory",
     "type": "tool",
-    "tags": ["Vanilla-JS", "AST-Testing", "Automation"]
+    "title": "AI Software Factory Engineering",
+    "description": "Developing automated code generation pipelines, AI-assisted tools, and deterministic, single-file portable architectures.",
+    "path": "#",
+    "tags": ["Pipelines", "Code-Gen", "Portability"]
   },
   {
-    "id": "anatomy-attention-head",
-    "title": "The Anatomy of an Attention Head: A Layer-by-Layer Walkthrough",
-    "description": "A mechanistic interpretability inspection exploring query-key projections and active induction heads with an interactive validation grid.",
-    "path": "content/articles/interpretability-maps.html",
-    "type": "article",
-    "tags": ["Attention-Mechanics", "Transformer-Internal", "Induction-Heads"]
+    "id": "workflow-automation",
+    "type": "tool",
+    "title": "AI Workflow Automation",
+    "description": "Designing high-reliability process automation graphs, edge pipelines, and deterministic orchestration patterns.",
+    "path": "#",
+    "tags": ["Automation", "Graphs", "Process-Control"]
   },
   {
-    "id": "guardrails-vs-vibe-coding",
-    "title": "Guardrails vs. Vibe-Coding: Engineering Determinism Into Large Data Assets",
-    "description": "An operational critique contrasting ad-hoc prompting against code-level schema validation anchors with a live strategy simulation.",
-    "path": "content/articles/guardrails-vs-vibes.html",
+    "id": "building-tools",
     "type": "article",
-    "tags": ["Data-Integrity", "Deterministic-Schema", "TypeBox"]
-  },
-  {
-    "id": "mapping-residual-stream",
-    "title": "Mapping the Residual Stream: How Models Track Internal Concepts",
-    "description": "An evaluation of the linear communication highway of transformers, demonstrating linear probing and activation aggregation spaces.",
-    "path": "content/articles/residual-stream.html",
-    "type": "article",
-    "tags": ["Residual-Stream", "Linear-Probing", "Superposition"]
+    "title": "AI Building AI Tools",
+    "description": "Creating research applications and mechanistic interpretability pipelines that visualize hidden states, weights, and internal representations within neural networks.",
+    "path": "#",
+    "tags": ["Interpretability", "Hidden-States", "Mechanistic"]
   }
 ]
