@@ -101,7 +101,7 @@
                                 <h3 class="domain-title">Agents & Multi‑Agent Orchestration</h3>
                                 <p class="domain-desc">Architecting agent teams, coordination patterns, and autonomous task execution loops within reliable runtime ecosystems.</p>
                             </div>
-                            <div class="card-action-link">Open Asset Module &rarr;</div>
+                            <div class="card-action-link">Open Deliverable: Agents & Multi‑Agent Orchestration &rarr;</div>
                         </div>
                     </a>
                     <a href="portfolio.html#context-engineering" class="card-interactive-wrapper">
@@ -111,7 +111,7 @@
                                 <h3 class="domain-title">AI Context Engineering</h3>
                                 <p class="domain-desc">Designing programmatic context lifecycles, data flows, memory structures, and environmental constraints for reliable behavior on proprietary or niche datasets.</p>
                             </div>
-                            <div class="card-action-link">Open Asset Module &rarr;</div>
+                            <div class="card-action-link">Open Deliverable: AI Context Engineering &rarr;</div>
                         </div>
                     </a>
                     <a href="portfolio.html#agentic-design" class="card-interactive-wrapper">
@@ -121,7 +121,7 @@
                                 <h3 class="domain-title">Agentic Systems Design</h3>
                                 <p class="domain-desc">Deploying robust multi-agent topologies, local/edge computing endpoints, and structured execution frameworks.</p>
                             </div>
-                            <div class="card-action-link">Open Asset Module &rarr;</div>
+                            <div class="card-action-link">Open Deliverable: Agentic Systems Design &rarr;</div>
                         </div>
                     </a>
                     <a href="portfolio.html#software-factory" class="card-interactive-wrapper">
@@ -131,7 +131,7 @@
                                 <h3 class="domain-title">AI Software Factory Engineering</h3>
                                 <p class="domain-desc">Developing automated code generation pipelines, AI-assisted tools, and deterministic, single-file portable architectures.</p>
                             </div>
-                            <div class="card-action-link">Open Asset Module &rarr;</div>
+                            <div class="card-action-link">Open Deliverable: AI Software Factory Engineering &rarr;</div>
                         </div>
                     </a>
                     <a href="portfolio.html#workflow-automation" class="card-interactive-wrapper">
@@ -141,7 +141,7 @@
                                 <h3 class="domain-title">AI Workflow Automation</h3>
                                 <p class="domain-desc">Designing high-reliability process automation graphs, edge pipelines, and deterministic orchestration patterns.</p>
                             </div>
-                            <div class="card-action-link">Open Asset Module &rarr;</div>
+                            <div class="card-action-link">Open Deliverable: AI Workflow Automation &rarr;</div>
                         </div>
                     </a>
                     <a href="portfolio.html#building-tools" class="card-interactive-wrapper">
@@ -151,7 +151,7 @@
                                 <h3 class="domain-title">AI Building AI Tools</h3>
                                 <p class="domain-desc">Creating research applications and mechanistic interpretability pipelines that visualize hidden states, weights, and internal representations within neural networks.</p>
                             </div>
-                            <div class="card-action-link">Open Asset Module &rarr;</div>
+                            <div class="card-action-link">Open Deliverable: AI Building AI Tools &rarr;</div>
                         </div>
                     </a>
                 </div>
@@ -221,9 +221,9 @@
 
         function createSemanticCard(asset) {
             const anchor = document.createElement('a');
-            anchor.href = 'portfolio.html#' + asset.id;
+            anchor.href = asset.path;
             anchor.className = 'card-interactive-wrapper';
-            anchor.id = asset.id;
+            anchor.id = asset.id + '-feed-node';
             const tagsHTML = asset.tags ? asset.tags.map(t => `<span class="tag-pill">${t}</span>`).join('') : '';
             anchor.innerHTML = `
                 <div class="domain-card">
@@ -232,7 +232,7 @@
                         <h3 class="domain-title" style="margin-top: 0;">${asset.title}</h3>
                         <p class="domain-desc">${asset.description}</p>
                     </div>
-                    <div class="card-action-link">Open Asset Module &rarr;</div>
+                    <div class="card-action-link">Open Deliverable: ${asset.title} &rarr;</div>
                 </div>
             `;
             return anchor;
