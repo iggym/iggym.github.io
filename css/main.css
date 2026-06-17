@@ -1,15 +1,195 @@
-/* Card Interactive Navigation Layout Hooks */
+/* ==========================================================================
+   Iggy Design System Tokens & Base Resets
+   ========================================================================== */
+:root {
+    --bg-core: #FAFAFA;
+    --bg-surface-1: #FFFFFF;
+    --bg-surface-2: #F1F5F9;
+    
+    --text-title: #0F172A;
+    --text-body: #334155;
+    --text-muted: #64748B;
+    
+    --accent-primary: #475569;
+    --border-subtle: #E2E8F0;
+    --border-hover: #94A3B8;
+
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-display: "Playfair Display", Georgia, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    --space-4: 4px;
+    --space-8: 8px;
+    --space-12: 12px;
+    --space-16: 16px;
+    --space-24: 24px;
+    --space-32: 32px;
+    --space-48: 48px;
+    --space-64: 64px;
+    --space-96: 96px;
+
+    --size-small: 13px;
+    --size-body: 16px;
+    --size-h2: 28px;
+    --size-h3: 20px;
+
+    --duration-micro: 0.15s;
+    --duration-ui: 0.3s;
+    --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-core);
+    color: var(--text-body);
+    font-family: var(--font-sans);
+    font-size: var(--size-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-24);
+}
+
+/* ==========================================================================
+   Navigation Header Architecture
+   ========================================================================== */
+header {
+    background: var(--bg-surface-1);
+    border-bottom: 1px solid var(--border-subtle);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 72px;
+}
+.logo-text {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--text-title);
+    text-decoration: none;
+    letter-spacing: -0.03em;
+}
+.nav-links {
+    display: flex;
+    gap: var(--space-32);
+    list-style: none;
+}
+.nav-links a {
+    color: var(--text-muted);
+    font-size: var(--size-small);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--duration-micro) var(--ease-premium);
+}
+.nav-links a.active, .nav-links a:hover {
+    color: var(--text-title);
+}
+
+/* ==========================================================================
+   Layout Structures & Grid Matrices
+   ========================================================================== */
+.domain-section {
+    padding: var(--space-64) 0;
+    background: var(--bg-surface-1);
+    border-bottom: 1px solid var(--border-subtle);
+}
+.section-headline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-32);
+}
+.domain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-24);
+}
+
+/* Split-Feed Segment */
+.feed-section {
+    padding: var(--space-64) 0;
+    border-bottom: 1px solid var(--border-subtle);
+}
+.feed-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-48);
+}
+@media (min-width: 900px) {
+    .feed-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+.card-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-16);
+}
+
+/* ==========================================================================
+   Domain & Interactive Card Components
+   ========================================================================== */
+.domain-card {
+    background: var(--bg-surface-1);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: var(--space-24);
+    height: 100%;
+    transition: border-color var(--duration-micro) var(--ease-premium);
+}
+.domain-meta {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: var(--space-12);
+}
+.domain-title {
+    font-size: var(--size-h3);
+    font-weight: 600;
+    color: var(--text-title);
+    margin-bottom: var(--space-8);
+    letter-spacing: -0.01em;
+}
+.domain-desc {
+    font-size: 14px;
+    color: var(--text-body);
+    line-height: 1.5;
+}
+
+/* Dynamic JavaScript Card Inject Hooks */
 .card-interactive-wrapper {
+    text-decoration: none;
+    display: block;
+    color: inherit;
     transition: transform var(--duration-micro) var(--ease-premium);
     cursor: pointer;
 }
-
 .card-interactive-wrapper:hover {
     transform: translateY(-2px);
 }
-
+.card-interactive-wrapper:hover .domain-card {
+    border-color: var(--border-hover);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+}
 .card-interactive-wrapper:hover .domain-title {
-    color: var(--accent-primary, #64748B);
+    color: var(--accent-primary);
 }
 
 .tag-pill {
@@ -17,9 +197,9 @@
     font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
-    background: var(--bg-surface-2, #F1F5F9);
-    border: 1px solid var(--border-subtle, #E2E8F0);
-    color: var(--text-muted, #64748B);
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-muted);
     padding: 2px 6px;
     border-radius: 4px;
     letter-spacing: 0.03em;
