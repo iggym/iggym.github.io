@@ -1,14 +1,14 @@
 /**
- * Core Application Engine for AI Systems Portfolio
+ * Unified Premium App Architecture & Micro-Interactions Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize global canvas orchestration
-    initNeuralBackground();
+    // Launch background visualization field
+    initInteractivePhysicsBackground();
 
-    // Determine target ecosystem execution path
-    const path = window.location.pathname;
-    if (path.includes('portfolio.html')) {
+    // Route execution context safely
+    const isPortfolioPage = window.location.pathname.includes('portfolio.html');
+    if (isPortfolioPage) {
         initPortfolioView();
     } else {
         initHomeHubView();
@@ -16,175 +16,179 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Visual Signature: Reactive Neural Field (Mouse Tracker/Scroll Matrix)
+ * Visual Style System: Interactive Canvas-Aware Micro Interactions
+ * Implements subtle, smooth vector logic avoiding graphic saturation
  */
-function initNeuralBackground() {
+function initInteractivePhysicsBackground() {
     const canvas = document.getElementById('neural-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    let points = [];
-    const maxPoints = 45;
-    let mouse = { x: null, y: null, radius: 160 };
+    let nodes = [];
+    const totalNodes = 32;
+    let cursor = { x: null, y: null, reach: 200 };
 
-    function resize() {
+    function normalizeMatrix() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
-    resize();
-    window.addEventListener('resize', resize);
+    normalizeMatrix();
+    window.addEventListener('resize', normalizeMatrix);
 
-    // Track mouse locations securely
     window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+        cursor.x = e.clientX;
+        cursor.y = e.clientY;
     });
     window.addEventListener('mouseout', () => {
-        mouse.x = null;
-        mouse.y = null;
+        cursor.x = null;
+        cursor.y = null;
     });
 
-    // Populate matrix coordinate systems
-    for (let i = 0; i < maxPoints; i++) {
-        points.push({
+    // Populate node coordinates securely
+    for (let i = 0; i < totalNodes; i++) {
+        nodes.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            vx: (Math.random() - 0.5) * 0.4,
-            vy: (Math.random() - 0.5) * 0.4,
-            radius: Math.random() * 2 + 1
+            mx: (Math.random() - 0.5) * 0.25,
+            my: (Math.random() - 0.5) * 0.25
         });
     }
 
     if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-        function animate() {
+        function runLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(0, 242, 254, 0.4)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
             
-            // Render and process nodes
-            points.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
+            nodes.forEach(node => {
+                node.x += node.mx;
+                node.y += node.my;
 
-                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                if (node.x < 0 || node.x > canvas.width) node.mx *= -1;
+                if (node.y < 0 || node.y > canvas.height) node.my *= -1;
 
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, 1, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Mouse spatial interaction loop
-                if (mouse.x !== null) {
-                    let dx = p.x - mouse.x;
-                    let dy = p.y - mouse.y;
-                    let dist = Math.sqrt(dx * dx + dy * dy);
-                    if (dist < mouse.radius) {
-                        ctx.strokeStyle = `rgba(0, 255, 102, ${1 - dist / mouse.radius})`;
-                        ctx.lineWidth = 0.5;
+                if (cursor.x !== null) {
+                    let distanceX = node.x - cursor.x;
+                    let distanceY = node.y - cursor.y;
+                    let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                    
+                    if (distance < cursor.reach) {
+                        // Soft, intentional multi-layered proximity gradients
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - distance / cursor.reach) * 0.04})`;
+                        ctx.lineWidth = 1;
                         ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(mouse.x, mouse.y);
+                        ctx.moveTo(node.x, node.y);
+                        ctx.lineTo(cursor.x, cursor.y);
                         ctx.stroke();
                     }
                 }
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(runLoop);
         }
-        animate();
+        runLoop();
     }
 }
 
 /**
- * Async Module Pipeline: Home Hub Rendering
+ * Home Hub Core Manifest Data Fetch Layer
  */
 async function initHomeHubView() {
-    const toolsContainer = document.getElementById('live-tools-stack');
-    const articlesContainer = document.getElementById('live-articles-stack');
-    const sandboxContainer = document.getElementById('dynamic-sandbox-target');
+    const toolsStack = document.getElementById('live-tools-stack');
+    const articlesStack = document.getElementById('live-articles-stack');
+    const sandboxStack = document.getElementById('dynamic-sandbox-target');
 
     try {
-        const resManifest = await fetch('manifest.json');
-        const manifestData = await resManifest.json();
+        const response = await fetch('manifest.json');
+        const data = await response.json();
 
-        // Isolate client tools and architecture deep dives (top 3 chronological elements)
-        const tools = manifestData.filter(item => item.type === 'tool').slice(0, 3);
-        const articles = manifestData.filter(item => item.type === 'article').slice(0, 3);
+        const targetedTools = data.filter(item => item.type === 'tool').slice(0, 3);
+        const targetedArticles = data.filter(item => item.type === 'article').slice(0, 3);
 
-        if (toolsContainer) toolsContainer.innerHTML = tools.map(t => generateCardMarkup(t)).join('');
-        if (articlesContainer) articlesContainer.innerHTML = articles.map(a => generateCardMarkup(a)).join('');
+        if (toolsStack) toolsStack.innerHTML = targetedTools.map(t => generateSystemCardMarkup(t)).join('');
+        if (articlesStack) articlesStack.innerHTML = targetedArticles.map(a => generateSystemCardMarkup(a)).join('');
 
-        // Sandbox execution registry
-        const resLessons = await fetch('ai-lessons.json');
-        const lessonsData = await resLessons.json();
-        if (sandboxContainer && lessonsData.length > 0) {
-            const randomLesson = lessonsData[Math.floor(Math.random() * lessonsData.length)];
-            sandboxContainer.innerHTML = `
-                <div class="card-title">${randomLesson.title}</div>
-                <p class="card-desc" style="margin-bottom: 1.5rem;">${randomLesson.description}</p>
-                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-                    <div class="card-meta">
-                        ${randomLesson.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+        // Populate Sandbox Demonstration Card
+        const lessonResponse = await fetch('ai-lessons.json');
+        const lessonData = await lessonResponse.json();
+        
+        if (sandboxStack && lessonData.length > 0) {
+            const currentLesson = lessonData[Math.floor(Math.random() * lessonData.length)];
+            sandboxStack.innerHTML = `
+                <div class="card-title" style="font-size: var(--size-h3); margin-bottom: var(--space-8); font-weight:500;">${currentLesson.title}</div>
+                <p class="card-desc" style="margin-bottom: var(--space-24); color: var(--text-body); max-width: 650px;">${currentLesson.description}</p>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-16);">
+                    <div class="card-tags">
+                        ${currentLesson.tags.map(t => `<span class="tag">${t}</span>`).join('')}
                     </div>
-                    <a href="${randomLesson.path}" class="btn btn-secondary" style="min-height:44px;">Launch Micro-Explorer</a>
+                    <a href="${currentLesson.path}" class="btn btn-secondary" style="min-height: 40px;">Launch Lab Fragment</a>
                 </div>
             `;
         }
-    } catch (err) {
-        console.error("System Manifest Pipeline Breakdown:", err);
+    } catch (error) {
+        console.error("Home Data Pipeline Disruption:", error);
     }
 }
 
 /**
- * Async Module Pipeline: Master Portfolio Filtering View
+ * Unified Inventory Multi-Tab Matrix Filter Pipeline
  */
 async function initPortfolioView() {
-    const gridTarget = document.getElementById('master-portfolio-grid');
-    const tabs = document.querySelectorAll('.tab-btn');
-    let masterData = [];
+    const gridContainer = document.getElementById('master-portfolio-grid');
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    let dynamicCache = [];
 
     try {
-        const res = await fetch('manifest.json');
-        masterData = await res.json();
+        const response = await fetch('manifest.json');
+        dynamicCache = await response.json();
         
-        renderGrid(masterData);
+        executeRender(dynamicCache);
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                tabs.forEach(t => t.classList.remove('active'));
-                e.target.classList.add('active');
+        tabButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                tabButtons.forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
                 
-                const filter = e.target.getAttribute('data-filter');
-                if (filter === 'all') {
-                    renderGrid(masterData);
+                e.target.classList.add('active');
+                e.target.setAttribute('aria-selected', 'true');
+                
+                const currentFilter = e.target.getAttribute('data-filter');
+                if (currentFilter === 'all') {
+                    executeRender(dynamicCache);
                 } else {
-                    const filtered = masterData.filter(item => item.type === filter);
-                    renderGrid(filtered);
+                    const filteredData = dynamicCache.filter(item => item.type === currentFilter);
+                    executeRender(filteredData);
                 }
             });
         });
-    } catch (err) {
-        console.error("Master Asset Inventory Failure:", err);
+    } catch (error) {
+        console.error("Portfolio Data Registry Failure:", error);
     }
 
-    function renderGrid(dataset) {
-        if (!gridTarget) return;
+    function executeRender(dataset) {
+        if (!gridContainer) return;
         if (dataset.length === 0) {
-            gridTarget.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted);">No assets matching the filter criteria found.</p>`;
+            gridContainer.innerHTML = `<p style="color: var(--text-muted); font-size: var(--size-small);">No infrastructure components recorded in this segment.</p>`;
             return;
         }
-        gridTarget.innerHTML = dataset.map(item => generateCardMarkup(item)).join('');
+        gridContainer.innerHTML = dataset.map(item => generateSystemCardMarkup(item)).join('');
     }
 }
 
 /**
- * Markup Synthesizer
+ * Markup Generator mapping strictly to the Premium Visual Specification
  */
-function generateCardMarkup(asset) {
+function generateSystemCardMarkup(item) {
     return `
-        <a href="${asset.path}" class="asset-card" data-id="${asset.id}">
-            <div class="card-title">${asset.title}</div>
-            <p class="card-desc">${asset.description}</p>
-            <div class="card-meta">
-                ${asset.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+        <a href="${item.path}" class="asset-card" data-id="${item.id}">
+            <div class="card-title">${item.title}</div>
+            <p class="card-desc">${item.description}</p>
+            <div class="card-tags">
+                ${item.tags.map(t => `<span class="tag">${t}</span>`).join('')}
             </div>
         </a>
     `;
