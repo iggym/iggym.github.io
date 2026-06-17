@@ -6,27 +6,19 @@
     <title>AI Systems & Engineering</title>
     <style>
         :root {
-            --bg-core: #FAFAFA;
-            --bg-surface-1: #FFFFFF;
-            --bg-surface-2: #F1F5F9;
-            --text-title: #0F172A;
-            --text-body: #334155;
-            --text-muted: #64748B;
-            --accent-primary: #475569;
-            --border-subtle: #CBD5E1; 
-            --border-hover: #475569;
+            --bg-core: #FAFAFA; --bg-surface-1: #FFFFFF; --bg-surface-2: #F1F5F9;
+            --text-title: #0F172A; --text-body: #334155; --text-muted: #64748B;
+            --border-subtle: #CBD5E1; --border-hover: #475569;
             --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            --space-4: 4px; --space-8: 8px; --space-12: 12px; --space-16: 16px;
-            --space-24: 24px; --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
+            --space-8: 8px; --space-12: 12px; --space-16: 16px; --space-24: 24px; 
+            --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
             --size-small: 13px; --size-body: 16px; --size-h1: 42px; --size-h2: 28px; --size-h3: 20px;
             --duration-micro: 0.15s; --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg-core); color: var(--text-body); font-family: var(--font-sans); font-size: var(--size-body); line-height: 1.5; -webkit-font-smoothing: antialiased; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-24); }
-        .skip-link { position: absolute; top: -100px; left: 0; background: var(--text-title); color: white; padding: var(--space-12); z-index: 999; }
-        .skip-link:focus { top: 0; }
         header { background: var(--bg-surface-1); border-bottom: 1px solid var(--border-subtle); position: sticky; top: 0; z-index: 100; }
         .nav-container { display: flex; justify-content: space-between; align-items: center; height: 72px; }
         .logo-text { font-family: var(--font-mono); font-weight: 700; font-size: 18px; color: var(--text-title); text-decoration: none; letter-spacing: -0.03em; }
@@ -43,34 +35,26 @@
         .btn-primary:hover { background: #000000; }
         .btn-secondary { background: transparent; color: var(--text-body); border: 1px solid var(--border-subtle); }
         .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-surface-2); }
-        .domain-section { padding: var(--space-64) 0; background: var(--bg-surface-1); border-bottom: 1px solid var(--border-subtle); border-top: 1px solid var(--border-subtle); }
-        .section-headline { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.08em; margin-bottom: var(--space-32); }
-        .domain-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: var(--space-24); }
+        .feed-section { padding: var(--space-64) 0; border-bottom: 1px solid var(--border-subtle); }
+        .feed-layout { display: grid; grid-template-columns: 1fr; gap: var(--space-48); }
+        @media (min-width: 900px) { .feed-layout { grid-template-columns: 1fr 1fr; } }
+        .card-stack { display: flex; flex-direction: column; gap: var(--space-16); }
         .domain-card { background: var(--bg-surface-1); border: 1px solid var(--border-subtle); border-radius: 8px; padding: var(--space-24); height: 100%; display: flex; flex-direction: column; justify-content: space-between; transition: all var(--duration-micro) var(--ease-premium); }
-        .domain-meta { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-12); }
         .domain-title { font-size: var(--size-h3); font-weight: 600; color: var(--text-title); margin-bottom: var(--space-8); letter-spacing: -0.01em; }
         .domain-desc { font-size: 14px; color: var(--text-body); line-height: 1.5; flex-grow: 1; }
         .card-interactive-wrapper { text-decoration: none; display: flex; flex-direction: column; color: inherit; width: 100%; cursor: pointer; transition: transform var(--duration-micro) var(--ease-premium); }
         .card-interactive-wrapper:hover { transform: translateY(-2px); }
         .card-interactive-wrapper:hover .domain-card { border-color: var(--border-hover); box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06); }
-        .card-interactive-wrapper:hover .card-action-link { color: var(--text-title); text-decoration: underline; }
         .card-action-link { display: inline-flex; align-items: center; margin-top: var(--space-16); font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--text-muted); }
-        .feed-section { padding: var(--space-64) 0; border-bottom: 1px solid var(--border-subtle); }
-        .feed-layout { display: grid; grid-template-columns: 1fr; gap: var(--space-48); }
-        @media (min-width: 900px) { .feed-layout { grid-template-columns: 1fr 1fr; } }
-        .card-stack { display: flex; flex-direction: column; gap: var(--space-16); }
         .tag-pill { font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-transform: uppercase; background: var(--bg-surface-2); border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; }
-        .sandbox-section { padding: var(--space-64) 0 var(--space-96) 0; }
+        .section-headline { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.08em; margin-bottom: var(--space-32); }
         footer { background: var(--bg-surface-1); border-top: 1px solid var(--border-subtle); padding: var(--space-32) 0; }
         .footer-container { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
-        .footer-links a { color: var(--text-muted); margin-left: var(--space-16); text-decoration: none; }
-        .footer-links a:hover { color: var(--text-title); }
     </style>
 </head>
 <body>
-    <a href="#main-content" class="skip-link">Skip to architectural structures</a>
     <header>
-        <nav class="nav-container container" aria-label="Primary Navigation">
+        <nav class="nav-container container">
             <a href="index.html" class="logo-text">Iggy</a>
             <ul class="nav-links">
                 <li><a href="index.html" class="active">Core Capabilities</a></li>
@@ -78,106 +62,30 @@
             </ul>
         </nav>
     </header>
-    <main id="main-content">
-        <section class="container" aria-label="Engineering Paradigm">
+    <main>
+        <section class="container">
             <div class="hero-section">
                 <h1 class="hero-title">Predictable data flows, context windows, and structural alignment <span>for advanced AI models.</span></h1>
-                <p class="hero-subtitle">Engineering transparent, production-grade systems using vanilla web primitives. This workspace acts as an absolute proof-of-capability hub with zero build-system overhead.</p>
+                <p class="hero-subtitle">Engineering transparent, production-grade systems using vanilla web primitives.</p>
                 <div class="cta-group">
                     <a href="portfolio.html" class="btn btn-primary">Review Assets</a>
-                    <a href="https://github.com" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Source Repositories</a>
+                    <a href="https://github.com" class="btn btn-secondary" target="_blank">Source Repositories</a>
                 </div>
             </div>
         </section>
 
-        <section class="domain-section" aria-labelledby="domains-heading">
-            <div class="container">
-                <h2 id="domains-heading" class="section-headline">Core Domains & Capabilities</h2>
-                <div class="domain-grid">
-                    <a href="portfolio.html#agents-orchestration" class="card-interactive-wrapper">
-                        <div class="domain-card">
-                            <div>
-                                <span class="domain-meta">01 / AI Systems & Engineering</span>
-                                <h3 class="domain-title">Agents & Multi‑Agent Orchestration</h3>
-                                <p class="domain-desc">Architecting agent teams, coordination patterns, and autonomous task execution loops within reliable runtime ecosystems.</p>
-                            </div>
-                            <div class="card-action-link">Open &rarr;</div>
-                        </div>
-                    </a>
-                    <a href="portfolio.html#context-engineering" class="card-interactive-wrapper">
-                        <div class="domain-card">
-                            <div>
-                                <span class="domain-meta">02 / AI Systems & Engineering</span>
-                                <h3 class="domain-title">AI Context Engineering</h3>
-                                <p class="domain-desc">Designing programmatic context lifecycles, data flows, memory structures, and environmental constraints for reliable behavior on proprietary or niche datasets.</p>
-                            </div>
-                            <div class="card-action-link">Open &rarr;</div>
-                        </div>
-                    </a>
-                    <a href="portfolio.html#agentic-design" class="card-interactive-wrapper">
-                        <div class="domain-card">
-                            <div>
-                                <span class="domain-meta">03 / AI Systems & Engineering</span>
-                                <h3 class="domain-title">Agentic Systems Design</h3>
-                                <p class="domain-desc">Deploying robust multi-agent topologies, local/edge computing endpoints, and structured execution frameworks.</p>
-                            </div>
-                            <div class="card-action-link">Open &rarr;</div>
-                        </div>
-                    </a>
-                    <a href="portfolio.html#software-factory" class="card-interactive-wrapper">
-                        <div class="domain-card">
-                            <div>
-                                <span class="domain-meta">04 / AI Systems & Engineering</span>
-                                <h3 class="domain-title">AI Software Factory Engineering</h3>
-                                <p class="domain-desc">Developing automated code generation pipelines, AI-assisted tools, and deterministic, single-file portable architectures.</p>
-                            </div>
-                            <div class="card-action-link">Open &rarr;</div>
-                        </div>
-                    </a>
-                    <a href="portfolio.html#workflow-automation" class="card-interactive-wrapper">
-                        <div class="domain-card">
-                            <div>
-                                <span class="domain-meta">05 / AI Systems & Engineering</span>
-                                <h3 class="domain-title">AI Workflow Automation</h3>
-                                <p class="domain-desc">Designing high-reliability process automation graphs, edge pipelines, and deterministic orchestration patterns.</p>
-                            </div>
-                            <div class="card-action-link">Open &rarr;</div>
-                        </div>
-                    </a>
-                    <a href="portfolio.html#building-tools" class="card-interactive-wrapper">
-                        <div class="domain-card">
-                            <div>
-                                <span class="domain-meta">06 / AI Systems & Engineering</span>
-                                <h3 class="domain-title">AI Building AI Tools</h3>
-                                <p class="domain-desc">Creating research applications and mechanistic interpretability pipelines that visualize hidden states, weights, and internal representations within neural networks.</p>
-                            </div>
-                            <div class="card-action-link">Open &rarr;</div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section class="feed-section" aria-labelledby="feed-heading">
+        <section class="feed-section">
             <div class="container">
                 <div class="feed-layout">
                     <div>
-                        <h2 id="tools-heading" class="section-headline" style="font-size: var(--size-h2); margin-bottom: var(--space-24);">Shipped Tools</h2>
+                        <h2 class="section-headline" style="font-size: var(--size-h2); margin-bottom: var(--space-24);">Shipped Tools</h2>
                         <div id="live-tools-stack" class="card-stack"></div>
                     </div>
                     <div>
-                        <h2 id="articles-heading" class="section-headline" style="font-size: var(--size-h2); margin-bottom: var(--space-24);">Technical Research</h2>
+                        <h2 class="section-headline" style="font-size: var(--size-h2); margin-bottom: var(--space-24);">Technical Research</h2>
                         <div id="live-articles-stack" class="card-stack"></div>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="container" aria-label="Interactive Sandbox">
-            <div class="sandbox-section">
-                <span style="font-family: var(--font-mono); font-size: var(--size-small); color: var(--text-muted); display: block; margin-bottom: var(--space-12); text-transform: uppercase;">Interpretability Sandbox</span>
-                <h2 style="font-size: var(--size-h2); color: var(--text-title); margin-bottom: var(--space-16); font-weight: 600; letter-spacing: -0.02em;">Analyze structural layers natively</h2>
-                <div id="dynamic-sandbox-target"></div>
             </div>
         </section>
     </main>
@@ -185,20 +93,11 @@
     <footer>
         <div class="container footer-container">
             <p>System Architecture Hub &copy; 2026. Zero compilation steps.</p>
-            <div class="footer-links">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">Source</a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            </div>
         </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeRegistryFetch();
-            initializeInteractiveSandbox();
-        });
-
-        let cachedAssetsMatrix = [];
+        document.addEventListener('DOMContentLoaded', initializeRegistryFetch);
 
         async function initializeRegistryFetch() {
             const toolsStack = document.getElementById('live-tools-stack');
@@ -206,10 +105,9 @@
             try {
                 const response = await fetch('manifest.json');
                 if (!response.ok) throw new Error(`HTTP fault: ${response.status}`);
-                cachedAssetsMatrix = await response.json();
-                if (toolsStack) toolsStack.innerHTML = '';
-                if (articlesStack) articlesStack.innerHTML = '';
-                cachedAssetsMatrix.forEach(asset => {
+                const assets = await response.json();
+                
+                assets.forEach(asset => {
                     const card = createSemanticCard(asset);
                     if (asset.type === 'tool' && toolsStack) toolsStack.appendChild(card);
                     else if (asset.type === 'article' && articlesStack) articlesStack.appendChild(card);
@@ -221,9 +119,10 @@
 
         function createSemanticCard(asset) {
             const anchor = document.createElement('a');
+            // Clean native routing to the content folder path
             anchor.href = asset.path;
             anchor.className = 'card-interactive-wrapper';
-            anchor.id = asset.id + '-feed-node';
+            
             const tagsHTML = asset.tags ? asset.tags.map(t => `<span class="tag-pill">${t}</span>`).join('') : '';
             anchor.innerHTML = `
                 <div class="domain-card">
@@ -237,30 +136,6 @@
             `;
             return anchor;
         }
-
-        function initializeInteractiveSandbox() {
-            const target = document.getElementById('dynamic-sandbox-target');
-            if (!target) return;
-            target.innerHTML = `
-                <div class="domain-card" style="background: var(--bg-surface-1); margin-top: var(--space-16);">
-                    <p class="domain-desc" style="margin-bottom: var(--space-16);">Select a network layer dimension below to test linear projection vectors across localized weight spaces.</p>
-                    <div style="display: flex; gap: var(--space-12); flex-wrap: wrap; margin-bottom: var(--space-24);">
-                        <button class="btn btn-secondary" onclick="simulateLayerProbing(12)">Layer 12 (Residual Stream)</button>
-                        <button class="btn btn-secondary" onclick="simulateLayerProbing(24)">Layer 24 (Attention Output)</button>
-                        <button class="btn btn-secondary" onclick="simulateLayerProbing(32)">Layer 32 (MLP Layer)</button>
-                    </div>
-                    <div id="sandbox-telemetry" style="font-family: var(--font-mono); font-size: var(--size-small); padding: var(--space-16); background: var(--bg-core); border: 1px dashed var(--border-subtle); border-radius: 6px; color: var(--text-muted);">// System idle. Select layer.</div>
-                </div>
-            `;
-        }
-
-        window.simulateLayerProbing = function(layer) {
-            const out = document.getElementById('sandbox-telemetry');
-            if (out) {
-                out.style.color = 'var(--text-title)';
-                out.innerHTML = `[LAYER_${layer}_ACTIVE]<br>Cosine Similarity: ${(Math.random() * 0.3 + 0.65).toFixed(4)}`;
-            }
-        };
     </script>
 </body>
 </html>
