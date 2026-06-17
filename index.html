@@ -3,139 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Systems & Engineering</title>
+    <title>AI Architecture Hub</title>
     <style>
-        :root {
-            --bg-core: #FAFAFA; --bg-surface-1: #FFFFFF; --bg-surface-2: #F1F5F9;
-            --text-title: #0F172A; --text-body: #334155; --text-muted: #64748B;
-            --border-subtle: #CBD5E1; --border-hover: #475569;
-            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            --space-8: 8px; --space-12: 12px; --space-16: 16px; --space-24: 24px; 
-            --space-32: 32px; --space-48: 48px; --space-64: 64px; --space-96: 96px;
-            --size-small: 13px; --size-body: 16px; --size-h1: 42px; --size-h2: 28px; --size-h3: 20px;
-            --duration-micro: 0.15s; --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg-core); color: var(--text-body); font-family: var(--font-sans); font-size: var(--size-body); line-height: 1.5; -webkit-font-smoothing: antialiased; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-24); }
-        header { background: var(--bg-surface-1); border-bottom: 1px solid var(--border-subtle); position: sticky; top: 0; z-index: 100; }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; height: 72px; }
-        .logo-text { font-family: var(--font-mono); font-weight: 700; font-size: 18px; color: var(--text-title); text-decoration: none; letter-spacing: -0.03em; }
-        .nav-links { display: flex; gap: var(--space-32); list-style: none; }
-        .nav-links a { color: var(--text-muted); font-size: var(--size-small); text-decoration: none; font-weight: 500; transition: color var(--duration-micro) var(--ease-premium); }
-        .nav-links a.active, .nav-links a:hover { color: var(--text-title); }
-        .hero-section { padding: var(--space-96) 0 var(--space-64) 0; max-width: 840px; }
-        .hero-title { font-size: var(--size-h1); font-weight: 700; color: var(--text-title); line-height: 1.15; letter-spacing: -0.03em; margin-bottom: var(--space-24); }
-        .hero-title span { color: var(--text-muted); font-weight: 400; }
-        .hero-subtitle { font-size: 18px; color: var(--text-body); line-height: 1.6; margin-bottom: var(--space-32); }
-        .cta-group { display: flex; gap: var(--space-16); }
-        .btn { display: inline-flex; align-items: center; padding: 10px 20px; border-radius: 6px; font-size: var(--size-small); font-weight: 500; text-decoration: none; font-family: var(--font-mono); cursor: pointer; transition: all var(--duration-micro) var(--ease-premium); }
-        .btn-primary { background: var(--text-title); color: var(--bg-surface-1); border: none; }
-        .btn-primary:hover { background: #000000; }
-        .btn-secondary { background: transparent; color: var(--text-body); border: 1px solid var(--border-subtle); }
-        .btn-secondary:hover { border-color: var(--border-hover); background: var(--bg-surface-2); }
-        .feed-section { padding: var(--space-64) 0; border-bottom: 1px solid var(--border-subtle); }
-        .feed-layout { display: grid; grid-template-columns: 1fr; gap: var(--space-48); }
-        @media (min-width: 900px) { .feed-layout { grid-template-columns: 1fr 1fr; } }
-        .card-stack { display: flex; flex-direction: column; gap: var(--space-16); }
-        .domain-card { background: var(--bg-surface-1); border: 1px solid var(--border-subtle); border-radius: 8px; padding: var(--space-24); height: 100%; display: flex; flex-direction: column; justify-content: space-between; transition: all var(--duration-micro) var(--ease-premium); }
-        .domain-title { font-size: var(--size-h3); font-weight: 600; color: var(--text-title); margin-bottom: var(--space-8); letter-spacing: -0.01em; }
-        .domain-desc { font-size: 14px; color: var(--text-body); line-height: 1.5; flex-grow: 1; }
-        .card-interactive-wrapper { text-decoration: none; display: flex; flex-direction: column; color: inherit; width: 100%; cursor: pointer; transition: transform var(--duration-micro) var(--ease-premium); }
-        .card-interactive-wrapper:hover { transform: translateY(-2px); }
-        .card-interactive-wrapper:hover .domain-card { border-color: var(--border-hover); box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06); }
-        .card-action-link { display: inline-flex; align-items: center; margin-top: var(--space-16); font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--text-muted); }
-        .tag-pill { font-family: var(--font-mono); font-size: 10px; font-weight: 600; text-transform: uppercase; background: var(--bg-surface-2); border: 1px solid var(--border-subtle); color: var(--text-muted); padding: 2px 6px; border-radius: 4px; }
-        .section-headline { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.08em; margin-bottom: var(--space-32); }
-        footer { background: var(--bg-surface-1); border-top: 1px solid var(--border-subtle); padding: var(--space-32) 0; }
-        .footer-container { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+        :root { --bg: #FAFAFA; --text: #0F172A; --muted: #64748B; --border: #CBD5E1; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 48px 24px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .hero { margin-bottom: 64px; }
+        h1 { font-size: 42px; margin-bottom: 16px; }
+        .nav-links { font-family: monospace; }
+        .nav-links a { margin-right: 24px; color: var(--muted); text-decoration: none; }
+        .nav-links a:hover { color: var(--text); }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="nav-container container">
-            <a href="index.html" class="logo-text">Iggy</a>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Core Capabilities</a></li>
-                <li><a href="portfolio.html">Asset Registry</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section class="container">
-            <div class="hero-section">
-                <h1 class="hero-title">Predictable data flows, context windows, and structural alignment <span>for advanced AI models.</span></h1>
-                <p class="hero-subtitle">Engineering transparent, production-grade systems using vanilla web primitives.</p>
-                <div class="cta-group">
-                    <a href="portfolio.html" class="btn btn-primary">Review Assets</a>
-                    <a href="https://github.com" class="btn btn-secondary" target="_blank">Source Repositories</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="feed-section">
-            <div class="container">
-                <div class="feed-layout">
-                    <div>
-                        <h2 class="section-headline" style="font-size: var(--size-h2); margin-bottom: var(--space-24);">Shipped Tools</h2>
-                        <div id="live-tools-stack" class="card-stack"></div>
-                    </div>
-                    <div>
-                        <h2 class="section-headline" style="font-size: var(--size-h2); margin-bottom: var(--space-24);">Technical Research</h2>
-                        <div id="live-articles-stack" class="card-stack"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container footer-container">
-            <p>System Architecture Hub &copy; 2026. Zero compilation steps.</p>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', initializeRegistryFetch);
-
-        async function initializeRegistryFetch() {
-            const toolsStack = document.getElementById('live-tools-stack');
-            const articlesStack = document.getElementById('live-articles-stack');
-            try {
-                const response = await fetch('manifest.json');
-                if (!response.ok) throw new Error(`HTTP fault: ${response.status}`);
-                const assets = await response.json();
-                
-                assets.forEach(asset => {
-                    const card = createSemanticCard(asset);
-                    if (asset.type === 'tool' && toolsStack) toolsStack.appendChild(card);
-                    else if (asset.type === 'article' && articlesStack) articlesStack.appendChild(card);
-                });
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        function createSemanticCard(asset) {
-            const anchor = document.createElement('a');
-            // Clean native routing to the content folder path
-            anchor.href = asset.path;
-            anchor.className = 'card-interactive-wrapper';
-            
-            const tagsHTML = asset.tags ? asset.tags.map(t => `<span class="tag-pill">${t}</span>`).join('') : '';
-            anchor.innerHTML = `
-                <div class="domain-card">
-                    <div>
-                        <div style="margin-bottom: var(--space-12); display: flex; gap: var(--space-8); flex-wrap: wrap;">${tagsHTML}</div>
-                        <h3 class="domain-title" style="margin-top: 0;">${asset.title}</h3>
-                        <p class="domain-desc">${asset.description}</p>
-                    </div>
-                    <div class="card-action-link">Open &rarr;</div>
-                </div>
-            `;
-            return anchor;
-        }
-    </script>
+    <div class="container">
+        <header class="hero">
+            <h1>System Architecture Hub</h1>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="portfolio.html">Registry</a>
+            </nav>
+        </header>
+        <main>
+            <p>Production-grade AI engineering. Zero-build-overhead modules.</p>
+        </main>
+    </div>
 </body>
 </html>
