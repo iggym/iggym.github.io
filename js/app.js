@@ -1,12 +1,10 @@
 /**
- * Unified Premium App Architecture & Micro-Interactions Engine
+ * Unified High-Contrast Light Mode Infrastructure Engine
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Launch background visualization field
     initInteractivePhysicsBackground();
 
-    // Route execution context safely
     const isPortfolioPage = window.location.pathname.includes('portfolio.html');
     if (isPortfolioPage) {
         initPortfolioView();
@@ -16,8 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Visual Style System: Interactive Canvas-Aware Micro Interactions
- * Implements subtle, smooth vector logic avoiding graphic saturation
+ * Visual Signature: Linear Light Matrix Network
  */
 function initInteractivePhysicsBackground() {
     const canvas = document.getElementById('neural-canvas');
@@ -25,8 +22,8 @@ function initInteractivePhysicsBackground() {
     const ctx = canvas.getContext('2d');
 
     let nodes = [];
-    const totalNodes = 32;
-    let cursor = { x: null, y: null, reach: 200 };
+    const totalNodes = 30;
+    let cursor = { x: null, y: null, reach: 180 };
 
     function normalizeMatrix() {
         canvas.width = window.innerWidth;
@@ -44,20 +41,19 @@ function initInteractivePhysicsBackground() {
         cursor.y = null;
     });
 
-    // Populate node coordinates securely
     for (let i = 0; i < totalNodes; i++) {
         nodes.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            mx: (Math.random() - 0.5) * 0.25,
-            my: (Math.random() - 0.5) * 0.25
+            mx: (Math.random() - 0.5) * 0.3,
+            my: (Math.random() - 0.5) * 0.3
         });
     }
 
     if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
         function runLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
             
             nodes.forEach(node => {
                 node.x += node.mx;
@@ -67,7 +63,7 @@ function initInteractivePhysicsBackground() {
                 if (node.y < 0 || node.y > canvas.height) node.my *= -1;
 
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 1, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, 1.5, 0, Math.PI * 2);
                 ctx.fill();
 
                 if (cursor.x !== null) {
@@ -76,8 +72,7 @@ function initInteractivePhysicsBackground() {
                     let distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
                     
                     if (distance < cursor.reach) {
-                        // Soft, intentional multi-layered proximity gradients
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - distance / cursor.reach) * 0.04})`;
+                        ctx.strokeStyle = `rgba(0, 0, 0, ${(1 - distance / cursor.reach) * 0.05})`;
                         ctx.lineWidth = 1;
                         ctx.beginPath();
                         ctx.moveTo(node.x, node.y);
@@ -110,14 +105,13 @@ async function initHomeHubView() {
         if (toolsStack) toolsStack.innerHTML = targetedTools.map(t => generateSystemCardMarkup(t)).join('');
         if (articlesStack) articlesStack.innerHTML = targetedArticles.map(a => generateSystemCardMarkup(a)).join('');
 
-        // Populate Sandbox Demonstration Card
         const lessonResponse = await fetch('ai-lessons.json');
         const lessonData = await lessonResponse.json();
         
         if (sandboxStack && lessonData.length > 0) {
             const currentLesson = lessonData[Math.floor(Math.random() * lessonData.length)];
             sandboxStack.innerHTML = `
-                <div class="card-title" style="font-size: var(--size-h3); margin-bottom: var(--space-8); font-weight:500;">${currentLesson.title}</div>
+                <div class="card-title" style="font-size: var(--size-h3); margin-bottom: var(--space-8); font-weight:600;">${currentLesson.title}</div>
                 <p class="card-desc" style="margin-bottom: var(--space-24); color: var(--text-body); max-width: 650px;">${currentLesson.description}</p>
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-16);">
                     <div class="card-tags">
@@ -179,9 +173,6 @@ async function initPortfolioView() {
     }
 }
 
-/**
- * Markup Generator mapping strictly to the Premium Visual Specification
- */
 function generateSystemCardMarkup(item) {
     return `
         <a href="${item.path}" class="asset-card" data-id="${item.id}">
