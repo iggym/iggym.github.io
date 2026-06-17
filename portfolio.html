@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asset Inventory Hub | AI Systems Engineering Portfolio</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script defer src="js/app.js"></script>
+    <style>
+        .portfolio-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 5rem;
+        }
+        @media (min-width: 768px) {
+            .portfolio-layout-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 1024px) {
+            .portfolio-layout-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#portfolio-main" class="skip-link">Skip to technical inventory</a>
+    <canvas id="neural-canvas"></canvas>
+
+    <header>
+        <nav class="nav-container" aria-label="Main Navigation">
+            <a href="index.html" class="logo-text">SYS_ENG<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Hub</a></li>
+                <li><a href="portfolio.html" class="active">Asset Inventory</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="portfolio-main" class="main-container" style="padding-top: 4rem;">
+        
+        <section aria-labelledby="portfolio-title">
+            <h1 id="portfolio-title" class="hero-title" style="font-size: var(--font-size-h2); margin-bottom: 1rem;">Unified Capability Engine</h1>
+            <p class="card-desc" style="max-width: 600px; margin-bottom: 2.5rem;">Explore sandboxed tools, design systems documentation, and rigorous diagnostic essays isolating architectural vectors.</p>
+            
+            <div class="filter-tabs" role="tablist" aria-label="Asset Class Filters">
+                <button class="tab-btn active" role="tab" aria-selected="true" data-filter="all">Show All Elements</button>
+                <button class="tab-btn" role="tab" aria-selected="false" data-filter="tool">Shipped Utilities</button>
+                <button class="tab-btn" role="tab" aria-selected="false" data-filter="article">Deep-Dive Essays</button>
+            </div>
+
+            <div id="master-portfolio-grid" class="portfolio-layout-grid">
+                </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2026. Zero compilation steps. Raw delivery.</p>
+            <div class="footer-links">
+                <a href="index.html">Back to Main Hub</a>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub Core</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
