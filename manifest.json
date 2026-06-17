@@ -1,0 +1,44 @@
+[
+  {
+    "title": "LLM Token Counter & Cost Estimator",
+    "description": "Estimate token consumption and inference cost across modern LLM providers.",
+    "type": "tool",
+    "path": "tools/token-counter.html",
+    "tags": ["AI", "LLMs", "Optimization"]
+  },
+  {
+    "title": "Prompt Compression Analyzer",
+    "description": "Evaluate prompt efficiency and identify unnecessary token expenditure.",
+    "type": "tool",
+    "path": "tools/prompt-compression.html",
+    "tags": ["Prompt Engineering", "AI", "Cost Reduction"]
+  },
+  {
+    "title": "RAG Chunk Visualizer",
+    "description": "Visualize retrieval chunking strategies and embedding overlap behavior.",
+    "type": "tool",
+    "path": "tools/rag-visualizer.html",
+    "tags": ["RAG", "Embeddings", "Vector Search"]
+  },
+  {
+    "title": "Building Context Engineering Systems",
+    "description": "Architectural patterns for long-lived AI memory and retrieval pipelines.",
+    "type": "article",
+    "path": "articles/context-engineering.html",
+    "tags": ["AI Architecture", "RAG"]
+  },
+  {
+    "title": "Designing High-Performance Static Applications",
+    "description": "Techniques for shipping sub-second web experiences without frameworks.",
+    "type": "article",
+    "path": "articles/static-performance.html",
+    "tags": ["Web Performance", "Architecture"]
+  },
+  {
+    "title": "Multi-Agent Orchestration Patterns",
+    "description": "Practical orchestration strategies for autonomous AI workflows.",
+    "type": "article",
+    "path": "articles/agent-orchestration.html",
+    "tags": ["Agents", "Systems Design"]
+  }
+]
