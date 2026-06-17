@@ -4,7 +4,7 @@
     "type": "tool",
     "title": "Agents & Multi‑Agent Orchestration",
     "description": "Architecting agent teams, coordination patterns, and autonomous task execution loops within reliable runtime ecosystems.",
-    "path": "portfolio.html#agents-orchestration",
+    "path": "content/agents-orchestration.html",
     "tags": ["Orchestration", "Multi-Agent", "Runtime"]
   },
   {
@@ -12,7 +12,7 @@
     "type": "article",
     "title": "AI Context Engineering",
     "description": "Designing programmatic context lifecycles, data flows, memory structures, and environmental constraints for reliable behavior on proprietary or niche datasets.",
-    "path": "portfolio.html#context-engineering",
+    "path": "content/context-engineering.html",
     "tags": ["Context Windows", "Memory Graphs", "Data Flows"]
   },
   {
@@ -20,7 +20,7 @@
     "type": "tool",
     "title": "Agentic Systems Design",
     "description": "Deploying robust multi-agent topologies, local/edge computing endpoints, and structured execution frameworks.",
-    "path": "portfolio.html#agentic-design",
+    "path": "content/agentic-design.html",
     "tags": ["Topology", "Edge-AI", "Architecture"]
   },
   {
@@ -28,7 +28,7 @@
     "type": "tool",
     "title": "AI Software Factory Engineering",
     "description": "Developing automated code generation pipelines, AI-assisted tools, and deterministic, single-file portable architectures.",
-    "path": "portfolio.html#software-factory",
+    "path": "content/software-factory.html",
     "tags": ["Pipelines", "Code-Gen", "Portability"]
   },
   {
@@ -36,7 +36,7 @@
     "type": "tool",
     "title": "AI Workflow Automation",
     "description": "Designing high-reliability process automation graphs, edge pipelines, and deterministic orchestration patterns.",
-    "path": "portfolio.html#workflow-automation",
+    "path": "content/workflow-automation.html",
     "tags": ["Automation", "Graphs", "Process-Control"]
   },
   {
@@ -44,7 +44,7 @@
     "type": "article",
     "title": "AI Building AI Tools",
     "description": "Creating research applications and mechanistic interpretability pipelines that visualize hidden states, weights, and internal representations within neural networks.",
-    "path": "portfolio.html#building-tools",
+    "path": "content/building-tools.html",
     "tags": ["Interpretability", "Hidden-States", "Mechanistic"]
   }
 ]
