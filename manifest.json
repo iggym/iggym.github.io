@@ -1,29 +1,29 @@
 [
   {
-    "id": "agent-orchestrator-v1",
-    "title": "Multi-Agent Runtime Engine",
-    "description": "An asynchronous edge runtime designed to coordinate multi-agent tasks using highly deterministic worker loops.",
+    "id": "orchestrator-core",
+    "title": "Deterministic Multi-Agent Coordination Engine",
+    "description": "An asynchronous local worker environment designed to enforce absolute execution boundaries over multi-agent task structures.",
     "type": "tool",
-    "path": "content/tools/aetherflow.html",
-    "tags": ["Agents & Orchestration", "Systems"],
-    "date": "2026-05-14"
+    "path": "content/tools/orchestrator.html",
+    "tags": ["Agents & Orchestration", "Agentic Systems"],
+    "date": "2026-05-20"
   },
   {
-    "id": "context-slicer-pro",
-    "title": "Token-Aware Context Windows",
-    "description": "A dynamic client-side memory layout engine that manages long-context insertion patterns during inference.",
+    "id": "context-manager",
+    "title": "Dynamic Token-Aware Context Architecture",
+    "description": "An intent-driven context engineering layer optimizing long-range memory window lifecycles on complex datasets.",
     "type": "tool",
-    "path": "content/tools/contextslicer.html",
-    "tags": ["Context Engineering", "Performance"],
-    "date": "2026-06-02"
+    "path": "content/tools/context-window.html",
+    "tags": ["Context Engineering", "Systems Design"],
+    "date": "2026-06-01"
   },
   {
-    "id": "interpretability-weights-v1",
-    "title": "Decomposing TinyLlama Residual Streams",
-    "description": "An empirical analysis tracking structural attention anomalies and activation variations under out-of-distribution loads.",
+    "id": "interpretability-matrix",
+    "title": "Residual Stream Attention Maps",
+    "description": "An interactive, client-side mechanistic interpretability utility tracking internal layer activations during inference.",
     "type": "article",
-    "path": "content/articles/residual-streams.html",
-    "tags": ["Interpretability", "Research"],
-    "date": "2026-04-20"
+    "path": "content/articles/interpretability-maps.html",
+    "tags": ["Mechanistic Interpretability", "Research"],
+    "date": "2026-06-12"
   }
 ]
