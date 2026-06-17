@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Token-Aware Context Lifespan Visualizer</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <style>
+        /* Tool-Specific Extensions mapping to Light Spec */
+        .visualizer-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-32);
+            margin-top: var(--space-48);
+        }
+        @media (min-width: 1024px) {
+            .visualizer-container {
+                grid-template-columns: 360px 1fr;
+            }
+        }
+        .config-card {
+            background: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: var(--space-24);
+            height: fit-content;
+        }
+        .display-card {
+            background: var(--bg-surface-1);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: var(--space-32);
+        }
+        
+        /* Interactive Slider Formatting */
+        .slider-wrapper {
+            margin-bottom: var(--space-24);
+        }
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--size-small);
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: var(--space-8);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .token-slider {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-surface-2);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+        .token-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-primary);
+            border: 1px solid var(--border-subtle);
+            transition: transform var(--duration-micro) var(--ease-premium);
+        }
+        .token-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        /* Stacked Lifecycle Bar Chart */
+        .lifecycle-bar-frame {
+            background: var(--bg-core);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            height: var(--space-48);
+            display: flex;
+            overflow: hidden;
+            margin-bottom: var(--space-32);
+        }
+        .bar-segment {
+            height: 100%;
+            transition: width var(--duration-ui) var(--ease-premium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-title);
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        /* Segment Custom Branding Colors (Calm Light Variations) */
+        .seg-system { background-color: #E2E8F0; border-right: 1px solid rgba(0,0,0,0.05); }
+        .seg-rag    { background-color: #CBD5E1; border-right: 1px solid rgba(0,0,0,0.05); }
+        .seg-history { background-color: #94A3B8; border-right: 1px solid rgba(0,0,0,0.05); }
+        .seg-input   { background-color: #64748B; color: #FFFFFF; border-right: 1px solid rgba(0,0,0,0.05); }
+        .seg-free    { background-color: #F1F5F9; color: var(--text-muted); }
+        .seg-overflow { background-color: #FEE2E2; color: #EF4444; font-weight: 600; }
+
+        /* Legend Metric Items */
+        .legend-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--space-16);
+        }
+        @media (min-width: 640px) {
+            .legend-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        .legend-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-12);
+            padding: var(--space-12);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            background: var(--bg-surface-1);
+        }
+        .indicator-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        .legend-meta h4 {
+            font-size: var(--size-small);
+            font-weight: 600;
+            color: var(--text-title);
+            margin-bottom: 2px;
+        }
+        .legend-meta p {
+            font-size: 12px;
+            color: var(--text-body);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="nav-container container" aria-label="Primary Navigation">
+            <a href="../../index.html" class="logo-text">AI_SYS.ENG</a>
+            <ul class="nav-links">
+                <li><a href="../../index.html">Core Capabilities</a></li>
+                <li><a href="../../portfolio.html" class="active">Asset Registry</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container" style="padding-top: var(--space-64); padding-bottom: var(--space-96);">
+        
+        <a href="../../portfolio.html" style="text-decoration: none; color: var(--text-muted); font-size: var(--size-small); font-family: var(--font-mono); display: inline-flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-24);">
+            &larr; BACK TO REGISTRY
+        </a>
+
+        <h1 class="hero-title" style="font-size: var(--size-h1); margin-bottom: var(--space-8);">Token-Aware Context Lifespan Visualizer</h1>
+        <p class="card-desc" style="font-size: var(--size-body); max-width: 720px;">A performance simulation inspecting memory layout lifecycles under volatile data injections. Adjust the absolute context window budget to track sliding constraints and truncation risks natively.</p>
+
+        <div class="visualizer-container">
+            
+            <div class="config-card">
+                <div class="slider-wrapper">
+                    <div class="slider-label-row">
+                        <span>Context Limit</span>
+                        <span id="limit-val-box" style="font-family: var(--font-mono);">32k</span>
+                    </div>
+                    <input type="range" id="window-slider" class="token-slider" min="8000" max="128000" step="4000" value="32000">
+                </div>
+
+                <div class="slider-wrapper" style="margin-bottom: 0;">
+                    <div class="slider-label-row">
+                        <span>RAG Payload Volatility</span>
+                    </div>
+                    <label style="display: flex; align-items: center; gap: var(--space-8); font-size: var(--size-body); color: var(--text-body); cursor: pointer;">
+                        <input type="checkbox" id="rag-toggle" checked style="accent-color: var(--accent-primary); width: 16px; height: 16px;">
+                        Inject Large Enterprise Dataset (+24k tokens)
+                    </label>
+                </div>
+            </div>
+
+            <div class="display-card">
+                <span style="display:block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: var(--space-12); text-transform: uppercase; letter-spacing: 0.05em;">Memory Map Distribution</span>
+                
+                <div class="lifecycle-bar-frame" id="bar-frame-target">
+                    </div>
+
+                <div class="legend-grid">
+                    
+                    <div class="legend-item">
+                        <div class="indicator-dot seg-system"></div>
+                        <div class="legend-meta">
+                            <h4>System Instructions</h4>
+                            <p><span id="val-system" style="font-family: var(--font-mono);">4,000</span> tokens locked. Core engineering constraints and JSON schema formatting instructions.</p>
+                        </div>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="indicator-dot seg-rag"></div>
+                        <div class="legend-meta">
+                            <h4>RAG Vector Context</h4>
+                            <p><span id="val-rag" style="font-family: var(--font-mono);">0</span> tokens injected. Semantic document matches retrieved out of niche databases.</p>
+                        </div>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="indicator-dot seg-history"></div>
+                        <div class="legend-meta">
+                            <h4>Sliding Conversation History</h4>
+                            <p><span id="val-history" style="font-family: var(--font-mono);">14,000</span> tokens. Cached turn history containing prior states and execution records.</p>
+                        </div>
+                    </div>
+
+                    <div class="legend-item">
+                        <div class="indicator-dot seg-input"></div>
+                        <div class="legend-meta">
+                            <h4>Active User Frame</h4>
+                            <p><span id="val-input" style="font-family: var(--font-mono);">6,000</span> tokens. Current intent directive payload requiring real-time model parsing.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Set constant foundational footprints
+        const systemTokens = 4000;
+        const historyTokens = 14000;
+        const inputTokens = 6000;
+
+        const windowSlider = document.getElementById('window-slider');
+        const ragToggle = document.getElementById('rag-toggle');
+        const limitValBox = document.getElementById('limit-val-box');
+        const barFrameTarget = document.getElementById('bar-frame-target');
+
+        // Capture discrete numerical print targets
+        const valSystem = document.getElementById('val-system');
+        const valRag = document.getElementById('val-rag');
+        const valHistory = document.getElementById('val-history');
+        const valInput = document.getElementById('val-input');
+
+        windowSlider.addEventListener('input', recalculateContextLayout);
+        ragToggle.addEventListener('change', recalculateContextLayout);
+
+        // Initial setup run
+        recalculateContextLayout();
+
+        function recalculateContextLayout() {
+            const allowedMax = parseInt(windowSlider.value);
+            const ragTokens = ragToggle.checked ? 24000 : 4000;
+            const absoluteTotal = systemTokens + ragTokens + historyTokens + inputTokens;
+            
+            // Format slider label
+            limitValBox.innerText = `${(allowedMax / 1000).toFixed(0)}k`;
+
+            // Print item values directly to metadata grid descriptions
+            valSystem.innerText = systemTokens.toLocaleString();
+            valRag.innerText = ragTokens.toLocaleString();
+            valHistory.innerText = historyTokens.toLocaleString();
+            valInput.innerText = inputTokens.toLocaleString();
+
+            barFrameTarget.innerHTML = '';
+
+            if (absoluteTotal <= allowedMax) {
+                // Layout falls nicely within limits safely
+                const remainingFree = allowedMax - absoluteTotal;
+
+                appendBarSegment('System', (systemTokens / allowedMax) * 100, 'seg-system');
+                appendBarSegment('RAG Context', (ragTokens / allowedMax) * 100, 'seg-rag');
+                appendBarSegment('History', (historyTokens / allowedMax) * 100, 'seg-history');
+                appendBarSegment('User Input', (inputTokens / allowedMax) * 100, 'seg-input');
+                appendBarSegment(`Free: ${(remainingFree / 1000).toFixed(0)}k`, (remainingFree / allowedMax) * 100, 'seg-free');
+            } else {
+                // Bounds overflow triggered. Truncation strategy calculated
+                const availableForOverflow = allowedMax;
+                const excessTokens = absoluteTotal - allowedMax;
+
+                // Dynamically squeeze sliding conversation memory space to show realistic system degradation
+                const calculatedHistorySlice = Math.max(0, historyTokens - excessTokens);
+                const actualOverflow = excessTokens - (historyTokens - calculatedHistorySlice);
+
+                if (systemTokens < availableForOverflow) appendBarSegment('System', (systemTokens / allowedMax) * 100, 'seg-system');
+                if (ragTokens > 0) appendBarSegment('RAG', (ragTokens / allowedMax) * 100, 'seg-rag');
+                if (calculatedHistorySlice > 0) appendBarSegment('History', (calculatedHistorySlice / allowedMax) * 100, 'seg-history');
+                if (inputTokens > 0) appendBarSegment('User Input', (inputTokens / allowedMax) * 100, 'seg-input');
+                
+                appendBarSegment(`CRITICAL OVERFLOW: +${(actualOverflow / 1000).toFixed(1)}k Truncated`, (actualOverflow / allowedMax) * 100, 'seg-overflow');
+            }
+        }
+
+        function appendBarSegment(label, calculatedPercentage, classIdentifier) {
+            if (calculatedPercentage <= 0) return;
+            const segment = document.createElement('div');
+            segment.className = `bar-segment ${classIdentifier}`;
+            segment.style.width = `${calculatedPercentage}%`;
+            segment.innerText = calculatedPercentage > 8 ? label : '';
+            segment.setAttribute('title', `${label} (${calculatedPercentage.toFixed(1)}%)`);
+            barFrameTarget.appendChild(segment);
+        }
+    </script>
+</body>
+</html>
