@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeInteractiveSandbox();
 });
 
-// Holds asset payload state globally for client-side viewport operations
 let cachedAssetsMatrix = [];
 
 /**
@@ -25,7 +24,7 @@ async function initializeRegistryFetch() {
         
         cachedAssetsMatrix = await response.json();
 
-        // Target Branch 1: Render Split-Feeds if present on current landing viewport
+        // Render Split-Feeds if present on landing viewport
         if (toolsStack || articlesStack) {
             if (toolsStack) toolsStack.innerHTML = '';
             if (articlesStack) articlesStack.innerHTML = '';
@@ -40,10 +39,13 @@ async function initializeRegistryFetch() {
             });
         }
 
-        // Target Branch 2: Render Multi-Filter Matrix Viewport on portfolio.html layout
+        // Render Multi-Filter Matrix Viewport on portfolio.html layout
         if (masterGrid) {
             renderMasterPortfolioGrid('all');
             initializeFilterTabActions();
+            
+            // Core Change: Evaluate location hash rules immediately following asset mount lifecycle
+            executeHashRoutingJump();
         }
 
     } catch (error) {
@@ -80,6 +82,8 @@ function createSemanticCard(asset) {
     const anchor = document.createElement('a');
     anchor.href = asset.path;
     anchor.className = 'card-interactive-wrapper';
+    // Core Change: Bind the unique database ID token to the element wrapper string
+    anchor.id = asset.id; 
     
     const tagsHTML = asset.tags 
         ? asset.tags.map(tag => `<span class="tag-pill">${tag}</span>`).join('') 
@@ -95,12 +99,35 @@ function createSemanticCard(asset) {
                 <p class="domain-desc">${asset.description}</p>
             </div>
             <div class="card-action-link">
-                Open Asset <span style="margin-left: var(--space-4); transition: transform var(--duration-micro); display: inline-block;">&rarr;</span>
+                Open Asset Module <span style="margin-left: var(--space-4); transition: transform var(--duration-micro); display: inline-block;">&rarr;</span>
             </div>
         </div>
     `;
 
     return anchor;
+}
+
+/**
+ * Parses current window parameters and intercepts scroll behaviors to locate targeted assets smoothly
+ */
+function executeHashRoutingJump() {
+    if (window.location.hash) {
+        const targetElementId = window.location.hash.substring(1);
+        const targetCard = document.getElementById(targetElementId);
+        
+        if (targetCard) {
+            setTimeout(() => {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Visual Indicator: Provide a temporary distinct high-contrast border state transition
+                const internalCardNode = targetCard.querySelector('.domain-card');
+                if (internalCardNode) {
+                    internalCardNode.style.borderColor = 'var(--text-title)';
+                    internalCardNode.style.boxShadow = '0 0 0 2px var(--border-subtle)';
+                }
+            }, 250); // Small execution step buffer ensures layout stability on mobile rendering views
+        }
+    }
 }
 
 /**
@@ -149,9 +176,6 @@ function initializeInteractiveSandbox() {
     `;
 }
 
-/**
- * Global click scope tracker for interactive structural metrics simulation
- */
 window.simulateLayerProbing = function(layerNumber) {
     const outputFrame = document.getElementById('sandbox-telemetry');
     if (!outputFrame) return;
