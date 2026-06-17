@@ -1,50 +1,20 @@
 [
   {
-    "id": "agents-orchestration",
+    "id": "agent-orchestrator",
+    "title": "Autonomous Task Orchestrator",
+    "description": "Multi-agent runtime for asynchronous edge execution.",
     "type": "tool",
-    "title": "Agents & Multi‑Agent Orchestration",
-    "description": "Architecting agent teams, coordination patterns, and autonomous task execution loops.",
-    "path": "content/agents-orchestration.html",
-    "tags": ["Orchestration", "Multi-Agent", "Runtime"]
+    "path": "content/tools/orchestrator.html",
+    "tags": ["AI Agents", "Orchestration"],
+    "date": "2026-05-12"
   },
   {
-    "id": "context-engineering",
+    "id": "interpretability-viz",
+    "title": "Attention Head Explorer",
+    "description": "Visualizing weight activation patterns in real-time.",
     "type": "article",
-    "title": "AI Context Engineering",
-    "description": "Designing programmatic context lifecycles, memory structures, and data flows.",
-    "path": "content/context-engineering.html",
-    "tags": ["Context Windows", "Memory Graphs", "Data Flows"]
-  },
-  {
-    "id": "agentic-design",
-    "type": "tool",
-    "title": "Agentic Systems Design",
-    "description": "Deploying robust multi-agent topologies and edge-computing endpoints.",
-    "path": "content/agentic-design.html",
-    "tags": ["Topology", "Edge-AI", "Architecture"]
-  },
-  {
-    "id": "software-factory",
-    "type": "tool",
-    "title": "AI Software Factory Engineering",
-    "description": "Developing automated code generation pipelines and deterministic architectures.",
-    "path": "content/software-factory.html",
-    "tags": ["Pipelines", "Code-Gen", "Portability"]
-  },
-  {
-    "id": "workflow-automation",
-    "type": "tool",
-    "title": "AI Workflow Automation",
-    "description": "High-reliability process automation graphs and deterministic orchestration patterns.",
-    "path": "content/workflow-automation.html",
-    "tags": ["Automation", "Graphs", "Process-Control"]
-  },
-  {
-    "id": "building-tools",
-    "type": "article",
-    "title": "AI Building AI Tools",
-    "description": "Mechanistic interpretability pipelines to visualize hidden states and weights.",
-    "path": "content/building-tools.html",
-    "tags": ["Interpretability", "Hidden-States", "Mechanistic"]
+    "path": "content/articles/layer-analysis.html",
+    "tags": ["Interpretability", "Neural Nets"],
+    "date": "2026-04-20"
   }
 ]
