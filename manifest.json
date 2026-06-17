@@ -1,67 +1,50 @@
-{
-  "name": "AI Systems Engineering Registry",
-  "short_name": "AI_SYS.ENG",
-  "version": "1.4.0",
-  "description": "An asset matrix of deterministic workflows, automated validation tools, and mechanistic interpretability visualizers.",
-  "start_url": "/index.html",
-  "display": "standalone",
-  "background_color": "#FAFAFA",
-  "theme_color": "#64748B",
-  "assets": {
-    "interactive_tools": [
-      {
-        "id": "multi-agent-router",
-        "title": "Multi-Agent Router Simulator",
-        "description": "An engineering workbench verifying deterministic state routing loops across specialized task executors.",
-        "path": "content/tools/orchestrator.html",
-        "type": "simulation-workbench",
-        "tags": ["Multi-Agent", "State-Routing", "Orchestration"]
-      },
-      {
-        "id": "context-lifespan-visualizer",
-        "title": "Token-Aware Context Lifespan Visualizer",
-        "description": "A performance simulation inspecting memory layout lifecycles and tracking truncation risks.",
-        "path": "content/tools/context-window.html",
-        "type": "analytical-visualizer",
-        "tags": ["Context-Window", "Token-Budgeting", "Memory-Map"]
-      },
-      {
-        "id": "automated-component-factory",
-        "title": "Automated Component Factory",
-        "description": "A mock compilation pipeline synthesizing self-contained UI primitives alongside ad-hoc AST validation suites.",
-        "path": "content/tools/component-factory.html",
-        "type": "ide-automation",
-        "tags": ["Vanilla-JS", "AST-Testing", "Automation"]
-      }
-    ],
-    "interpretability_articles": [
-      {
-        "id": "anatomy-attention-head",
-        "title": "The Anatomy of an Attention Head: A Layer-by-Layer Walkthrough",
-        "description": "A mechanistic interpretability inspection exploring query-key projections and active induction heads with an interactive validation grid.",
-        "path": "content/articles/interpretability-maps.html",
-        "published_date": "2026-06-12",
-        "reading_time_minutes": 8,
-        "tags": ["Attention-Mechanics", "Transformer-Internal", "Induction-Heads"]
-      },
-      {
-        "id": "guardrails-vs-vibe-coding",
-        "title": "Guardrails vs. Vibe-Coding: Engineering Determinism Into Large Data Assets",
-        "description": "An operational critique contrasting ad-hoc prompting against code-level schema validation anchors.",
-        "path": "content/articles/guardrails-vs-vibes.html",
-        "published_date": "2026-06-17",
-        "reading_time_minutes": 6,
-        "tags": ["Data-Integrity", "Deterministic-Schema", "TypeBox"]
-      },
-      {
-        "id": "mapping-residual-stream",
-        "title": "Mapping the Residual Stream: How Models Track Internal Concepts",
-        "description": "An evaluation of the linear communication highway of transformers, demonstrating linear probing and activation aggregation spaces.",
-        "path": "content/articles/residual-stream.html",
-        "published_date": "2026-06-17",
-        "reading_time_minutes": 7,
-        "tags": ["Residual-Stream", "Linear-Probing", "Superposition"]
-      }
-    ]
+[
+  {
+    "id": "multi-agent-router",
+    "title": "Multi-Agent Router Simulator",
+    "description": "An engineering workbench verifying deterministic state routing loops across specialized task executors.",
+    "path": "content/tools/orchestrator.html",
+    "type": "tool",
+    "tags": ["Multi-Agent", "State-Routing", "Orchestration"]
+  },
+  {
+    "id": "context-lifespan-visualizer",
+    "title": "Token-Aware Context Lifespan Visualizer",
+    "description": "A performance simulation inspecting memory layout lifecycles and tracking truncation risks.",
+    "path": "content/tools/context-window.html",
+    "type": "tool",
+    "tags": ["Context-Window", "Token-Budgeting", "Memory-Map"]
+  },
+  {
+    "id": "automated-component-factory",
+    "title": "Automated Component Factory",
+    "description": "A mock compilation pipeline synthesizing self-contained UI primitives alongside ad-hoc AST validation suites.",
+    "path": "content/tools/component-factory.html",
+    "type": "tool",
+    "tags": ["Vanilla-JS", "AST-Testing", "Automation"]
+  },
+  {
+    "id": "anatomy-attention-head",
+    "title": "The Anatomy of an Attention Head: A Layer-by-Layer Walkthrough",
+    "description": "A mechanistic interpretability inspection exploring query-key projections and active induction heads with an interactive validation grid.",
+    "path": "content/articles/interpretability-maps.html",
+    "type": "article",
+    "tags": ["Attention-Mechanics", "Transformer-Internal", "Induction-Heads"]
+  },
+  {
+    "id": "guardrails-vs-vibe-coding",
+    "title": "Guardrails vs. Vibe-Coding: Engineering Determinism Into Large Data Assets",
+    "description": "An operational critique contrasting ad-hoc prompting against code-level schema validation anchors with a live strategy simulation.",
+    "path": "content/articles/guardrails-vs-vibes.html",
+    "type": "article",
+    "tags": ["Data-Integrity", "Deterministic-Schema", "TypeBox"]
+  },
+  {
+    "id": "mapping-residual-stream",
+    "title": "Mapping the Residual Stream: How Models Track Internal Concepts",
+    "description": "An evaluation of the linear communication highway of transformers, demonstrating linear probing and activation aggregation spaces.",
+    "path": "content/articles/residual-stream.html",
+    "type": "article",
+    "tags": ["Residual-Stream", "Linear-Probing", "Superposition"]
   }
-}
+]
