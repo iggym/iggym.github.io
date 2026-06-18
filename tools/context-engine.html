@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Engine // Local AI Staging</title>
+    <style>
+        :root {
+            --bg-main: #0f1115;
+            --bg-card: #161920;
+            --bg-input: #1d212a;
+            --border: #2a313e;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            padding: 16px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 350px 1fr;
+            }
+        }
+
+        header {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+        }
+
+        h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.025em; }
+        h2 { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            color: var(--text-main);
+            padding: 10px;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea { resize: vertical; font-family: monospace; }
+
+        .btn {
+            background-color: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover { background-color: var(--accent-hover); }
+        .btn-secondary { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-secondary:hover { background-color: var(--bg-input); }
+
+        .profile-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .profile-item.active {
+            border-color: var(--accent);
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+
+        .profile-item button {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .flex-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dynamic-variables {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 12px;
+            margin-bottom: 16px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-family: monospace;
+            background: var(--border);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        .output-box {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: var(--radius);
+            font-family: monospace;
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 12px;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Context Engine // Staging</h1>
+            <button class="btn btn-secondary" style="width: auto;" onclick="exportManifest()">Export JSON</button>
+        </header>
+
+        <!-- LEFT PANEL: PROFILE MANIFEST & CONFIG -->
+        <div class="left-panel flex-actions" style="flex-direction: column; gap: 20px;">
+            <div class="card">
+                <h2>Profiles</h2>
+                <div class="profile-list" id="profileList"></div>
+                <div class="form-group">
+                    <input type="text" id="newProfileName" placeholder="New Profile Name...">
+                </div>
+                <button class="btn btn-secondary" onclick="createNewProfile()">Add Profile</button>
+            </div>
+
+            <div class="card">
+                <h2>Active Blueprint</h2>
+                <div class="form-group">
+                    <label for="systemPrompt">System Constraints & Persona</label>
+                    <textarea id="systemPrompt" rows="8" placeholder="Enter background context rules. Use {{variable_name}} to declare custom fields."></textarea>
+                </div>
+                <button class="btn" onclick="saveActiveProfile()">Save Configuration</button>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL: INTERACTIVE INJECTION & COPY MATRIX -->
+        <div class="right-panel">
+            <div class="card" style="margin-bottom: 20px;">
+                <h2>Dynamic Variables</h2>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+                    Detected fields in your system text wrapper will auto-render input boxes below.
+                </p>
+                <div id="variableFieldsContainer"></div>
+            </div>
+
+            <div class="card">
+                <h2>Active Execution</h2>
+                <div class="form-group">
+                    <label for="userInput">Raw Intent / Current Task</label>
+                    <textarea id="userInput" rows="6" placeholder="What are we building or solving right now?"></textarea>
+                </div>
+                <button class="btn" style="background-color: var(--success);" onclick="compileAndCopy()">Compile & Copy Staging Block</button>
+                
+                <h2 style="margin-top: 24px; margin-bottom: 6px;">Live Preview Output</h2>
+                <div class="output-box" id="livePreview">System compilation idle...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="toast">Copied to clipboard!</div>
+
+    <script>
+        // Default startup states if local storage is blank
+        const defaultManifest = {
+            activeId: "dev-vanilla",
+            profiles: {
+                "dev-vanilla": {
+                    name: "Vanilla Development",
+                    system: "You are an expert AI software developer. The user prefers a strict mobile-first engineering environment. Prioritize single-file, zero-dependency architectures using pure modern HTML, CSS, and vanilla JavaScript. Avoid complex external frameworks, build steps, or npm installs unless explicitly requested.\n\nCurrent Stack Focus: {{tech_focus}}\nCode Guidelines: {{architecture_style}}"
+                },
+                "brand-strategy": {
+                    name: "Luxury Brand Strategy",
+                    system: "You are a master brand strategist specializing in premium independent services. The objective is to design high-margin value propositions away from commoditized volume markets.\n\nTarget Demographic: {{target_audience}}\nTone of Voice: Elevated, minimalist, highly intentional."
+                }
+            }
+        };
+
+        let manifest = JSON.parse(localStorage.getItem('context_manifest')) || defaultManifest;
+
+        // Extract brackets like {{variable}}
+        function extractVariables(text) {
+            const regex = /\{\{([^}]+)\}\}/g;
+            const matches = [];
+            let match;
+            while ((match = regex.exec(text)) !== null) {
+                if (!matches.includes(match[1].trim())) {
+                    matches.push(match[1].trim());
+                }
+            }
+            return matches;
+        }
+
+        function renderProfiles() {
+            const list = document.getElementById('profileList');
+            list.innerHTML = '';
+            for (const [id, profile] of Object.entries(manifest.profiles)) {
+                const div = document.createElement('div');
+                div.className = `profile-item ${id === manifest.activeId ? 'active' : ''}`;
+                div.onclick = () => switchProfile(id);
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = profile.name;
+                div.appendChild(nameSpan);
+
+                const delBtn = document.createElement('button');
+                delBtn.textContent = '✕';
+                delBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    deleteProfile(id);
+                };
+                div.appendChild(delBtn);
+                list.appendChild(div);
+            }
+        }
+
+        function switchProfile(id) {
+            manifest.activeId = id;
+            document.getElementById('systemPrompt').value = manifest.profiles[id].system;
+            renderProfiles();
+            generateVariableInputs();
+            updatePreview();
+            saveToStorage();
+        }
+
+        function createNewProfile() {
+            const nameInput = document.getElementById('newProfileName');
+            const name = nameInput.value.trim();
+            if (!name) return;
+            const id = 'p-' + Date.now();
+            manifest.profiles[id] = {
+                name: name,
+                system: "System persona parameters for " + name + ". Declare options using {{variable}}."
+            };
+            nameInput.value = '';
+            switchProfile(id);
+        }
+
+        function deleteProfile(id) {
+            if (Object.keys(manifest.profiles).length <= 1) {
+                alert("You must retain at least one operational profile context.");
+                return;
+            }
+            delete manifest.profiles[id];
+            if (manifest.activeId === id) {
+                manifest.activeId = Object.keys(manifest.profiles)[0];
+            }
+            switchProfile(manifest.activeId);
+        }
+
+        function saveActiveProfile() {
+            const systemText = document.getElementById('systemPrompt').value;
+            manifest.profiles[manifest.activeId].system = systemText;
+            saveToStorage();
+            generateVariableInputs();
+            updatePreview();
+            showToast("Configuration saved locally.");
+        }
+
+        function generateVariableInputs() {
+            const systemText = document.getElementById('systemPrompt').value;
+            const variables = extractVariables(systemText);
+            const container = document.getElementById('variableFieldsContainer');
+            
+            // Retain old values if possible
+            const oldValues = {};
+            container.querySelectorAll('input').forEach(inp => {
+                oldValues[inp.dataset.var] = inp.value;
+            });
+
+            container.innerHTML = '';
+
+            if (variables.length === 0) {
+                container.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-muted);">No variable templates declared inside {{ }} brackets.</p>';
+                return;
+            }
+
+            variables.forEach(v => {
+                const group = document.createElement('div');
+                group.className = 'form-group';
+                
+                const lbl = document.createElement('label');
+                lbl.textContent = v.replace(/_/g, ' ');
+                
+                const inp = document.createElement('input');
+                inp.type = 'text';
+                inp.dataset.var = v;
+                inp.value = oldValues[v] || '';
+                inp.placeholder = `Inject value for ${v}...`;
+                inp.oninput = updatePreview;
+
+                group.appendChild(lbl);
+                group.appendChild(inp);
+                container.appendChild(group);
+            });
+        }
+
+        function compileContext() {
+            let compiled = manifest.profiles[manifest.activeId].system;
+            const container = document.getElementById('variableFieldsContainer');
+            
+            container.querySelectorAll('input').forEach(inp => {
+                const variable = inp.dataset.var;
+                const value = inp.value || `[Missing Field: ${variable}]`;
+                compiled = compiled.replaceAll(`{{${variable}}}`, value);
+            });
+
+            const userInput = document.getElementById('userInput').value;
+            
+            return `=== SYSTEM OPERATIONS PROTOCOL ===\n${compiled}\n\n=== RUNTIME EXECUTION REQUEST ===\n${userInput || '[No immediate intent specified yet]'}`;
+        }
+
+        function updatePreview() {
+            document.getElementById('livePreview').textContent = compileContext();
+        }
+
+        function compileAndCopy() {
+            const finalPayload = compileContext();
+            navigator.clipboard.writeText(finalPayload).then(() => {
+                showToast("Compiled context copied to clipboard!");
+            }).catch(err => {
+                alert("Clipboard access blocked. Please manually copy from Live Preview.");
+            });
+        }
+
+        function exportManifest() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "context_manifest.json");
+            dlAnchor.click();
+        }
+
+        function saveToStorage() {
+            localStorage.setItem('context_manifest', JSON.stringify(manifest));
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.opacity = '1';
+            setTimeout(() => { toast.style.opacity = '0'; }, 2500);
+        }
+
+        // Event hooks for text tracking
+        document.getElementById('systemPrompt').oninput = () => {
+            generateVariableInputs();
+            updatePreview();
+        };
+        document.getElementById('userInput').oninput = updatePreview;
+
+        // Bootstrapping Sequence
+        document.getElementById('systemPrompt').value = manifest.profiles[manifest.activeId].system;
+        renderProfiles();
+        generateVariableInputs();
+        updatePreview();
+    </script>
+</body>
+</html>
