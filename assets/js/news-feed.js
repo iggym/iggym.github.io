@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const endpoint = "https://ai-news.iggym.workers.dev/";
+  const endpoint = "https://ai-news-feed.iggy-mw.workers.dev/";
   const grid = document.getElementById("news-grid");
   const filterButtons = document.querySelectorAll(".filter-btn");
   let globalNewsCache = [];
