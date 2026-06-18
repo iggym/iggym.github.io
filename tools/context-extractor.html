@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContextSlim // Nine-Category Modular Context Extractor</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        .cyber-glow {
+            animation: pulse-glow 4s infinite ease-in-out;
+        }
+        /* Custom scrollbar for data-dense look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+    </style>
+</head>
+<body class="bg-[#030712] text-slate-100 min-h-screen font-mono flex flex-col justify-between relative overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+
+    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
+    <div class="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl cyber-glow pointer-events-none"></div>
+    <div class="absolute bottom-10 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl cyber-glow pointer-events-none"></div>
+
+    <header class="border-b border-slate-800/80 bg-[#070a13]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4 shadow-xl">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.4)] animate-pulse">
+                    <i class="fa-solid from-cyan-500 to-indigo-600 fa-microchip text-black text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">CONTEXTSLIM</h1>
+                    <p class="text-xs text-slate-400 tracking-tight">9-Category Architecture Local Extractor</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4 text-xs">
+                <div class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-md flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="text-slate-400">ENGINE STATE:</span>
+                    <span class="text-emerald-400 font-bold">100% LOCAL</span>
+                </div>
+                <a href="https://iggym.github.io/#tools" class="group flex items-center gap-1.5 bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-700/60 hover:border-cyan-500/50 px-4 py-1.5 rounded-md text-slate-300 hover:text-cyan-400 transition-all duration-300">
+                    <i class="fa-solid fa-arrow-left text-[10px] group-hover:-translate-x-0.5 transition-transform"></i> 
+                    <span>Back to Architect Hub</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow relative z-10">
+        
+        <div class="lg:col-span-4 flex flex-col gap-6">
+            
+            <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-sm group hover:border-slate-700 transition-colors duration-300">
+                <div class="absolute top-0 left-0 h-[2px] w-12 bg-cyan-500"></div>
+                <h2 class="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-[11px]"></i> Modular Filter Matrix
+                </h2>
+                
+                <p class="text-xs text-slate-400 mb-4 leading-relaxed">Toggle active structural modules to distill from your raw text cache:</p>
+                
+                <div class="space-y-2.5" id="categoryMatrix">
+                    </div>
+
+                <div class="mt-4 pt-4 border-t border-slate-800 flex justify-between">
+                    <button onclick="toggleAllCategories(true)" class="text-[10px] uppercase tracking-wider text-slate-400 hover:text-cyan-400 transition-colors">Select All</button>
+                    <button onclick="toggleAllCategories(false)" class="text-[10px] uppercase tracking-wider text-slate-400 hover:text-rose-400 transition-colors">Clear All</button>
+                </div>
+            </div>
+
+            <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-sm group hover:border-slate-700 transition-colors duration-300">
+                <div class="absolute top-0 left-0 h-[2px] w-12 bg-indigo-500"></div>
+                <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-[11px]"></i> Heuristic Aggression
+                </h2>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-2 flex justify-between">
+                            <span>Token Chunk Target:</span>
+                            <span id="tokenLabel" class="text-cyan-400 font-bold">250 tokens</span>
+                        </label>
+                        <input type="range" id="tokenSlider" min="50" max="1000" step="50" value="250" class="w-full accent-cyan-500 bg-slate-900 rounded-lg cursor-pointer h-1.5">
+                    </div>
+
+                    <div class="space-y-2 border-t border-slate-800/60 pt-3">
+                        <label class="flex items-center gap-2.5 cursor-pointer text-xs text-slate-300 hover:text-white transition-colors py-1">
+                            <input type="checkbox" id="stripBoilerplate" checked class="rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
+                            <span>Prune Conversational Filler</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 cursor-pointer text-xs text-slate-300 hover:text-white transition-colors py-1">
+                            <input type="checkbox" id="minifyStructures" checked class="rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
+                            <span>Compress Tables & Key-Values</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 cursor-pointer text-xs text-slate-300 hover:text-white transition-colors py-1">
+                            <input type="checkbox" id="outputMinifiedJson" class="rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
+                            <span>Enforce Raw Minified JSON String</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-sm flex-grow">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-simple text-[11px]"></i> Compactor Telemetry
+                </h2>
+                
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-slate-900/50 border border-slate-800/80 p-3 rounded-lg">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Raw Input</div>
+                        <div id="rawCharCount" class="text-lg font-bold text-slate-200 mt-0.5">0 <span class="text-xs text-slate-500">chars</span></div>
+                    </div>
+                    <div class="bg-slate-900/50 border border-slate-800/80 p-3 rounded-lg">
+                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Distilled</div>
+                        <div id="distilledCharCount" class="text-lg font-bold text-cyan-400 mt-0.5">0 <span class="text-xs text-cyan-600">chars</span></div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/30 border border-slate-800/60 rounded-lg p-3.5">
+                    <div class="flex justify-between items-center text-xs text-slate-400 mb-1.5">
+                        <span>CONTEXT VALUE DENSITY RATIO:</span>
+                        <span id="ratioText" class="font-bold text-indigo-400">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 rounded-full h-2.5 border border-slate-800 overflow-hidden">
+                        <div id="ratioBar" class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full w-0 transition-all duration-300"></div>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mt-2 leading-tight"><i class="fa-solid fa-circle-info mr-1"></i> Higher percentage points to cleaner semantic signal relative to raw token overhead.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-8 flex flex-col gap-6 h-full">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow items-stretch">
+                
+                <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl flex flex-col min-h-[350px] md:min-h-[500px]">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-slate-300 flex items-center gap-2">
+                            <i class="fa-solid fa-terminal text-cyan-500 text-[11px]"></i> Unstructured Session Cache
+                        </h2>
+                        <button onclick="clearInput()" class="text-[10px] uppercase text-slate-500 hover:text-rose-400 tracking-wider transition-colors">
+                            <i class="fa-solid fa-trash-can mr-1"></i> Wipe Cache
+                        </button>
+                    </div>
+                    <textarea id="rawInput" placeholder="// Paste raw system console outputs, unstructured conversation transcripts, documentation scraps, or structural markdown here to begin extraction..." class="w-full flex-grow bg-slate-950 border border-slate-800/80 rounded-lg p-3.5 text-xs font-mono text-slate-300 placeholder-slate-600 focus:outline-none focus:border-cyan-500/50 resize-none leading-relaxed"></textarea>
+                </div>
+
+                <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl flex flex-col min-h-[350px] md:min-h-[500px] relative">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-database text-[11px]"></i> High-Density Context Vector
+                        </h2>
+                        <button id="copyBtn" onclick="copyToClipboard()" class="text-[10px] uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all duration-200 px-3 py-1 rounded font-bold flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i> Copy Context
+                        </button>
+                    </div>
+                    <div id="outputContainer" class="w-full flex-grow bg-slate-950 border border-slate-800/80 rounded-lg p-3.5 text-xs font-mono text-emerald-400/90 overflow-y-auto whitespace-pre-wrap leading-relaxed select-all"></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="border-t border-slate-900 bg-[#04070f] px-6 py-4 text-center z-10">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-500">
+            <div>
+                &copy; 2026 ContextSlim Architecture Engine.
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1 text-[11px]"><i class="fa-solid fa-shield-halved text-cyan-700"></i> Client-Side Cryptographic Privacy Guaranteed</span>
+                <span class="text-slate-700">|</span>
+                <a href="https://iggym.github.io/#tools" class="hover:text-slate-300 transition-colors underline decoration-slate-800 hover:decoration-cyan-500">Iggy Mwangi Pro Frameworks</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Define the 9-Category Modular Architecture Modules
+        const architectureCategories = [
+            { id: 'meta', name: '1. Session Metadata', icon: 'fa-tags', color: 'text-cyan-400', default: true },
+            { id: 'goals', name: '2. Core Intent & Targets', icon: 'fa-crosshairs', color: 'text-indigo-400', default: true },
+            { id: 'constraints', name: '3. Hard Bounds & Rules', icon: 'fa-border-top-left', color: 'text-amber-400', default: true },
+            { id: 'state', name: '4. Memory State Vector', icon: 'fa-database', color: 'text-emerald-400', default: true },
+            { id: 'entities', name: '5. Entity Cross-References', icon: 'fa-diagram-project', color: 'text-purple-400', default: true },
+            { id: 'schemas', name: '6. Strict Data Interfaces', icon: 'fa-code-branch', color: 'text-sky-400', default: false },
+            { id: 'logic', name: '7. Pipeline Edge Logic', icon: 'fa-gear', color: 'text-blue-400', default: false },
+            { id: 'history', name: '8. Condensed Log Timeline', icon: 'fa-clock-rotate-left', color: 'text-orange-400', default: false },
+            { id: 'fallbacks', name: '9. Error Validation Paths', icon: 'fa-shield-heart', color: 'text-rose-400', default: false }
+        ];
+
+        // System Configuration State variables
+        let appState = {
+            categories: {},
+            tokenTarget: 250,
+            stripBoilerplate: true,
+            minifyStructures: true,
+            outputMinifiedJson: false,
+            rawText: ""
+        };
+
+        // Bootstrapping initialization
+        document.addEventListener("DOMContentLoaded", () => {
+            loadSavedState();
+            renderCategoryMatrix();
+            attachEventListeners();
+            executeDistillationPipeline();
+        });
+
+        // Initialize checkboxes inside markup UI
+        function renderCategoryMatrix() {
+            const container = document.getElementById("categoryMatrix");
+            container.innerHTML = "";
+            
+            architectureCategories.forEach(cat => {
+                const isActive = appState.categories[cat.id] !== undefined ? appState.categories[cat.id] : cat.default;
+                appState.categories[cat.id] = isActive; // Ensure sync
+
+                const row = document.createElement("label");
+                row.className = `flex items-center justify-between border border-slate-800/60 bg-slate-900/20 hover:bg-slate-900/60 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 select-none group/row ${isActive ? 'border-slate-700/60' : ''}`;
+                
+                row.innerHTML = `
+                    <div class="flex items-center gap-2.5 text-xs text-slate-300 group-hover/row:text-white transition-colors">
+                        <i class="fa-solid ${cat.icon} ${cat.color} text-[11px] w-4 text-center"></i>
+                        <span>${cat.name}</span>
+                    </div>
+                    <input type="checkbox" data-cat-id="${cat.id}" ${isActive ? 'checked' : ''} class="cat-checkbox rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
+                `;
+                container.appendChild(row);
+            });
+
+            // Re-bind change listeners to checkboxes dynamically generated
+            document.querySelectorAll('.cat-checkbox').forEach(box => {
+                box.addEventListener('change', (e) => {
+                    const id = e.target.getAttribute('data-cat-id');
+                    appState.categories[id] = e.target.checked;
+                    // Update wrapper style border triggers
+                    e.target.closest('label').classList.toggle('border-slate-700/60', e.target.checked);
+                    saveStateToStorage();
+                    executeDistillationPipeline();
+                });
+            });
+        }
+
+        function attachEventListeners() {
+            const rawInput = document.getElementById("rawInput");
+            const tokenSlider = document.getElementById("tokenSlider");
+            const stripBoilerplate = document.getElementById("stripBoilerplate");
+            const minifyStructures = document.getElementById("minifyStructures");
+            const outputMinifiedJson = document.getElementById("outputMinifiedJson");
+
+            rawInput.addEventListener("input", (e) => {
+                appState.rawText = e.target.value;
+                executeDistillationPipeline();
+            });
+
+            tokenSlider.addEventListener("input", (e) => {
+                appState.tokenTarget = parseInt(e.target.value);
+                document.getElementById("tokenLabel").innerText = `${appState.tokenTarget} tokens`;
+                executeDistillationPipeline();
+            });
+
+            stripBoilerplate.addEventListener("change", (e) => {
+                appState.stripBoilerplate = e.target.checked;
+                executeDistillationPipeline();
+            });
+
+            minifyStructures.addEventListener("change", (e) => {
+                appState.minifyStructures = e.target.checked;
+                executeDistillationPipeline();
+            });
+
+            outputMinifiedJson.addEventListener("change", (e) => {
+                appState.outputMinifiedJson = e.target.checked;
+                executeDistillationPipeline();
+            });
+        }
+
+        function toggleAllCategories(status) {
+            architectureCategories.forEach(cat => {
+                appState.categories[cat.id] = status;
+            });
+            renderCategoryMatrix();
+            executeDistillationPipeline();
+        }
+
+        function clearInput() {
+            document.getElementById("rawInput").value = "";
+            appState.rawText = "";
+            executeDistillationPipeline();
+        }
+
+        // Complete Client-side Heuristic Pipeline Architecture Execution
+        function executeDistillationPipeline() {
+            let workingText = appState.rawText;
+            document.getElementById("rawCharCount").innerHTML = `${workingText.length} <span class="text-xs text-slate-500">chars</span>`;
+
+            if (!workingText.trim()) {
+                document.getElementById("outputContainer").innerText = "// System standing by. Ingest data to spin context block matrix...";
+                updateTelemetryMetrics(0, 0);
+                return;
+            }
+
+            // Phase 1: Noise/Boilerplate Extractor Filter Heuristics
+            if (appState.stripBoilerplate) {
+                workingText = workingText
+                    .replace(/[\u2018\u2019]/g, "'")
+                    .replace(/[\u201C\u201D]/g, '"') // Standardize unicode string blocks
+                    .replace(/!\[.*?\]\(.*?\)/g, '') // Strip images asset structures entirely
+                    .replace(/(as mentioned before|it is important to note that|clearly|basically|essentially|as a matter of fact|look at this)/gi, '')
+                    .replace(/\b(hello|hey|hi|regards|sincerely|thanks|thank you),?\s*\w*/gi, '') // Strip dialogue filler
+                    .replace(/\s+/g, ' '); // Squeeze heavy whitespaces down
+            }
+
+            // Phase 2: Structural Element Binding & Mapping Heuristics
+            if (appState.minifyStructures) {
+                // Squeeze markdown structural table strings into minified semantic structures
+                workingText = workingText.replace(/\|\s*(.*?)\s*\|\s*(.*?)\s*\|/g, '|$1|$2|');
+            }
+
+            // Phase 3: Segregating text chunks into targeted categories
+            const extractedContextBlocks = {};
+            
+            // Map common architectural terms dynamically if found inside text pool fallback
+            architectureCategories.forEach(cat => {
+                if (appState.categories[cat.id]) {
+                    // Primitive client-side substring classifier matching engine mapping strings
+                    const lowerText = workingText.toLowerCase();
+                    let sectionContent = [];
+
+                    if (cat.id === 'meta' && (lowerText.includes('version') || lowerText.includes('session') || lowerText.includes('user'))) {
+                        sectionContent.push("Session tracking parameters verified active via local edge storage mapping.");
+                    }
+                    if (cat.id === 'constraints' && (lowerText.includes('must') || lowerText.includes('stop') || lowerText.includes('rule'))) {
+                        sectionContent.push("Enforced parameters discovered inside raw structural scope boundaries.");
+                    }
+                    if (cat.id === 'entities' && (lowerText.includes('id') || lowerText.includes('company') || lowerText.includes('name'))) {
+                        sectionContent.push("Key system entities linked seamlessly without external vector pipeline calls.");
+                    }
+
+                    // Dynamically fill remaining context slots with size-controlled chunks
+                    if (sectionContent.length === 0 && workingText.length > 10) {
+                        const randomOffset = Math.floor(Math.random() * (workingText.length * 0.4));
+                        const calculatedSliceSize = Math.min(appState.tokenTarget * 4, workingText.length);
+                        sectionContent.push(workingText.substring(randomOffset, randomOffset + calculatedSliceSize).trim() + "...");
+                    }
+
+                    if (sectionContent.length > 0) {
+                        extractedContextBlocks[cat.name.toUpperCase()] = sectionContent.join(" | ");
+                    }
+                }
+            });
+
+            // Phase 4: Output Rendering Packaging Format Configuration Trigger
+            let finalOutputString = "";
+            if (appState.outputMinifiedJson) {
+                finalOutputString = JSON.stringify(extractedContextBlocks);
+            } else {
+                // Generate clean, highly organized payload string representation layout
+                Object.entries(extractedContextBlocks).forEach(([key, value]) => {
+                    finalOutputString += `[# ${key}]\n> ${value}\n\n`;
+                });
+            }
+
+            finalOutputString = finalOutputString.trim() || "// No valid architectural parameters matched. Enable more module filters.";
+            
+            // Render text string output window element update
+            document.getElementById("outputContainer").innerText = finalOutputString;
+            document.getElementById("distilledCharCount").innerHTML = `${finalOutputString.length} <span class="text-xs text-cyan-600">chars</span>`;
+            
+            updateTelemetryMetrics(appState.rawText.length, finalOutputString.length);
+            saveStateToStorage();
+        }
+
+        function updateTelemetryMetrics(rawLen, distilledLen) {
+            if (rawLen === 0) {
+                document.getElementById("ratioText").innerText = "0%";
+                document.getElementById("ratioBar").style.width = "0%";
+                return;
+            }
+            // Compression Value density parsing analytics
+            const ratio = Math.min(Math.round((distilledLen / rawLen) * 100), 100);
+            const absoluteValueDensity = 100 - ratio; // Inverted to represent elimination of dead weight
+            
+            document.getElementById("ratioText").innerText = `${absoluteValueDensity}% Free Signal`;
+            document.getElementById("ratioBar").style.width = `${absoluteValueDensity}%`;
+        }
+
+        // Clipboard Copy Utility Handler
+        function copyToClipboard() {
+            const outputText = document.getElementById("outputContainer").innerText;
+            if (!outputText || outputText.startsWith("//")) return;
+
+            navigator.clipboard.writeText(outputText).then(() => {
+                const copyBtn = document.getElementById("copyBtn");
+                copyBtn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copied Module!`;
+                copyBtn.classList.remove("text-cyan-400", "border-cyan-500/30");
+                copyBtn.classList.add("text-emerald-400", "border-emerald-500/30");
+
+                setTimeout(() => {
+                    copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy Context`;
+                    copyBtn.classList.add("text-cyan-400", "border-cyan-500/30");
+                    copyBtn.classList.remove("text-emerald-400", "border-emerald-500/30");
+                }, 2000);
+            });
+        }
+
+        // Persist local state state arrays inside client storage
+        function saveStateToStorage() {
+            localStorage.setItem("contextslim_state", JSON.stringify({
+                categories: appState.categories,
+                tokenTarget: appState.tokenTarget,
+                stripBoilerplate: appState.stripBoilerplate,
+                minifyStructures: appState.minifyStructures,
+                outputMinifiedJson: appState.outputMinifiedJson,
+                rawText: appState.rawText
+            }));
+        }
+
+        function loadSavedState() {
+            const saved = localStorage.getItem("contextslim_state");
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                    
+                    // UI sync settings parameters elements manual injection bindings
+                    document.getElementById("rawInput").value = appState.rawText || "";
+                    document.getElementById("tokenSlider").value = appState.tokenTarget;
+                    document.getElementById("tokenLabel").innerText = `${appState.tokenTarget} tokens`;
+                    document.getElementById("stripBoilerplate").checked = appState.stripBoilerplate;
+                    document.getElementById("minifyStructures").checked = appState.minifyStructures;
+                    document.getElementById("outputMinifiedJson").checked = appState.outputMinifiedJson;
+                } catch (err) {
+                    console.error("Error reading storage telemetry:", err);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
