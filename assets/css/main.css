@@ -131,3 +131,198 @@ a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visib
   .nav-links.nav-active { transform: translateY(0); opacity: 1; }
   .footer-container { flex-direction: column; gap: 3rem; }
 }
+/* ==========================================================================
+   INTERACTIVE COMPONENTS SYSTEM (LESSONS & TIMELINES)
+   ========================================================================== */
+
+/* Layout & Stepper Scaffolding */
+.lessons-container {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 2rem;
+}
+.lessons-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+}
+.tab-btn {
+  background: none;
+  border: none;
+  padding: 1.25rem 2rem;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--headline); }
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  background: var(--void);
+}
+.lesson-panel {
+  display: none;
+  padding: 3rem;
+  min-height: 400px;
+  background: var(--void);
+}
+.lesson-panel.active { display: block; }
+
+/* Lesson 1: Prompt Anatomy App */
+.prompt-anatomy-app { display: flex; flex-direction: column; gap: 1.5rem; }
+textarea {
+  width: 100%; height: 120px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  color: var(--headline);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  resize: none;
+  transition: var(--transition-smooth);
+}
+textarea:focus { border-color: var(--accent); }
+.anatomy-visualizer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  line-height: 1.8;
+  min-height: 100px;
+}
+.anatomy-block {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: help;
+  position: relative;
+}
+.anatomy-block.persona { background: rgba(255, 77, 0, 0.15); color: #FF7A33; border: 1px solid rgba(255,77,0,0.3); }
+.anatomy-block.context { background: rgba(0, 208, 132, 0.15); color: #33FFB5; border: 1px solid rgba(0,208,132,0.3); }
+.anatomy-block.structural-format { background: rgba(0, 140, 255, 0.15); color: #33A1FF; border: 1px solid rgba(0,140,255,0.3); }
+
+/* Lesson 2: Context Window Range Slider */
+.context-visualizer-app { display: flex; flex-direction: column; gap: 2rem; }
+.slider-container { display: flex; flex-direction: column; gap: 0.75rem; }
+.slider-container label { font-size: 0.95rem; color: var(--body); }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 6px;
+  background: var(--border);
+  border-radius: 9999px;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.context-bar-track {
+  display: flex; height: 44px;
+  border-radius: 6px; overflow: hidden;
+  border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace; font-size: 0.75rem; text-align: center; line-height: 42px;
+}
+.bar-segment { transition: width 0.3s ease; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.segment-system { background: #1E1E24; color: var(--muted); }
+.segment-history { background: var(--accent-dim); color: var(--accent); border-right: 1px solid rgba(255,77,0,0.2); }
+.segment-current { background: rgba(255, 255, 255, 0.05); color: var(--headline); border-right: 1px solid var(--border); }
+.segment-empty { background: #0F0F11; color: var(--muted); }
+.educational-callout { margin-top: 1rem; }
+.educational-callout blockquote { border-left: 2px solid var(--accent); padding-left: 1rem; color: var(--muted); font-style: italic; }
+
+/* Lesson 3: Agentic Topology Loop Mapping */
+.agent-loop-app { display: flex; flex-direction: column; gap: 2rem; align-items: center; }
+.agent-svg { width: 100%; max-width: 700px; height: auto; }
+.loop-node { cursor: pointer; }
+.loop-node circle { fill: var(--surface); stroke: var(--border); stroke-width: 1.5px; transition: var(--transition-smooth); }
+.loop-node:hover circle { fill: #18181C; stroke: var(--muted); }
+.loop-node text { font-family: 'DM Sans', sans-serif; font-size: 12px; fill: var(--body); text-anchor: middle; font-weight: 500; pointer-events: none; }
+.loop-line { stroke: var(--border); stroke-width: 1.5px; fill: none; }
+.node-explanation {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  padding: 1.5rem; border-radius: 8px; text-align: center;
+  font-size: 0.95rem; color: var(--body); min-height: 70px;
+}
+
+/* Lesson 4: Workflow Split Panel Grid Matrix */
+.workflow-container-box { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+.workflow-lane {
+  background: var(--surface); border: 1px solid var(--border);
+  padding: 2rem; border-radius: 8px; opacity: 0.3;
+  transition: var(--transition-smooth); transform: scale(0.98);
+}
+.workflow-lane.active-lane { opacity: 1; transform: scale(1); border-color: var(--muted); }
+#workflow-panel-right.active-lane { border-color: rgba(0, 208, 132, 0.3); box-shadow: 0 0 20px rgba(0, 208, 132, 0.05); }
+.workflow-lane h4 { font-size: 1.1rem; margin-bottom: 1.25rem; color: var(--headline); }
+.timeline-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+.timeline-list li {
+  font-family: 'DM Mono', monospace; font-size: 0.85rem; padding-left: 1.25rem; position: relative; color: var(--body);
+}
+.timeline-list li::before {
+  content: "—"; position: absolute; left: 0; color: var(--muted);
+}
+#workflow-panel-right .timeline-list li::before { color: var(--green); }
+.metric-highlight {
+  margin-top: 2rem; font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--green);
+}
+
+/* Lesson 5: Live API Code Verification Simulator Console */
+.tester-app { display: flex; flex-direction: column; gap: 1.5rem; }
+.template-selector { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.tmpl-btn {
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--body); padding: 0.5rem 1rem; border-radius: 4px;
+  font-size: 0.85rem; cursor: pointer; transition: var(--transition-smooth);
+}
+.tmpl-btn:hover { border-color: var(--muted); color: var(--headline); }
+.tester-input-row { display: flex; gap: 1rem; }
+.tester-input-row input {
+  flex: 1; background: var(--surface); border: 1px solid var(--border);
+  padding: 0.75rem 1.25rem; border-radius: 6px; color: var(--headline);
+  font-size: 0.95rem;
+}
+.tester-input-row input:focus { border-color: var(--accent); outline: none; }
+.api-stream-box {
+  background: #050506; border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace; font-size: 0.85rem; color: #94A3B8;
+  padding: 1.5rem; border-radius: 6px; min-height: 140px;
+  white-space: pre-wrap; line-height: 1.6;
+}
+
+/* ==========================================================================
+   THE SIGNAL, NOT THE NOISE (NEWS FILTER SHIELD & GRID OVERRIDES)
+   ========================================================================== */
+.filter-wrapper { display: flex; justify-content: center; margin-bottom: 3rem; }
+.filter-tabs {
+  display: inline-flex; background: var(--surface);
+  border: 1px solid var(--border); padding: 0.35rem; border-radius: 9999px;
+}
+.filter-btn {
+  background: none; border: none; color: var(--muted);
+  padding: 0.5rem 1.25rem; font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; font-weight: 500; border-radius: 9999px;
+  cursor: pointer; transition: var(--transition-smooth);
+}
+.filter-btn:hover { color: var(--headline); }
+.filter-btn.active { background: var(--void); color: var(--accent); border: 1px solid var(--border); }
+
+/* Responsive adjustments for the new layouts */
+@media (max-width: 768px) {
+  .workflow-container-box { grid-template-columns: 1fr; }
+  .lesson-panel { padding: 1.5rem; }
+  .tester-input-row { flex-direction: column; }
+}
