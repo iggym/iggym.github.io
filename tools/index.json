@@ -15,6 +15,15 @@
     "tags": ["Context Engineering", "Prompting"],
     "url": "tools/context-engine.html",
     "featured": true,
+    "date": "2026-03-19"
+  },
+   {
+    "id": "ai-aggregator",
+    "title": "Multi-Model Workspace Aggregator",
+    "description": "Multi-Model Workspace Aggregator.",
+    "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "url": "tools/ai-aggregator.html",
+    "featured": true,
     "date": "2026-01-15"
   }
 ]
