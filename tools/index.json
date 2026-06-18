@@ -7,5 +7,14 @@
     "url": "tools/context-extractor.html",
     "featured": true,
     "date": "2026-01-15"
+  },
+  {
+    "id": "context-engine",
+    "title": "Portable Context Engine System",
+    "description": "Portable Context Handler.",
+    "tags": ["Context Engineering", "Prompting"],
+    "url": "tools/context-engine.html",
+    "featured": true,
+    "date": "2026-01-15"
   }
 ]
