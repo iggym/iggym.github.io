@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "title": "The Shift From Coding to Context Orchestration",
+    "excerpt": "For over a quarter of a century, software engineering treated code syntax as its primary unit of leverage. As production systems transition to generative runtime engines, the high-leverage skill moves entirely into structural prompt composition, token safety boundaries, and validation pipeline tooling.",
+    "date": "JUNE 2026",
+    "readTime": "6 min",
+    "url": "articles/context-orchestration.html"
+  },
+  {
+    "title": "Token Window Economics: Managing System Context Headers",
+    "excerpt": "An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.",
+    "date": "MAY 2026",
+    "readTime": "4 min",
+    "url": "articles/token-economics.html"
+  }
+]
