@@ -389,19 +389,18 @@
             saveStateToStorage();
         }
 
-        function updateTelemetryMetrics(rawLen, distilledLen) {
-            if (rawLen === 0) {
-                document.getElementById("ratioText").innerText = "0%";
-                document.getElementById("ratioBar").style.width = "0%";
-                return;
-            }
-            // Compression Value density parsing analytics
-            const ratio = Math.min(Math.round((distilledLen / rawLen) * 100), 100);
-            const absoluteValueDensity = 100 - ratio; // Inverted to represent elimination of dead weight
-            
-            document.getElementById("ratioText").innerText = `${absoluteValueDensity}% Free Signal`;
-            document.getElementById("ratioBar").style.width = `${absoluteValueDensity}%`;
-        }
+      function updateTelemetryMetrics(rawLen, distilledLen) {
+    if (rawLen === 0) {
+        document.getElementById("ratioText").innerText = "0% Density";
+        document.getElementById("ratioBar").style.width = "0%";
+        return;
+    }
+    // Directly calculates how dense the remaining payload is
+    const densityRatio = Math.min(Math.round((distilledLen / rawLen) * 100), 100);
+    
+    document.getElementById("ratioText").innerText = `${densityRatio}% Core Payload`;
+    document.getElementById("ratioBar").style.width = `${densityRatio}%`;
+}
 
         // Clipboard Copy Utility Handler
         function copyToClipboard() {
