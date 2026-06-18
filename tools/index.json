@@ -1,0 +1,11 @@
+[
+  {
+    "id": "context-extractor",
+    "title": "Context Extraction System",
+    "description": "Nine-category modular prompt context architecture for session consistency.",
+    "tags": ["Context Engineering", "Prompting"],
+    "url": "tools/context-extractor.html",
+    "featured": true,
+    "date": "2026-01-15"
+  }
+]
