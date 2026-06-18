@@ -25,5 +25,14 @@
     "url": "tools/ai-aggregator.html",
     "featured": true,
     "date": "2026-01-15"
+  },
+   {
+    "id": "token-conscious-diff-stager",
+    "title": "The Token-Conscious Prompt Diff & Stager.",
+    "description": "The Token-Conscious Prompt Diff & Stager..",
+    "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "url": "tools/token-conscious-diff-stager.html",
+    "featured": true,
+    "date": "2026-01-11"
   }
 ]
