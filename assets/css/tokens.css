@@ -1,0 +1,16 @@
+:root {
+  /* Strict Design Language Tokens */
+  --void:       #0A0A0B;    /* primary background */
+  --surface:    #111114;    /* cards, elevated surfaces */
+  --border:     #1E1E24;    /* subtle dividers */
+  --muted:      #52525C;    /* secondary text, timestamps */
+  --body:       #C8C8D0;    /* body copy */
+  --headline:   #F2F0EB;    /* headings, primary text */
+  --accent:     #FF4D00;    /* international orange */
+  --accent-dim: rgba(255, 77, 0, 0.12);
+  --green:      #00D084;    /* success states */
+  
+  /* Layout Signatures */
+  --max-width: 1200px;
+  --transition-smooth: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
