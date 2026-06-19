@@ -294,123 +294,46 @@
   <script src="assets/js/scroll-reveal.js"></script>
   <script src="assets/js/news-feed.js"></script>
   <script src="assets/js/ai-lessons.js"></script>
-  
   <script>
-    // 1. Global Navigation Mobile Toggle Handler
+    // General Global Navigation Handler
     const menuToggle = document.querySelector('.menu-toggle');
     const navLinks = document.querySelector('.nav-links');
-    if (menuToggle && navLinks) {
-      menuToggle.addEventListener('click', () => {
-        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-expanded', !expanded);
-        navLinks.classList.toggle('nav-active');
-      });
-    }
+    menuToggle.addEventListener('click', () => {
+      const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', !expanded);
+      navLinks.classList.toggle('nav-active');
+    });
 
-    // 2. Local Static Datasets (Instant Paint Fallback Mechanism)
-    const localTools = [
-      {
-        "title": "Context Extraction System",
-        "description": "Nine-category modular prompt context architecture for session consistency.",
-        "tags": ["Context Engineering", "Prompting"],
-        "url": "tools/context-extractor.html"
-      },
-      {
-        "title": "Portable Context Engine System",
-        "description": "Portable Context Handler.",
-        "tags": ["Context Engineering", "Prompting"],
-        "url": "tools/context-engine.html"
-      },
-      {
-        "title": "Multi-Model Workspace Aggregator",
-        "description": "Multi-Model Workspace Aggregator.",
-        "tags": ["Context Engineering", "Prompting", "Workflows"],
-        "url": "tools/ai-aggregator.html"
-      },
-      {
-        "title": "The Token-Conscious Prompt Diff & Stager",
-        "description": "The Token-Conscious Prompt Diff & Stager.",
-        "tags": ["Context Engineering", "Prompting", "Workflows"],
-        "url": "tools/token-conscious-diff-stager.html"
-      }
-    ];
-
-    // 3. Normalized Node DOM Element Render Factory Engines
-    function createToolCard(item) {
-      const div = document.createElement('div'); 
-      div.className = 'card reveal';
-      const tagsArr = Array.isArray(item.tags) ? item.tags : [];
-      const tagsHTML = tagsArr.map(t => `<span>${t}</span>`).join('');
-      
-      div.innerHTML = `
-        <span class="mono-tag">TOOL</span>
-        <h3>${item.title || 'Untitled Tool'}</h3>
-        <p>${item.description || ''}</p>
-        <div class="tech-pills">${tagsHTML}</div>
-        <a href="${item.url || '#'}" class="card-link-overlay"></a>
-      `;
-      return div;
-    }
-
-    function createAnimationCard(item) {
-      const div = document.createElement('div'); 
-      div.className = 'card reveal';
-      div.innerHTML = `
-        <div class="canvas-preview-container"><canvas data-preview-type="${item.id}"></canvas></div>
-        <h3>${item.title || ''}</h3>
-        <p>${item.description || ''}</p>
-        <a href="${item.url || '#'}" class="card-link-overlay"></a>
-      `;
-      return div;
-    }
-
-    function createArticleRow(item) {
-      const div = document.createElement('div'); 
-      div.className = 'article-row reveal';
-      div.innerHTML = `
-        <div class="article-meta-side">
-          <span class="mono-date">${item.date || ''}</span>
-          <span class="read-time">${item.readTime || '5 min'}</span>
-        </div>
-        <div class="article-content-side">
-          <h3>${item.title || ''}</h3>
-          <p>${item.excerpt || ''}</p>
-        </div>
-        <a href="${item.url || '#'}" class="row-link-overlay">→</a>
-      `;
-      return div;
-    }
-
-    // 4. Safe Dynamic Orchestrator Core Pipeline Handler
-    async function safePopulateGrid(url, elementId, fallbackRenderer, localFallbackArray = null) {
-      const container = document.getElementById(elementId);
-      if (!container) return;
-
-      // Synchronously anchor container layout state using static local references to negate rendering latency
-      if (localFallbackArray && localFallbackArray.length > 0) {
-        container.innerHTML = '';
-        localFallbackArray.forEach(item => container.appendChild(fallbackRenderer(item)));
-      }
-
-      // Asynchronously poll async JSON endpoints for state upgrades
+    // Dynamic Manifests Injection Orchestration
+    async function populateGrid(url, elementId, fallbackRenderer) {
       try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) throw new Error();
         const data = await response.json();
-        if (Array.isArray(data) && data.length > 0) {
+        const container = document.getElementById(elementId);
+        if(data.length > 0 && container) {
           container.innerHTML = '';
           data.forEach(item => container.appendChild(fallbackRenderer(item)));
         }
-      } catch (e) {
-        console.warn(`Manifest dynamic data lookup bypassed for ${url}. Local store processing retained.`);
-      }
+      } catch (e) { console.warn(`Manifest data fetch failed for ${url}, utilizing hardcoded fallback assets.`); }
     }
 
-    // 5. Centralized Initialization Lifecycle Pipeline
     document.addEventListener("DOMContentLoaded", () => {
-      safePopulateGrid('tools/index.json', 'tools-grid', createToolCard, localTools);
-      safePopulateGrid('animations/index.json', 'animations-grid', createAnimationCard);
-      safePopulateGrid('articles/index.json', 'articles-list', createArticleRow);
+      populateGrid('tools/index.json', 'tools-grid', item => {
+        const div = document.createElement('div'); div.className = 'card reveal';
+        div.innerHTML = `<span class="mono-tag">TOOL</span><h3>${item.title}</h3><p>${item.description}</p><div class="tech-pills">${item.tags.map(t=>`<span>${t}</span>`).join('')}</div><a href="${item.url}" class="card-link-overlay"></a>`;
+        return div;
+      });
+      populateGrid('animations/index.json', 'animations-grid', item => {
+        const div = document.createElement('div'); div.className = 'card reveal';
+        div.innerHTML = `<div class="canvas-preview-container"><canvas data-preview-type="${item.id}"></canvas></div><h3>${item.title}</h3><p>${item.description}</p><a href="${item.url}" class="card-link-overlay"></a>`;
+        return div;
+      });
+      populateGrid('articles/index.json', 'articles-list', item => {
+        const div = document.createElement('div'); div.className = 'article-row reveal';
+        div.innerHTML = `<div class="article-meta-side"><span class="mono-date">${item.date}</span><span class="read-time">${item.readTime || '5 min'}</span></div><div class="article-content-side"><h3>${item.title}</h3><p>${item.excerpt}</p></div><a href="${item.url}" class="row-link-overlay">→</a>`;
+        return div;
+      });
     });
   </script>
 </body>
