@@ -1,94 +1,160 @@
+border-top: 1px solid #1E1E24 !important; border-bottom: 1px solid #1E1E24 !important; padding: 3rem 2rem; gap: 4rem;
+}
+.expertise-column h3 { font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; color: #F3F3F5 !important; }
+.expertise-column p { color: #6B6B76 !important; font-size: 0.95rem; }
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+
+/* Re-engineered Card Component to stop transparent/black bleed blocks */
+.card {
+  position: relative !important; 
+  display: block !important;
+  background-color: #121214 !important; /* Forced layout color visibility */
+  border: 1px solid #1E1E24 !important;    /* Clean bounding container border */
+  padding: 2.5rem !important; 
+  border-radius: 12px !important; 
+  z-index: 5 !important;                  /* Forces element structure stack priority */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.card:hover {
+  transform: translateY(-2px) !important; 
+  border-color: rgba(255, 77, 0, 0.5) !important;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4), 0 0 30px rgba(255, 77, 0, 0.15) !important;
+}
+.card h3 { font-size: 1.6rem; margin: 1rem 0 0.5rem; color: #F3F3F5 !important; }
+.card p { color: #C8C8D0 !important; font-size: 0.95rem; margin-bottom: 1.5rem; }
+.mono-tag { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: #FF4D00 !important; letter-spacing: 0.05em; }
+
+.tech-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.tech-pills span { 
+  font-family: 'DM Mono', monospace; font-size: 0.75rem; 
+  background-color: #0A0A0B !important; 
+  border: 1px solid #1E1E24 !important; 
+  padding: 0.25rem 0.6rem; border-radius: 4px; color: #6B6B76 !important; 
+}
+.card-link-overlay, .row-link-overlay { position: absolute; inset: 0; z-index: 10; }
+
 /* ==========================================================================
-   SYSTEM DESIGN TOKENS (CORE HARDCODED TOKENS)
+   VERTICAL LAYOUT ARTIFACT LISTS
    ========================================================================== */
-:root {
-  --void: #0A0A0B;
-  --surface: #121214;
-  --border: #1E1E24;
-  --headline: #F3F3F5;
-  --body: #C8C8D0;
-  --muted: #6B6B76;
-  --accent: #FF4D00; /* Signature Architect Orange */
-  --accent-dim: rgba(255, 77, 0, 0.15);
-  --green: #00D084;
-  --max-width: 1200px;
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+.articles-vertical-list { display: flex; flex-direction: column; border-top: 1px solid #1E1E24 !important; }
+.article-row {
+  position: relative; display: grid; grid-template-columns: 0.4fr 1.6fr 0.1fr; padding: 2.5rem 0;
+  border-bottom: 1px solid #1E1E24 !important; align-items: baseline; transition: all 0.3s ease;
+}
+.article-row:hover h3 { color: #FF4D00 !important; }
+.article-meta-side { display: flex; flex-direction: column; gap: 0.25rem; font-family: 'DM Mono', monospace; font-size: 0.85rem; }
+.mono-date { color: #6B6B76 !important; }
+.read-time { color: #FF4D00 !important; opacity: 0.8; }
+.article-content-side h3 { font-size: 1.75rem; margin-bottom: 0.5rem; color: #F3F3F5 !important; }
+.article-content-side p { color: #C8C8D0 !important; font-size: 1rem; max-width: 700px; }
+
+/* ==========================================================================
+   FOOTER STRUCTURE
+   ========================================================================== */
+.global-footer { background: #0A0A0B !important; border-top: 1px solid #1E1E24 !important; padding: 6rem 2rem 3rem; }
+.footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; margin-bottom: 4rem; }
+.footer-left h3 { font-size: 1.5rem; margin-bottom: 1rem; color: #F3F3F5 !important; }
+.footer-left p { max-width: 320px; color: #6B6B76 !important; }
+.footer-right { display: flex; gap: 2rem; }
+.footer-right a { color: #C8C8D0 !important; text-decoration: none; font-size: 0.95rem; }
+.footer-right a:hover { color: #FF4D00 !important; }
+.footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid #1E1E24 !important; padding-top: 2rem; font-family: 'DM Mono', monospace; font-size: 0.8rem; color: #6B6B76 !important; }
+
+.menu-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 6px; }
+.menu-toggle .bar { width: 24px; height: 1.5px; background: #F3F3F5 !important; transition: all 0.3s ease; }
+
+a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible {
+  outline: 2px solid #FF4D00 !important; outline-offset: 4px;
 }
 
 /* ==========================================================================
-   GLOBAL RESET & LAYOUT CONTAINER MATRIX
+   RESPONSIVE LAYOUT BREAKPOINTS
    ========================================================================== */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  background-color: #0A0A0B !important;
-  color: #C8C8D0 !important;
-  font-family: 'DM Sans', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+@media (max-width: 1024px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
 }
-
-h1, h2, h3, .wordmark { font-family: 'Fraunces', serif; color: #F3F3F5 !important; font-weight: 400; }
-p { font-size: 1rem; line-height: 1.6; color: #C8C8D0 !important; }
-
-.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-.section { padding: 8rem 0; }
-.section-void { background-color: #0A0A0B !important; }
-
-/* Fixed section container to prevent black bleed blocks */
-.section-surface { 
-  background-color: #121214 !important; 
-  border-top: 1px solid #1E1E24 !important; 
-  border-bottom: 1px solid #1E1E24 !important; 
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .hero-headline { font-size: 3.5rem; }
+  .hero-right { position: absolute; inset: 0; opacity: 0.15; z-index: 0; pointer-events: none; }
+  .hero-left { z-index: 1; }
+  .expertise-strip { grid-template-columns: 1fr; gap: 2rem; }
+  .grid { grid-template-columns: 1fr; }
+  .article-row { grid-template-columns: 1fr; gap: 1rem; }
+  .menu-toggle { display: flex; }
+  .nav-links {
+    position: fixed; top: 60px; left: 0; width: 100%; height: calc(100vh - 60px);
+    background: #0A0A0B !important; flex-direction: column; padding: 4rem 2rem; gap: 2.5rem;
+    transform: translateY(-120%); transition: all 0.3s ease; opacity: 0;
+  }
+  .nav-links.nav-active { transform: translateY(0); opacity: 1; }
+  .footer-container { flex-direction: column; gap: 3rem; }
 }
-.section-title { font-size: 3rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
-.section-subtitle { font-size: 1.25rem; color: #6B6B76 !important; margin-bottom: 3rem; max-width: 600px; }
 
 /* ==========================================================================
-   NAVIGATION GLOBAL HEADER SYSTEM
+   INTERACTIVE LAB LAYER MODES (LESSONS & ACCORDIONS)
    ========================================================================== */
-.global-nav {
-  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-  background: rgba(10, 10, 11, 0.8) !important; backdrop-filter: blur(12px);
-  border-bottom: 1px solid #1E1E24 !important;
-}
-.nav-container {
-  max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.wordmark { font-size: 1.5rem; color: #FF4D00 !important; text-decoration: none; font-weight: 700; }
-.nav-links { display: flex; align-items: center; gap: 2rem; }
-.nav-links a { color: #C8C8D0 !important; text-decoration: none; font-size: 0.95rem; transition: all 0.3s ease; }
-.nav-links a:hover { color: #F3F3F5 !important; }
+.lessons-container { background: #121214 !important; border: 1px solid #1E1E24 !important; border-radius: 12px; overflow: hidden; margin-top: 2rem; }
+.lessons-tabs { display: flex; border-bottom: 1px solid #1E1E24 !important; background: rgba(0, 0, 0, 0.2); overflow-x: auto; }
+.tab-btn { background: none; border: none; padding: 1.25rem 2rem; color: #6B6B76 !important; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: all 0.3s ease; border-bottom: 2px solid transparent; white-space: nowrap; }
+.tab-btn:hover { color: #F3F3F5 !important; }
+.tab-btn.active { color: #FF4D00 !important; border-bottom-color: #FF4D00 !important; background: #0A0A0B !important; }
+.lesson-panel { display: none; padding: 3rem; min-height: 400px; background: #0A0A0B !important; }
+.lesson-panel.active { display: block; }
 
-/* ==========================================================================
-   INTERFACE INTERACTIVE ELEMENTS & CONTROLS
-   ========================================================================== */
-.btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none;
-  font-size: 0.95rem; transition: all 0.3s ease; cursor: pointer;
-}
-.btn-pill { border-radius: 9999px; font-size: 0.85rem; padding: 0.5rem 1.2rem; background: #FF4D00 !important; color: white !important; }
-.btn-primary { background: #FF4D00 !important; color: #fff !important; }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 77, 0, 0.4); }
-.btn-secondary { border: 1px solid #1E1E24 !important; color: #F3F3F5 !important; background: transparent !important; }
-.btn-secondary:hover { border-color: #6B6B76 !important; background: rgba(255,255,255,0.02) !important; }
+/* Lesson 1 Applications */
+.prompt-anatomy-app { display: flex; flex-direction: column; gap: 1.5rem; }
+textarea { width: 100%; height: 120px; background: #121214 !important; border: 1px solid #1E1E24 !important; border-radius: 8px; padding: 1.25rem; color: #F3F3F5 !important; font-family: 'DM Sans', sans-serif; font-size: 1rem; resize: none; transition: all 0.3s ease; }
+textarea:focus { border-color: #FF4D00 !important; }
+.anatomy-visualizer { background: #121214 !important; border: 1px solid #1E1E24 !important; border-radius: 8px; padding: 1.5rem; line-height: 1.8; min-height: 100px; }
+.anatomy-block { padding: 2px 6px; border-radius: 4px; font-weight: 500; cursor: help; position: relative; }
+.anatomy-block.persona { background: rgba(255, 77, 0, 0.15); color: #FF7A33; border: 1px solid rgba(255,77,0,0.3); }
+.anatomy-block.context { background: rgba(0, 208, 132, 0.15); color: #33FFB5; border: 1px solid rgba(0,208,132,0.3); }
+.anatomy-block.structural-format { background: rgba(0, 140, 255, 0.15); color: #33A1FF; border: 1px solid rgba(0,140,255,0.3); }
 
-/* ==========================================================================
-   HERO FRAMEWORK & INTEGRATIONS
-   ========================================================================== */
-.hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; width: 100%; align-items: center; padding-top: 5rem; }
-.eyebrow { font-family: 'DM Mono', monospace; color: #6B6B76 !important; font-size: 0.85rem; letter-spacing: 0.15em; margin-bottom: 1rem; }
-.hero-headline { font-size: 5rem; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
-.hero-body { font-size: 1.25rem; color: #C8C8D0 !important; max-width: 520px; margin-bottom: 2.5rem; }
-.cta-row { display: flex; gap: 1rem; }
-.hero-right { position: relative; height: 450px; width: 100%; }
-#hero-canvas { width: 100%; height: 100%; display: block; }
+/* Lesson 2 Slider Frameworks */
+.context-visualizer-app { display: flex; flex-direction: column; gap: 2rem; }
+.slider-container { display: flex; flex-direction: column; gap: 0.75rem; }
+.slider-container label { font-size: 0.95rem; color: #C8C8D0 !important; }
+input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 6px; background: #1E1E24 !important; border-radius: 9999px; outline: none; }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #FF4D00 !important; cursor: pointer; transition: all 0.3s ease; }
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.context-bar-track { display: flex; height: 44px; border-radius: 6px; overflow: hidden; border: 1px solid #1E1E24 !important; font-family: 'DM Mono', monospace; font-size: 0.75rem; text-align: center; line-height: 42px; }
+.bar-segment { transition: width 0.3s ease; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.segment-system { background: #1E1E24; color: #6B6B76 !important; }
+.segment-history { background: rgba(255, 77, 0, 0.15); color: #FF4D00 !important; border-right: 1px solid rgba(255,77,0,0.2); }
+.segment-current { background: rgba(255, 255, 255, 0.05); color: #F3F3F5 !important; border-right: 1px solid #1E1E24 !important; }
+.segment-empty { background: #0F0F11; color: #6B6B76 !important; }
+.educational-callout { margin-top: 1rem; }
+.educational-callout blockquote { border-left: 2px solid #FF4D00 !important; padding-left: 1rem; color: #6B6B76 !important; font-style: italic; }
 
-/* ==========================================================================
-   PORTFOLIO STRUCTURE & ILLUMINATED CARD COMPONENT FIXED CASCADE
-   ========================================================================== */
-.expertise-strip {
-  display: grid; grid-template-columns: repeat(3, 1fr); max-width: 1200px; margin: 0 auto;
-  border-top: 1px solid #1E1E24 !important; border-bottom: 1px solid #1E1E24 !important; padding: 3rem 2rem; gap:
+/* Lesson 3 Vectors */
+.agent-loop-app { display: flex; flex-direction: column; gap: 2rem; align-items: center; }
+.agent-svg { width: 100%; max-width: 700px; height: auto; }
+.loop-node { cursor: pointer; }
+.loop-node circle { fill: #121214 !important; stroke: #1E1E24 !important; stroke-width: 1.5px; transition: all 0.3s ease; }
+.loop-node:hover circle { fill: #18181C !important; stroke: #6B6B76 !important; }
+.loop-node text { font-family: 'DM Sans', sans-serif; font-size: 12px; fill: #C8C8D0 !important; text-anchor: middle; font-weight: 500; pointer-events: none; }
+.loop-line { stroke: #1E1E24 !important; stroke-width: 1.5px; fill: none; }
+.node-explanation { width: 100%; background: #121214 !important; border: 1px solid #1E1E24 !important; padding: 1.5rem; border-radius: 8px; text-align: center; font-size: 0.95rem; color: #C8C8D0 !important; min-height: 70px; }
+
+/* Lesson 4 Grid Split Lanes */
+.workflow-container-box { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+.workflow-lane { background: #121214 !important; border: 1px solid #1E1E24 !important; padding: 2rem; border-radius: 8px; opacity: 0.3; transition: var(--transition-smooth); transform: scale(0.98); }
+.workflow-lane.active-lane { opacity: 1; transform: scale(1); border-color: #6B6B76 !important; }
+#workflow-panel-right.active-lane { border-color: rgba(0, 208, 132, 0.3) !important; box-shadow: 0 0 20px rgba(0, 208, 132, 0.05); }
+.workflow-lane h4 { font-size: 1.1rem; margin-bottom: 1.25rem; color: #F3F3F5 !important; }
+.timeline-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+.timeline-list li { font-family: 'DM Mono', monospace; font-size: 0.85rem; padding-left: 1.25rem; position: relative; color: #C8C8D0 !important; }
+.timeline-list li::before { content: "—"; position: absolute; left: 0; color: #6B6B76 !important; }
+#workflow-panel-right .timeline-list li::before { color: #00D084 !important; }
+.metric-highlight { margin-top: 2rem; font-family: 'Fraunces', serif; font-size: 1.5rem; color: #00D084 !important; }
+
+/* Lesson 5 Shells */
+.tester-app { display: flex; flex-direction: column; gap: 1.5rem; }
+.template-selector { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.tmpl-btn { background: #121214 !important; border: 1px solid #1E1E24 !important; color: #C8C8D0 !important; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; }
+.tmpl-btn:hover { border-color: #6B6B76 !important; color: #F3F3F5 !important; }
+.tester-input-row { display: flex; gap: 1rem; }
+.tester-input-row input { flex: 1; background: #121214 !important; border: 1px solid #1E1E24 !important; padding: 0
