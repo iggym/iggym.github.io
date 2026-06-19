@@ -335,6 +335,51 @@
         return div;
       });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+  const toolsGrid = document.getElementById('tools-grid');
+
+  if (!toolsGrid) return;
+
+  // Fetch the data from your local tools.json file
+  fetch('tools.json')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(tools => {
+      // Clear out the grid before rendering (just in case)
+      toolsGrid.innerHTML = '';
+
+      // Map over your tools array and generate HTML cards
+      toolsGrid.innerHTML = tools.map(tool => {
+        // Render each tag inside a <span> matching your tech-pills structure
+        const pillElements = tool.tags
+          .map(tag => `<span>${tag}</span>`)
+          .join('');
+
+        return `
+          <div class="card reveal" data-id="${tool.id}">
+            <span class="mono-tag">SHIPPED TOOL</span>
+            <h3>${tool.title}</h3>
+            <p>${tool.description}</p>
+            <div class="tech-pills">
+              ${pillElements}
+            </div>
+            <!-- Interactive link overlay to cover the card area -->
+            <a href="${tool.url}" class="card-link-overlay" aria-label="Open ${tool.title}"></a>
+          </div>
+        `;
+      }).join('');
+    })
+    .catch(error => {
+      console.error('Error loading or parsing tools.json:', error);
+      toolsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted);">Failed to load shipped tools configuration.</p>`;
+    });
+});
+    
   </script>
 </body>
 </html>
