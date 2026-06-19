@@ -304,6 +304,63 @@
       navLinks.classList.toggle('nav-active');
     });
 
+    document.addEventListener("DOMContentLoaded", () => {
+  // Hardcoded fallback data to ensure instant painting if fetch fails
+  const localToolsFallback = [
+    {
+      "title": "Context Extraction System",
+      "description": "Nine-category modular prompt context architecture for session consistency.",
+      "tags": ["Context Engineering", "Prompting"],
+      "url": "tools/context-extractor.html"
+    },
+    {
+      "title": "Portable Context Engine System",
+      "description": "Portable Context Handler.",
+      "tags": ["Context Engineering", "Prompting"],
+      "url": "tools/context-engine.html"
+    },
+    {
+      "title": "Multi-Model Workspace Aggregator",
+      "description": "Multi-Model Workspace Aggregator.",
+      "tags": ["Context Engineering", "Prompting", "Workflows"],
+      "url": "tools/ai-aggregator.html"
+    },
+    {
+      "title": "The Token-Conscious Prompt Diff & Stager",
+      "description": "The Token-Conscious Prompt Diff & Stager.",
+      "tags": ["Context Engineering", "Prompting", "Workflows"],
+      "url": "tools/token-conscious-diff-stager.html"
+    }
+  ];
+
+  // Update your orchestrator to use the local fallback array on error
+  async function populateGrid(url, elementId, fallbackRenderer) {
+    const container = document.getElementById(elementId);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error();
+      const data = await response.json();
+      if(data.length > 0 && container) {
+        container.innerHTML = '';
+        data.forEach(item => container.appendChild(fallbackRenderer(item)));
+      }
+    } catch (e) { 
+      console.warn(`Manifest fetch failed for ${url}. Bootstrapping local fallback variables.`);
+      if(container && elementId === 'tools-grid') {
+        container.innerHTML = '';
+        localToolsFallback.forEach(item => container.appendChild(fallbackRenderer(item)));
+      }
+    }
+  }
+
+  // Execute
+  populateGrid('tools/index.json', 'tools-grid', item => {
+    const div = document.createElement('div'); div.className = 'card reveal';
+    div.innerHTML = `<span class="mono-tag">TOOL</span><h3>${item.title}</h3><p>${item.description}</p><div class="tech-pills">${item.tags.map(t=>`<span>${t}</span>`).join('')}</div><a href="${item.url}" class="card-link-overlay"></a>`;
+    return div;
+  });
+});
+
     // Dynamic Manifests Injection Orchestration
     async function populateGrid(url, elementId, fallbackRenderer) {
       try {
