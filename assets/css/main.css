@@ -1,80 +1,94 @@
 /* ==========================================================================
-   SYSTEM DESIGN TOKENS (CORE PALETTE & VARIABLES)
+   SYSTEM DESIGN TOKENS (CORE HARDCODED TOKENS)
    ========================================================================== */
 :root {
-  /* System Base Void Palette */
   --void: #0A0A0B;
   --surface: #121214;
   --border: #1E1E24;
-  
-  /* Typographic Content Tokens */
   --headline: #F3F3F5;
   --body: #C8C8D0;
   --muted: #6B6B76;
-  
-  /* Brand Accent Framework */
   --accent: #FF4D00; /* Signature Architect Orange */
   --accent-dim: rgba(255, 77, 0, 0.15);
   --green: #00D084;
-  
-  /* Layout Constraints & Kinematics */
   --max-width: 1200px;
   --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================================================
-   GLOBAL RESET & BASE LAYOUT SYSTEM
+   GLOBAL RESET & LAYOUT CONTAINER MATRIX
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background-color: var(--void);
-  color: var(--body);
+  background-color: #0A0A0B !important;
+  color: #C8C8D0 !important;
   font-family: 'DM Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Base Typographic Hierarchies */
-h1, h2, h3, .wordmark { font-family: 'Fraunces', serif; color: var(--headline); font-weight: 400; }
-p { font-size: 1rem; line-height: 1.6; color: var(--body); }
+h1, h2, h3, .wordmark { font-family: 'Fraunces', serif; color: #F3F3F5 !important; font-weight: 400; }
+p { font-size: 1rem; line-height: 1.6; color: #C8C8D0 !important; }
 
-.container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+.container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
 .section { padding: 8rem 0; }
-.section-void { background-color: var(--void); }
-.section-surface { background-color: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.section-title { font-size: 3rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
-.section-subtitle { font-size: 1.25rem; color: var(--muted); margin-bottom: 3rem; max-width: 600px; }
+.section-void { background-color: #0A0A0B !important; }
 
-/* Navigation Structural System */
+/* Fixed section container to prevent black bleed blocks */
+.section-surface { 
+  background-color: #121214 !important; 
+  border-top: 1px solid #1E1E24 !important; 
+  border-bottom: 1px solid #1E1E24 !important; 
+}
+.section-title { font-size: 3rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
+.section-subtitle { font-size: 1.25rem; color: #6B6B76 !important; margin-bottom: 3rem; max-width: 600px; }
+
+/* ==========================================================================
+   NAVIGATION GLOBAL HEADER SYSTEM
+   ========================================================================== */
 .global-nav {
   position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-  background: rgba(10, 10, 11, 0.8); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(10, 10, 11, 0.8) !important; backdrop-filter: blur(12px);
+  border-bottom: 1px solid #1E1E24 !important;
 }
 .nav-container {
-  max-width: var(--max-width); margin: 0 auto; padding: 1rem 2rem;
+  max-width: 1200px; margin: 0 auto; padding: 1rem 2rem;
   display: flex; justify-content: space-between; align-items: center;
 }
-.wordmark { font-size: 1.5rem; color: var(--accent); text-decoration: none; font-weight: 700; }
+.wordmark { font-size: 1.5rem; color: #FF4D00 !important; text-decoration: none; font-weight: 700; }
 .nav-links { display: flex; align-items: center; gap: 2rem; }
-.nav-links a { color: var(--body); text-decoration: none; font-size: 0.95rem; transition: var(--transition-smooth); }
-.nav-links a:hover { color: var(--headline); }
+.nav-links a { color: #C8C8D0 !important; text-decoration: none; font-size: 0.95rem; transition: all 0.3s ease; }
+.nav-links a:hover { color: #F3F3F5 !important; }
 
-/* Interface Element Controls */
+/* ==========================================================================
+   INTERFACE INTERACTIVE ELEMENTS & CONTROLS
+   ========================================================================== */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none;
-  font-size: 0.95rem; transition: var(--transition-smooth); cursor: pointer;
+  font-size: 0.95rem; transition: all 0.3s ease; cursor: pointer;
 }
-.btn-pill { border-radius: 9999px; font-size: 0.85rem; padding: 0.5rem 1.2rem; background: var(--accent); color: white; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-dim); }
-.btn-secondary { border: 1px solid var(--border); color: var(--headline); background: transparent; }
-.btn-secondary:hover { border-color: var(--muted); background: rgba(255,255,255,0.02); }
+.btn-pill { border-radius: 9999px; font-size: 0.85rem; padding: 0.5rem 1.2rem; background: #FF4D00 !important; color: white !important; }
+.btn-primary { background: #FF4D00 !important; color: #fff !important; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255, 77, 0, 0.4); }
+.btn-secondary { border: 1px solid #1E1E24 !important; color: #F3F3F5 !important; background: transparent !important; }
+.btn-secondary:hover { border-color: #6B6B76 !important; background: rgba(255,255,255,0.02) !important; }
 
-/* Hero Dynamic Grid Construction */
+/* ==========================================================================
+   HERO FRAMEWORK & INTEGRATIONS
+   ========================================================================== */
 .hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; width: 100%; align-items: center; padding-top: 5rem; }
-.eyebrow { font-family: 'DM Mono', monospace; color: var(--muted); font-size: 0.85rem; letter-spacing: 0.15em; margin-bottom: 1rem; }
+.eyebrow { font-family: 'DM Mono', monospace; color: #6B6B76 !important; font-size: 0.85rem; letter-spacing: 0.15em; margin-bottom: 1rem; }
 .hero-headline { font-size: 5rem; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
-.hero-body { font-size: 1.
+.hero-body { font-size: 1.25rem; color: #C8C8D0 !important; max-width: 520px; margin-bottom: 2.5rem; }
+.cta-row { display: flex; gap: 1rem; }
+.hero-right { position: relative; height: 450px; width: 100%; }
+#hero-canvas { width: 100%; height: 100%; display: block; }
+
+/* ==========================================================================
+   PORTFOLIO STRUCTURE & ILLUMINATED CARD COMPONENT FIXED CASCADE
+   ========================================================================== */
+.expertise-strip {
+  display: grid; grid-template-columns: repeat(3, 1fr); max-width: 1200px; margin: 0 auto;
+  border-top: 1px solid #1E1E24 !important; border-bottom: 1px solid #1E1E24 !important; padding: 3rem 2rem; gap:
