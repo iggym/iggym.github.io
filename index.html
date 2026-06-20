@@ -138,21 +138,28 @@
 
     <section id="learn" class="section section-void">
       <div class="container">
-        <h2 class="section-title">AI that works for you</h2>
-        <p class="section-subtitle">Practical techniques, demonstrated live.</p>
+        <h2 class="section-title">AI System Mechanics</h2>
+        <p class="section-subtitle">Core execution variables, visualized live.</p>
         
         <div class="lessons-container">
           <div class="lessons-tabs" role="tablist">
-            <button class="tab-btn active" role="tab" aria-selected="true" data-tab="lesson-1">Prompt Anatomy</button>
-            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-2">Context Window</button>
-            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-3">Agent Loop</button>
-            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-4">Workflows</button>
-            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-5">Prompt Tester</button>
+            <button class="tab-btn active" role="tab" aria-selected="true" data-tab="lesson-1">Structural Shielding</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-2">Attention Decay</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-3">Loop Exceptions</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-4">Token Topology</button>
+            <button class="tab-btn" role="tab" aria-selected="false" data-tab="lesson-5">State Validator</button>
           </div>
           
           <div class="lesson-panel active" id="lesson-1">
             <div class="prompt-anatomy-app">
-              <textarea id="anatomy-input" placeholder="Paste your raw prompt here to dissect its structural architecture...">Act as an Enterprise Systems Architect. Analyze the following microservices code snippet for potential race conditions. Output your findings as a markdown table listing severity, root cause, and remediation steps.</textarea>
+              <textarea id="anatomy-input" placeholder="Isolate runtime system data blocks safely using structural primitives...">
+<system_policy>
+Act as an Enterprise Systems Architect. Analyze input snippets strictly for race conditions. 
+Output your findings exclusively as a structural schema map.
+</system_policy>
+<user_query>
+[Inject unsafe runtime strings or target codebase variables here]
+</user_query></textarea>
               <div id="anatomy-output" class="anatomy-visualizer"></div>
             </div>
           </div>
@@ -160,58 +167,57 @@
           <div class="lesson-panel" id="lesson-2">
             <div class="context-visualizer-app">
               <div class="slider-container">
-                <label for="context-slider">Simulate Conversation History Tokens:</label>
-                <input type="range" id="context-slider" min="1000" max="128000" value="24000">
-                <span id="slider-val" class="mono-tag">24,000 / 128,000 tokens</span>
+                <label for="context-slider">Ingested Token Payload Volume:</label>
+                <input type="range" id="context-slider" min="8000" max="128000" step="4000" value="32000">
+                <span id="slider-val" class="mono-tag">32,000 / 128,000 tokens</span>
               </div>
               <div class="context-bar-track">
-                <div class="bar-segment segment-system" style="width: 5%">System (6k)</div>
-                <div class="bar-segment segment-history" style="width: 20%">History (24k)</div>
-                <div class="bar-segment segment-current" style="width: 15%">Current Msg</div>
-                <div class="bar-segment segment-empty" style="width: 60%">Available Headroom</div>
+                <div class="bar-segment segment-system" style="width: 10%">System Rules</div>
+                <div class="bar-segment segment-history" style="width: 50%; background: #FF9500; color: #000;">Attention Degradation Zone (Lost In The Middle)</div>
+                <div class="bar-segment segment-current" style="width: 15%">Active Message</div>
+                <div class="bar-segment segment-empty" style="width: 25%">Available Headroom</div>
               </div>
-              <p class="educational-callout"><blockquote>This is why context engineering matters. Running completely out of context window bounds leads to absolute model execution failure or catastrophic state loss.</blockquote></p>
+              <p class="educational-callout"><blockquote>Unstructured history scaling pushes foundational system rules directly into the low-recall attention valley, causing downstream compilation or state tracking failure.</blockquote></p>
             </div>
           </div>
 
           <div class="lesson-panel" id="lesson-3">
             <div class="agent-loop-app">
               <svg viewBox="0 0 800 150" class="agent-svg">
-                <g class="loop-node" data-node="perception"><circle cx="100" cy="75" r="30"/><text x="100" y="80">Perception</text></g>
+                <g class="loop-node" data-node="perception"><circle cx="100" cy="75" r="30"/><text x="100" y="80">State Parse</text></g>
                 <path d="M 130 75 L 220 75" marker-end="url(#arrow)" class="loop-line"/>
-                <g class="loop-node" data-node="reasoning"><circle cx="270" cy="75" r="30"/><text x="270" y="80">Reasoning</text></g>
+                <g class="loop-node" data-node="reasoning"><circle cx="270" cy="75" r="30"/><text x="270" y="80">Evaluation</text></g>
                 <path d="M 300 75 L 390 75" marker-end="url(#arrow)" class="loop-line"/>
-                <g class="loop-node" data-node="action"><circle cx="440" cy="75" r="30"/><text x="440" y="80">Action</text></g>
+                <g class="loop-node" data-node="action"><circle cx="440" cy="75" r="30"/><text x="440" y="80">Tool Exec</text></g>
                 <path d="M 470 75 L 560 75" marker-end="url(#arrow)" class="loop-line"/>
-                <g class="loop-node" data-node="memory"><circle cx="610" cy="75" r="30"/><text x="610" y="80">Memory</text></g>
+                <g class="loop-node" data-node="memory"><circle cx="610" cy="75" r="30"/><text x="610" y="80">Log Cache</text></g>
                 <path d="M 610 45 Q 355 -20 100 45" marker-end="url(#arrow)" class="loop-line long-return"/>
                 <defs><marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 2 L 8 5 L 0 8 z" fill="#52525C"/></marker></defs>
               </svg>
-              <div id="node-tooltip" class="node-explanation">Click a computational engine cycle segment to trace active path execution mechanics.</div>
+              <div id="node-tooltip" class="node-explanation">Click a loop junction node to trace programmatic exception-handling parameters and prevent call stack depletion.</div>
             </div>
           </div>
 
           <div class="lesson-panel" id="lesson-4">
             <div class="workflow-app">
-              <button id="toggle-workflow" class="btn btn-secondary">Toggle: Manual vs AI-Assisted</button>
+              <button id="toggle-workflow" class="btn btn-secondary">Toggle: Naive Chain vs. Isolated State</button>
               <div class="workflow-container-box">
                 <div id="workflow-panel-left" class="workflow-lane active-lane">
-                  <h4>Traditional Development Sequence</h4>
+                  <h4>Unconstrained Sequence Topology</h4>
                   <ul class="timeline-list">
-                    <li>Write Boilerplate Boilerplate</li>
-                    <li>Context switch to stack trace searching</li>
-                    <li>Manual parsing logs</li>
-                    <li>Write regression tests completely manually</li>
+                    <li>Raw logs forwarded iteratively across node clusters</li>
+                    <li>Exponential context payload accumulation per execution hop</li>
+                    <li>Unmitigated loop hallucinations under structural failures</li>
                   </ul>
                 </div>
                 <div id="workflow-panel-right" class="workflow-lane">
-                  <h4>AI-Native Autonomous Software Factory Layout</h4>
+                  <h4>Isolated Broker Architecture</h4>
                   <ul class="timeline-list">
-                    <li>Spec Architecture Definitions</li>
-                    <li>Autonomous Generation Pipeline Runs</li>
-                    <li>Continuous Realtime Agent Corrective Loops</li>
+                    <li>State variables handled via central routing contracts</li>
+                    <li>Workers limited strictly to specialized context sub-windows</li>
+                    <li>Deterministic step thresholds breaking unverified loops</li>
                   </ul>
-                  <div class="metric-highlight">83% fewer context switches.</div>
+                  <div class="metric-highlight">Improves compute budget efficiency by up to 83%.</div>
                 </div>
               </div>
             </div>
@@ -220,12 +226,12 @@
           <div class="lesson-panel" id="lesson-5">
             <div class="tester-app">
               <div class="template-selector">
-                <button class="tmpl-btn" data-prompt="Write a precise one-sentence structural architectural summary of microservices safety metrics.">Architecture Summary</button>
-                <button class="tmpl-btn" data-prompt="List exactly 3 core operational deployment risks inherent to deploying decoupled agent swarms.">Swarm Risks</button>
-                <button class="tmpl-btn" data-prompt="What precise verification state transition step must occur directly following failure mitigation inside code factories?">Next Verification Step</button>
+                <button class="tmpl-btn" data-prompt="Parse code schemas for multi-agent runtime boundary protection blocks.">Boundary Layout</button>
+                <button class="tmpl-btn" data-prompt="Identify token retention patterns across sliding context truncation pipelines.">Truncation Path</button>
+                <button class="tmpl-btn" data-prompt="Expose state variance steps across asynchronous worker execution loops.">Variance Step</button>
               </div>
               <div class="tester-input-row">
-                <input type="text" id="api-prompt-input" placeholder="Select template or input verification queries...">
+                <input type="text" id="api-prompt-input" placeholder="Run system payload schema queries...">
                 <button id="run-api-test" class="btn btn-primary">Execute</button>
               </div>
               <div id="api-output" class="api-stream-box">Stream output console initialized...</div>
