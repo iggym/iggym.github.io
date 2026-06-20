@@ -371,5 +371,92 @@ Output your findings exclusively as a structural schema map.
         });
     });
   </script>
+  <script src="assets/js/hero-canvas.js"></script>
+  <script src="assets/js/scroll-reveal.js"></script>
+  <script src="assets/js/news-feed.js"></script>
+  <script src="assets/js/ai-lessons.js"></script>
+  <script>
+    // Compute exact deployment root directory path dynamically
+    const baseHref = window.location.pathname.endsWith('/') 
+      ? window.location.pathname 
+      : window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
+    
+    const getNormalizedPath = (fileName) => `${window.location.origin}${baseHref}${fileName}`.replace(/([^:]\/)\/+/g, "$1");
+
+    // General Global Navigation Handler
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', !expanded);
+        navLinks.classList.toggle('nav-active');
+      });
+    }
+
+    // Dynamic Manifests Injection Orchestration
+    async function populateGrid(url, elementId, fallbackRenderer) {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP state: ${response.status}`);
+        const data = await response.json();
+        const container = document.getElementById(elementId);
+        if(data && data.length > 0 && container) {
+          container.innerHTML = '';
+          data.forEach(item => container.appendChild(fallbackRenderer(item)));
+        }
+      } catch (e) { 
+        console.warn(`Manifest data fetch failed for ${url}. Handled gracefully.`); 
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Dynamic rendering for Articles
+      populateGrid(getNormalizedPath('articles/index.json'), 'articles-list', item => {
+        const div = document.createElement('div'); 
+        div.className = 'article-row reveal';
+        div.innerHTML = `<div class="article-meta-side"><span class="mono-date">${item.date || ''}</span><span class="read-time">${item.readTime || '5 min'}</span></div><div class="article-content-side"><h3>${item.title || ''}</h3><p>${item.excerpt || ''}</p></div><a href="${item.url || '#'}" class="row-link-overlay">→</a>`;
+        return div;
+      });
+
+      // Target tools sub-directory container explicitly
+      const toolsGrid = document.getElementById('tools-grid');
+      if (!toolsGrid) return;
+
+      fetch(getNormalizedPath('tools/index.json'))
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP state: ${response.status}`);
+          return response.json();
+        })
+        .then(tools => {
+          if (!tools || tools.length === 0) {
+            toolsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #52525C;">No tools configuration found.</p>`;
+            return;
+          }
+          
+          toolsGrid.innerHTML = tools.map(tool => {
+            const tagsArray = Array.isArray(tool.tags) ? tool.tags : [];
+            const pillElements = tagsArray.map(tag => `<span>${tag}</span>`).join('');
+            
+            // Normalize path configuration for tools subdirectory maps
+            const finalUrl = getNormalizedPath(tool.url);
+
+            return `
+              <div class="card reveal" data-id="${tool.id || ''}">
+                <span class="mono-tag">SHIPPED TOOL</span>
+                <h3>${tool.title || 'Untitled Tool'}</h3>
+                <p>${tool.description || ''}</p>
+                <div class="tech-pills">${pillElements}</div>
+                <a href="${finalUrl}" class="card-link-overlay" aria-label="Open ${tool.title || 'Tool'}"></a>
+              </div>
+            `;
+          }).join('');
+        })
+        .catch(error => {
+          console.error('Error loading config file from tools/index.json:', error);
+          toolsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #52525C;">Failed to load shipped tools configuration.</p>`;
+        });
+    });
+  </script>
 </body>
 </html>
