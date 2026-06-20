@@ -323,7 +323,14 @@ Output your findings exclusively as a structural schema map.
         const container = document.getElementById(elementId);
         if(data && data.length > 0 && container) {
           container.innerHTML = '';
-          data.forEach(item => container.appendChild(fallbackRenderer(item)));
+          data.forEach(item => {
+            const node = fallbackRenderer(item);
+            container.appendChild(node);
+            // Connect dynamic nodes directly to global animation metrics tracker
+            if (window.globalRevealObserver && node.classList.contains('reveal')) {
+              window.globalRevealObserver.observe(node);
+            }
+          });
         }
       } catch (e) { 
         console.warn(`Manifest data fetch failed for ${url}. Handled gracefully.`); 
@@ -357,8 +364,6 @@ Output your findings exclusively as a structural schema map.
           toolsGrid.innerHTML = tools.map(tool => {
             const tagsArray = Array.isArray(tool.tags) ? tool.tags : [];
             const pillElements = tagsArray.map(tag => `<span>${tag}</span>`).join('');
-            
-            // Ensures tools/ filename mapping resolves absolutely
             const finalUrl = getCleanPath(tool.url);
 
             return `
@@ -371,6 +376,17 @@ Output your findings exclusively as a structural schema map.
               </div>
             `;
           }).join('');
+
+          // Dynamic tracking updates for async injected element matrices
+          if (window.globalRevealObserver) {
+            toolsGrid.querySelectorAll('.reveal').forEach(el => {
+              window.globalRevealObserver.observe(el);
+            });
+          } else {
+            toolsGrid.querySelectorAll('.reveal').forEach(el => {
+              el.classList.add('reveal-visible');
+            });
+          }
         })
         .catch(error => {
           console.error('Error loading config file tools/index.json:', error);
