@@ -120,7 +120,11 @@ a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visib
   .hero-right { position: absolute; inset: 0; opacity: 0.15; z-index: 0; pointer-events: none; }
   .hero-left { z-index: 1; }
   .expertise-strip { grid-template-columns: 1fr; gap: 2rem; }
+  
+  /* Mobile allocation fix for dynamic script content */
   .grid { grid-template-columns: 1fr; }
+  #tools-grid { min-height: 200px; display: grid !important; }
+
   .article-row { grid-template-columns: 1fr; gap: 1rem; }
   .menu-toggle { display: flex; }
   .nav-links {
@@ -131,6 +135,7 @@ a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visib
   .nav-links.nav-active { transform: translateY(0); opacity: 1; }
   .footer-container { flex-direction: column; gap: 3rem; }
 }
+
 /* ==========================================================================
    INTERACTIVE COMPONENTS SYSTEM (LESSONS & TIMELINES)
    ========================================================================== */
