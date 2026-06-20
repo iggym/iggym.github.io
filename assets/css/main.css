@@ -1,4 +1,17 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* ==========================================================================
+   CSS ARCHITECTURE BLUEPRINT — IGGY PORTFOLIO SITE CORE
+   Zero-Dependency, Content-First Layout System
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   01. GLOBAL TOKENS & SYSTEM DEFAULTS
+   -------------------------------------------------------------------------- */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
 body {
   background-color: var(--void);
   color: var(--body);
@@ -8,139 +21,378 @@ body {
 }
 
 /* Base Typographic Hierarchies */
-h1, h2, h3, .wordmark { font-family: 'Fraunces', serif; color: var(--headline); font-weight: 400; }
-p { font-size: 1rem; line-height: 1.6; color: var(--body); }
+h1, h2, h3, .wordmark { 
+  font-family: 'Fraunces', serif; 
+  color: var(--headline); 
+  font-weight: 400; 
+}
 
-.container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
-.section { padding: 8rem 0; }
-.section-void { background-color: var(--void); }
-.section-surface { background-color: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.section-title { font-size: 3rem; margin-bottom: 1rem; letter-spacing: -0.02em; }
-.section-subtitle { font-size: 1.25rem; color: var(--muted); margin-bottom: 3rem; max-width: 600px; }
+p { 
+  font-size: 1rem; 
+  line-height: 1.6; 
+  color: var(--body); 
+}
 
-/* Navigation Structural System */
+/* System Focus Rings for Device Accessibility */
+a:focus-visible, 
+button:focus-visible, 
+textarea:focus-visible, 
+input:focus-visible {
+  outline: 2px solid var(--accent); 
+  outline-offset: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   02. STRUCTURAL SCAFFOLDING & MODULE LAYOUTS
+   -------------------------------------------------------------------------- */
+.container { 
+  width: 100%; 
+  max-width: var(--max-width); 
+  margin: 0 auto; 
+  padding: 0 2rem; 
+}
+
+.section { 
+  padding: 8rem 0; 
+}
+
+.section-void { 
+  background-color: var(--void); 
+}
+
+.section-surface { 
+  background-color: var(--surface); 
+  border-top: 1px solid var(--border); 
+  border-bottom: 1px solid var(--border); 
+}
+
+.section-title { 
+  font-size: 3rem; 
+  margin-bottom: 1rem; 
+  letter-spacing: -0.02em; 
+}
+
+.section-subtitle { 
+  font-size: 1.25rem; 
+  color: var(--muted); 
+  margin-bottom: 3rem; 
+  max-width: 600px; 
+}
+
+/* --------------------------------------------------------------------------
+   03. GLOBAL NAVIGATION INFRASTRUCTURE
+   -------------------------------------------------------------------------- */
 .global-nav {
-  position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-  background: rgba(10, 10, 11, 0.8); backdrop-filter: blur(12px);
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100%; 
+  z-index: 1000;
+  background: rgba(10, 10, 11, 0.8); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
 }
+
 .nav-container {
-  max-width: var(--max-width); margin: 0 auto; padding: 1rem 2rem;
-  display: flex; justify-content: space-between; align-items: center;
+  max-width: var(--max-width); 
+  margin: 0 auto; 
+  padding: 1rem 2rem;
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
 }
-.wordmark { font-size: 1.5rem; color: var(--accent); text-decoration: none; font-weight: 700; }
-.nav-links { display: flex; align-items: center; gap: 2rem; }
-.nav-links a { color: var(--body); text-decoration: none; font-size: 0.95rem; transition: var(--transition-smooth); }
-.nav-links a:hover { color: var(--headline); }
 
-/* Interface Element Controls */
+.wordmark { 
+  font-size: 1.5rem; 
+  color: var(--accent); 
+  text-decoration: none; 
+  font-weight: 700; 
+}
+
+.nav-links { 
+  display: flex; 
+  align-items: center; 
+  gap: 2rem; 
+}
+
+.nav-links a { 
+  color: var(--body); 
+  text-decoration: none; 
+  font-size: 0.95rem; 
+  transition: var(--transition-smooth); 
+}
+
+.nav-links a:hover { 
+  color: var(--headline); 
+}
+
+/* Mobile Menu Toggle Control Primitives */
+.menu-toggle { 
+  display: none; 
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  flex-direction: column; 
+  gap: 6px; 
+}
+
+.menu-toggle .bar { 
+  width: 24px; 
+  height: 1.5px; 
+  background: var(--headline); 
+  transition: var(--transition-smooth); 
+}
+
+/* --------------------------------------------------------------------------
+   04. INTERFACE CONTROL PLATFORMS (BUTTONS & ELEMENTS)
+   -------------------------------------------------------------------------- */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: 500; text-decoration: none;
-  font-size: 0.95rem; transition: var(--transition-smooth); cursor: pointer;
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center;
+  padding: 0.75rem 1.5rem; 
+  border-radius: 4px; 
+  font-weight: 500; 
+  text-decoration: none;
+  font-size: 0.95rem; 
+  transition: var(--transition-smooth); 
+  cursor: pointer;
 }
-.btn-pill { border-radius: 9999px; font-size: 0.85rem; padding: 0.5rem 1.2rem; background: var(--accent); color: white; }
-.btn-primary { background: var(--accent); color: #fff; }
-.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-dim); }
-.btn-secondary { border: 1px solid var(--border); color: var(--headline); background: transparent; }
-.btn-secondary:hover { border-color: var(--muted); background: rgba(255,255,255,0.02); }
 
-/* Hero Dynamic Grid Construction */
-.hero-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; width: 100%; align-items: center; padding-top: 5rem; }
-.eyebrow { font-family: 'DM Mono', monospace; color: var(--muted); font-size: 0.85rem; letter-spacing: 0.15em; margin-bottom: 1rem; }
-.hero-headline { font-size: 5rem; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
-.hero-body { font-size: 1.25rem; color: var(--body); max-width: 520px; margin-bottom: 2.5rem; }
-.cta-row { display: flex; gap: 1rem; }
-.hero-right { position: relative; height: 450px; width: 100%; }
-#hero-canvas { width: 100%; height: 100%; display: block; }
+.btn-pill { 
+  border-radius: 9999px; 
+  font-size: 0.85rem; 
+  padding: 0.5rem 1.2rem; 
+  background: var(--accent); 
+  color: white; 
+}
 
-/* Structural Grid Matrix System */
+.btn-primary { 
+  background: var(--accent); 
+  color: #fff; 
+}
+
+.btn-primary:hover { 
+  transform: translateY(-1px); 
+  box-shadow: 0 4px 12px var(--accent-dim); 
+}
+
+.btn-secondary { 
+  border: 1px solid var(--border); 
+  color: var(--headline); 
+  background: transparent; 
+}
+
+.btn-secondary:hover { 
+  border-color: var(--muted); 
+  background: rgba(255,255,255,0.02); 
+}
+
+/* --------------------------------------------------------------------------
+   05. HERO VIEWPORT ENGINE
+   -------------------------------------------------------------------------- */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-grid { 
+  display: grid; 
+  grid-template-columns: 1.2fr 0.8fr; 
+  gap: 4rem; 
+  width: 100%; 
+  align-items: center; 
+  padding-top: 5rem; 
+}
+
+.eyebrow { 
+  font-family: 'DM Mono', monospace; 
+  color: var(--muted); 
+  font-size: 0.85rem; 
+  letter-spacing: 0.15em; 
+  margin-bottom: 1rem; 
+}
+
+.hero-headline { 
+  font-size: 5rem; 
+  line-height: 1.05; 
+  letter-spacing: -0.03em; 
+  margin-bottom: 1.5rem; 
+}
+
+.hero-body { 
+  font-size: 1.25rem; 
+  color: var(--body); 
+  max-width: 520px; 
+  margin-bottom: 2.5rem; 
+}
+
+.cta-row { 
+  display: flex; 
+  gap: 1rem; 
+}
+
+.hero-right { 
+  position: relative; 
+  height: 450px; 
+  width: 100%; 
+}
+
+#hero-canvas { 
+  width: 100%; 
+  height: 100%; 
+  display: block; 
+}
+
+/* --------------------------------------------------------------------------
+   06. STRUCTURAL GRID MATRIX MATRIX & DISPLAY SYSTEMS
+   -------------------------------------------------------------------------- */
 .expertise-strip {
-  display: grid; grid-template-columns: repeat(3, 1fr); max-width: var(--max-width); margin: 0 auto;
-  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 3rem 2rem; gap: 4rem;
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  max-width: var(--max-width); 
+  margin: 0 auto;
+  border-top: 1px solid var(--border); 
+  border-bottom: 1px solid var(--border); 
+  padding: 3rem 2rem; 
+  gap: 4rem;
 }
-.expertise-column h3 { font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--headline); }
-.expertise-column p { color: var(--muted); font-size: 0.95rem; }
 
-.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
-.card {
-  position: relative; background: var(--surface); border: 1px solid var(--border);
-  padding: 2.5rem; border-radius: 12px; transition: var(--transition-smooth);
+.expertise-column h3 { 
+  font-family: 'DM Sans', sans-serif; 
+  font-size: 1.1rem; 
+  font-weight: 500; 
+  margin-bottom: 0.5rem; 
+  color: var(--headline); 
 }
+
+.expertise-column p { 
+  color: var(--muted); 
+  font-size: 0.95rem; 
+}
+
+.grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 2rem; 
+}
+
+.card {
+  position: relative; 
+  background: var(--surface); 
+  border: 1px solid var(--border);
+  padding: 2.5rem; 
+  border-radius: 12px; 
+  transition: var(--transition-smooth);
+}
+
 .card:hover {
-  transform: translateY(-2px); border-color: rgba(255, 77, 0, 0.4);
+  transform: translateY(-2px); 
+  border-color: rgba(255, 77, 0, 0.4);
   box-shadow: 0 12px 24px rgba(0,0,0,0.2), 0 0 30px var(--accent-dim);
 }
-.card h3 { font-size: 1.6rem; margin: 1rem 0 0.5rem; }
-.card p { color: var(--body); font-size: 0.95rem; margin-bottom: 1.5rem; }
-.mono-tag { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--accent); letter-spacing: 0.05em; }
 
-.tech-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-.tech-pills span { font-family: 'DM Mono', monospace; font-size: 0.75rem; background: var(--void); border: 1px solid var(--border); padding: 0.25rem 0.6rem; border-radius: 4px; color: var(--muted); }
-.card-link-overlay, .row-link-overlay { position: absolute; inset: 0; z-index: 2; }
+.card h3 { 
+  font-size: 1.6rem; 
+  margin: 1rem 0 0.5rem; 
+}
 
-/* Vertical Narrative Rows for Content Types */
-.articles-vertical-list { display: flex; flex-direction: column; border-top: 1px solid var(--border); }
+.card p { 
+  color: var(--body); 
+  font-size: 0.95rem; 
+  margin-bottom: 1.5rem; 
+}
+
+.mono-tag { 
+  font-family: 'DM Mono', monospace; 
+  font-size: 0.75rem; 
+  color: var(--accent); 
+  letter-spacing: 0.05em; 
+}
+
+.tech-pills { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 0.5rem; 
+}
+
+.tech-pills span { 
+  font-family: 'DM Mono', monospace; 
+  font-size: 0.75rem; 
+  background: var(--void); 
+  border: 1px solid var(--border); 
+  padding: 0.25rem 0.6rem; 
+  border-radius: 4px; 
+  color: var(--muted); 
+}
+
+.card-link-overlay, .row-link-overlay { 
+  position: absolute; 
+  inset: 0; 
+  z-index: 2; 
+}
+
+/* --------------------------------------------------------------------------
+   07. NARRATIVE STREAM PANELS (ARTICLES & ROWS)
+   -------------------------------------------------------------------------- */
+.articles-vertical-list { 
+  display: flex; 
+  flex-direction: column; 
+  border-top: 1px solid var(--border); 
+}
+
 .article-row {
-  position: relative; display: grid; grid-template-columns: 0.4fr 1.6fr 0.1fr; padding: 2.5rem 0;
-  border-bottom: 1px solid var(--border); align-items: baseline; transition: var(--transition-smooth);
-}
-.article-row:hover h3 { color: var(--accent); }
-.article-meta-side { display: flex; flex-direction: column; gap: 0.25rem; font-family: 'DM Mono', monospace; font-size: 0.85rem; }
-.mono-date { color: var(--muted); }
-.read-time { color: var(--accent); opacity: 0.8; }
-.article-content-side h3 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-.article-content-side p { color: var(--body); font-size: 1rem; max-width: 700px; }
-
-/* Global Infrastructure Footer Layouts */
-.global-footer { background: var(--void); border-top: 1px solid var(--border); padding: 6rem 2rem 3rem; }
-.footer-container { max-width: var(--max-width); margin: 0 auto; display: flex; justify-content: space-between; margin-bottom: 4rem; }
-.footer-left h3 { font-size: 1.5rem; margin-bottom: 1rem; }
-.footer-left p { max-width: 320px; color: var(--muted); }
-.footer-right { display: flex; gap: 2rem; }
-.footer-right a { color: var(--body); text-decoration: none; font-size: 0.95rem; }
-.footer-right a:hover { color: var(--accent); }
-.footer-bottom { max-width: var(--max-width); margin: 0 auto; border-top: 1px solid var(--border); padding-top: 2rem; font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--muted); }
-
-.menu-toggle { display: none; background: none; border: none; cursor: pointer; flex-direction: column; gap: 6px; }
-.menu-toggle .bar { width: 24px; height: 1.5px; background: var(--headline); transition: var(--transition-smooth); }
-
-/* System Focus Rings */
-a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visible {
-  outline: 2px solid var(--accent); outline-offset: 4px;
+  position: relative; 
+  display: grid; 
+  grid-template-columns: 0.4fr 1.6fr 0.1fr; 
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border); 
+  align-items: baseline; 
+  transition: var(--transition-smooth);
 }
 
-/* Responsive Adaptive Matrix Logic Breakpoints */
-@media (max-width: 1024px) {
-  .grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .hero-headline { font-size: 3.5rem; }
-  .hero-right { position: absolute; inset: 0; opacity: 0.15; z-index: 0; pointer-events: none; }
-  .hero-left { z-index: 1; }
-  .expertise-strip { grid-template-columns: 1fr; gap: 2rem; }
-  
-  /* Mobile allocation fix for dynamic script content */
-  .grid { grid-template-columns: 1fr; }
-  #tools-grid { min-height: 200px; display: grid !important; }
-
-  .article-row { grid-template-columns: 1fr; gap: 1rem; }
-  .menu-toggle { display: flex; }
-  .nav-links {
-    position: fixed; top: 60px; left: 0; width: 100%; height: calc(100vh - 60px);
-    background: var(--void); flex-direction: column; padding: 4rem 2rem; gap: 2.5rem;
-    transform: translateY(-120%); transition: var(--transition-smooth); opacity: 0;
-  }
-  .nav-links.nav-active { transform: translateY(0); opacity: 1; }
-  .footer-container { flex-direction: column; gap: 3rem; }
+.article-row:hover h3 { 
+  color: var(--accent); 
 }
 
-/* ==========================================================================
-   INTERACTIVE COMPONENTS SYSTEM (LESSONS & TIMELINES)
-   ========================================================================== */
+.article-meta-side { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.25rem; 
+  font-family: 'DM Mono', monospace; 
+  font-size: 0.85rem; 
+}
 
-/* Layout & Stepper Scaffolding */
+.mono-date { 
+  color: var(--muted); 
+}
+
+.read-time { 
+  color: var(--accent); 
+  opacity: 0.8; 
+}
+
+.article-content-side h3 { 
+  font-size: 1.75rem; 
+  margin-bottom: 0.5rem; 
+}
+
+.article-content-side p { 
+  color: var(--body); 
+  font-size: 1rem; 
+  max-width: 700px; 
+}
+
+/* --------------------------------------------------------------------------
+   08. INTERACTIVE SYSTEM SIMULATORS (THE LESSONS SUITE)
+   -------------------------------------------------------------------------- */
 .lessons-container {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -148,12 +400,14 @@ a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visib
   overflow: hidden;
   margin-top: 2rem;
 }
+
 .lessons-tabs {
   display: flex;
   border-bottom: 1px solid var(--border);
   background: rgba(0, 0, 0, 0.2);
   overflow-x: auto;
 }
+
 .tab-btn {
   background: none;
   border: none;
@@ -167,24 +421,38 @@ a:focus-visible, button:focus-visible, textarea:focus-visible, input:focus-visib
   border-bottom: 2px solid transparent;
   white-space: nowrap;
 }
-.tab-btn:hover { color: var(--headline); }
+
+.tab-btn:hover { 
+  color: var(--headline); 
+}
+
 .tab-btn.active {
   color: var(--accent);
   border-bottom-color: var(--accent);
   background: var(--void);
 }
+
 .lesson-panel {
   display: none;
   padding: 3rem;
   min-height: 400px;
   background: var(--void);
 }
-.lesson-panel.active { display: block; }
 
-/* Lesson 1: Prompt Anatomy App */
-.prompt-anatomy-app { display: flex; flex-direction: column; gap: 1.5rem; }
+.lesson-panel.active { 
+  display: block; 
+}
+
+/* Lesson 1: Prompt Anatomy Block Sandbox */
+.prompt-anatomy-app { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1.5rem; 
+}
+
 textarea {
-  width: 100%; height: 120px;
+  width: 100%; 
+  height: 120px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -195,7 +463,11 @@ textarea {
   resize: none;
   transition: var(--transition-smooth);
 }
-textarea:focus { border-color: var(--accent); }
+
+textarea:focus { 
+  border-color: var(--accent); 
+}
+
 .anatomy-visualizer {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -204,6 +476,7 @@ textarea:focus { border-color: var(--accent); }
   line-height: 1.8;
   min-height: 100px;
 }
+
 .anatomy-block {
   padding: 2px 6px;
   border-radius: 4px;
@@ -211,37 +484,73 @@ textarea:focus { border-color: var(--accent); }
   cursor: help;
   position: relative;
 }
+
 .anatomy-block.persona { background: rgba(255, 77, 0, 0.15); color: #FF7A33; border: 1px solid rgba(255,77,0,0.3); }
 .anatomy-block.context { background: rgba(0, 208, 132, 0.15); color: #33FFB5; border: 1px solid rgba(0,208,132,0.3); }
 .anatomy-block.structural-format { background: rgba(0, 140, 255, 0.15); color: #33A1FF; border: 1px solid rgba(0,140,255,0.3); }
 
-/* Lesson 2: Context Window Range Slider */
-.context-visualizer-app { display: flex; flex-direction: column; gap: 2rem; }
-.slider-container { display: flex; flex-direction: column; gap: 0.75rem; }
-.slider-container label { font-size: 0.95rem; color: var(--body); }
+/* Lesson 2: Attention Decays Metric Suite */
+.context-visualizer-app { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 2rem; 
+}
+
+.slider-container { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.75rem; 
+}
+
+.slider-container label { 
+  font-size: 0.95rem; 
+  color: var(--body); 
+}
+
 input[type="range"] {
-  -webkit-appearance: none; appearance: none;
-  width: 100%; height: 6px;
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 100%; 
+  height: 6px;
   background: var(--border);
   border-radius: 9999px;
   outline: none;
 }
+
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; appearance: none;
-  width: 18px; height: 18px;
+  -webkit-appearance: none; 
+  appearance: none;
+  width: 18px; 
+  height: 18px;
   border-radius: 50%;
   background: var(--accent);
   cursor: pointer;
   transition: var(--transition-smooth);
 }
-input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
-.context-bar-track {
-  display: flex; height: 44px;
-  border-radius: 6px; overflow: hidden;
-  border: 1px solid var(--border);
-  font-family: 'DM Mono', monospace; font-size: 0.75rem; text-align: center; line-height: 42px;
+
+input[type="range"]::-webkit-slider-thumb:hover { 
+  transform: scale(1.15); 
 }
-.bar-segment { transition: width 0.3s ease; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.context-bar-track {
+  display: flex; 
+  height: 44px;
+  border-radius: 6px; 
+  overflow: hidden;
+  border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace; 
+  font-size: 0.75rem; 
+  text-align: center; 
+  line-height: 42px;
+}
+
+.bar-segment { 
+  transition: width 0.3s ease; 
+  overflow: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
+}
+
 .segment-system { background: #1E1E24; color: var(--muted); }
 .segment-history { background: var(--accent-dim); color: var(--accent); border-right: 1px solid rgba(255,77,0,0.2); }
 .segment-current { background: rgba(255, 255, 255, 0.05); color: var(--headline); border-right: 1px solid var(--border); }
@@ -249,85 +558,387 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.15); }
 .educational-callout { margin-top: 1rem; }
 .educational-callout blockquote { border-left: 2px solid var(--accent); padding-left: 1rem; color: var(--muted); font-style: italic; }
 
-/* Lesson 3: Agentic Topology Loop Mapping */
-.agent-loop-app { display: flex; flex-direction: column; gap: 2rem; align-items: center; }
-.agent-svg { width: 100%; max-width: 700px; height: auto; }
-.loop-node { cursor: pointer; }
-.loop-node circle { fill: var(--surface); stroke: var(--border); stroke-width: 1.5px; transition: var(--transition-smooth); }
-.loop-node:hover circle { fill: #18181C; stroke: var(--muted); }
-.loop-node text { font-family: 'DM Sans', sans-serif; font-size: 12px; fill: var(--body); text-anchor: middle; font-weight: 500; pointer-events: none; }
-.loop-line { stroke: var(--border); stroke-width: 1.5px; fill: none; }
+/* Lesson 3: Topologies Loops Vector Mapping */
+.agent-loop-app { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 2rem; 
+  align-items: center; 
+}
+
+.agent-svg { 
+  width: 100%; 
+  max-width: 700px; 
+  height: auto; 
+}
+
+.loop-node { 
+  cursor: pointer; 
+}
+
+.loop-node circle { 
+  fill: var(--surface); 
+  stroke: var(--border); 
+  stroke-width: 1.5px; 
+  transition: var(--transition-smooth); 
+}
+
+.loop-node:hover circle { 
+  fill: #18181C; 
+  stroke: var(--muted); 
+}
+
+.loop-node text { 
+  font-family: 'DM Sans', sans-serif; 
+  font-size: 12px; 
+  fill: var(--body); 
+  text-anchor: middle; 
+  font-weight: 500; 
+  pointer-events: none; 
+}
+
+.loop-line { 
+  stroke: var(--border); 
+  stroke-width: 1.5px; 
+  fill: none; 
+}
+
 .node-explanation {
-  width: 100%; background: var(--surface); border: 1px solid var(--border);
-  padding: 1.5rem; border-radius: 8px; text-align: center;
-  font-size: 0.95rem; color: var(--body); min-height: 70px;
+  width: 100%; 
+  background: var(--surface); 
+  border: 1px solid var(--border);
+  padding: 1.5rem; 
+  border-radius: 8px; 
+  text-align: center;
+  font-size: 0.95rem; 
+  color: var(--body); 
+  min-height: 70px;
 }
 
-/* Lesson 4: Workflow Split Panel Grid Matrix */
-.workflow-container-box { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+/* Lesson 4: Multi-Broker Lanes Matrix */
+.workflow-container-box { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 2rem; 
+  margin-top: 1.5rem; 
+}
+
 .workflow-lane {
-  background: var(--surface); border: 1px solid var(--border);
-  padding: 2rem; border-radius: 8px; opacity: 0.3;
-  transition: var(--transition-smooth); transform: scale(0.98);
-}
-.workflow-lane.active-lane { opacity: 1; transform: scale(1); border-color: var(--muted); }
-#workflow-panel-right.active-lane { border-color: rgba(0, 208, 132, 0.3); box-shadow: 0 0 20px rgba(0, 208, 132, 0.05); }
-.workflow-lane h4 { font-size: 1.1rem; margin-bottom: 1.25rem; color: var(--headline); }
-.timeline-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-.timeline-list li {
-  font-family: 'DM Mono', monospace; font-size: 0.85rem; padding-left: 1.25rem; position: relative; color: var(--body);
-}
-.timeline-list li::before {
-  content: "—"; position: absolute; left: 0; color: var(--muted);
-}
-#workflow-panel-right .timeline-list li::before { color: var(--green); }
-.metric-highlight {
-  margin-top: 2rem; font-family: 'Fraunces', serif; font-size: 1.5rem; color: var(--green);
+  background: var(--surface); 
+  border: 1px solid var(--border);
+  padding: 2rem; 
+  border-radius: 8px; 
+  opacity: 0.3;
+  transition: var(--transition-smooth); 
+  transform: scale(0.98);
 }
 
-/* Lesson 5: Live API Code Verification Simulator Console */
-.tester-app { display: flex; flex-direction: column; gap: 1.5rem; }
-.template-selector { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-.tmpl-btn {
-  background: var(--surface); border: 1px solid var(--border);
-  color: var(--body); padding: 0.5rem 1rem; border-radius: 4px;
-  font-size: 0.85rem; cursor: pointer; transition: var(--transition-smooth);
+.workflow-lane.active-lane { 
+  opacity: 1; 
+  transform: scale(1); 
+  border-color: var(--muted); 
 }
-.tmpl-btn:hover { border-color: var(--muted); color: var(--headline); }
-.tester-input-row { display: flex; gap: 1rem; }
+
+#workflow-panel-right.active-lane { 
+  border-color: rgba(0, 208, 132, 0.3); 
+  box-shadow: 0 0 20px rgba(0, 208, 132, 0.05); 
+}
+
+.workflow-lane h4 { 
+  font-size: 1.1rem; 
+  margin-bottom: 1.25rem; 
+  color: var(--headline); 
+}
+
+.timeline-list { 
+  list-style: none; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 0.75rem; 
+}
+
+.timeline-list li {
+  font-family: 'DM Mono', monospace; 
+  font-size: 0.85rem; 
+  padding-left: 1.25rem; 
+  position: relative; 
+  color: var(--body);
+}
+
+.timeline-list li::before {
+  content: "—"; 
+  position: absolute; 
+  left: 0; 
+  color: var(--muted);
+}
+
+#workflow-panel-right .timeline-list li::before { 
+  color: var(--green); 
+}
+
+.metric-highlight {
+  margin-top: 2rem; 
+  font-family: 'Fraunces', serif; 
+  font-size: 1.5rem; 
+  color: var(--green);
+}
+
+/* Lesson 5: Stream Simulator Terminal Mock */
+.tester-app { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 1.5rem; 
+}
+
+.template-selector { 
+  display: flex; 
+  gap: 0.75rem; 
+  flex-wrap: wrap; 
+}
+
+.tmpl-btn {
+  background: var(--surface); 
+  border: 1px solid var(--border);
+  color: var(--body); 
+  padding: 0.5rem 1rem; 
+  border-radius: 4px;
+  font-size: 0.85rem; 
+  cursor: pointer; 
+  transition: var(--transition-smooth);
+}
+
+.tmpl-btn:hover { 
+  border-color: var(--muted); 
+  color: var(--headline); 
+}
+
+.tester-input-row { 
+  display: flex; 
+  gap: 1rem; 
+}
+
 .tester-input-row input {
-  flex: 1; background: var(--surface); border: 1px solid var(--border);
-  padding: 0.75rem 1.25rem; border-radius: 6px; color: var(--headline);
+  flex: 1; 
+  background: var(--surface); 
+  border: 1px solid var(--border);
+  padding: 0.75rem 1.25rem; 
+  border-radius: 6px; 
+  color: var(--headline);
   font-size: 0.95rem;
 }
-.tester-input-row input:focus { border-color: var(--accent); outline: none; }
+
+.tester-input-row input:focus { 
+  border-color: var(--accent); 
+  outline: none; 
+}
+
 .api-stream-box {
-  background: #050506; border: 1px solid var(--border);
-  font-family: 'DM Mono', monospace; font-size: 0.85rem; color: #94A3B8;
-  padding: 1.5rem; border-radius: 6px; min-height: 140px;
-  white-space: pre-wrap; line-height: 1.6;
+  background: #050506; 
+  border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace; 
+  font-size: 0.85rem; 
+  color: #94A3B8;
+  padding: 1.5rem; 
+  border-radius: 6px; 
+  min-height: 140px;
+  white-space: pre-wrap; 
+  line-height: 1.6;
 }
 
-/* ==========================================================================
-   THE SIGNAL, NOT THE NOISE (NEWS FILTER SHIELD & GRID OVERRIDES)
-   ========================================================================== */
-.filter-wrapper { display: flex; justify-content: center; margin-bottom: 3rem; }
+/* --------------------------------------------------------------------------
+   09. SIGNAL PROGRAMMATIC FILTER SYSTEM
+   -------------------------------------------------------------------------- */
+.filter-wrapper { 
+  display: flex; 
+  justify-content: center; 
+  margin-bottom: 3rem; 
+}
+
 .filter-tabs {
-  display: inline-flex; background: var(--surface);
-  border: 1px solid var(--border); padding: 0.35rem; border-radius: 9999px;
+  display: inline-flex; 
+  background: var(--surface);
+  border: 1px solid var(--border); 
+  padding: 0.35rem; 
+  border-radius: 9999px;
 }
-.filter-btn {
-  background: none; border: none; color: var(--muted);
-  padding: 0.5rem 1.25rem; font-family: 'DM Sans', sans-serif;
-  font-size: 0.9rem; font-weight: 500; border-radius: 9999px;
-  cursor: pointer; transition: var(--transition-smooth);
-}
-.filter-btn:hover { color: var(--headline); }
-.filter-btn.active { background: var(--void); color: var(--accent); border: 1px solid var(--border); }
 
-/* Responsive adjustments for the new layouts */
+.filter-btn {
+  background: none; 
+  border: none; 
+  color: var(--muted);
+  padding: 0.5rem 1.25rem; 
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; 
+  font-weight: 500; 
+  border-radius: 9999px;
+  cursor: pointer; 
+  transition: var(--transition-smooth);
+}
+
+.filter-btn:hover { 
+  color: var(--headline); 
+}
+
+.filter-btn.active { 
+  background: var(--void); 
+  color: var(--accent); 
+  border: 1px solid var(--border); 
+}
+
+/* --------------------------------------------------------------------------
+   10. SITEWIDE INFRASTRUCTURE FOOTER DATA SYSTEM
+   -------------------------------------------------------------------------- */
+.global-footer { 
+  background: var(--void); 
+  border-top: 1px solid var(--border); 
+  padding: 6rem 2rem 3rem; 
+}
+
+.footer-container { 
+  max-width: var(--max-width); 
+  margin: 0 auto; 
+  display: flex; 
+  justify-content: space-between; 
+  margin-bottom: 4rem; 
+}
+
+.footer-left h3 { 
+  font-size: 1.5rem; 
+  margin-bottom: 1rem; 
+}
+
+.footer-left p { 
+  max-width: 320px; 
+  color: var(--muted); 
+}
+
+.footer-right { 
+  display: flex; 
+  gap: 2rem; 
+}
+
+.footer-right a { 
+  color: var(--body); 
+  text-decoration: none; 
+  font-size: 0.95rem; 
+}
+
+.footer-right a:hover { 
+  color: var(--accent); 
+}
+
+.footer-bottom { 
+  max-width: var(--max-width); 
+  margin: 0 auto; 
+  border-top: 1px solid var(--border); 
+  padding-top: 2rem; 
+  font-family: 'DM Mono', monospace; 
+  font-size: 0.8rem; 
+  color: var(--muted); 
+}
+
+/* --------------------------------------------------------------------------
+   11. RESPONSIVE ADAPTIVE LAYOUT MATRICES (BREAKPOINTS)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .grid { 
+    grid-template-columns: repeat(2, 1fr); 
+  }
+}
+
 @media (max-width: 768px) {
-  .workflow-container-box { grid-template-columns: 1fr; }
-  .lesson-panel { padding: 1.5rem; }
-  .tester-input-row { flex-direction: column; }
+  /* Core Scaffolding Overrides */
+  .hero-grid { 
+    grid-template-columns: 1fr; 
+    gap: 2rem; 
+  }
+  
+  .hero-headline { 
+    font-size: 3.5rem; 
+  }
+  
+  .hero-right { 
+    position: absolute; 
+    inset: 0; 
+    opacity: 0.15; 
+    z-index: 0; 
+    pointer-events: none; 
+  }
+  
+  .hero-left { 
+    z-index: 1; 
+  }
+  
+  .expertise-strip { 
+    grid-template-columns: 1fr; 
+    gap: 2rem; 
+  }
+  
+  .grid { 
+    grid-template-columns: 1fr; 
+  }
+  
+  #tools-grid { 
+    min-height: 200px; 
+    display: grid !important; 
+  }
+
+  .article-row { 
+    grid-template-columns: 1fr; 
+    gap: 1rem; 
+  }
+  
+  .footer-container { 
+    flex-direction: column; 
+    gap: 3rem; 
+  }
+
+  /* Interactive Simulator Adjustments */
+  .workflow-container-box { 
+    grid-template-columns: 1fr; 
+  }
+  
+  .lesson-panel { 
+    padding: 1.5rem; 
+  }
+  
+  .tester-input-row { 
+    flex-direction: column; 
+  }
+
+  /* Mobile Navigation Viewport Strategy Fix */
+  .menu-toggle { 
+    display: flex; 
+    z-index: 1001;
+  }
+  
+  .nav-links {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100vh;
+    background: #0A0A0B; /* Match structural tokens --void background value securely */
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem; 
+    gap: 2.5rem;
+    box-sizing: border-box;
+
+    /* Mobile Interaction Optimization Transforms */
+    transform: translateY(-100%); 
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                opacity 0.3s ease, 
+                visibility 0.3s ease;
+  }
+
+  /* Target state mapped explicitly for inline JavaScript event triggers */
+  .nav-links.nav-active { 
+    transform: translateY(0); 
+    opacity: 1; 
+    visibility: visible;
+  }
 }
