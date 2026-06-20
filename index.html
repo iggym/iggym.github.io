@@ -84,16 +84,16 @@
 
     <div class="expertise-strip">
       <div class="expertise-column">
-        <h3>Agentic Systems</h3>
-        <p>Multi-agent orchestration, context engineering, MCP + tool use design.</p>
+        <h3>Constrained Agentics</h3>
+        <p>Replacing fragile open-ended loops with state-machine-controlled deterministic execution graphs.</p>
       </div>
       <div class="expertise-column">
-        <h3>Software Factories</h3>
-        <p>AI-native dev pipelines, code generation harnesses, autonomous testing agents.</p>
+        <h3>Context Budgeting</h3>
+        <p>Mitigating "Lost in the Middle" attention decay through structural sliding-window prompt orchestration.</p>
       </div>
       <div class="expertise-column">
-        <h3>Interpretability</h3>
-        <p>Mechanistic analysis, feature circuits, activation steering systems.</p>
+        <h3>Production Guardrails</h3>
+        <p>Isolating runtime tool execution environments securely via model configuration blueprints.</p>
       </div>
     </div>
 
@@ -102,27 +102,27 @@
         <h2 class="section-title">What I build</h2>
         <div id="featured-grid" class="grid dynamic-grid">
           <div class="card reveal">
-            <span class="mono-tag">AGENT SYSTEM</span>
-            <h3>Orchestrator Prime</h3>
-            <p>Multi-agent platform coordinating 50+ localized software generation units.</p>
+            <span class="mono-tag">AGENT ARCHITECTURE</span>
+            <h3>Deterministic Agent Supervisor</h3>
+            <p>State-machine-constrained multi-agent engine using structured outputs to execute infrastructure updates without non-deterministic execution drift.</p>
             <div class="tech-pills"><span>Python</span><span>Rust</span><span>Anthropic API</span></div>
           </div>
           <div class="card reveal">
-            <span class="mono-tag">CONTEXT ENGINE</span>
-            <h3>ContextCompressor</h3>
-            <p>Heuristic-based prompt packing minimizing input context by 42%.</p>
+            <span class="mono-tag">CONTEXT ENGINEERING</span>
+            <h3>Sliding Window Trim Engine</h3>
+            <p>An isolated pre-tokenization utility utilizing an iterative truncation algorithm to prune redundant history blocks, slashing context input token overhead by 42%.</p>
             <div class="tech-pills"><span>Go</span><span>TypeScript</span><span>LLVM</span></div>
           </div>
           <div class="card reveal">
             <span class="mono-tag">INTERPRETABILITY</span>
             <h3>CircuitX</h3>
-            <p>Visual analyzer exposing feature circuit maps inside deep neural code models.</p>
+            <p>Visual analyzer exposing internal feature circuit paths inside deep neural weights and code LLMs.</p>
             <div class="tech-pills"><span>Python</span><span>WASM</span><span>D3.js</span></div>
           </div>
           <div class="card reveal">
-            <span class="mono-tag">TOOL</span>
+            <span class="mono-tag">GUARDRAIL SYSTEM</span>
             <h3>FactoryGate</h3>
-            <p>Autonomous compliance guardrails validating structural safety before merges.</p>
+            <p>Autonomous structural policy guardrails verifying safe agent state transitions before target branch ingestion.</p>
             <div class="tech-pills"><span>Node.js</span><span>GitHub Actions</span></div>
           </div>
         </div>
@@ -257,14 +257,6 @@
       </div>
     </section>
 
-    <section id="animations" class="section section-void">
-      <div class="container">
-        <h2 class="section-title">Motion studies</h2>
-        <p class="section-subtitle">Animated concepts and visual experiments.</p>
-        <div id="animations-grid" class="grid dynamic-grid"></div>
-      </div>
-    </section>
-
     <section id="articles" class="section section-surface">
       <div class="container">
         <h2 class="section-title">Thinking out loud</h2>
@@ -315,71 +307,45 @@
           container.innerHTML = '';
           data.forEach(item => container.appendChild(fallbackRenderer(item)));
         }
-      } catch (e) { console.warn(`Manifest data fetch failed for ${url}, utilizing hardcoded fallback assets.`); }
+      } catch (e) { console.warn(`Manifest data fetch failed for ${url}, checking alternative resources.`); }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      populateGrid('tools/index.json', 'tools-grid', item => {
-        const div = document.createElement('div'); div.className = 'card reveal';
-        div.innerHTML = `<span class="mono-tag">TOOL</span><h3>${item.title}</h3><p>${item.description}</p><div class="tech-pills">${item.tags.map(t=>`<span>${t}</span>`).join('')}</div><a href="${item.url}" class="card-link-overlay"></a>`;
-        return div;
-      });
-      populateGrid('animations/index.json', 'animations-grid', item => {
-        const div = document.createElement('div'); div.className = 'card reveal';
-        div.innerHTML = `<div class="canvas-preview-container"><canvas data-preview-type="${item.id}"></canvas></div><h3>${item.title}</h3><p>${item.description}</p><a href="${item.url}" class="card-link-overlay"></a>`;
-        return div;
-      });
+      // Dynamic rendering for Articles
       populateGrid('articles/index.json', 'articles-list', item => {
         const div = document.createElement('div'); div.className = 'article-row reveal';
         div.innerHTML = `<div class="article-meta-side"><span class="mono-date">${item.date}</span><span class="read-time">${item.readTime || '5 min'}</span></div><div class="article-content-side"><h3>${item.title}</h3><p>${item.excerpt}</p></div><a href="${item.url}" class="row-link-overlay">→</a>`;
         return div;
       });
+
+      // Unified, single tool engine payload parse targeting tools.json
+      const toolsGrid = document.getElementById('tools-grid');
+      if (!toolsGrid) return;
+
+      fetch('tools.json')
+        .then(response => {
+          if (!response.ok) throw new Error(`HTTP state: ${response.status}`);
+          return response.json();
+        })
+        .then(tools => {
+          toolsGrid.innerHTML = tools.map(tool => {
+            const pillElements = tool.tags.map(tag => `<span>${tag}</span>`).join('');
+            return `
+              <div class="card reveal" data-id="${tool.id}">
+                <span class="mono-tag">SHIPPED TOOL</span>
+                <h3>${tool.title}</h3>
+                <p>${tool.description}</p>
+                <div class="tech-pills">${pillElements}</div>
+                <a href="${tool.url}" class="card-link-overlay" aria-label="Open ${tool.title}"></a>
+              </div>
+            `;
+          }).join('');
+        })
+        .catch(error => {
+          console.error('Error loading config file tools.json:', error);
+          toolsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted);">Failed to load shipped tools configuration.</p>`;
+        });
     });
-
-    document.addEventListener('DOMContentLoaded', () => {
-  const toolsGrid = document.getElementById('tools-grid');
-
-  if (!toolsGrid) return;
-
-  // Fetch the data from your local tools.json file
-  fetch('tools.json')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-    .then(tools => {
-      // Clear out the grid before rendering (just in case)
-      toolsGrid.innerHTML = '';
-
-      // Map over your tools array and generate HTML cards
-      toolsGrid.innerHTML = tools.map(tool => {
-        // Render each tag inside a <span> matching your tech-pills structure
-        const pillElements = tool.tags
-          .map(tag => `<span>${tag}</span>`)
-          .join('');
-
-        return `
-          <div class="card reveal" data-id="${tool.id}">
-            <span class="mono-tag">SHIPPED TOOL</span>
-            <h3>${tool.title}</h3>
-            <p>${tool.description}</p>
-            <div class="tech-pills">
-              ${pillElements}
-            </div>
-            <!-- Interactive link overlay to cover the card area -->
-            <a href="${tool.url}" class="card-link-overlay" aria-label="Open ${tool.title}"></a>
-          </div>
-        `;
-      }).join('');
-    })
-    .catch(error => {
-      console.error('Error loading or parsing tools.json:', error);
-      toolsGrid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted);">Failed to load shipped tools configuration.</p>`;
-    });
-});
-    
   </script>
 </body>
 </html>
