@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agentic Backpressure Throttle // Iggy</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0c;
+            --panel-bg: #121214;
+            --border-color: #1f1f23;
+            --text-main: #f4f4f6;
+            --text-muted: #8a8a93;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
+        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); }
+
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+        .breadcrumb a:hover { color: var(--accent-blue); text-decoration: underline; text-underline-offset: 4px; }
+        .breadcrumb span { color: var(--text-main); }
+
+        .workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.2rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+        .btn:hover { background: #1d4ed8; }
+
+        /* Telemetry Components */
+        .token-pool-container {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1.25rem;
+        }
+
+        .pool-bar-bg {
+            background: #27272a;
+            height: 16px;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .pool-bar-fill {
+            background: var(--accent-blue);
+            height: 100%;
+            width: 100%;
+            transition: width 0.1s linear, background-color 0.3s ease;
+        }
+
+        .queue-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+        
+        .queue-item {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            padding: 0.85rem;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+        }
+
+        .priority-high { border-left: 3px solid var(--accent-green); }
+        .priority-low { border-left: 3px solid var(--accent-orange); }
+
+        .status-badge {
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .status-processing { background: rgba(37, 99, 235, 0.2); color: #93c5fd; }
+        .status-throttled { background: rgba(245, 158, 11, 0.2); color: #fde047; }
+        .status-completed { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+
+        .telemetry-log {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            height: 250px;
+            overflow-y: auto;
+            color: #d4d4d8;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <nav class="breadcrumb">
+                <a href="https://iggym.github.io/">Home</a> / <span>agentic-backpressure-throttle</span>
+            </nav>
+            <h1>Agentic Backpressure Throttle</h1>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Dynamic Token Leaky-Bucket // Cascading Latency Mitigator</p>
+        </div>
+        <div class="status" id="system-health">// GATEWAY: HEALTHY</div>
+    </header>
+
+    <main class="workspace">
+        <section class="panel">
+            <div class="panel-title">01 // Distributed Token Bucket (Global Capacity)</div>
+            <div class="token-pool-container">
+                <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.85rem;">
+                    <span>Available Capacity Engine Pool:</span>
+                    <span id="token-count" style="font-weight: bold; color: var(--accent-blue)">100,000 tokens</span>
+                </div>
+                <div class="pool-bar-bg">
+                    <div id="pool-fill" class="pool-bar-fill"></div>
+                </div>
+            </div>
+
+            <div class="panel-title" style="margin-top: 0.5rem;">02 // Ingress Task Traffic Streams</div>
+            <div class="queue-grid">
+                <div class="queue-item priority-high">
+                    <div>
+                        <div><strong>STREAM_01: LIVE_USER_PROMPT</strong></div>
+                        <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">Weight: HIGH PRIORITY // Demand: 35,000 tokens</div>
+                    </div>
+                    <span class="status-badge status-processing" id="badge-task1">PROCESSING</span>
+                </div>
+                <div class="queue-item priority-low">
+                    <div>
+                        <div><strong>STREAM_02: ASYNC_BATCH_SUMMARIZATION</strong></div>
+                        <div style="color: var(--text-muted); font-size: 0.75rem; margin-top: 0.25rem;">Weight: BACKGROUND DEFER // Demand: 75,000 tokens</div>
+                    </div>
+                    <span class="status-badge status-throttled" id="badge-task2">THROTTLED</span>
+                </div>
+            </div>
+            <button class="btn" id="trigger-btn" onclick="simulateTrafficCollapse()">Inject High-Concurrency Churn</button>
+        </section>
+
+        <section class="panel">
+            <div class="panel-title">03 // Real-Time Gateway Traffic Logs</div>
+            <div id="log-feed" class="telemetry-log">// Telemetry operational. Standby for load balancing injection...</div>
+        </section>
+    </main>
+
+    <script>
+        const logFeed = document.getElementById('log-feed');
+        let currentTokens = 100000;
+        const maxTokens = 100000;
+
+        function appendLog(msg, color = '#d4d4d8') {
+            const time = new Date().toISOString().slice(11, 19);
+            logFeed.innerHTML += `\n<span style="color: var(--text-muted)">[${time}]</span> <span style="color: ${color}">${msg}</span>`;
+            logFeed.scrollTop = logFeed.scrollHeight;
+        }
+
+        function updateUI(percentage, color) {
+            document.getElementById('token-count').innerText = `${currentTokens.toLocaleString()} tokens`;
+            const fill = document.getElementById('pool-fill');
+            fill.style.width = `${percentage}%`;
+            if (color) fill.style.color = color;
+        }
+
+        function simulateTrafficCollapse() {
+            document.getElementById('trigger-btn').disabled = true;
+            logFeed.innerHTML = '';
+            appendLog('🚨 Concurrency burst triggered. Total ingress pressure: 110,000 tokens.', 'var(--accent-orange)');
+            
+            // Deduct High Priority First
+            setTimeout(() => {
+                currentTokens -= 35000;
+                updateUI((currentTokens / maxTokens) * 100);
+                document.getElementById('badge-task1').className = "status-badge status-completed";
+                document.getElementById('badge-task1').innerText = "COMPLETED";
+                appendLog('✔ STREAM_01 prioritized. Dedicated context window packed and verified. (TTFT: 140ms).', 'var(--accent-green)');
+
+                // Inspect background backpressure limits
+                setTimeout(() => {
+                    appendLog('⚡ WARNING: Global Token Pool drops below critical safety watermark.', 'var(--accent-orange)');
+                    document.getElementById('system-health').innerText = "// GATEWAY: BACKPRESSURE ACTIVE";
+                    document.getElementById('system-health').style.color = "var(--accent-orange)";
+                    
+                    appendLog('🚫 STREAM_02 executing token bucket limit enforcement. Backpressure applied. Rate limited to maintain user tier buffers.', 'var(--accent-red)');
+                    
+                    // Simulate progressive token bucket replenishing architecture
+                    let replenishInterval = setInterval(() => {
+                        if(currentTokens < maxTokens) {
+                            currentTokens += 15000;
+                            if(currentTokens > maxTokens) currentTokens = maxTokens;
+                            updateUI((currentTokens / maxTokens) * 100);
+                            appendLog('⚙ Token replenishment algorithm executing (+15,000 tokens / tick)...');
+                        } else {
+                            clearInterval(replenishInterval);
+                            document.getElementById('badge-task2').className = "status-badge status-completed";
+                            document.getElementById('badge-task2').innerText = "COMPLETED";
+                            document.getElementById('system-health').innerText = "// GATEWAY: HEALTHY";
+                            document.getElementById('system-health').style.color = "var(--accent-green)";
+                            appendLog('✔ STREAM_02 deferred block successfully processed after backpressure queue resolved.', 'var(--accent-green)');
+                            document.getElementById('trigger-btn').disabled = false;
+                        }
+                    }, 1000);
+
+                }, 1000);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
