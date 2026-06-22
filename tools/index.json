@@ -43,23 +43,5 @@
     "url": "tools/deterministic-agent-stateboard.html",
     "featured": true,
     "date": "2026-04-15"
-  },
-   {
-    "id": "nanobanana-json-compiler",
-    "title": "NanoBanana Compiler",
-    "description": "interactive web compiler turns modular layout configurations directly into context-rich system prompts and structural configurations targeting the Nano Banana diagramming paradigm.",
-    "tags": ["Context Engineering", "Prompting", "Workflows"],
-    "url": "tools/nanobanana-json-compiler.html",
-    "featured": true,
-    "date": "2026-01-15"
-  },
-   {
-    "id": "prompt-matrix-evaluator",
-    "title": "Prompt Matrix Evaluator ",
-    "description": "comparative tool showcases the power of context optimization filters side-by-side, visually illustrating token reduction and constraint density tracking.",
-      "tags": ["Context Engineering", "Prompting", "Workflows"],
-    "url": "tools/prompt-matrix-evaluator.html",
-    "featured": true,
-    "date": "2026-01-15"
   }
 ]
