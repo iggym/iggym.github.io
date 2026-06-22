@@ -25,5 +25,14 @@
     "url": "tools/ai-aggregator.html",
     "featured": true,
     "date": "2026-01-15"
+  },
+   {
+    "id": "ai-aggregator",
+    "title": "Context Window Optimizer",
+    "description": "visualizes dynamic context window packing, sliding memory anchors, and token calculations.",
+    "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "url": "tools/context-window-optimizer.html",
+    "featured": true,
+    "date": "2026-01-15"
   }
 ]
