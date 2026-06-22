@@ -27,11 +27,20 @@
     "date": "2026-01-15"
   },
    {
-    "id": "ai-aggregator",
+    "id": "context-window-optimizer",
     "title": "Context Window Optimizer",
     "description": "visualizes dynamic context window packing, sliding memory anchors, and token calculations.",
     "tags": ["Context Engineering", "Prompting", "Workflows"],
     "url": "tools/context-window-optimizer.html",
+    "featured": true,
+    "date": "2026-01-15"
+  },
+   {
+    "id": "deterministic-agent-stateboard",
+    "title": "Agent Stateboard",
+    "description": "visualizes a rigorous, finite-state machine approach to multi-agent loops, completely eliminating open-ended conversational drift by forcing strict structural guardrails between transitions.",
+    "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "url": "tools/deterministic-agent-stateboard.html",
     "featured": true,
     "date": "2026-01-15"
   }
