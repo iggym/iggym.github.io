@@ -35,13 +35,43 @@
             align-items: flex-end;
         }
 
-        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; }
+        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
         header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); }
+
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--accent-blue);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        .breadcrumb span {
+            color: var(--text-main);
+        }
 
         .workspace {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 2rem;
+        }
+
+        @media (max-width: 900px) {
+            .workspace {
+                grid-template-columns: 1fr;
+            }
         }
 
         .panel {
@@ -81,7 +111,7 @@
         }
 
         select { width: 100%; cursor: pointer; }
-        textarea { width: 100%; height: 350px; resize: none; outline: none; }
+        textarea { width: 100%; height: 380px; resize: none; outline: none; }
         textarea:focus { border-color: var(--accent-blue); }
 
         /* Visualization Elements */
@@ -144,6 +174,9 @@
 
     <header>
         <div>
+            <nav class="breadcrumb">
+                <a href="https://iggym.github.io/">iggym.github.io</a> / <span>context-window-optimizer</span>
+            </nav>
             <h1>Context Window Optimizer</h1>
             <p style="font-size: 0.85rem; color: var(--text-muted);">Inverted Intelligence // Precision Token Architecture</p>
         </div>
@@ -151,6 +184,7 @@
     </header>
 
     <main class="workspace">
+        <!-- Input Configuration Panel -->
         <section class="panel">
             <div class="panel-title">
                 <span>01 // Prompt Ingestion Engine</span>
@@ -172,6 +206,7 @@ You are a context-optimized routing agent. Respond strictly in valid RFC-8259 co
 Design an autonomous architecture matrix mapping a dynamic feedback loop for local inference operations.</textarea>
         </section>
 
+        <!-- Live Metrics & Evaluation Panel -->
         <section class="panel">
             <div class="panel-title">
                 <span>02 // Context Token & Architecture Profiler</span>
