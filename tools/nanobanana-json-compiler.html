@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NanoBanana Compiler // Iggy</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0c;
+            --panel-bg: #121214;
+            --border-color: #1f1f23;
+            --text-main: #f4f4f6;
+            --text-muted: #8a8a93;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
+        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-blue); }
+
+        .breadcrumb { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+        .breadcrumb a:hover { color: var(--accent-blue); text-decoration: underline; text-underline-offset: 4px; }
+        .breadcrumb span { color: var(--text-main); }
+
+        .workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        .option-group { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+        label { font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+        input[type="checkbox"], select { background: #18181b; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 4px; }
+        select { width: 100%; font-family: var(--font-mono); font-size: 0.85rem; }
+
+        .output-box {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: #e4e4e7;
+            height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <nav class="breadcrumb">
+                <a href="https://iggym.github.io/">Home</a> / <span>nanobanana-json-compiler</span>
+            </nav>
+            <h1>NanoBanana Prompt Compiler</h1>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">CloudSpec Layout Matrix Builder</p>
+        </div>
+        <div class="status">// COMPILER: COLD INITIALIZED</div>
+    </header>
+
+    <main class="workspace">
+        <section class="panel">
+            <div class="panel-title">01 // Architectural Topology Controls</div>
+            
+            <div style="margin-top:0.5rem;">
+                <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono)">COMPUTE ENGINE TIER</span>
+                <select id="compute-tier" onchange="compileSpec()">
+                    <option value="Serverless Edge (Cloudflare/AWS)">Serverless Edge Isolation Matrix</option>
+                    <option value="Distributed Micro-VPC Containers">Distributed Micro-VPC Mesh</option>
+                    <option value="Bare-Metal Bare Nodes">High-Performance Bare-Metal Clusters</option>
+                </select>
+            </div>
+
+            <div class="option-group">
+                <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono)">TOPOLOGY ASSETS ENFORCED</span>
+                <label><input type="checkbox" id="layer-ingress" checked onchange="compileSpec()"> Ingress Edge Rate Limiter Router</label>
+                <label><input type="checkbox" id="layer-cache" checked onchange="compileSpec()"> Transient Redis Context Buffer Cache</label>
+                <label><input type="checkbox" id="layer-db" onchange="compileSpec()"> Globally Replicated Relational Storage</label>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-title">02 // Generated Nano Banana Spec JSON Payload</div>
+            <div id="json-output" class="output-box"></div>
+        </section>
+    </main>
+
+    <script>
+        function compileSpec() {
+            const tier = document.getElementById('compute-tier').value;
+            const ingress = document.getElementById('layer-ingress').checked;
+            const cache = document.getElementById('layer-cache').checked;
+            const db = document.getElementById('layer-db').checked;
+
+            const nodes = [];
+            if (ingress) nodes.push({ id: "node_edge_ingress", engine: "Proxy.V1", parameters: ["rate_limit_10k", "tls_1.3"] });
+            nodes.push({ id: "node_compute_core", engine: tier, sizing: "dynamic_scale" });
+            if (cache) nodes.push({ id: "node_context_cache", engine: "Redis.Transient", allocation: "16GB_RAM" });
+            if (db) nodes.push({ id: "node_persistent_ledger", engine: "PostgreSQL.Distributed", replica: "multi_region" });
+
+            const payload = {
+                "$schema": "https://nanobanana.pro/schemas/v1/topology.json",
+                "generator_origin": "Iggy-CloudSpec-Generator",
+                "timestamp_epoch": Date.now(),
+                "execution_matrix": {
+                    "architecture_tier": tier,
+                    "topology_mesh": nodes
+                }
+            };
+
+            document.getElementById('json-output').innerText = JSON.stringify(payload, null, 4);
+        }
+
+        window.onload = compileSpec;
+    </script>
+</body>
+</html>
