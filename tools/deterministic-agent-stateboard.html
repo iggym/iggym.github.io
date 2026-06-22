@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Stateboard // Iggy</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0c;
+            --panel-bg: #121214;
+            --border-color: #1f1f23;
+            --text-main: #f4f4f6;
+            --text-muted: #8a8a93;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
+        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); }
+
+        .breadcrumb {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+        .breadcrumb a:hover { color: var(--accent-blue); text-decoration: underline; text-underline-offset: 4px; }
+        .breadcrumb span { color: var(--text-main); }
+
+        .workspace { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; }
+        @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn {
+            background: var(--accent-blue);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.2rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+        .btn:hover { background: #1d4ed8; }
+
+        /* Grid State Map */
+        .state-map { display: flex; flex-direction: column; gap: 1rem; }
+        .state-node {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .state-node.active { border-color: var(--accent-blue); box-shadow: 0 0 12px rgba(37, 99, 235, 0.15); }
+        .state-node.success { border-color: var(--accent-green); }
+        
+        .node-info { display: flex; flex-direction: column; }
+        .node-name { font-family: var(--font-mono); font-size: 0.9rem; font-weight: bold; }
+        .node-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
+        
+        .node-badge {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            background: #27272a;
+            color: var(--text-muted);
+        }
+        .active .node-badge { background: rgba(37, 99, 235, 0.2); color: #93c5fd; }
+        .success .node-badge { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+
+        .telemetry-feed {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            height: 380px;
+            overflow-y: auto;
+            color: #d4d4d8;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <nav class="breadcrumb">
+                <a href="https://iggym.github.io/">Home</a> / <span>deterministic-agent-stateboard</span>
+            </nav>
+            <h1>Deterministic Agent Stateboard</h1>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">State Machine Isolation // Anti-Hallucination Pipeline</p>
+        </div>
+        <div class="status" id="global-status">// ORCHESTRATOR: IDLE</div>
+    </header>
+
+    <main class="workspace">
+        <section class="panel">
+            <div class="panel-title">01 // Finite Graph Map</div>
+            <div class="state-map">
+                <div id="node-planner" class="state-node">
+                    <div class="node-info">
+                        <span class="node-name">PLANNER_AGENT</span>
+                        <span class="node-desc">Deconstructs macro execution schema constraints.</span>
+                    </div>
+                    <span class="node-badge" id="badge-planner">PENDING</span>
+                </div>
+                <div id="node-executor" class="state-node">
+                    <div class="node-info">
+                        <span class="node-name">EXECUTOR_NODE</span>
+                        <span class="node-desc">Generates functional baseline artifact.</span>
+                    </div>
+                    <span class="node-badge" id="badge-executor">PENDING</span>
+                </div>
+                <div id="node-critic" class="state-node">
+                    <div class="node-info">
+                        <span class="node-name">CRITIC_GUARDRAIL</span>
+                        <span class="node-desc">Enforces mathematical validation & RFC schema check.</span>
+                    </div>
+                    <span class="node-badge" id="badge-critic">PENDING</span>
+                </div>
+            </div>
+            <button class="btn" onclick="runSimulation()">Trigger Orchestration Sequence</button>
+        </section>
+
+        <section class="panel">
+            <div class="panel-title">02 // Live Telemetry & Verification Stream</div>
+            <div id="telemetry" class="telemetry-feed">// System ready. Click trigger to monitor deterministic context flows.</div>
+        </section>
+    </main>
+
+    <script>
+        const feed = document.getElementById('telemetry');
+        
+        function log(msg, color = '#d4d4d8') {
+            const timestamp = new Date().toISOString().slice(11, 19);
+            feed.innerHTML += `\n<span style="color: var(--text-muted)">[${timestamp}]</span> <span style="color: ${color}">${msg}</span>`;
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function updateNode(id, status, cls) {
+            const node = document.getElementById(`node-${id}`);
+            const badge = document.getElementById(`badge-${id}`);
+            node.className = `state-node ${cls}`;
+            badge.innerText = status;
+        }
+
+        function runSimulation() {
+            feed.innerHTML = '';
+            document.getElementById('global-status').innerText = '// ORCHESTRATOR: RUNNING';
+            document.getElementById('global-status').style.color = 'var(--accent-blue)';
+            
+            // Phase 1: Planner
+            updateNode('planner', 'RUNNING', 'active');
+            updateNode('executor', 'PENDING', '');
+            updateNode('critic', 'PENDING', '');
+            log('Initializing PLANNER_AGENT sequence...', 'var(--accent-blue)');
+            
+            setTimeout(() => {
+                log('✔ Macro constraints mapped. Tokens Consumed: 342t.');
+                updateNode('planner', 'VALIDATED', 'success');
+                
+                // Phase 2: Executor
+                updateNode('executor', 'RUNNING', 'active');
+                log('Handing off state to EXECUTOR_NODE...', 'var(--accent-blue)');
+                
+                setTimeout(() => {
+                    log('✔ Compilation file array written to transient buffer memory.');
+                    log('Tokens Consumed: 894t.');
+                    updateNode('executor', 'COMPILED', 'success');
+                    
+                    // Phase 3: Critic
+                    updateNode('critic', 'RUNNING', 'active');
+                    log('Invoking CRITIC_GUARDRAIL strict JSON schema match...', 'var(--accent-blue)');
+                    
+                    setTimeout(() => {
+                        log('✔ RFC validation passed. Hallucination probability: 0.000%.');
+                        log('Tokens Consumed: 215t.');
+                        updateNode('critic', 'SECURED', 'success');
+                        
+                        document.getElementById('global-status').innerText = '// ORCHESTRATOR: HALTED (SUCCESS)';
+                        document.getElementById('global-status').style.color = 'var(--accent-green)';
+                        log('\n// SEQUENCE COMPLETE. Total Pipeline Overhead: 1,453 tokens.', 'var(--accent-green)');
+                    }, 1200);
+                }, 1200);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
