@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Matrix Evaluator // Iggy</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0c;
+            --panel-bg: #121214;
+            --border-color: #1f1f23;
+            --text-main: #f4f4f6;
+            --text-muted: #8a8a93;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
+        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); }
+
+        .breadcrumb { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
+        .breadcrumb a:hover { color: var(--accent-blue); text-decoration: underline; text-underline-offset: 4px; }
+        .breadcrumb span { color: var(--text-main); }
+
+        .workspace { display: flex; flex-direction: column; gap: 2rem; }
+        
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            width: 100%; background: #18181b; border: 1px solid var(--border-color);
+            color: var(--text-main); border-radius: 4px; padding: 0.75rem;
+            font-family: var(--font-mono); font-size: 0.85rem; height: 100px; resize: none; outline: none;
+        }
+        textarea:focus { border-color: var(--accent-blue); }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        @media (max-width: 768px) { .matrix-grid { grid-template-columns: 1fr; } }
+
+        .matrix-card {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+
+        .card-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; margin-bottom: 0.75rem;
+        }
+        .card-tag { font-family: var(--font-mono); font-size: 0.75rem; font-weight: bold; }
+        .card-meta { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); }
+
+        .compiled-text { font-size: 0.85rem; white-space: pre-wrap; color: #d4d4d8; min-height: 120px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <nav class="breadcrumb">
+                <a href="https://iggym.github.io/">Home</a> / <span>prompt-matrix-evaluator</span>
+            </nav>
+            <h1>Prompt Matrix Evaluator</h1>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Mechanistic Prompt Engineering Analysis Matrix</p>
+        </div>
+        <div class="status">// FILTERS: DEPLOYED</div>
+    </header>
+
+    <main class="workspace">
+        <section class="panel">
+            <div class="panel-title">Raw Objective Ingestion Window</div>
+            <textarea id="raw-prompt" oninput="processMatrix()">Provide a completely detailed code architectural system to process high volume financial ledger updates safely with multiple fallbacks if things crash.</textarea>
+            
+            <div class="matrix-grid">
+                <div class="matrix-card">
+                    <div class="card-header">
+                        <span class="card-tag" style="color: var(--accent-blue)">01 // FRAMEWORK CLEANSED</span>
+                        <span class="card-meta" id="meta-cleansed">Est. Tokens: --</span>
+                    </div>
+                    <div class="compiled-text" id="out-cleansed"></div>
+                </div>
+
+                <div class="matrix-card">
+                    <div class="card-header">
+                        <span class="card-tag" style="color: var(--accent-green)">02 // MINIMALIST CONSTRAINT LAYER</span>
+                        <span class="card-meta" id="meta-minimalist">Est. Tokens: --</span>
+                    </div>
+                    <div class="compiled-text" id="out-minimalist"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function processMatrix() {
+            const raw = document.getElementById('raw-prompt').value;
+            
+            // Context Optimization Filters applied purely client-side
+            const cleansed = `[TASK_SPEC]\nExecute transaction streaming.\nContext Profile Focus: High Volume Financial Ledgers.\nParameters: [Fault-Tolerant, Multi-Region Fallback].\n\nObjective Query:\n${raw}`;
+            
+            const minimalist = `# SYSTEM PROMPT INTERPOLATION\n- Output format: Clean programmatic logic mappings only.\n- Ignore generic explanation boilerplate wrappers.\n- Strict execution constraints active.\n\nTarget Vector: ${raw.replace(/(Provide a completely detailed|if things crash)/gi, "").trim()}`;
+
+            document.getElementById('out-cleansed').innerText = cleansed;
+            document.getElementById('out-minimalist').innerText = minimalist;
+
+            document.getElementById('meta-cleansed').innerText = `Est. Tokens: ${Math.ceil(cleansed.length / 4)}t`;
+            document.getElementById('meta-minimalist').innerText = `Est. Tokens: ${Math.ceil(minimalist.length / 4)}t`;
+        }
+
+        window.onload = processMatrix;
+    </script>
+</body>
+</html>
