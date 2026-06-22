@@ -51,5 +51,13 @@
     "url": "tools/nanobanana-json-compiler.html",
     "featured": true,
     "date": "2026-01-15"
+  },
+   {
+    "id": "prompt-matrix-evaluator",
+    "title": "Prompt Matrix Evaluator ",
+    "description": "comparative tool showcases the power of context optimization filters side-by-side, visually illustrating token reduction and constraint density tracking."],
+    "url": "tools/prompt-matrix-evaluator.html",
+    "featured": true,
+    "date": "2026-01-15"
   }
 ]
