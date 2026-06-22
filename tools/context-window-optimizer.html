@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context Window Optimizer // Iggy</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0c;
+            --panel-bg: #121214;
+            --border-color: #1f1f23;
+            --text-main: #f4f4f6;
+            --text-muted: #8a8a93;
+            --accent-blue: #2563eb;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; }
+        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .panel-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .config-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        select, textarea {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            border-radius: 4px;
+            padding: 0.75rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        select { width: 100%; cursor: pointer; }
+        textarea { width: 100%; height: 350px; resize: none; outline: none; }
+        textarea:focus { border-color: var(--accent-blue); }
+
+        /* Visualization Elements */
+        .meter-container {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            height: 24px;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .meter-segment {
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        #segment-system { background-color: var(--accent-blue); width: 0%; }
+        #segment-user { background-color: var(--accent-green); width: 0%; }
+        #segment-free { background-color: #27272a; width: 100%; }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .metric-card {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .metric-val { font-family: var(--font-mono); font-size: 1.1rem; font-weight: bold; color: var(--text-main); }
+        .metric-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.25rem; }
+
+        .output-stream {
+            background: #18181b;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+            height: 350px;
+            overflow-y: auto;
+            color: #d4d4d8;
+        }
+
+        .anchor-tag {
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>Context Window Optimizer</h1>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Inverted Intelligence // Precision Token Architecture</p>
+        </div>
+        <div class="status">// VOLTAGE ENGINE: ACTIVE</div>
+    </header>
+
+    <main class="workspace">
+        <section class="panel">
+            <div class="panel-title">
+                <span>01 // Prompt Ingestion Engine</span>
+                <span>Vanilla Layer</span>
+            </div>
+            
+            <div class="config-row">
+                <select id="context-limit" onchange="calculateContext()">
+                    <option value="8192">Target Model: 8K Window (e.g., GPT-4o-mini baseline)</option>
+                    <option value="32768" selected>Target Model: 32K Window (Standard Execution)</option>
+                    <option value="131072">Target Model: 128K Window (Enterprise Tier)</option>
+                </select>
+            </div>
+
+            <textarea id="prompt-input" placeholder="[SYSTEM_PROMPT]\n// Define rules here...\n\n[USER_CONTENT]\n// Drop raw payload content here..." oninput="calculateContext()">[SYSTEM_PROMPT]
+You are a context-optimized routing agent. Respond strictly in valid RFC-8259 compliance layouts. Do not append conversational text wrappers.
+
+[USER_CONTENT]
+Design an autonomous architecture matrix mapping a dynamic feedback loop for local inference operations.</textarea>
+        </section>
+
+        <section class="panel">
+            <div class="panel-title">
+                <span>02 // Context Token & Architecture Profiler</span>
+                <span>Real-Time Payload</span>
+            </div>
+
+            <div class="meter-container">
+                <div id="segment-system" class="meter-segment"></div>
+                <div id="segment-user" class="meter-segment"></div>
+                <div id="segment-free" class="meter-segment"></div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div id="val-system" class="metric-val">0</div>
+                    <div class="metric-lbl">System Tokens</div>
+                </div>
+                <div class="metric-card">
+                    <div id="val-user" class="metric-val">0</div>
+                    <div class="metric-lbl">User Tokens</div>
+                </div>
+                <div class="metric-card">
+                    <div id="val-efficiency" class="metric-val">0%</div>
+                    <div class="metric-lbl">Density Rate</div>
+                </div>
+            </div>
+
+            <div class="panel-title" style="margin-top: 1rem;">03 // Optimized Output Context Window</div>
+            <div id="output-view" class="output-stream"></div>
+        </section>
+    </main>
+
+    <script>
+        function estimateTokens(text) {
+            if (!text) return 0;
+            // Clean architectural token metric estimator: ~4 characters per token heuristic
+            return Math.ceil(text.length / 4);
+        }
+
+        function calculateContext() {
+            const input = document.getElementById('prompt-input').value;
+            const limit = parseInt(document.getElementById('context-limit').value);
+            
+            let systemText = "";
+            let userText = "";
+
+            // Simple robust regex parsing to extract blocks cleanly without exterior tooling
+            const systemMatch = input.match(/\[SYSTEM_PROMPT\]([\s\S]*?)(?=\[USER_CONTENT\]|$)/i);
+            const userMatch = input.match(/\[USER_CONTENT\]([\s\S]*?)$/i);
+
+            if (systemMatch && systemMatch[1]) systemText = systemMatch[1].trim();
+            if (userMatch && userMatch[1]) userText = userMatch[1].trim();
+            
+            // If no boundaries found, classify the entire bucket as User space
+            if (!systemMatch && !userMatch) {
+                userText = input;
+            }
+
+            const systemTokens = estimateTokens(systemText);
+            const userTokens = estimateTokens(userText);
+            const totalUsed = systemTokens + userTokens;
+            
+            // Calculate scale dynamics
+            const systemPct = Math.min((systemTokens / limit) * 100, 100);
+            const userPct = Math.min((userTokens / limit) * 100, 100 - systemPct);
+            const freePct = 100 - (systemPct + userPct);
+
+            // Live transform UI layout segments
+            document.getElementById('segment-system').style.width = systemPct + '%';
+            document.getElementById('segment-user').style.width = userPct + '%';
+            document.getElementById('segment-free').style.width = freePct + '%';
+
+            // Numbers update
+            document.getElementById('val-system').innerText = systemTokens.toLocaleString();
+            document.getElementById('val-user').innerText = userTokens.toLocaleString();
+            
+            const density = limit > 0 ? Math.round((totalUsed / limit) * 100) : 0;
+            document.getElementById('val-efficiency').innerText = density + '%';
+
+            // Generate engineered output payload visualization
+            const outputView = document.getElementById('output-view');
+            outputView.innerHTML = `<span class="anchor-tag">// ANCHOR: SYSTEM DESIGN MATRIX (${systemTokens} t)</span>\n${systemText}\n\n<span class="anchor-tag">// SLIDING WINDOW: TRANSACTION CONTENT (${userTokens} t)</span>\n${userText}`;
+        }
+
+        // Initialize immediately on document rendering completion
+        window.onload = calculateContext;
+    </script>
+</body>
+</html>
