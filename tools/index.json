@@ -1,4 +1,3 @@
-
 [
   {
     "id": "context-extractor",
@@ -18,7 +17,7 @@
     "featured": true,
     "date": "2026-03-19"
   },
-   {
+  {
     "id": "ai-aggregator",
     "title": "Multi-Model Workspace Aggregator",
     "description": "Multi-Model Workspace Aggregator.",
@@ -27,7 +26,7 @@
     "featured": true,
     "date": "2026-01-15"
   },
-   {
+  {
     "id": "context-window-optimizer",
     "title": "Context Window Optimizer",
     "description": "visualizes dynamic context window packing, sliding memory anchors, and token calculations.",
@@ -36,7 +35,7 @@
     "featured": true,
     "date": "2026-01-15"
   },
-   {
+  {
     "id": "deterministic-agent-stateboard",
     "title": "Agent Stateboard",
     "description": "visualizes a rigorous, finite-state machine approach to multi-agent loops, completely eliminating open-ended conversational drift by forcing strict structural guardrails between transitions.",
@@ -44,9 +43,8 @@
     "url": "tools/deterministic-agent-stateboard.html",
     "featured": true,
     "date": "2026-04-15"
-  }
-,
-   {
+  },
+  {
     "id": "nanobanana-json-compiler",
     "title": "NanoBanana Compiler",
     "description": "interactive web compiler turns modular layout configurations directly into context-rich system prompts and structural configurations targeting the Nano Banana diagramming paradigm.",
@@ -55,15 +53,13 @@
     "featured": true,
     "date": "2026-01-15"
   },
-   {
+  {
     "id": "prompt-matrix-evaluator",
     "title": "Prompt Matrix Evaluator",
     "description": "comparative tool showcases the power of context optimization filters side-by-side, visually illustrating token reduction and constraint density tracking.",
-      "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "tags": ["Context Engineering", "Prompting", "Workflows"],
     "url": "tools/prompt-matrix-evaluator.html",
     "featured": true,
     "date": "2026-01-15"
   }
 ]
-
-
