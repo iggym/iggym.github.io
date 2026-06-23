@@ -44,36 +44,35 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  async function loadNews() {
-    try {
-      const res = await fetch(endpoint);
-      if (!res.ok) throw new Error();
-      const data = await res.json();
-      globalNewsCache = data.items || [];
-      
-      renderFilterButtons();
-      renderNews(globalNewsCache);
-    } catch (err) {
-      if(grid) {
-        grid.innerHTML = `
-          <div style="grid-column: 1/-1; text-align:center; padding: 3rem 0;">
-            <p style="color:var(--muted); margin-bottom:1rem;">Feed infrastructure processing window offline.</p>
-            <button id="retry-feed" class="btn btn-secondary" style="padding:0.4rem 1rem; font-size:0.8rem;">Retry Pipeline Connections</button>
-          </div>`;
-        document.getElementById("retry-feed")?.addEventListener("click", () => {
-          grid.innerHTML = '<div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>';
-          loadNews();
-        });
-      }
-    }
-  }
-
   function renderFilterButtons() {
     if (!filterTabsContainer) return;
     
-    // Dynamically pull unique tags from active array (Research, Digest, Google, OpenAI)
-    const uniqueTags = [...new Set(globalNewsCache.map(item => item.source_tag))];
+    // Extract unique tags, filtering out empty or falsy values
+    let uniqueTags = [...new Set(globalNewsCache.map(item => item.source_tag).filter(Boolean))];
     
+    // Fallback: If your deployed worker hasn't been updated yet, derive categories from source names
+    if (uniqueTags.length === 0 && globalNewsCache.length > 0) {
+      uniqueTags = [...new Set(globalNewsCache.map(item => {
+        const name = (item.source_name || "").toLowerCase();
+        if (name.includes("arxiv") || name.includes("post") || name.includes("hugging")) return "Research";
+        if (name.includes("verge")) return "Digest";
+        if (name.includes("google")) return "Google";
+        if (name.includes("openai")) return "OpenAI";
+        return "Signals";
+      }))];
+      
+      // Retroactively fix the cache items so filtering works seamlessly on legacy payloads
+      globalNewsCache.forEach(item => {
+        const name = (item.source_name || "").toLowerCase();
+        if (name.includes("arxiv") || name.includes("post") || name.includes("hugging")) item.source_tag = "Research";
+        else if (name.includes("verge")) item.source_tag = "Digest";
+        else if (name.includes("google")) item.source_tag = "Google";
+        else if (name.includes("openai")) item.source_tag = "OpenAI";
+        else item.source_tag = "Signals";
+      });
+    }
+    
+    // Clear and build the button set starting with the global filter
     filterTabsContainer.innerHTML = `<button class="filter-btn active" data-filter="all">All</button>`;
     
     uniqueTags.forEach(tag => {
@@ -96,10 +95,34 @@ document.addEventListener("DOMContentLoaded", () => {
       if (filter === "all") {
         renderNews(globalNewsCache);
       } else {
-        const filtered = globalNewsCache.filter(item => item.source_tag.toLowerCase() === filter.toLowerCase());
+        const filtered = globalNewsCache.filter(item => (item.source_tag || "").toLowerCase() === filter.toLowerCase());
         renderNews(filtered);
       }
     };
+  }
+
+  async function loadNews() {
+    try {
+      const res = await fetch(endpoint);
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      globalNewsCache = data.items || [];
+      
+      renderFilterButtons();
+      renderNews(globalNewsCache);
+    } catch (err) {
+      if(grid) {
+        grid.innerHTML = `
+          <div style="grid-column: 1/-1; text-align:center; padding: 3rem 0;">
+            <p style="color:var(--muted); margin-bottom:1rem;">Feed infrastructure processing window offline.</p>
+            <button id="retry-feed" class="btn btn-secondary" style="padding:0.4rem 1rem; font-size:0.8rem;">Retry Pipeline Connections</button>
+          </div>`;
+        document.getElementById("retry-feed")?.addEventListener("click", () => {
+          grid.innerHTML = '<div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>';
+          loadNews();
+        });
+      }
+    }
   }
 
   loadNews();
