@@ -29,6 +29,11 @@
     /* Critical Inline CSS for instant painting */
     body { background-color: #0A0A0B; color: #C8C8D0; margin: 0; font-family: 'DM Sans', sans-serif; }
     .hero-section { min-height: 100vh; display: flex; align-items: center; position: relative; overflow: hidden; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+    
+    /* Layout utilities for semantic block-linking structural flow */
+    .card { position: relative; transition: transform 0.2s ease, border-color 0.2s ease; }
+    .card:hover { border-color: var(--accent-color, #FF4D00); transform: translateY(-2px); }
+    .card-link-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 2; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -101,30 +106,39 @@
       <div class="container">
         <h2 class="section-title">What I build</h2>
         <div id="featured-grid" class="grid dynamic-grid">
+          
           <div class="card reveal">
             <span class="mono-tag">AGENT ARCHITECTURE</span>
             <h3>Deterministic Agent Supervisor</h3>
             <p>State-machine-constrained multi-agent engine using structured outputs to execute infrastructure updates without non-deterministic execution drift.</p>
             <div class="tech-pills"><span>Python</span><span>Rust</span><span>Anthropic API</span></div>
+            <a href="https://github.com/iggym/deterministic-agent-upervisor" target="_blank" rel="noopener" class="card-link-overlay" aria-label="Open Deterministic Agent Supervisor repository"></a>
           </div>
+
           <div class="card reveal">
             <span class="mono-tag">CONTEXT ENGINEERING</span>
             <h3>Sliding Window Trim Engine</h3>
             <p>An isolated pre-tokenization utility utilizing an iterative truncation algorithm to prune redundant history blocks, slashing context input token overhead by 42%.</p>
             <div class="tech-pills"><span>Go</span><span>TypeScript</span><span>LLVM</span></div>
+            <a href="https://github.com/iggym/sliding-window-trim-engine" target="_blank" rel="noopener" class="card-link-overlay" aria-label="Open Sliding Window Trim Engine repository"></a>
           </div>
+
           <div class="card reveal">
             <span class="mono-tag">INTERPRETABILITY</span>
             <h3>CircuitX</h3>
             <p>Visual analyzer exposing internal feature circuit paths inside deep neural weights and code LLMs.</p>
             <div class="tech-pills"><span>Python</span><span>WASM</span><span>D3.js</span></div>
+            <a href="https://github.com/iggym/circuit-x" target="_blank" rel="noopener" class="card-link-overlay" aria-label="Open CircuitX repository"></a>
           </div>
+
           <div class="card reveal">
             <span class="mono-tag">GUARDRAIL SYSTEM</span>
             <h3>FactoryGate</h3>
             <p>Autonomous structural policy guardrails verifying safe agent state transitions before target branch ingestion.</p>
             <div class="tech-pills"><span>Node.js</span><span>GitHub Actions</span></div>
+            <a href="https://github.com/iggym/factory-gate" target="_blank" rel="noopener" class="card-link-overlay" aria-label="Open FactoryGate repository"></a>
           </div>
+
         </div>
       </div>
     </section>
