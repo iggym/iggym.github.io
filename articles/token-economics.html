@@ -1,0 +1,20 @@
+'+');
+                }
+                updateM5();
+            }
+        });
+    });
+    function updateM5() {
+        let total = 0;
+        toggles.forEach(toggle => {
+            const next = toggle.parentElement.nextElementSibling;
+            if(next && next.style.display !== 'none') {
+                total += parseInt(toggle.getAttribute('data-cost'));
+            }
+        });
+        document.getElementById('m5-total').innerText = total + " tokens";
+    }
+</script>
+
+</body>
+</html>
