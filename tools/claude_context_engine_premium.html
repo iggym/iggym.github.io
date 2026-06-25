@@ -13,6 +13,8 @@
             --text-muted: #64748b;
             --accent-glow: #3b82f6;
             --accent-success: #10b981;
+            --accent-error: #ef4444;
+            --accent-error-bg: #2d1922;
         }
 
         * {
@@ -130,6 +132,12 @@
         .workspace-area:focus {
             border-color: var(--accent-glow);
             box-shadow: 0 0 0 1px var(--accent-glow);
+        }
+
+        .workspace-area.error-state {
+            border-color: var(--accent-error);
+            background-color: var(--accent-error-bg);
+            color: #fca5a5;
         }
 
         .workflow-controls {
@@ -255,7 +263,7 @@
                 <h1>Claude Context Engine</h1>
                 <span>PREMIUM CONTEXT ORCHESTRATOR</span>
             </div>
-            <a href="https://iggym.github.io/#tools" class="nav-link">link</a>
+            <a href="https://iggym.github.io/#tools" class="nav-link">Tools Home</a>
         </div>
         <div class="header-controls">
             <div class="advanced-toggle" onclick="toggleAdvanced()">
@@ -266,7 +274,6 @@
     </header>
 
     <main class="app-container">
-        <!-- Input Panel -->
         <section class="pane">
             <div class="pane-header">
                 <span class="pane-title">Raw Context Matrix</span>
@@ -293,7 +300,6 @@
             <button class="btn-primary" onclick="compilePipeline()">Compile Context</button>
         </section>
 
-        <!-- Output Panel -->
         <section class="pane">
             <div class="pane-header">
                 <span class="pane-title">Engine Output (Optimized Pipeline)</span>
@@ -347,11 +353,29 @@
             panel.classList.toggle('visible', check.checked);
         }
 
+        function interpretError(errorMessage) {
+            const low = errorMessage.toLowerCase();
+            if (low.includes("api_key") || low.includes("api key") || low.includes("invalid key")) {
+                return "TRANSFORMATION FAILED:\n\n[Reason] The Cloudflare Environment variable GEMINI_API_KEY is missing, expired, or typed incorrectly.\n\n[Remedy] Check your Cloudflare Workers Dashboard -> Settings -> Variables and Secrets panel and confirm the Secret matches your Google AI key.";
+            }
+            if (low.includes("method not allowed") || low.includes("405")) {
+                return "TRANSFORMATION FAILED:\n\n[Reason] Worker routing rule conflict (HTTP 405 Method Not Allowed).\n\n[Remedy] Confirm your Cloudflare code editor has deployed the updated script that includes the top-level OPTIONS CORS handshake handling logic.";
+            }
+            if (low.includes("quota") || low.includes("rate limit") || low.includes("429")) {
+                return "TRANSFORMATION FAILED:\n\n[Reason] Free Tier Rate Limits saturated (HTTP 429).\n\n[Remedy] Wait 60 seconds for the token window bucket allocation reset, then re-click Compile Context.";
+            }
+            if (low.includes("fetch") || low.includes("network") || low.includes("failed to fetch")) {
+                return "TRANSFORMATION FAILED:\n\n[Reason] Secure Edge Handshake broken.\n\n[Remedy] Confirm you are connected to the network or verify that the cloudflare worker subdomain route is online.";
+            }
+            return `TRANSFORMATION FAILED:\n\n[Details] ${errorMessage}\n\n[Action] Re-verify context matrix syntax configurations or try running compilation again.`;
+        }
+
         async function compilePipeline() {
             let rawText = document.getElementById('rawInput').value;
             if (!rawText.trim()) return;
 
             const outputBox = document.getElementById('compiledOutput');
+            outputBox.classList.remove('error-state');
             outputBox.value = "Executing transformation via proxy pipeline...";
 
             if (document.getElementById('vacuumToggle').checked) {
@@ -378,16 +402,18 @@
                     const improvement = Math.max(0, Math.round(((rawText.length - data.result.length) / rawText.length) * 100));
                     document.getElementById('outputStats').innerText = `Token Efficiency: +${improvement}%`;
                 } else {
-                    outputBox.value = `Error: ${data.error}`;
+                    outputBox.classList.add('error-state');
+                    outputBox.value = interpretError(data.error || "Unknown edge payload exception");
                 }
             } catch (err) {
-                outputBox.value = `Network Failure linking to Edge: ${err.message}`;
+                outputBox.classList.add('error-state');
+                outputBox.value = interpretError(err.message);
             }
         }
 
         function copyToClipboard() {
             const output = document.getElementById('compiledOutput');
-            if (!output.value || output.value.startsWith("Executing")) return;
+            if (!output.value || output.value.startsWith("Executing") || output.value.startsWith("TRANSFORMATION FAILED")) return;
             
             navigator.clipboard.writeText(output.value);
             
