@@ -1,638 +1,1431 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Token Window Economics</title>
-    <style>
-        :root {
-            --bg: #09090b;
-            --surface: #121214;
-            --surface-accent: #18181b;
-            --border: #27272a;
-            --text: #e4e4e7;
-            --text-muted: #a1a1aa;
-            --text-bright: #fafafa;
-            --accent: #38bdf8;
-            --accent-pink: #ec4899;
-            --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --mono: "SF Mono", SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Token Window Economics — Ignatius Mwangi</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;1,300&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+  :root {
+    --void: #080808;
+    --surface: #111111;
+    --surface-2: #1a1a1a;
+    --border: #252525;
+    --text: #e8e8e8;
+    --text-dim: #888;
+    --text-faint: #444;
+    --orange: #FF4D00;
+    --orange-dim: rgba(255,77,0,0.15);
+    --orange-faint: rgba(255,77,0,0.05);
+    --green: #00ff88;
+    --green-dim: rgba(0,255,136,0.12);
+    --yellow: #ffd700;
+    --red: #ff3333;
+    --blue: #4488ff;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+    --display: 'Fraunces', serif;
+  }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: var(--sans);
-            line-height: 1.6;
-            padding: 40px 20px;
-            -webkit-font-smoothing: antialiased;
-        }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-        }
+  html { scroll-behavior: smooth; }
 
-        header {
-            margin-bottom: 48px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 32px;
-        }
+  body {
+    background: var(--void);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
 
-        .home-link {
-            display: inline-block;
-            font-family: var(--mono);
-            font-size: 13px;
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-bottom: 24px;
-            transition: color 0.2s;
-        }
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-brand {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .nav-home {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--orange);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    border: 1px solid var(--orange);
+    padding: 4px 14px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .nav-home:hover { background: var(--orange); color: var(--void); }
 
-        .home-link:hover {
-            color: var(--accent);
-        }
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--orange);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.12;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--orange);
+  }
+  .hero-subtitle {
+    font-family: var(--sans);
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    max-width: 640px;
+    margin-bottom: 3rem;
+    line-height: 1.8;
+  }
 
-        h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-bright);
-            line-height: 1.2;
-            margin-bottom: 16px;
-            letter-spacing: -0.5px;
-        }
+  /* TOKEN BUDGET METER — signature element */
+  .budget-meter {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    font-family: var(--mono);
+    margin-bottom: 3rem;
+  }
+  .budget-meter-label {
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .budget-meter-bar {
+    height: 6px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+  .budget-meter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--orange), #ff8800);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+  .budget-meter-stats {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .budget-stat { font-size: 11px; }
+  .budget-stat span { color: var(--orange); }
+  .budget-stat .label { color: var(--text-faint); font-size: 10px; display: block; }
 
-        .subtitle {
-            font-size: 16px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
+  /* ARTICLE */
+  .article {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 2rem 6rem;
+  }
 
-        section {
-            margin-bottom: 48px;
-        }
+  .section {
+    margin-bottom: 6rem;
+    border-top: 1px solid var(--border);
+    padding-top: 3rem;
+  }
 
-        h2 {
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text-bright);
-            margin-bottom: 16px;
-            letter-spacing: -0.3px;
-        }
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .section-tag::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
 
-        p {
-            font-size: 15px;
-            margin-bottom: 20px;
-            color: var(--text);
-        }
+  h2 {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  h3 {
+    font-family: var(--sans);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 2rem 0 0.75rem;
+  }
 
-        strong {
-            color: var(--text-bright);
-            font-weight: 600;
-        }
+  p { margin-bottom: 1.2rem; color: var(--text-dim); }
+  p strong { color: var(--text); font-weight: 500; }
 
-        .math {
-            font-family: var(--mono);
-            font-size: 14px;
-            color: var(--accent);
-            background: var(--surface);
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
+  .callout {
+    border-left: 2px solid var(--orange);
+    background: var(--orange-faint);
+    padding: 1.25rem 1.5rem;
+    margin: 2rem 0;
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.6;
+  }
 
-        .math-block {
-            display: block;
-            font-family: var(--mono);
-            font-size: 14px;
-            color: var(--accent);
-            background: var(--surface);
-            padding: 16px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            margin: 20px 0;
-            text-align: center;
-        }
+  /* TABLES */
+  .table-wrap { overflow-x: auto; margin: 2rem 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    padding: 0.6rem 1rem;
+    background: var(--surface);
+    color: var(--text-faint);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--surface); }
+  td.accent { color: var(--orange); }
+  td.good { color: var(--green); }
+  td.bad { color: var(--red); }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 24px 0;
-            font-size: 14px;
-        }
+  /* INTERACTIVE PANELS */
+  .interactive {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    margin: 2.5rem 0;
+    position: relative;
+  }
+  .interactive-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .interactive-label::before {
+    content: '◆';
+    font-size: 8px;
+  }
 
-        th {
-            background-color: var(--surface-accent);
-            color: var(--text-bright);
-            text-align: left;
-            padding: 12px;
-            font-weight: 600;
-            border-bottom: 2px solid var(--border);
-        }
+  /* SLIDERS */
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .slider-row label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    min-width: 160px;
+    letter-spacing: 0.04em;
+  }
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 3px;
+    background: var(--border);
+    flex: 1;
+    cursor: pointer;
+    outline: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--orange);
+    cursor: pointer;
+  }
+  .slider-val {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--orange);
+    min-width: 60px;
+    text-align: right;
+  }
 
-        td {
-            padding: 12px;
-            border-bottom: 1px solid var(--border);
-            color: var(--text);
-            vertical-align: top;
-        }
+  /* METRICS GRID */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 1.5rem;
+  }
+  @media (min-width: 600px) { .metrics-grid { grid-template-columns: repeat(4, 1fr); } }
+  .metric {
+    background: var(--surface-2);
+    padding: 1rem;
+    text-align: center;
+  }
+  .metric-val {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s;
+  }
+  .metric-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
 
-        ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
-        }
+  /* STACKED BAR (Animation 2) */
+  .stack-bar-container { margin-top: 1.5rem; }
+  .stack-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .stack-bar-row-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    min-width: 180px;
+  }
+  .stack-bar-track {
+    flex: 1;
+    height: 22px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .stack-bar-fill {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 6px;
+  }
+  .stack-bar-fill span {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(0,0,0,0.8);
+    font-weight: 500;
+  }
+  .stack-bar-tok {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    min-width: 60px;
+    text-align: right;
+  }
 
-        li {
-            margin-bottom: 8px;
-            font-size: 15px;
-        }
+  /* TIMELINE (Animation 3) */
+  .timeline-container { margin-top: 1.5rem; }
+  .timeline-msg {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    align-items: flex-start;
+    transition: all 0.6s ease;
+  }
+  .timeline-turn {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-faint);
+    min-width: 36px;
+    padding-top: 4px;
+    letter-spacing: 0.04em;
+  }
+  .timeline-bubble {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    flex: 1;
+    transition: all 0.6s ease;
+  }
+  .timeline-attn {
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-left: auto;
+    min-width: 70px;
+    text-align: right;
+    padding-top: 6px;
+    font-family: var(--mono);
+    transition: all 0.6s ease;
+  }
 
-        blockquote {
-            border-left: 3px solid var(--accent);
-            padding-left: 16px;
-            font-style: italic;
-            margin: 24px 0;
-            color: var(--text-bright);
-        }
+  /* AGENT DIAGRAM (Animation 4) */
+  .agent-diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  @media (max-width: 600px) { .agent-diagram { grid-template-columns: 1fr; } }
+  .agent-panel {
+    border: 1px solid var(--border);
+    padding: 1.25rem;
+    background: var(--surface-2);
+  }
+  .agent-panel-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  .agent-node {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.4rem;
+    font-family: var(--mono);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .agent-node-cost { color: var(--orange); font-size: 11px; }
+  .agent-total {
+    border-top: 1px solid var(--border);
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    font-family: var(--mono);
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .agent-total .val { color: var(--orange); }
 
-        /* Interactive Modules */
-        .module-container {
-            background: var(--surface);
-            color: var(--text);
-            padding: 24px;
-            border-radius: 8px;
-            font-family: var(--mono);
-            border: 1px solid var(--border);
-            margin: 32px 0;
-        }
+  /* JSON TREE (Animation 5) */
+  .json-tree {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.8;
+    margin-top: 1rem;
+    user-select: none;
+  }
+  .json-node {
+    cursor: pointer;
+  }
+  .json-node .key { color: var(--blue); }
+  .json-node .val { color: var(--green); }
+  .json-node .type { color: var(--text-faint); font-size: 10px; margin-left: 0.5rem; }
+  .json-children {
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--border);
+    margin-left: 0.5rem;
+  }
+  .json-toggle { color: var(--orange); margin-right: 0.5rem; font-size: 10px; }
+  .json-token-badge {
+    background: var(--orange-dim);
+    color: var(--orange);
+    font-size: 9px;
+    padding: 1px 6px;
+    margin-left: 0.75rem;
+    letter-spacing: 0.04em;
+  }
 
-        .module-title {
-            margin-top: 0;
-            color: var(--text-bright);
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 8px;
-            font-size: 12px;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-        }
+  /* TOKEN COUNTER */
+  .token-counter {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--mono);
+  }
+  .token-counter .label { font-size: 11px; color: var(--text-faint); letter-spacing: 0.06em; text-transform: uppercase; }
+  .token-counter .count { font-size: 1.5rem; color: var(--orange); }
 
-        .slider-wrapper {
-            margin: 20px 0;
-        }
+  /* LATENCY BREAKDOWN */
+  .latency-breakdown { margin-top: 1.5rem; }
+  .latency-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .latency-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-dim);
+    min-width: 200px;
+  }
+  .latency-bar-wrap { flex: 1; height: 18px; background: var(--border); position: relative; }
+  .latency-bar-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: rgba(0,0,0,0.7);
+    font-weight: 500;
+  }
+  .latency-ms {
+    font-family: var(--mono);
+    font-size: 11px;
+    min-width: 55px;
+    text-align: right;
+  }
 
-        .slider-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 13px;
-        }
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 1rem;
+  }
+  .footer-credit {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+  .footer-link {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--orange);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+  }
+  .footer-link:hover { text-decoration: underline; }
 
-        input[type="range"] {
-            width: 100%;
-            accent-color: var(--accent);
-            background: var(--surface-accent);
-            height: 6px;
-            border-radius: 3px;
-            outline: none;
-        }
+  /* BUTTON */
+  .btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-dim);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn:hover { border-color: var(--orange); color: var(--orange); }
+  .btn.active { border-color: var(--orange); background: var(--orange-dim); color: var(--orange); }
 
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-top: 20px;
-        }
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--void); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
 
-        .metric-card {
-            background: var(--surface-accent);
-            padding: 16px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-
-        .metric-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .metric-value {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        /* Module 2 Stack */
-        .stack-layer {
-            padding: 10px;
-            text-align: center;
-            font-size: 12px;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 4px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: opacity 0.2s, transform 0.2s;
-        }
-        .stack-layer:hover {
-            transform: scale(1.01);
-        }
-        .stack-layer.disabled {
-            opacity: 0.15;
-        }
-
-        /* Module 3 Timeline */
-        .timeline-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 20px 0;
-        }
-        .timeline-item {
-            background: var(--surface-accent);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            transition: all 0.5s ease;
-        }
-
-        /* Module 4 Tree */
-        .node {
-            padding: 6px 12px;
-            background: var(--surface-accent);
-            border: 1px solid var(--border);
-            margin: 4px 0;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-    </style>
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <a href="https://iggym.github.io/#articles" class="home-link">&larr; Home</a>
-        <h1>Token Window Economics: Managing System Context Headers</h1>
-        <div class="subtitle">An Architectural Review of How Long-Tail Conversation Data, Multi-Agent Overhead Parameters, and Strict JSON Output Schema Rules Impact Inference Latency Budgets in Enterprise AI Ecosystems.</div>
-    </header>
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">Token Window Economics</span>
+  <a href="https://iggym.github.io/#articles" class="nav-home">← Home</a>
+</nav>
 
-    <section id="introduction">
-        <h2>1. Introduction</h2>
-        <p>The modern enterprise AI paradigm suffers from a profound misconception: that larger context windows solve the problem of data ingestion. As commercial Large Language Models (LLMs) expand their context capacities from 32k to over 2 million tokens, engineers routinely dump raw databases, exhaustive system prompts, and multi-turn chat histories into the context window.</p>
-        <p>This approach ignores a fundamental constraint of generative AI architecture: <strong>“The limiting factor in AI systems is often not model intelligence — it’s context economics.”</strong></p>
-        <p>In enterprise AI architecture, context is not a free-floating scratchpad; it is a scarce, expensive computational resource. Unmanaged context expansion degrades performance across three critical vectors: financial viability, Time-to-First-Token (TTFT) latency, and execution accuracy. Moving from naive prompt wrapping to rigorous production-grade systems requires analyzing the economics of the token window.</p>
-    </section>
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Architectural Review · Enterprise AI Systems · 2025</div>
+  <h1 class="hero-title">Token Window Economics:<br><em>The Scarcity at the Center<br>of Every AI System</em></h1>
+  <p class="hero-subtitle">
+    How long-tail conversation data, multi-agent overhead, and strict JSON schema rules silently consume your inference latency budget — and what enterprise architects must do about it.
+  </p>
 
-    <section id="context-is-compute">
-        <h2>2. Context Is the New Compute</h2>
-        <p>Context tokens behave exactly like traditional compute resources, scaling execution overhead alongside input payload sizes. In transformer architectures utilizing scaled dot-product attention, the computational complexity of processing the prompt (the prefill phase) scales quadratically <span class="math">O(N²)</span> or linearly <span class="math">O(N)</span> with specialized hardware kernels like FlashAttention, where <span class="math">N</span> represents the sequence length.</p>
-        
-        <div class="math-block">O(Prefill Complexity) = N &times; d_model</div>
+  <!-- SIGNATURE ELEMENT: Live budget meter -->
+  <div class="budget-meter">
+    <div class="budget-meter-label">Live Context Budget · Simulated 128K Window</div>
+    <div class="budget-meter-bar">
+      <div class="budget-meter-fill" id="heroFill"></div>
+    </div>
+    <div class="budget-meter-stats">
+      <div class="budget-stat"><span id="heroUsed">0</span> <span class="label">Tokens Consumed</span></div>
+      <div class="budget-stat"><span id="heroRemain">128,000</span> <span class="label">Tokens Remaining</span></div>
+      <div class="budget-stat"><span id="heroSignal">100%</span> <span class="label">Signal Ratio</span></div>
+      <div class="budget-stat"><span id="heroLatency">~0ms</span> <span class="label">Est. Overhead</span></div>
+    </div>
+  </div>
 
-        <p>As a result, large context windows do not just increase costs linearly via token-based pricing APIs; they introduce sharp penalties in hardware memory allocation (KV Cache saturation), attention dispersion, and overall system throughput.</p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Dimension</th>
-                    <th>Traditional Compute (CPU/GPU)</th>
-                    <th>Context Compute (LLM Token Window)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Primary Resource</strong></td>
-                    <td>Clock cycles, RAM, VRAM allocation.</td>
-                    <td>Input/Output tokens, Key-Value (KV) Cache capacity.</td>
-                </tr>
-                <tr>
-                    <td><strong>Scaling Function</strong></td>
-                    <td>Linear to exponential based on algorithm complexity.</td>
-                    <td>Quadratic O(N²) raw attention; linear O(N) memory throughput via KV cache.</td>
-                </tr>
-                <tr>
-                    <td><strong>Cost Vector</strong></td>
-                    <td>Predictable execution time / hardware runtime billing.</td>
-                    <td>Asymmetrical billing (Input vs. Output tokens) + TTFT latency scaling.</td>
-                </tr>
-                <tr>
-                    <td><strong>Degradation Mode</strong></td>
-                    <td>Out-of-Memory (OOM) faults, thread throttling.</td>
-                    <td>"Lost in the Middle" attention degradation, hallucination spikes, latency timeouts.</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Interactive Animation #1 -->
-        <div class="module-container">
-            <div class="module-title">MODULE 01 // CONTEXT COMPUTE METRICS SIMULATOR</div>
-            <div class="slider-wrapper">
-                <div class="slider-label">
-                    <span>Context Volume (Tokens)</span>
-                    <span id="m1-token-val" style="color: var(--accent); font-weight: bold;">10,000</span>
-                </div>
-                <input type="range" id="m1-slider" min="1000" max="200000" value="10000" step="1000">
-            </div>
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div class="metric-label">EST. TTFT LATENCY</div>
-                    <div id="m1-latency" class="metric-value" style="color: #f43f5e;">0.15s</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">ATTENTION RETENTION</div>
-                    <div id="m1-attention" class="metric-value" style="color: #34d399;">99.8%</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">KV CACHE MEMORY</div>
-                    <div id="m1-memory" class="metric-value" style="color: #fbbf24;">0.40 GB</div>
-                </div>
-                <div class="metric-card">
-                    <div class="metric-label">SIGNAL-TO-NOISE RATIO</div>
-                    <div id="m1-snr" class="metric-value" style="color: #a78bfa;">High</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="context-bloat">
-        <h2>3. The Hidden Problem of Context Bloat</h2>
-        <p>Production engineering pipelines routinely introduce <strong>Context Bloat</strong>: appending structural layers, historical logs, safety rails, and enterprise guardrails before appending the actual user request. This creates the "bureaucratic prompt" phenomenon, where the system context header scales aggressively while the user request remains a minuscule percentage of the executed payload.</p>
-
-        <!-- Interactive Animation #2 -->
-        <div class="module-container">
-            <div class="module-title">MODULE 02 // THE CONTEXT STACK VISUALIZER</div>
-            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">Click layers to toggle them out of the pipeline and monitor the user query representation change.</p>
-            
-            <div id="m2-stack" style="display: flex; flex-direction: column; gap: 4px; margin: 16px 0;">
-                <div class="stack-layer" data-tokens="15000" style="background: #ef4444;">System Prompts (15,000 t)</div>
-                <div class="stack-layer" data-tokens="6000" style="background: #f97316;">Agent Core Instructions (6,000 t)</div>
-                <div class="stack-layer" data-tokens="4000" style="background: #f59e0b;">Compliance Guardrails (4,000 t)</div>
-                <div class="stack-layer" data-tokens="7000" style="background: #10b981;">Few-Shot Examples (7,000 t)</div>
-                <div class="stack-layer" data-tokens="25000" style="background: #3b82f6;">Conversation History (25,000 t)</div>
-                <div class="stack-layer" data-tokens="20000" style="background: #6366f1;">Retrieved Documents / RAG (20,000 t)</div>
-                <div class="stack-layer" data-tokens="30" style="background: var(--accent-pink); cursor: default;">User Question (30 t)</div>
-            </div>
-
-            <div class="metrics-grid">
-                <div class="metric-card" style="grid-column: span 2;">
-                    <div class="metric-label">USER QUERY CONCENTRATION</div>
-                    <div id="m2-concentration" class="metric-value" style="color: var(--accent-pink); text-align: center; font-size: 24px;">0.04%</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="diminishing-returns">
-        <h2>4. Long-Tail Conversation History Has Diminishing Returns</h2>
-        <p>Retaining raw, multi-turn chat records sequentially inside the context block introduces structural decay. As conversation history grows, old information transitions into functional noise. The transformer's soft-max attention mechanism distributes fixed weights across the entire sequence length; consequently, every historical message kept in raw form actively dilutes the model's focus on the immediate instruction.</p>
-        <p>Instead of expanding raw histories, enterprise systems require sophisticated <strong>Memory Tiering Pipelines</strong>: summarizing historical turns asynchronously, utilizing episodic memory distillation, and applying dynamic context pruning based on semantic similarity scoring thresholds.</p>
-
-        <!-- Interactive Animation #3 -->
-        <div class="module-container">
-            <div class="module-title">MODULE 03 // TIMELINE ATTENTION ALLOCATION</div>
-            <div class="slider-wrapper">
-                <div class="slider-label">
-                    <span>Conversation Depth (Turns)</span>
-                    <span id="m3-turn-val" style="color: var(--accent); font-weight: bold;">Current</span>
-                </div>
-                <input type="range" id="m3-slider" min="1" max="4" value="4" step="1">
-            </div>
-            <div class="timeline-container" id="m3-timeline">
-                <div class="timeline-item" id="t-turn1"><strong>Turn 1 (Ancient):</strong> Factual configuration baseline. <span style="float:right; color:#ef4444;" class="att-pct">Attention: ~2%</span></div>
-                <div class="timeline-item" id="t-turn2"><strong>Turn 2 (Historical):</strong> Intermediate formatting clarifications. <span style="float:right; color:#f97316;" class="att-pct">Attention: ~8%</span></div>
-                <div class="timeline-item" id="t-turn3"><strong>Turn 3 (Recent):</strong> Structural adjustments and secondary execution logs. <span style="float:right; color:#f59e0b;" class="att-pct">Attention: ~20%</span></div>
-                <div class="timeline-item" id="t-turn4"><strong>Turn 4 (Immediate):</strong> Core actionable user instruction token framework. <span style="float:right; color:#10b981;" class="att-pct">Attention: ~70%</span></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="multi-agent">
-        <h2>5. Multi-Agent Systems Multiply Context Costs</h2>
-        <p>The architectural scaling curves of multi-agent orchestration setups are highly deceptive. Introducing distinct agent instances to process an issue sequentially does not follow a linear performance scale. <strong>Why 5 agents &ne; 5&times; capability. It often means 5&times; overhead.</strong></p>
-        <p>Each added agent brings its own individual instruction headers, tool manifests, execution state frameworks, and routing parameters. When agent architectures pass execution states down a chain, the cumulative history of intermediate reasoning loops, tool responses, and cross-agent coordination schemas forces immediate context window bloat.</p>
-
-        <!-- Interactive Animation #4 -->
-        <div class="module-container">
-            <div class="module-title">MODULE 04 // MULTI-AGENT OVERHEAD SCALING</div>
-            <div style="display: flex; gap: 10px; margin-bottom: 16px;">
-                <button id="m4-btn-1" style="flex:1; background: var(--surface-accent); border: 1px solid var(--border); color:#fff; padding: 8px; font-family:var(--mono); cursor:pointer;">1 Agent</button>
-                <button id="m4-btn-5" style="flex:1; background: var(--accent); border: 1px solid var(--accent); color:#000; padding: 8px; font-family:var(--mono); font-weight:bold; cursor:pointer;">5 Agents</button>
-            </div>
-            <div id="m4-display" style="font-size: 13px; background: var(--surface-accent); padding:16px; border:1px solid var(--border); border-radius:6px;">
-                <!-- Dynamically updated -->
-            </div>
-        </div>
-    </section>
-
-    <section id="json-schemas">
-        <h2>6. JSON Schemas as Hidden Token Taxes</h2>
-        <p>Enforcing deterministic tracking via strict structural execution rules (such as JSON Schema guarantees) introduces hidden token consumption. Instructing an LLM to follow a complex, deeply nested JSON definition requires injecting the complete structural definition directly into the system context header. This creates an implicit tradeoff between output engineering structure and core performance margins.</p>
-
-        <!-- Interactive Animation #5 -->
-        <div class="module-container">
-            <div class="module-title">MODULE 05 // STRUCTURAL OVERHEAD TRACKER</div>
-            <p style="font-size:11px; color:var(--text-muted); margin-bottom:12px;">Toggle nodes to view configuration token accumulation metrics.</p>
-            <div style="font-size:13px; line-height: 1.8;">
-                <div>{</div>
-                <div style="padding-left: 20px;"><span class="node-toggle" data-cost="120" style="color:var(--accent); cursor:pointer;">&minus; "transaction_meta"</span>: { <span style="color:var(--text-muted); font-size:11px;">[+120 tokens]</span></div>
-                <div class="node-target" style="padding-left: 40px; color:var(--text-muted);">"uuid": "string",<br>"timestamp": "iso8601"</div>
-                <div style="padding-left: 20px;">},</div>
-                <div style="padding-left: 20px;"><span class="node-toggle" data-cost="450" style="color:var(--accent); cursor:pointer;">&minus; "compliance_validation_tree"</span>: { <span style="color:var(--text-muted); font-size:11px;">[+450 tokens]</span></div>
-                <div class="node-target" style="padding-left: 40px; color:var(--text-muted);">"jurisdiction_code": "string",<br>"risk_score_matrix": { "nested_array": "float" }</div>
-                <div style="padding-left: 20px;">}</div>
-                <div>}</div>
-            </div>
-            <div style="margin-top:16px; padding-top:12px; border-top:1px solid var(--border); display:flex; justify-content:space-between; font-size:13px;">
-                <span>Total Structural Overhead:</span>
-                <span id="m5-total" style="color:var(--accent); font-weight:bold;">570 tokens</span>
-            </div>
-        </div>
-    </section>
-
-    <section id="instruction-overload">
-        <h2>7. Instruction Overload</h2>
-        <p>Packing system headers with countless nested edge-case rules causes <strong>Instruction Overload</strong>. When an instruction payload exceeds optimal performance limits, overlapping operational logic boundaries can confuse the model. Every added instruction carries an inherent computational tax; therefore, instruction minimalism represents a vital runtime production optimization.</p>
-    </section>
-
-    <section id="retrieval-vs-generation">
-        <h2>8. Retrieval Costs vs. Generation Costs</h2>
-        <p>Retrieval-Augmented Generation (RAG) is a highly effective pattern for grounding models, but its operational costs must be carefully managed. Injecting large batches of text from vector search directly into prompt headers quickly inflates costs. In production environments, parsing twenty raw documents into context often costs significantly more than generating the output response. Systems must prioritize high-precision ranking models and compression layers over raw storage depth.</p>
-    </section>
-
-    <section id="latency-budget">
-        <h2>9. Latency as Death by a Thousand Cuts</h2>
-        <p>In complex enterprise AI platforms, actual LLM core inference runtime often accounts for <strong>less than 50%</strong> of total user-facing system latency. The remaining overhead is introduced by sequential architectural orchestration processes:</p>
-        <ul>
-            <li>Prompt assembly & template processing</li>
-            <li>Memory store lookups</li>
-            <li>Multi-agent orchestration routing</li>
-            <li>Compliance & policy guardrail injection</li>
-            <li>Structural validation schema mapping</li>
-            <li>Dynamic real-time tool selection pipelines</li>
-        </ul>
-        <p>Neglecting token window economics turns these decoupled modules into severe performance bottlenecks.</p>
-    </section>
-
-    <section id="attention-budget">
-        <h2>10. Attention as a Budget</h2>
-        <p>A model's available attention should be treated exactly like a strict computational budget. When context blocks are flooded with unstructured background information, irrelevant background data competes directly with high-signal execution instructions. This noise saturation degrades generation quality, increasing the risk of logical gaps and hallucinations in enterprise applications.</p>
-    </section>
-
-    <section id="compression-strategies">
-        <h2>11. Context Compression as a Strategic Capability</h2>
-        <p>To mitigate these challenges, modern enterprise architectures should implement an active, automated <strong>Context Management Layer</strong>:</p>
-        <ul>
-            <li><strong>Semantic Compression:</strong> Condensing raw inputs to baseline semantic values.</li>
-            <li><strong>Memory Distillation:</strong> Grouping historical interactions into structured episodic cards.</li>
-            <li><strong>Dynamic Context Builders:</strong> Assembling headers contextually based on user intent vector categorization.</li>
-        </ul>
-    </section>
-
-    <section id="economic-law">
-        <h2>12. The Emerging Economic Law</h2>
-        <blockquote>“Context Growth Rate &gt; Capability Growth Rate”</blockquote>
-        <p>Left unmanaged, context accumulation outpaces the incremental performance improvements of newer foundation models. This variance surfaces as organizational entropy: escalating API costs, ballooning execution times, and diminishing functional returns.</p>
-        <p><strong>Context Engineering is the new high-leverage skill.</strong> Architecting high-performance enterprise AI frameworks requires systematic execution parameters, strict design minimization, and aggressive header budgeting optimization.</p>
-    </section>
+  <p style="font-family: var(--mono); font-size: 11px; color: var(--text-faint); letter-spacing: 0.04em;">
+    ↓ scroll to load context layers · watch the budget collapse
+  </p>
 </div>
 
+<!-- ARTICLE -->
+<article class="article">
+
+  <!-- SECTION 1: INTRODUCTION -->
+  <div class="section" id="s1">
+    <div class="section-tag">01 · Introduction</div>
+    <h2>The Limiting Factor Is Not the Model</h2>
+    <p>
+      We have been asking the wrong question. For years, enterprise AI investment has been framed around model capability: which model reasons better, hallucinates less, follows instructions more precisely. The implicit assumption is that the path to better outcomes runs through better models.
+    </p>
+    <p>
+      The assumption is wrong — or at least, incomplete. The actual bottleneck in production AI systems is not the model. It is the <strong>context window</strong>: a finite, expensive, attention-limited computational resource that every enterprise system is silently exhausting before the model ever generates a single token.
+    </p>
+
+    <div class="callout">
+      "The limiting factor in AI systems is often not model intelligence — it's context economics."
+    </div>
+
+    <p>
+      Context is where all the costs aggregate. A user submits a 30-token question. By the time that question reaches the model, it may be surrounded by 80,000 tokens of system instructions, policy injections, conversation history, retrieved documents, agent routing manifests, and JSON output schemas. The model must attend to all of it. The infrastructure must assemble, transmit, and process all of it. Your latency budget pays for all of it.
+    </p>
+    <p>
+      This article is an architectural review of the economics of context. It examines how enterprise AI systems quietly bloat, where the real costs accumulate, and what the discipline of context engineering looks like when treated as a first-class engineering concern.
+    </p>
+    <p>
+      The argument is not that context is bad. Context is how AI systems know what they know. The argument is that <strong>unmanaged context is debt</strong> — and in production systems running at scale, that debt compounds faster than most teams realize.
+    </p>
+  </div>
+
+  <!-- SECTION 2: CONTEXT IS THE NEW COMPUTE -->
+  <div class="section" id="s2">
+    <div class="section-tag">02 · Foundations</div>
+    <h2>Context Is the New Compute</h2>
+    <p>
+      In traditional compute models, cost is a function of cycles, memory, and time. You rent CPU hours, pay for RAM, optimize your query plans. The economics are legible. You can profile a function, find the hot path, and optimize it.
+    </p>
+    <p>
+      Context tokens have a different cost structure — and it is considerably more treacherous. Every token in the context window participates in the self-attention mechanism, which scales as <strong>O(n²)</strong> with sequence length. Double the context, and attention cost does not double — it quadruples. This is not a linear tax. It is a quadratic one.
+    </p>
+    <p>
+      Beyond attention complexity, context tokens drive direct pricing on every commercial API. They determine prefill time — the latency incurred before the first output token appears. They crowd out generation capacity. And because most enterprise prompts carry substantial fixed overhead, they shift the effective cost-per-user-token dramatically upward.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Traditional Compute</th>
+            <th>Context Compute</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Scaling law</td><td>Linear (O(n))</td><td class="bad">Quadratic attention (O(n²))</td></tr>
+          <tr><td>Profiling</td><td>CPU / memory profilers</td><td class="bad">No standard tooling; mostly opaque</td></tr>
+          <tr><td>Optimization unit</td><td>Functions, queries</td><td class="bad">Prompt segments, schema fields</td></tr>
+          <tr><td>Waste visibility</td><td>Heap profilers, flame graphs</td><td class="bad">Invisible until latency spikes</td></tr>
+          <tr><td>Idle cost</td><td>Low (amortized infra)</td><td class="bad">High (prompt overhead paid every call)</td></tr>
+          <tr><td>Cost source</td><td>CPU clock cycles</td><td class="bad">Tokens in context × attention depth</td></tr>
+          <tr><td>Primary design skill</td><td>Algorithm selection</td><td class="accent">Prompt architecture</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>
+      The implication is architectural: prompt design is no longer a copywriting task assigned to whoever writes the system message. It is an engineering discipline with performance characteristics, cost models, and optimization surfaces. Teams that treat it otherwise will discover the cost difference between a 2,000-token and a 20,000-token system prompt not through design review — but through their billing dashboard.
+    </p>
+
+    <!-- ANIMATION 1 -->
+    <div class="interactive">
+      <div class="interactive-label">Interactive · Context Load Simulator</div>
+      <div class="slider-row">
+        <label>Context Window Used</label>
+        <input type="range" id="ctxSlider" min="1000" max="120000" step="500" value="5000">
+        <span class="slider-val" id="ctxVal">5,000 tok</span>
+      </div>
+      <div class="metrics-grid">
+        <div class="metric"><div class="metric-val" id="m1Latency" style="color:var(--green)">38ms</div><div class="metric-label">Est. Prefill</div></div>
+        <div class="metric"><div class="metric-val" id="m1Attn" style="color:var(--green)">1×</div><div class="metric-label">Attn. Cost</div></div>
+        <div class="metric"><div class="metric-val" id="m1Window" style="color:var(--green)">96%</div><div class="metric-label">Window Free</div></div>
+        <div class="metric"><div class="metric-val" id="m1SNR" style="color:var(--green)">High</div><div class="metric-label">Signal Ratio</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 3: CONTEXT BLOAT -->
+  <div class="section" id="s3">
+    <div class="section-tag">03 · Context Bloat</div>
+    <h2>The Bureaucratic Prompt</h2>
+    <p>
+      Enterprise prompts do not arrive in production lean. They accumulate. Each team that touches the system adds a layer: Legal adds a compliance header. Security adds data handling rules. Product adds brand voice guidelines. DevOps adds environment context. The result is what might be called the <em>bureaucratic prompt</em> — a document shaped more by organizational process than by what the model actually needs to answer a user's question.
+    </p>
+    <p>
+      Here is a representative breakdown of a typical enterprise prompt in a customer-service AI deployment. The user's actual question: <strong>30 tokens</strong>.
+    </p>
+
+    <!-- ANIMATION 2 -->
+    <div class="interactive">
+      <div class="interactive-label">Interactive · Context Layer Builder · Click layers to add/remove</div>
+      <div class="stack-bar-container" id="stackContainer"></div>
+      <div style="margin-top:1rem; font-family:var(--mono); font-size:11px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:1rem;">
+        <span style="color:var(--text-faint)">TOTAL CONTEXT</span>
+        <span style="color:var(--orange); font-size:1.2rem;" id="stackTotal">30 tokens</span>
+      </div>
+      <div style="margin-top:0.75rem; font-family:var(--mono); font-size:11px; color:var(--text-faint);">
+        User question share: <span style="color:var(--orange);" id="stackUserPct">100%</span> of total context
+      </div>
+    </div>
+
+    <p>
+      Once all enterprise layers are active, the user's question drops to under 0.05% of total context. The model is doing the computational equivalent of attending a 500-page board meeting to answer one question on page 498. The cost is not theoretical — it compounds on every inference call, at every token of every session.
+    </p>
+  </div>
+
+  <!-- SECTION 4: CONVERSATION HISTORY -->
+  <div class="section" id="s4">
+    <div class="section-tag">04 · Long-Tail History</div>
+    <h2>When Memory Becomes Debt</h2>
+    <p>
+      Conversational continuity is a genuine product requirement. Users expect AI systems to remember what they said three turns ago. This expectation is reasonable. The implementation is where the economics break down.
+    </p>
+    <p>
+      The naive implementation — append every turn to the context window — produces a conversation that grows linearly without bound. This creates three compounding problems. First, the oldest turns receive the least attention. Research on transformer attention distributions consistently shows that recency bias is real: recent tokens receive disproportionately more attention weight. Storing 10,000 tokens of old conversation history to serve the last two turns is wasteful by design.
+    </p>
+    <p>
+      Second, old conversation turns often contain outdated information. The user said they preferred blue in turn 3, then changed their mind in turn 15. Both statements exist in context, and they actively conflict. The model must resolve that conflict with no clear precedence rule, often producing inconsistent behavior.
+    </p>
+    <p>
+      Third — and most consequentially — long conversation histories are invisible to most token budgeting. Teams monitor context size at the prompt level, not at the session level. By the time a user has had a 50-turn conversation, the context overhead may have doubled the original prompt size without any engineer noticing.
+    </p>
+
+    <div class="callout">
+      Memory should be compressed, not accumulated. Every retained turn is an architectural decision with a cost.
+    </div>
+
+    <p>
+      The alternatives are well-understood and underutilized: <strong>session summarization</strong> (compress old turns into a dense summary), <strong>episodic memory</strong> (retain only semantically significant moments), <strong>retrieval augmentation</strong> (store history externally, fetch only relevant segments), and <strong>memory distillation</strong> (extract stable facts into a structured user profile). Each trades recall completeness for token efficiency — a tradeoff most production systems never make explicitly.
+    </p>
+
+    <!-- ANIMATION 3 -->
+    <div class="interactive">
+      <div class="interactive-label">Interactive · Attention Budget Reallocation · Drag slider to compress old turns</div>
+      <div class="slider-row">
+        <label>Memory Compression</label>
+        <input type="range" id="memSlider" min="0" max="100" step="5" value="0">
+        <span class="slider-val" id="memVal">0% compressed</span>
+      </div>
+      <div class="timeline-container" id="timelineContainer"></div>
+      <div style="margin-top:1rem; font-family:var(--mono); font-size:11px; display:flex; justify-content:space-between; border-top:1px solid var(--border); padding-top:1rem;">
+        <span style="color:var(--text-faint)">TOKENS FREED</span>
+        <span style="color:var(--green);" id="tokensFreed">0 tokens freed</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 5: MULTI-AGENT OVERHEAD -->
+  <div class="section" id="s5">
+    <div class="section-tag">05 · Multi-Agent Overhead</div>
+    <h2>More Agents ≠ More Capability</h2>
+    <p>
+      Multi-agent architectures have become the dominant pattern in enterprise AI. The intuition is compelling: decompose complex tasks across specialized agents, each with a focused instruction set, each contributing a piece of the answer. Orchestrators route. Subagents execute. Results compose.
+    </p>
+    <p>
+      The intuition is correct in theory. The economics are punishing in practice.
+    </p>
+    <p>
+      Every agent in a multi-agent system carries its own context overhead: a system prompt, a tool definition manifest, memory state, routing instructions, output format requirements. When an orchestrator routes a request through four subagents, each of those agents must process the full task context plus its own overhead. The token cost is not the task context once — it is the task context multiplied by the number of agents it touches, plus all the routing scaffolding that stitches them together.
+    </p>
+    <p>
+      In practice, teams discover that their 5-agent "enhanced" system is three times slower and twice as expensive as the single-agent baseline it replaced, with marginally better output quality. The overhead was never in the architecture diagram.
+    </p>
+
+    <!-- ANIMATION 4 -->
+    <div class="interactive">
+      <div class="interactive-label">Interactive · Agent Token Overhead Comparison</div>
+      <div class="agent-diagram">
+        <div class="agent-panel">
+          <div class="agent-panel-title"><span>Single Agent</span><span style="color:var(--green)">Efficient</span></div>
+          <div class="agent-node"><span>System Prompt</span><span class="agent-node-cost">2,400 tok</span></div>
+          <div class="agent-node"><span>Task Context</span><span class="agent-node-cost">1,800 tok</span></div>
+          <div class="agent-node"><span>Tool Definitions (3)</span><span class="agent-node-cost">600 tok</span></div>
+          <div class="agent-node"><span>Conversation State</span><span class="agent-node-cost">900 tok</span></div>
+          <div class="agent-node"><span>Output Schema</span><span class="agent-node-cost">400 tok</span></div>
+          <div class="agent-total">
+            <span style="color:var(--text-faint)">TOTAL</span>
+            <span class="val">6,100 tok</span>
+          </div>
+        </div>
+        <div class="agent-panel" id="multiAgentPanel">
+          <div class="agent-panel-title"><span>5-Agent System</span><span style="color:var(--red)" id="multiAgentLabel">Inflated</span></div>
+          <div id="multiAgentNodes"></div>
+          <div class="agent-total">
+            <span style="color:var(--text-faint)">TOTAL</span>
+            <span class="val" id="multiAgentTotal">0 tok</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;">
+        <div class="slider-row">
+          <label>Active Agents</label>
+          <input type="range" id="agentSlider" min="1" max="5" step="1" value="5">
+          <span class="slider-val" id="agentVal">5 agents</span>
+        </div>
+      </div>
+    </div>
+
+    <p>
+      The correct design question is not "how many agents should this task have?" It is "what is the minimum number of context boundaries that preserves task integrity?" Most tasks that are implemented as 5-agent pipelines can be collapsed to 2 or 3 without meaningful capability loss, at 40–60% lower token cost.
+    </p>
+  </div>
+
+  <!-- SECTION 6: JSON SCHEMA OVERHEAD -->
+  <div class="section" id="s6">
+    <div class="section-tag">06 · Structured Output</div>
+    <h2>JSON Schemas as Hidden Token Taxes</h2>
+    <p>
+      Structured output is one of the most underestimated sources of context overhead in enterprise AI systems. The requirement is legitimate: downstream systems need predictable, machine-readable output. A well-defined JSON schema provides exactly that. The hidden cost is in how much of the context window the schema itself consumes — before any user content, before any reasoning, before any generation.
+    </p>
+    <p>
+      A simple schema might add 200–400 tokens. Reasonable. A deeply nested schema for a complex enterprise data model — with required fields, type definitions, descriptions, enums, and nested object references — can run 2,000 to 5,000 tokens. Multiply by the number of calls per session, and the token tax compounds quickly.
+    </p>
+    <p>
+      The more insidious problem is output length. When a model is constrained to output deeply nested JSON, it must generate the structural tokens — braces, brackets, keys, colons — in addition to the actual content. A response that would be 300 tokens in prose becomes 800 tokens in JSON. The structure itself is expensive.
+    </p>
+
+    <!-- ANIMATION 5 -->
+    <div class="interactive">
+      <div class="interactive-label">Interactive · JSON Schema Token Explorer · Click to expand nodes</div>
+      <div class="json-tree" id="jsonTree"></div>
+      <div class="token-counter">
+        <span class="label">Schema Token Estimate</span>
+        <span class="count" id="jsonTokenCount">~180 tok</span>
+      </div>
+    </div>
+
+    <p>
+      The optimization path has three levers. <strong>Schema compression</strong>: remove description fields from schemas that are injected at inference time — they are for human developers, not the model. <strong>Lazy schema injection</strong>: inject the full schema only when structured output is actually required; many queries do not need it. <strong>Schema decomposition</strong>: break monolithic schemas into modular components, injecting only the relevant subset per call.
+    </p>
+  </div>
+
+  <!-- SECTION 7: INSTRUCTION OVERLOAD -->
+  <div class="section" id="s7">
+    <div class="section-tag">07 · Instruction Design</div>
+    <h2>Every Instruction Has a Price</h2>
+    <p>
+      System prompts grow through accretion. A constraint is added to handle an edge case. A clarification is added because the model misunderstood once. A persona instruction is added to improve tone. A formatting rule is added for consistency. None of these additions is unreasonable in isolation. Collectively, they produce system prompts that are engineering artifacts — but managed like documents.
+    </p>
+    <p>
+      The performance cost is not just token count. It is <strong>instruction dilution</strong>. When a model attends to 4,000 tokens of system instructions, the effective weight of any individual instruction is proportionally reduced. Instructions at the top receive more attention than instructions buried in the middle. Conflicting instructions produce unpredictable behavior. Over-specified prompts make models brittle rather than robust.
+    </p>
+    <p>
+      Instruction minimalism is a performance optimization, not a simplification. The target is the minimum viable constraint set: only the instructions that, if removed, would produce meaningfully worse output for the target task distribution. Everything else is overhead.
+    </p>
+    <p>
+      A practical rule: if you cannot explain why every instruction block exists and what failure mode it prevents, it should be a candidate for removal. Prompt audits — systematic reviews of instruction necessity — are not a standard practice in most enterprises. They should be.
+    </p>
+  </div>
+
+  <!-- SECTION 8: RETRIEVAL COSTS -->
+  <div class="section" id="s8">
+    <div class="section-tag">08 · RAG Economics</div>
+    <h2>Retrieval Costs vs. Generation Costs</h2>
+    <p>
+      Retrieval-augmented generation has become the default architecture for knowledge-intensive enterprise AI. The motivation is sound: instead of training a model on proprietary knowledge (expensive, slow, stale on day one), retrieve relevant documents at inference time and inject them into context. The model then generates against a grounded, current knowledge base.
+    </p>
+    <p>
+      The economic pathology of naive RAG is well-defined and frequently underestimated. Retrieving 25 documents with a top-K search and injecting them all into context can cost more tokens than generating the answer itself. A document corpus chunk is typically 500–1,000 tokens. 25 chunks: 12,500–25,000 tokens of retrieval context, before the system prompt, before the conversation history, before the output schema.
+    </p>
+    <p>
+      The architectural principle that resolves this is <strong>precision over recall</strong>. Most RAG systems are tuned for recall — retrieve broadly, let the model figure it out. Precision-oriented RAG inverts the logic: rank aggressively, compress retrieved passages, inject only the highest-signal segments. A well-engineered RAG system might inject 3 compressed passages instead of 25 raw chunks, at one-fifth the token cost and equivalent or better answer quality.
+    </p>
+    <p>
+      The tools for precision RAG exist: cross-encoder reranking, extractive compression, dense-sparse hybrid retrieval, contextual chunking. They are less commonly deployed than they should be, because the failure mode — over-retrieval — is invisible. Token costs accumulate. Latency creeps up. Nobody traces it back to the retrieval layer.
+    </p>
+  </div>
+
+  <!-- SECTION 9: LATENCY -->
+  <div class="section" id="s9">
+    <div class="section-tag">09 · Latency Anatomy</div>
+    <h2>Death by a Thousand Cuts</h2>
+    <p>
+      Enterprise AI latency is rarely caused by model inference alone. Teams that benchmark model inference in isolation — and many do — are measuring the wrong thing. By the time a request reaches the model, it has already traversed a pipeline of token-inflating, latency-adding operations that collectively dwarf the inference time itself.
+    </p>
+    <p>
+      In production enterprise systems, model inference typically represents <strong>less than 50% of total request latency</strong>. The remainder is distributed across a pipeline that most system architects have never profiled as a unit.
+    </p>
+
+    <div class="latency-breakdown" id="latencyBreakdown"></div>
+
+    <p>
+      The implication is that optimizing model inference — switching to a faster model, increasing GPU throughput — delivers at most a 2× improvement in end-to-end latency, assuming the model is the bottleneck. It often is not. Teams that have profiled the full pipeline consistently find that prompt assembly, memory retrieval, and policy injection together account for more latency than the model.
+    </p>
+    <p>
+      Context engineering attacks the problem at the root: if the assembled context is smaller, every stage in this pipeline runs faster. Prompt assembly is cheaper. Retrieval is more targeted. Policy injection is more concise. Model inference is faster. Logging is leaner. The savings compound across the entire stack.
+    </p>
+  </div>
+
+  <!-- SECTION 10: ATTENTION AS BUDGET -->
+  <div class="section" id="s10">
+    <div class="section-tag">10 · Cognitive Budget</div>
+    <h2>Attention Is Not Unlimited</h2>
+    <p>
+      The transformer attention mechanism operates on a cognitive-budget metaphor that is more literal than it might appear. When a model processes a 100,000-token context, it does not attend to all 100,000 tokens equally. It allocates attention weights across the sequence — and those weights are a finite resource. Every token in context is competing for a share of the model's attention.
+    </p>
+    <p>
+      The counterintuitive consequence is that <strong>more context can produce worse answers</strong>. When signal is buried under noise — when the 5 relevant tokens are surrounded by 95,000 irrelevant ones — the model's attention may not concentrate on the signal. It may be distracted by the structural patterns of the noise, the formatting conventions of the boilerplate, the authority weight of the policy headers.
+    </p>
+    <p>
+      This phenomenon, sometimes called the "lost in the middle" problem, has been empirically demonstrated: retrieval performance for information placed in the middle of long contexts is significantly worse than for information at the beginning or end. The context window is not a uniform storage medium. It is a non-linear attention distribution, and the model's ability to extract information from it degrades with context size.
+    </p>
+    <p>
+      The implication for enterprise AI design is direct: reducing context is not just a cost optimization. It is a quality optimization. A model given the right 3,000 tokens will often outperform the same model given 30,000 tokens that include those 3,000 plus 27,000 tokens of surrounding noise.
+    </p>
+  </div>
+
+  <!-- SECTION 11: COMPRESSION -->
+  <div class="section" id="s11">
+    <div class="section-tag">11 · Strategic Capability</div>
+    <h2>Context Compression as a Discipline</h2>
+    <p>
+      The response to context economics is not to accept the cost structure — it is to build compression as a core capability. Context compression is not a single technique. It is a family of architectural strategies, each operating at a different layer of the system.
+    </p>
+
+    <h3>Semantic Compression</h3>
+    <p>
+      Rewrite verbose context into semantically equivalent but token-efficient representations. Long policy documents become structured rule sets. Narrative conversation histories become factual summaries. Prose instructions become enumerated constraints. The model extracts the same information from fewer tokens.
+    </p>
+
+    <h3>Memory Distillation</h3>
+    <p>
+      Rather than appending conversation turns to context, extract durable facts from them: user preferences, stated constraints, confirmed decisions. Store these in a compact, structured user profile. The profile is updated incrementally, not by accumulation. At the start of each session, the profile is injected instead of the full history — a 200-token representation of 10,000 tokens of prior conversation.
+    </p>
+
+    <h3>Dynamic Prompt Construction</h3>
+    <p>
+      Not every call needs the same context. An agent answering a factual lookup question does not need the full persona instructions, brand voice guidelines, or multi-modal output schema. Build prompts conditionally: identify the request type, inject only the context segments relevant to that type, skip the rest. A routing layer that classifies request type before prompt assembly can reduce average context size by 30–50% without any model changes.
+    </p>
+
+    <h3>Hierarchical Memory</h3>
+    <p>
+      Structure memory as a hierarchy: working memory (current session, high-fidelity), episodic memory (significant past interactions, compressed), semantic memory (extracted facts and preferences, structured), archival memory (stored externally, retrieved on demand). Each tier has a different token budget and a different retrieval strategy. Information flows down through compression and up through retrieval.
+    </p>
+
+    <h3>Retrieval Ranking and Compression</h3>
+    <p>
+      Apply aggressive reranking to retrieved documents before injection. Use cross-encoders to score relevance, extractive summarization to compress passages, and token budgeting to enforce hard limits on retrieval context. The retrieval layer is not a search engine — it is a context allocator. Its job is not to find relevant documents; it is to find the minimum set of relevant passages that fits the latency budget.
+    </p>
+  </div>
+
+  <!-- SECTION 12: ECONOMIC LAW -->
+  <div class="section" id="s12">
+    <div class="section-tag">12 · Conclusion</div>
+    <h2>The Emerging Law of Context Growth</h2>
+    <p>
+      There is an organizational pattern that appears consistently in enterprise AI deployments at scale. As systems mature, as teams iterate, as edge cases are handled and features are added, a relationship emerges between two growth rates:
+    </p>
+
+    <div class="callout" style="font-family:var(--mono); font-size:1.3rem; font-style:normal; text-align:center; letter-spacing:0.02em;">
+      Context Growth Rate &gt; Capability Growth Rate
+    </div>
+
+    <p>
+      The system's context footprint expands faster than its output quality improves. New instructions are added to handle new cases, but the marginal quality gain of each instruction diminishes. Retrieval is expanded to cover more knowledge, but the signal-to-noise ratio falls. Agent pipelines are extended with new specialists, but the overhead grows faster than the specialization value.
+    </p>
+    <p>
+      This is organizational entropy operating on an AI system. It is not a failure of intent — every individual addition was justified at the time. It is the compounding consequence of treating context as free when it is not, of treating the context window as storage when it is a budget.
+    </p>
+    <p>
+      The systems that escape this pattern share a common architectural discipline: <strong>they treat context engineering as a first-class concern</strong>. They maintain token budgets per component. They audit system prompts for necessity. They build compression at every layer. They profile the full request pipeline, not just model inference. They optimize for signal-to-noise, not recall. They design memory as a hierarchy, not an accumulator.
+    </p>
+    <p>
+      As context windows expand from 128K to 1M tokens and beyond, the naive response is to simply use the larger window — to defer the compression problem indefinitely. This is the wrong response. Larger windows reduce the urgency of the problem, not its existence. The quadratic attention cost, the organizational entropy, the signal dilution — these do not disappear at 1M tokens. They scale.
+    </p>
+
+    <div class="callout">
+      Context engineering is not a prompt-writing skill. It is an architectural discipline. In the next five years, it will be among the highest-leverage engineering capabilities an enterprise AI team can build.
+    </div>
+
+    <p>
+      The model is not the constraint. The context is. The teams that internalize this — that build context economics into their architecture from the start — will build AI systems that are faster, cheaper, and more capable than teams that do not. Not because they have access to better models. Because they have learned to use every token.
+    </p>
+  </div>
+
+</article>
+
+<footer>
+  <div>
+    <div class="footer-credit">Written by Ignatius Mwangi · AI Systems Architect</div>
+    <div class="footer-credit" style="margin-top:0.25rem;">Token Window Economics · Architectural Review · 2025</div>
+  </div>
+  <a href="https://iggym.github.io/#articles" class="footer-link">← Back to Articles</a>
+</footer>
+
 <script>
-    // Module 1 Logic
-    const m1Slider = document.getElementById('m1-slider');
-    function updateM1() {
-        const tokens = parseInt(m1Slider.value);
-        document.getElementById('m1-token-val').innerText = tokens.toLocaleString();
-        
-        const latency = (0.05 + (tokens / 50000) * 0.8).toFixed(2);
-        const attention = Math.max(40, (100 - (tokens / 2500))).toFixed(1);
-        const memory = ((tokens * 2 * 2 * 12 * 4096) / (1024 * 1024 * 1024)).toFixed(2);
-        
-        let snr = "High";
-        let snrColor = "#34d399";
-        if (tokens > 50000) { snr = "Moderate"; snrColor = "#fbbf24"; }
-        if (tokens > 120000) { snr = "Degraded"; snrColor = "#f43f5e"; }
-        
-        document.getElementById('m1-latency').innerText = latency + 's';
-        document.getElementById('m1-attention').innerText = attention + '%';
-        document.getElementById('m1-memory').innerText = memory + ' GB';
-        
-        const snrEl = document.getElementById('m1-snr');
-        snrEl.innerText = snr;
-        snrEl.style.color = snrColor;
-    }
-    m1Slider.addEventListener('input', updateM1);
-    updateM1();
+// ─────────────────────────────────────────────────────────────
+// HERO BUDGET METER — scroll-driven
+// ─────────────────────────────────────────────────────────────
+const TOTAL_WINDOW = 128000;
+const heroFill = document.getElementById('heroFill');
+const heroUsed = document.getElementById('heroUsed');
+const heroRemain = document.getElementById('heroRemain');
+const heroSignal = document.getElementById('heroSignal');
+const heroLatency = document.getElementById('heroLatency');
 
-    // Module 2 Logic
-    const m2Layers = document.querySelectorAll('.stack-layer[data-tokens]');
-    m2Layers.forEach(layer => {
-        if(layer.getAttribute('data-tokens') !== "30") {
-            layer.addEventListener('click', () => {
-                layer.classList.toggle('disabled');
-                updateM2();
-            });
+function fmt(n) { return n.toLocaleString(); }
+
+function updateHeroMeter(pct) {
+  const used = Math.round((pct / 100) * TOTAL_WINDOW);
+  const remain = TOTAL_WINDOW - used;
+  const signal = Math.max(2, Math.round(100 - pct * 0.95));
+  const latency = Math.round(pct * 12.8);
+  heroFill.style.width = pct + '%';
+  heroFill.style.background = pct < 40 ? 'linear-gradient(90deg,#00ff88,#44ff88)' :
+                               pct < 70 ? 'linear-gradient(90deg,#ffd700,#ff8800)' :
+                                          'linear-gradient(90deg,#FF4D00,#ff2200)';
+  heroUsed.textContent = fmt(used);
+  heroRemain.textContent = fmt(remain);
+  heroSignal.textContent = signal + '%';
+  heroLatency.textContent = '~' + fmt(latency) + 'ms';
+}
+
+// Animate on scroll through page
+let heroAnimFrame;
+function onScroll() {
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollPct = Math.min(100, (window.scrollY / docH) * 100);
+  updateHeroMeter(scrollPct * 0.92 + 2);
+}
+window.addEventListener('scroll', onScroll, { passive: true });
+updateHeroMeter(3);
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATION 1 — Context Load Simulator
+// ─────────────────────────────────────────────────────────────
+const ctxSlider = document.getElementById('ctxSlider');
+const ctxVal = document.getElementById('ctxVal');
+const m1Latency = document.getElementById('m1Latency');
+const m1Attn = document.getElementById('m1Attn');
+const m1Window = document.getElementById('m1Window');
+const m1SNR = document.getElementById('m1SNR');
+
+function getColor(val, low, high) {
+  if (val <= low) return 'var(--green)';
+  if (val >= high) return 'var(--red)';
+  return 'var(--yellow)';
+}
+function getColorInv(val, low, high) {
+  if (val >= high) return 'var(--green)';
+  if (val <= low) return 'var(--red)';
+  return 'var(--yellow)';
+}
+
+function updateCtxSim() {
+  const tok = parseInt(ctxSlider.value);
+  ctxVal.textContent = tok.toLocaleString() + ' tok';
+  const baseLatency = 30;
+  const latency = Math.round(baseLatency + (tok / 1000) * 8.5 + (tok / 1000) ** 1.6);
+  const attnMult = (tok / 5000) ** 2;
+  const windowFree = Math.max(1, Math.round(100 - (tok / 128000) * 100));
+  const snrScore = Math.max(2, Math.round(100 - (tok / 1200)));
+
+  const latencyMs = latency + 'ms';
+  const attnStr = attnMult < 2 ? (attnMult.toFixed(1) + '×') :
+                  attnMult < 10 ? (attnMult.toFixed(0) + '×') : (attnMult.toFixed(0) + '×');
+  const windowStr = windowFree + '%';
+  const snrStr = snrScore > 70 ? 'High' : snrScore > 40 ? 'Medium' : snrScore > 15 ? 'Low' : 'Critical';
+
+  m1Latency.textContent = latencyMs;
+  m1Latency.style.color = getColor(latency, 80, 400);
+  m1Attn.textContent = attnStr;
+  m1Attn.style.color = getColor(attnMult, 2, 20);
+  m1Window.textContent = windowStr;
+  m1Window.style.color = getColorInv(windowFree, 20, 60);
+  m1SNR.textContent = snrStr;
+  m1SNR.style.color = snrScore > 70 ? 'var(--green)' : snrScore > 40 ? 'var(--yellow)' : snrScore > 15 ? 'var(--orange)' : 'var(--red)';
+}
+ctxSlider.addEventListener('input', updateCtxSim);
+updateCtxSim();
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATION 2 — Stacked Bar Context Layers
+// ─────────────────────────────────────────────────────────────
+const layers = [
+  { label: 'User Question', tokens: 30, color: '#00ff88', fixed: true },
+  { label: 'System Prompt (base)', tokens: 1200, color: '#4488ff', active: true },
+  { label: 'Brand & Persona Rules', tokens: 800, color: '#8866ff', active: false },
+  { label: 'Compliance / Legal Header', tokens: 1400, color: '#ff6644', active: false },
+  { label: 'Security & Data Handling', tokens: 900, color: '#ffaa00', active: false },
+  { label: 'Output JSON Schema', tokens: 2200, color: '#FF4D00', active: false },
+  { label: 'Conversation History (50t)', tokens: 18000, color: '#ff3366', active: false },
+  { label: 'Retrieved Documents (10)', tokens: 12000, color: '#cc2200', active: false },
+  { label: 'Agent Routing Manifest', tokens: 600, color: '#884400', active: false },
+  { label: 'Environment Context', tokens: 400, color: '#665500', active: false },
+];
+
+const stackContainer = document.getElementById('stackContainer');
+const stackTotal = document.getElementById('stackTotal');
+const stackUserPct = document.getElementById('stackUserPct');
+
+function renderStack() {
+  stackContainer.innerHTML = '';
+  const total = layers.reduce((s, l) => s + (l.fixed || l.active ? l.tokens : 0), 0);
+  layers.forEach((layer, i) => {
+    const isOn = layer.fixed || layer.active;
+    const pct = Math.min(99, (layer.tokens / 65000) * 100);
+    const row = document.createElement('div');
+    row.className = 'stack-bar-row';
+    if (!layer.fixed) row.style.cursor = 'pointer';
+    row.innerHTML = `
+      <span class="stack-bar-row-label" style="color:${isOn ? layer.color : 'var(--text-faint)'}">
+        ${layer.fixed ? '●' : (isOn ? '◆' : '◇')} ${layer.label}
+      </span>
+      <div class="stack-bar-track">
+        <div class="stack-bar-fill" style="width:${isOn ? pct : 0}%;background:${layer.color}80;">
+          <span>${layer.tokens >= 1000 ? (layer.tokens/1000).toFixed(1)+'K' : layer.tokens}</span>
+        </div>
+      </div>
+      <span class="stack-bar-tok" style="color:${isOn ? layer.color : 'var(--text-faint)'}">
+        ${isOn ? layer.tokens.toLocaleString() : '—'} tok
+      </span>`;
+    if (!layer.fixed) {
+      row.addEventListener('click', () => {
+        layer.active = !layer.active;
+        renderStack();
+      });
+    }
+    stackContainer.appendChild(row);
+  });
+  stackTotal.textContent = total.toLocaleString() + ' tokens';
+  const userPct = ((30 / total) * 100);
+  stackUserPct.textContent = userPct < 1 ? userPct.toFixed(2) + '%' : userPct.toFixed(1) + '%';
+}
+renderStack();
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATION 3 — Conversation History Timeline
+// ─────────────────────────────────────────────────────────────
+const memSlider = document.getElementById('memSlider');
+const memVal = document.getElementById('memVal');
+const timelineContainer = document.getElementById('timelineContainer');
+const tokensFreed = document.getElementById('tokensFreed');
+
+const conversationTurns = [
+  { turn: 'T01', text: 'User: What are your return policy hours?', tokens: 180, age: 10 },
+  { turn: 'T02', text: 'Asst: Returns accepted Mon–Fri, 9am–5pm...', tokens: 220, age: 10 },
+  { turn: 'T03', text: 'User: I bought shoes last week, size 10M...', tokens: 195, age: 9 },
+  { turn: 'T04', text: 'Asst: I can process that return for you...', tokens: 240, age: 9 },
+  { turn: 'T05', text: 'User: Actually I want to exchange, not return...', tokens: 160, age: 8 },
+  { turn: 'T06', text: 'Asst: Exchange is also possible within 30 days...', tokens: 280, age: 8 },
+  { turn: 'T07', text: 'User: Do I need the original receipt?', tokens: 145, age: 6 },
+  { turn: 'T08', text: 'Asst: Receipt or order confirmation required...', tokens: 210, age: 6 },
+  { turn: 'T09', text: 'User: I can email it. My email is j@example.com', tokens: 155, age: 3 },
+  { turn: 'T10', text: 'Asst: Perfect. I\'ve noted your email...', tokens: 190, age: 3 },
+  { turn: 'T11', text: 'User: And the shoes were black Nike runners...', tokens: 168, age: 2 },
+  { turn: 'T12', text: 'Asst: Got it — black Nike runners, size 10M...', tokens: 200, age: 2 },
+  { turn: 'T13', text: 'User: Can I exchange for size 11?', tokens: 120, age: 0 },
+  { turn: 'T14', text: 'Asst: [CURRENT] Yes, let me check inventory...', tokens: 0, age: 0 },
+];
+
+function renderTimeline(compression) {
+  timelineContainer.innerHTML = '';
+  let freed = 0;
+  const threshold = compression / 10;
+
+  conversationTurns.forEach(t => {
+    const shouldCompress = t.age >= threshold && compression > 0 && t.age > 0;
+    const opacity = shouldCompress ? Math.max(0.12, 1 - (t.age / 10) * (compression / 80)) : 1;
+    const scale = shouldCompress ? Math.max(0.7, 1 - (t.age / 10) * (compression / 200)) : 1;
+    const attn = shouldCompress ? Math.max(1, Math.round(100 * opacity)) : 100;
+    if (shouldCompress) freed += t.tokens;
+
+    const isCurrent = t.age === 0;
+    const row = document.createElement('div');
+    row.className = 'timeline-msg';
+    row.style.opacity = opacity;
+    row.style.transform = `scaleY(${scale})`;
+    row.style.transformOrigin = 'top left';
+    row.innerHTML = `
+      <span class="timeline-turn" style="color:${isCurrent ? 'var(--orange)' : 'var(--text-faint)'}">
+        ${t.turn}
+      </span>
+      <div class="timeline-bubble" style="border-color:${isCurrent ? 'var(--orange)' : 'var(--border)'}; color:${shouldCompress ? 'var(--text-faint)' : 'var(--text-dim)'}; ${shouldCompress ? 'text-decoration:line-through;text-decoration-color:#444' : ''}">
+        ${shouldCompress ? '[compressed: ' + t.tokens + ' tok → ~15 tok]' : t.text}
+      </div>
+      <span class="timeline-attn" style="color:${attn > 70 ? 'var(--green)' : attn > 30 ? 'var(--yellow)' : 'var(--red)'}">
+        ${t.tokens > 0 ? attn + '% attn' : '—'}
+      </span>`;
+    timelineContainer.appendChild(row);
+  });
+
+  tokensFreed.textContent = freed.toLocaleString() + ' tokens freed';
+  tokensFreed.style.color = freed > 1000 ? 'var(--green)' : 'var(--text-faint)';
+}
+
+memSlider.addEventListener('input', () => {
+  const v = parseInt(memSlider.value);
+  memVal.textContent = v + '% compressed';
+  renderTimeline(v);
+});
+renderTimeline(0);
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATION 4 — Multi-Agent Overhead
+// ─────────────────────────────────────────────────────────────
+const agentSlider = document.getElementById('agentSlider');
+const agentVal = document.getElementById('agentVal');
+const multiAgentNodes = document.getElementById('multiAgentNodes');
+const multiAgentTotal = document.getElementById('multiAgentTotal');
+const multiAgentLabel = document.getElementById('multiAgentLabel');
+
+const agentTypes = [
+  { name: 'Orchestrator Agent', sysPrompt: 1800, taskCtx: 1800, tools: 1200, state: 900, schema: 400 },
+  { name: 'Retrieval Agent', sysPrompt: 1400, taskCtx: 1800, tools: 800, state: 600, schema: 300 },
+  { name: 'Analysis Agent', sysPrompt: 2200, taskCtx: 1800, tools: 600, state: 1200, schema: 600 },
+  { name: 'Formatting Agent', sysPrompt: 1000, taskCtx: 1800, tools: 400, state: 400, schema: 1800 },
+  { name: 'Validation Agent', sysPrompt: 1200, taskCtx: 1800, tools: 300, state: 500, schema: 1200 },
+];
+
+function updateAgents() {
+  const n = parseInt(agentSlider.value);
+  agentVal.textContent = n + ' agent' + (n > 1 ? 's' : '');
+  multiAgentNodes.innerHTML = '';
+  let total = 0;
+  const active = agentTypes.slice(0, n);
+  active.forEach(a => {
+    const tok = a.sysPrompt + a.taskCtx + a.tools + a.state + a.schema;
+    total += tok;
+    const node = document.createElement('div');
+    node.className = 'agent-node';
+    node.innerHTML = `<span style="color:var(--text-dim)">${a.name}</span><span class="agent-node-cost">${tok.toLocaleString()} tok</span>`;
+    multiAgentNodes.appendChild(node);
+  });
+  multiAgentTotal.textContent = total.toLocaleString() + ' tok';
+  const ratio = total / 6100;
+  multiAgentLabel.textContent = ratio <= 1.1 ? 'Efficient' : ratio < 2.5 ? 'Growing' : 'Inflated';
+  multiAgentLabel.style.color = ratio <= 1.1 ? 'var(--green)' : ratio < 2.5 ? 'var(--yellow)' : 'var(--red)';
+}
+agentSlider.addEventListener('input', updateAgents);
+updateAgents();
+
+// ─────────────────────────────────────────────────────────────
+// ANIMATION 5 — JSON Schema Tree
+// ─────────────────────────────────────────────────────────────
+const jsonTree = document.getElementById('jsonTree');
+const jsonTokenCount = document.getElementById('jsonTokenCount');
+
+let totalJsonTokens = 180;
+
+const schema = {
+  name: 'CustomerServiceResponse',
+  type: 'object',
+  tokens: 25,
+  children: [
+    {
+      name: 'responseMetadata',
+      type: 'object',
+      tokens: 35,
+      children: [
+        { name: 'requestId', type: 'string', tokens: 12 },
+        { name: 'timestamp', type: 'string (ISO8601)', tokens: 18 },
+        { name: 'agentVersion', type: 'string', tokens: 10 },
+        { name: 'latencyMs', type: 'integer', tokens: 12 },
+      ]
+    },
+    {
+      name: 'intent',
+      type: 'object',
+      tokens: 28,
+      children: [
+        { name: 'category', type: 'enum[15 values]', tokens: 45 },
+        { name: 'confidence', type: 'number (0.0–1.0)', tokens: 15 },
+        { name: 'subCategory', type: 'string | null', tokens: 18 },
+      ]
+    },
+    {
+      name: 'responseContent',
+      type: 'object',
+      tokens: 22,
+      children: [
+        { name: 'primaryMessage', type: 'string (max 500)', tokens: 20 },
+        { name: 'tone', type: 'enum[empathetic|professional|urgent]', tokens: 35 },
+        {
+          name: 'followUpActions',
+          type: 'array<Action>',
+          tokens: 30,
+          children: [
+            { name: 'actionType', type: 'enum[8 values]', tokens: 32 },
+            { name: 'actionPayload', type: 'object (dynamic)', tokens: 28 },
+            { name: 'priority', type: 'integer (1–5)', tokens: 14 },
+          ]
         }
-    });
-    function updateM2() {
-        let total = 0;
-        m2Layers.forEach(l => {
-            if(!l.classList.contains('disabled')) {
-                total += parseInt(l.getAttribute('data-tokens'));
-            }
-        });
-        const pct = ((30 / total) * 100).toFixed(2);
-        document.getElementById('m2-concentration').innerText = pct + '%';
+      ]
+    },
+    {
+      name: 'complianceFlags',
+      type: 'object',
+      tokens: 32,
+      children: [
+        { name: 'piiDetected', type: 'boolean', tokens: 10 },
+        { name: 'gdprApplicable', type: 'boolean', tokens: 12 },
+        { name: 'escalationRequired', type: 'boolean', tokens: 12 },
+        { name: 'retentionPolicy', type: 'enum[3 values]', tokens: 22 },
+      ]
     }
+  ]
+};
 
-    // Module 3 Logic
-    const m3Slider = document.getElementById('m3-slider');
-    m3Slider.addEventListener('input', (e) => {
-        const val = parseInt(e.target.value);
-        const turns = ['t-turn1', 't-turn2', 't-turn3', 't-turn4'];
-        
-        turns.forEach((id, idx) => {
-            const el = document.getElementById(id);
-            if(idx + 1 > val) {
-                el.style.opacity = '0.15';
-                el.style.transform = 'scale(0.98)';
-            } else {
-                el.style.opacity = '1';
-                el.style.transform = 'scale(1)';
-            }
-        });
-        
-        if(val === 4) {
-            document.getElementById('t-turn4').querySelector('.att-pct').innerText = "Attention: ~70%";
-            document.getElementById('t-turn3').querySelector('.att-pct').innerText = "Attention: ~20%";
-        } else if (val === 2) {
-            document.getElementById('t-turn2').querySelector('.att-pct').innerText = "Attention: ~85%";
-            document.getElementById('t-turn1').querySelector('.att-pct').innerText = "Attention: ~15%";
-        }
+function countTokens(node) {
+  let t = node.tokens;
+  if (node.children && node._open) node.children.forEach(c => t += countTokens(c));
+  return t;
+}
+
+function totalVisibleTokens() {
+  return countTokens(schema) + 25;
+}
+
+function renderJsonNode(node, depth = 0) {
+  const div = document.createElement('div');
+  div.className = 'json-node';
+  const hasChildren = node.children && node.children.length > 0;
+  const indent = '  '.repeat(depth);
+  const toggle = hasChildren ? `<span class="json-toggle">${node._open ? '▼' : '▶'}</span>` : '<span style="display:inline-block;width:14px"></span>';
+  div.innerHTML = `${indent}${toggle}<span class="key">"${node.name}"</span>: <span class="val">${hasChildren ? '{…}' : node.type}</span><span class="json-token-badge">${node.tokens} tok</span>`;
+
+  if (hasChildren) {
+    div.style.cursor = 'pointer';
+    div.addEventListener('click', (e) => {
+      e.stopPropagation();
+      node._open = !node._open;
+      renderJsonTree();
     });
-
-    // Module 4 Logic
-    const m4Btn1 = document.getElementById('m4-btn-1');
-    const m4Btn5 = document.getElementById('m4-btn-5');
-    const m4Display = document.getElementById('m4-display');
-
-    function setAgentView(count) {
-        if(count === 1) {
-            m4Btn1.style.background = 'var(--accent)'; m4Btn1.style.color = '#000'; m4Btn1.style.fontWeight = 'bold';
-            m4Btn5.style.background = 'var(--surface-accent)'; m4Btn5.style.color = '#fff'; m4Btn5.style.fontWeight = 'normal';
-            m4Display.innerHTML = `<strong>Active Pipeline: Core Orchestrator</strong><br>
-            &bull; System Prompt: 4,000 tokens<br>
-            &bull; Tool Manifest: 1,500 tokens<br>
-            <span style="color:var(--accent);">Total Token Overhead: 5,500 tokens</span>`;
-        } else {
-            m4Btn5.style.background = 'var(--accent)'; m4Btn5.style.color = '#000'; m4Btn5.style.fontWeight = 'bold';
-            m4Btn1.style.background = 'var(--surface-accent)'; m4Btn1.style.color = '#fff'; m4Btn1.style.fontWeight = 'normal';
-            m4Display.innerHTML = `<strong>Active Pipeline: 5-Agent Operational Fabric</strong><br>
-            &bull; Router Agent: 3,500 tokens<br>
-            &bull; Data Ingestion Agent: 5,000 tokens<br>
-            &bull; Compliance Gatekeeper: 4,500 tokens<br>
-            &bull; Computation Kernel Agent: 6,000 tokens<br>
-            &bull; Format Validator: 3,000 tokens<br>
-            &bull; Shared Context Synchronizer State: 12,000 tokens<br>
-            <span style="color:#f43f5e; font-weight:bold;">Total Token Overhead: 34,000 tokens (6.1x increase)</span>`;
-        }
+    if (node._open) {
+      const children = document.createElement('div');
+      children.className = 'json-children';
+      node.children.forEach(c => children.appendChild(renderJsonNode(c, depth + 1)));
+      div.appendChild(children);
     }
-    m4Btn1.addEventListener('click', () => setAgentView(1));
-    m4Btn5.addEventListener('click', () => setAgentView(5));
-    setAgentView(5);
+  }
+  return div;
+}
 
-    // Module 5 Logic
-    const toggles = document.querySelectorAll('.node-toggle');
-    toggles.forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            const next = toggle.parentElement.nextElementSibling;
-            if(next && next.classList.contains('node-target')) {
-                if(next.style.display === 'none') {
-                    next.style.display = 'block';
-                    toggle.innerHTML = toggle.innerHTML.replace('+', '&minus;');
-                } else {
-                    next.style.display = 'none';
-                    toggle.innerHTML = toggle.innerHTML.replace('&minus;', '+');
-                }
-                updateM5();
-            }
-        });
-    });
-    function updateM5() {
-        let total = 0;
-        toggles.forEach(toggle => {
-            const next = toggle.parentElement.nextElementSibling;
-            if(next && next.style.display !== 'none') {
-                total += parseInt(toggle.getAttribute('data-cost'));
-            }
-        });
-        document.getElementById('m5-total').innerText = total + " tokens";
-    }
+function renderJsonTree() {
+  jsonTree.innerHTML = '';
+  jsonTree.appendChild(renderJsonNode(schema));
+  const total = totalVisibleTokens();
+  jsonTokenCount.textContent = '~' + total.toLocaleString() + ' tok';
+  jsonTokenCount.style.color = total > 400 ? 'var(--red)' : total > 250 ? 'var(--yellow)' : 'var(--green)';
+}
+renderJsonTree();
+
+// ─────────────────────────────────────────────────────────────
+// LATENCY BREAKDOWN (Section 9)
+// ─────────────────────────────────────────────────────────────
+const latencySteps = [
+  { label: 'Prompt Assembly', ms: 85, color: '#4488ff' },
+  { label: 'Memory Retrieval', ms: 110, color: '#8866ff' },
+  { label: 'RAG Document Fetch', ms: 140, color: '#ff6644' },
+  { label: 'Agent Routing', ms: 45, color: '#ffaa00' },
+  { label: 'Policy Injection', ms: 65, color: '#44ccff' },
+  { label: 'Schema Validation', ms: 30, color: '#66ff88' },
+  { label: 'Tool Selection', ms: 40, color: '#ff88cc' },
+  { label: 'Model Inference', ms: 420, color: '#FF4D00' },
+  { label: 'Output Parsing', ms: 35, color: '#aaaaff' },
+  { label: 'Logging & Tracing', ms: 25, color: '#444' },
+];
+const maxMs = Math.max(...latencySteps.map(s => s.ms));
+const totalMs = latencySteps.reduce((s, l) => s + l.ms, 0);
+
+const lbContainer = document.getElementById('latencyBreakdown');
+latencySteps.forEach(step => {
+  const pct = (step.ms / maxMs) * 100;
+  const isInference = step.label === 'Model Inference';
+  const row = document.createElement('div');
+  row.className = 'latency-row';
+  row.innerHTML = `
+    <span class="latency-label" style="color:${isInference ? 'var(--text)' : 'var(--text-dim)'}">${step.label}${isInference ? ' ←' : ''}</span>
+    <div class="latency-bar-wrap">
+      <div class="latency-bar-inner" style="width:${pct}%;background:${step.color}88;">
+        ${Math.round((step.ms / totalMs) * 100)}%
+      </div>
+    </div>
+    <span class="latency-ms" style="color:${step.color}">${step.ms}ms</span>`;
+  lbContainer.appendChild(row);
+});
+
+const summaryRow = document.createElement('div');
+summaryRow.style.cssText = 'margin-top:1rem;border-top:1px solid var(--border);padding-top:0.75rem;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;';
+const inferenceShare = Math.round((420 / totalMs) * 100);
+summaryRow.innerHTML = `
+  <span style="color:var(--text-faint)">Model inference = ${inferenceShare}% of total latency</span>
+  <span style="color:var(--orange)">Total: ${totalMs}ms</span>`;
+lbContainer.appendChild(summaryRow);
+
 </script>
-
 </body>
 </html>
