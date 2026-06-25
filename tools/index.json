@@ -3,7 +3,10 @@
     "id": "context-extractor",
     "title": "Context Extraction System",
     "description": "Nine-category modular prompt context architecture for session consistency.",
-    "tags": ["Context Engineering", "Prompting"],
+    "tags": [
+      "Context Engineering",
+      "Prompting"
+    ],
     "url": "tools/context-extractor.html",
     "featured": true,
     "date": "2026-01-15"
@@ -12,7 +15,10 @@
     "id": "context-engine",
     "title": "Portable Context Engine System",
     "description": "Portable Context Handler.",
-    "tags": ["Context Engineering", "Prompting"],
+    "tags": [
+      "Context Engineering",
+      "Prompting"
+    ],
     "url": "tools/context-engine.html",
     "featured": true,
     "date": "2026-03-19"
@@ -21,7 +27,11 @@
     "id": "ai-aggregator",
     "title": "Multi-Model Workspace Aggregator",
     "description": "Multi-Model Workspace Aggregator.",
-    "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "tags": [
+      "Context Engineering",
+      "Prompting",
+      "Workflows"
+    ],
     "url": "tools/ai-aggregator.html",
     "featured": true,
     "date": "2026-01-15"
@@ -30,7 +40,11 @@
     "id": "context-window-optimizer",
     "title": "Context Window Optimizer",
     "description": "visualizes dynamic context window packing, sliding memory anchors, and token calculations.",
-    "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "tags": [
+      "Context Engineering",
+      "Prompting",
+      "Workflows"
+    ],
     "url": "tools/context-window-optimizer.html",
     "featured": true,
     "date": "2026-01-15"
@@ -39,7 +53,11 @@
     "id": "deterministic-agent-stateboard",
     "title": "Agent Stateboard",
     "description": "visualizes a rigorous, finite-state machine approach to multi-agent loops, completely eliminating open-ended conversational drift by forcing strict structural guardrails between transitions.",
-    "tags": ["Agents", "Prompting", "Workflows"],
+    "tags": [
+      "Agents",
+      "Prompting",
+      "Workflows"
+    ],
     "url": "tools/deterministic-agent-stateboard.html",
     "featured": true,
     "date": "2026-04-15"
@@ -48,7 +66,11 @@
     "id": "nanobanana-json-compiler",
     "title": "NanoBanana Compiler",
     "description": "interactive web compiler turns modular layout configurations directly into context-rich system prompts and structural configurations targeting the Nano Banana diagramming paradigm.",
-    "tags": ["Context Engineering", "Prompting", "Diagrams"],
+    "tags": [
+      "Context Engineering",
+      "Prompting",
+      "Diagrams"
+    ],
     "url": "tools/nanobanana-json-compiler.html",
     "featured": true,
     "date": "2026-01-15"
@@ -57,7 +79,11 @@
     "id": "prompt-matrix-evaluator",
     "title": "Prompt Matrix Evaluator",
     "description": "comparative tool showcases the power of context optimization filters side-by-side, visually illustrating token reduction and constraint density tracking.",
-    "tags": ["Context Engineering", "Prompting", "Workflows"],
+    "tags": [
+      "Context Engineering",
+      "Prompting",
+      "Workflows"
+    ],
     "url": "tools/prompt-matrix-evaluator.html",
     "featured": true,
     "date": "2026-01-15"
@@ -66,8 +92,38 @@
     "id": "agentic-backpressure-throttle",
     "title": "Deterministic Token Router",
     "description": "high-throughput Token Rate Limiter and Context Prioritization Gateway.",
-    "tags": ["Context Engineering", "Agents", "Workflows"],
+    "tags": [
+      "Context Engineering",
+      "Agents",
+      "Workflows"
+    ],
     "url": "tools/agentic-backpressure-throttle.html",
+    "featured": true,
+    "date": "2026-01-15"
+  },
+  {
+    "id": "claude-context-engine-premium",
+    "title": "Claude Context Engine Premium",
+    "description": "Premium Claude context-engine workspace for advanced prompt and context orchestration.",
+    "tags": [
+      "Context Engineering",
+      "Claude",
+      "Prompting"
+    ],
+    "url": "tools/claude_context_engine_premium.html",
+    "featured": true,
+    "date": "2026-01-15"
+  },
+  {
+    "id": "token-conscious-diff-stager",
+    "title": "Token-Conscious Prompt Diff & Stager",
+    "description": "Token-aware prompt diff and staging workspace for controlled prompt revisions.",
+    "tags": [
+      "Context Engineering",
+      "Prompting",
+      "Workflows"
+    ],
+    "url": "tools/token-conscious-diff-stager.html",
     "featured": true,
     "date": "2026-01-15"
   }
