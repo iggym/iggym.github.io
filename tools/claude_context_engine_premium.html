@@ -1,1 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Context Engine Premium</title>
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-surface: #131a26;
+            --border-color: #222f47;
+            --text-primary: #f1f5f9;
+            --text-muted: #64748b;
+            --accent-glow: #3b82f6;
+            --accent-success: #10b981;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(19, 26, 38, 0.7);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .brand-group {
+            display: flex;
+            align-items: baseline;
+            gap: 1.5rem;
+        }
+
+        .brand h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .brand span {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-weight: 400;
+        }
+
+        .nav-link {
+            color: var(--accent-glow);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            flex: 1;
+            gap: 1px;
+            background-color: var(--border-color);
+        }
+
+        .pane {
+            background-color: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            gap: 1rem;
+        }
+
+        .pane-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pane-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .workspace-area {
+            flex: 1;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.9rem;
+            resize: none;
+            outline: none;
+            line-height: 1.5;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .workspace-area:focus {
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 0 1px var(--accent-glow);
+        }
+
+        .workflow-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        .btn-tab {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-tab.active {
+            background-color: var(--accent-glow);
+            border-color: var(--accent-glow);
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--text-primary);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .meta-counter {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .advanced-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .advanced-panel {
+            background-color: rgba(19, 26, 38, 0.5);
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .advanced-panel.visible {
+            display: flex;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--accent-success);
+            color: var(--bg-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+            .pane {
+                min-height: 45vh;
+            }
+            .brand-group {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-group">
+            <div class="brand">
+                <h1>Claude Context Engine</h1>
+                <span>PREMIUM CONTEXT ORCHESTRATOR</span>
+            </div>
+            <a href="https://iggym.github.io/#tools" class="nav-link">link</a>
+        </div>
+        <div class="header-controls">
+            <div class="advanced-toggle" onclick="toggleAdvanced()">
+                <input type="checkbox" id="advCheck" style="pointer-events: none;">
+                <label for="advCheck" style="cursor: pointer; margin-left: 0.25rem;">Progressive Controls</label>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-container">
+        <!-- Input Panel -->
+        <section class="pane">
+            <div class="pane-header">
+                <span class="pane-title">Raw Context Matrix</span>
+                <span class="meta-counter" id="inputStats">Chars: 0</span>
+            </div>
+            
+            <textarea id="rawInput" class="workspace-area" placeholder="Paste structural logs, disorganized code dumps, raw configuration notes, or transcripts here..."></textarea>
+            
+            <div class="workflow-controls">
+                <button class="btn-tab active" onclick="setWorkflow('extract', this)">Core Logic</button>
+                <button class="btn-tab" onclick="setWorkflow('compress', this)">Squeeze Tokens</button>
+                <button class="btn-tab" onclick="setWorkflow('align', this)">Role Anchor</button>
+            </div>
+
+            <div id="advancedPanel" class="advanced-panel">
+                <label style="font-size: 0.8rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
+                    <input type="checkbox" id="vacuumToggle" checked> Automated Semantic Vacuum (Strip Lockfiles/Noise)
+                </label>
+                <label style="font-size: 0.8rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
+                    <input type="checkbox" id="anchorToggle" checked> Inverted Attention Optimization (Anchor Rules to Bottom)
+                </label>
+            </div>
+
+            <button class="btn-primary" onclick="compilePipeline()">Compile Context</button>
+        </section>
+
+        <!-- Output Panel -->
+        <section class="pane">
+            <div class="pane-header">
+                <span class="pane-title">Engine Output (Optimized Pipeline)</span>
+                <span class="meta-counter" id="outputStats">Saved: 0%</span>
+            </div>
+            
+            <textarea id="compiledOutput" class="workspace-area" readonly placeholder="Compiled payload will appear here instantly..."></textarea>
+            
+            <div class="action-bar">
+                <button class="btn-primary" style="background-color: var(--text-primary);" onclick="copyToClipboard()">
+                    Copy Compiled Prompt
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast">Payload Saved to Clipboard</div>
+
+    <script>
+        let currentWorkflow = 'extract';
+        const workerUrl = 'https://claude-context-orchestrator.iggy-mw.workers.dev/api/orchestrate';
+
+        window.onload = () => {
+            const savedInput = localStorage.getItem('cce_raw_input');
+            if (savedInput) {
+                document.getElementById('rawInput').value = savedInput;
+                updateMetrics();
+            }
+        };
+
+        document.getElementById('rawInput').addEventListener('input', (e) => {
+            localStorage.setItem('cce_raw_input', e.target.value);
+            updateMetrics();
+        });
+
+        function updateMetrics() {
+            const rawText = document.getElementById('rawInput').value;
+            document.getElementById('inputStats').innerText = `Chars: ${rawText.length}`;
+        }
+
+        function setWorkflow(workflow, element) {
+            currentWorkflow = workflow;
+            document.querySelectorAll('.btn-tab').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function toggleAdvanced() {
+            const check = document.getElementById('advCheck');
+            const panel = document.getElementById('advancedPanel');
+            check.checked = !check.checked;
+            panel.classList.toggle('visible', check.checked);
+        }
+
+        async function compilePipeline() {
+            let rawText = document.getElementById('rawInput').value;
+            if (!rawText.trim()) return;
+
+            const outputBox = document.getElementById('compiledOutput');
+            outputBox.value = "Executing transformation via proxy pipeline...";
+
+            if (document.getElementById('vacuumToggle').checked) {
+                rawText = rawText.replace(/("dependencies":\s*{[\s\S]*?})|("devDependencies":\s*{[\s\S]*?})/g, '"dependencies": "[Pruned by Semantic Vacuum]"');
+                rawText = rawText.replace(/\b(Copyright|All rights reserved)[\s\S]*?\n/gi, '');
+                rawText = rawText.replace(/^\s*[\r\n]/gm, '');
+            }
+
+            try {
+                const response = await fetch(workerUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        payload: rawText,
+                        workflow: currentWorkflow,
+                        invertAttention: document.getElementById('anchorToggle').checked
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    outputBox.value = data.result;
+                    const improvement = Math.max(0, Math.round(((rawText.length - data.result.length) / rawText.length) * 100));
+                    document.getElementById('outputStats').innerText = `Token Efficiency: +${improvement}%`;
+                } else {
+                    outputBox.value = `Error: ${data.error}`;
+                }
+            } catch (err) {
+                outputBox.value = `Network Failure linking to Edge: ${err.message}`;
+            }
+        }
+
+        function copyToClipboard() {
+            const output = document.getElementById('compiledOutput');
+            if (!output.value || output.value.startsWith("Executing")) return;
+            
+            navigator.clipboard.writeText(output.value);
+            
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+    </script>
+</body>
+</html>
