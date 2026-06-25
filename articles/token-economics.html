@@ -270,18 +270,6 @@
             border-radius: 4px;
             font-size: 12px;
         }
-
-        .diagram-placeholder {
-            background: var(--surface);
-            border: 1px dashed var(--border);
-            padding: 24px;
-            text-align: center;
-            font-family: var(--mono);
-            font-size: 13px;
-            color: var(--text-muted);
-            border-radius: 6px;
-            margin: 24px 0;
-        }
     </style>
 </head>
 <body>
@@ -578,7 +566,6 @@
             }
         });
         
-        // Dynamically adjust display texts
         if(val === 4) {
             document.getElementById('t-turn4').querySelector('.att-pct').innerText = "Attention: ~70%";
             document.getElementById('t-turn3').querySelector('.att-pct').innerText = "Attention: ~20%";
@@ -626,10 +613,10 @@
             if(next && next.classList.contains('node-target')) {
                 if(next.style.display === 'none') {
                     next.style.display = 'block';
-                    toggle.innerText = toggle.innerText.replace('+', '&minus;');
+                    toggle.innerHTML = toggle.innerHTML.replace('+', '&minus;');
                 } else {
                     next.style.display = 'none';
-                    toggle.innerText = toggle.innerText.replace('&minus;', '+');
+                    toggle.innerHTML = toggle.innerHTML.replace('&minus;', '+');
                 }
                 updateM5();
             }
