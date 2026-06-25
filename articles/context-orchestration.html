@@ -4,46 +4,654 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Shift From Coding to Context Orchestration</title>
-  <link rel="stylesheet" href="../assets/css/main.css">
-  <link rel="stylesheet" href="../assets/css/essay.css"> <!-- Optional extra styling -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,700;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #111118;
+      --border: #1e1e2e;
+      --accent: #7c6af7;
+      --accent-dim: rgba(124, 106, 247, 0.15);
+      --accent-glow: rgba(124, 106, 247, 0.35);
+      --headline: #f0eff8;
+      --body: #a8a7be;
+      --muted: #5a5970;
+      --amber: #f5a623;
+      --teal: #38d9c0;
+      --red: #f76a6a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE TEXTURE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 4rem 2rem 8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── NAV ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+
+    /* ── HEADER ── */
+    .essay-header {
+      margin-top: 3.5rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeUp 0.6s ease forwards 0.1s;
+    }
+
+    h1.essay-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      color: var(--headline);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: fadeUp 0.7s ease forwards 0.25s;
+    }
+
+    .meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      opacity: 0;
+      animation: fadeUp 0.6s ease forwards 0.4s;
+    }
+
+    /* ── READING PROGRESS ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
+      z-index: 999;
+      transition: width 0.1s linear;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── LEDE ── */
+    .lede {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+      color: var(--headline);
+      line-height: 1.75;
+      margin-top: 2.5rem;
+      font-weight: 300;
+    }
+
+    /* ── BODY COPY ── */
+    .essay-body p {
+      font-size: 1.05rem;
+      color: var(--body);
+      line-height: 1.85;
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      margin-top: 3.5rem;
+    }
+    .section-label span {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── PULLQUOTE ── */
+    .pullquote {
+      border-left: 2px solid var(--accent);
+      padding: 1rem 0 1rem 1.75rem;
+      margin: 3rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .pullquote::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent), var(--teal));
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+    .pullquote p {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--headline);
+      line-height: 1.6;
+      margin: 0;
+    }
+    .pullquote .source {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-top: 0.75rem;
+      display: block;
+    }
+
+    /* ── ANALOGY CARD ── */
+    .analogy-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .analogy-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, var(--accent-dim), transparent 70%);
+      pointer-events: none;
+    }
+    .analogy-card .card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .analogy-card .card-label::before {
+      content: '◆';
+      font-size: 0.5rem;
+    }
+    .analogy-card p {
+      font-size: 0.97rem;
+      color: var(--body);
+      line-height: 1.75;
+      margin: 0;
+    }
+    .analogy-card p em {
+      color: var(--headline);
+      font-style: normal;
+    }
+
+    /* ── CONTEXT WINDOW VISUALIZER ── */
+    .token-viz {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.75rem;
+      margin: 2.5rem 0;
+      overflow: hidden;
+    }
+    .token-viz-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+    .token-bar-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.6rem;
+    }
+    .token-bar-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      width: 120px;
+      flex-shrink: 0;
+    }
+    .token-bar-track {
+      flex: 1;
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .token-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      width: 0%;
+      transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .token-bar-pct {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      width: 36px;
+      text-align: right;
+    }
+
+    /* ── PILLARS GRID ── */
+    .pillars-grid {
+      display: grid;
+      gap: 1.25rem;
+      margin: 2.5rem 0;
+    }
+
+    .pillar-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+    .pillar-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .pillar-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at bottom right, var(--accent-dim), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+    .pillar-card:hover::after { opacity: 1; }
+
+    .pillar-num {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .pillar-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      color: var(--headline);
+      font-weight: 400;
+      margin-bottom: 0.75rem;
+    }
+    .pillar-body {
+      font-size: 0.93rem;
+      color: var(--body);
+      line-height: 1.75;
+    }
+    .pillar-analogy {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.65;
+    }
+    .pillar-analogy strong {
+      color: var(--accent);
+      font-style: normal;
+      font-weight: 400;
+    }
+
+    /* ── CLOSING ── */
+    .closing-block {
+      margin-top: 3.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+      50% { box-shadow: 0 0 18px 4px var(--accent-glow); }
+    }
+
+    /* ── CURSOR GLOW ── */
+    #cursor-glow {
+      position: fixed;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,106,247,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+      transition: left 0.08s, top 0.08s;
+    }
+
+    @media (max-width: 600px) {
+      .wrapper { padding: 2.5rem 1.25rem 6rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
 </head>
-<body class="section-void" style="padding: 4rem 2rem;">
-  <main style="max-width: 780px; margin: 0 auto;">
-    <a href="../index.html" style="color: var(--muted); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.85rem;">← BACK TO ARCHITECT</a>
-    
-    <header style="margin-top: 3rem; margin-bottom: 3rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem;">
-      <span style="font-family: 'DM Mono', monospace; color: var(--accent); font-size: 0.85rem;">// SYSTEMIC ARCHITECTURE</span>
-      <h1 style="font-family: 'Fraunces', serif; font-size: 2.5rem; color: var(--headline); margin-top: 0.5rem; margin-bottom: 1rem;">The Shift From Coding to Context Orchestration</h1>
-      <span style="font-family: 'DM Mono', monospace; color: var(--muted); font-size: 0.85rem;">PUBLISHED JUNE 2026 • 6 MIN READ</span>
-    </header>
+<body>
 
-    <article class="essay-body-wrapper" style="color: var(--body); font-size: 1.1rem; line-height: 1.8;">
-      <p style="font-size: 1.25rem; line-height: 1.8; color: var(--headline); margin-bottom: 1.5rem;">
-        For over a quarter of a century, software engineering has treated code syntax as its primary unit of leverage. We perfected compilers, obsessed over type systems, and built rigid testing boundaries to govern deterministic execution loops. But as production systems transition to generative runtime engines, code generation itself is becoming a low-cost, ambient utility. 
+<div id="progress-bar"></div>
+<div id="cursor-glow"></div>
+
+<div class="wrapper">
+
+  <a href="../index.html" class="back-link">← BACK TO ARCHITECT</a>
+
+  <header class="essay-header">
+    <div class="eyebrow">// SYSTEMIC ARCHITECTURE</div>
+    <h1 class="essay-title">The Shift From Coding<br>to Context Orchestration</h1>
+    <div class="meta">PUBLISHED JUNE 2026 &nbsp;·&nbsp; 6 MIN READ</div>
+  </header>
+
+  <!-- LEDE -->
+  <div class="reveal">
+    <p class="lede">
+      For over 25 years, software engineering treated code syntax as its primary unit of power. We perfected compilers, obsessed over type systems, and built rigid testing rules around predictable, repeatable execution. But something has shifted — quietly at first, now undeniably.
+    </p>
+  </div>
+
+  <div class="essay-body reveal" style="margin-top: 1.75rem;">
+    <p>
+      Code generation is becoming a low-cost commodity. AI systems can now write functional software on demand. The real constraint — the new frontier of engineering leverage — is no longer <em>how fast you can type syntax</em>. It's <em>how precisely you can engineer the context that shapes what AI systems produce.</em>
+    </p>
+  </div>
+
+  <div class="analogy-card reveal">
+    <div class="card-label">Analogy · The Shift</div>
+    <p>
+      Think of a master chef. For decades, the highest-paid skill in the kitchen was knife technique — fast, precise cuts. Then machines arrived that could chop faster than any human. Suddenly, the <em>real</em> premium skill became recipe architecture: knowing exactly what ingredients to include, in what order, and what to keep off the counter. The knife became a commodity. The recipe became the leverage.
+    </p>
+  </div>
+
+  <!-- PULLQUOTE -->
+  <div class="pullquote reveal">
+    <p>"In a generative software factory, code is a transient execution byproduct. The prompt architecture is the actual source of truth."</p>
+  </div>
+
+  <!-- SECTION: Context Window -->
+  <div class="section-label reveal">
+    <span>What Changed</span>
+  </div>
+
+  <div class="essay-body reveal">
+    <p>
+      When a human engineer writes code, they draw from years of experience stored in long-term memory — pulling patterns, libraries, and architectural instincts from their own mental archive. When an AI agent builds software, it has no such permanent memory. Its entire world — every constraint, every rule, every piece of relevant history — lives only inside its <strong style="color: var(--headline);">context window</strong>: the finite block of text fed to it at runtime.
+    </p>
+    <p>
+      Whatever isn't in that window doesn't exist to the model. This is the single most important thing to understand about AI-driven engineering.
+    </p>
+  </div>
+
+  <div class="analogy-card reveal">
+    <div class="card-label">Analogy · The Context Window</div>
+    <p>
+      Imagine a brilliant consultant who wakes up every morning with <em>complete amnesia</em>. Each day, you hand them a briefing document before they start work. Whatever is in that document is their entire reality for the day. Leave out a critical rule? They'll violate it — not out of carelessness, but because it simply doesn't exist in their world. The quality of their work is entirely determined by the quality of your briefing. <em>You</em> are the memory.
+    </p>
+  </div>
+
+  <!-- TOKEN WINDOW VISUALIZER -->
+  <div class="token-viz reveal" id="token-viz">
+    <div class="token-viz-label">Context Window — Where Every Token Competes for Space</div>
+
+    <div class="token-bar-wrap">
+      <div class="token-bar-name">System Rules</div>
+      <div class="token-bar-track"><div class="token-bar-fill" data-width="18" style="background: var(--accent);"></div></div>
+      <div class="token-bar-pct">18%</div>
+    </div>
+    <div class="token-bar-wrap">
+      <div class="token-bar-name">Codebase Context</div>
+      <div class="token-bar-track"><div class="token-bar-fill" data-width="34" style="background: var(--teal);"></div></div>
+      <div class="token-bar-pct">34%</div>
+    </div>
+    <div class="token-bar-wrap">
+      <div class="token-bar-name">Chat History</div>
+      <div class="token-bar-track"><div class="token-bar-fill" data-width="27" style="background: var(--amber);"></div></div>
+      <div class="token-bar-pct">27%</div>
+    </div>
+    <div class="token-bar-wrap">
+      <div class="token-bar-name">Task + Examples</div>
+      <div class="token-bar-track"><div class="token-bar-fill" data-width="15" style="background: #a78bfa;"></div></div>
+      <div class="token-bar-pct">15%</div>
+    </div>
+    <div class="token-bar-wrap">
+      <div class="token-bar-name">Headroom</div>
+      <div class="token-bar-track"><div class="token-bar-fill" data-width="6" style="background: var(--red); opacity: 0.6;"></div></div>
+      <div class="token-bar-pct">6%</div>
+    </div>
+    <p style="font-size: 0.75rem; color: var(--muted); margin-top: 1rem; font-family: 'DM Mono', monospace; letter-spacing: 0.05em;">
+      // Every byte you add pushes something else out. Treat context like RAM — allocate deliberately.
+    </p>
+  </div>
+
+  <!-- SECTION: THREE PILLARS -->
+  <div class="section-label reveal">
+    <span>The Three Pillars of Context Orchestration</span>
+  </div>
+
+  <div class="essay-body reveal">
+    <p>
+      This architectural shift forces engineering teams to develop a new discipline: <strong style="color: var(--headline);">Context Orchestration</strong>. Rather than writing lines of code, the engineer's job becomes structuring the information environment in which AI systems operate. That discipline rests on three foundational pillars.
+    </p>
+  </div>
+
+  <div class="pillars-grid">
+
+    <div class="pillar-card reveal">
+      <div class="pillar-num">PILLAR 01</div>
+      <div class="pillar-title">Structural Framing</div>
+      <div class="pillar-body">
+        Designing deterministic scaffolding — strict JSON schemas, system role definitions, multi-agent topologies — that forces stochastic (probabilistic) models to behave reliably and predictably. Without structure, AI output is creative but chaotic. With it, you get creative output inside reliable guardrails.
+      </div>
+      <div class="pillar-analogy">
+        <strong>Like a film director, not a screenwriter.</strong> A screenwriter writes the words. A director controls the lighting, blocking, camera angles, and casting — all the structural decisions that shape what those words become on screen. Structural Framing is directing the AI: you don't write every line, you define the constraints that make every line land correctly.
+      </div>
+    </div>
+
+    <div class="pillar-card reveal">
+      <div class="pillar-num">PILLAR 02</div>
+      <div class="pillar-title">Token Window Economics</div>
+      <div class="pillar-body">
+        Treating the context window as a finite, precious resource — like RAM in a computer. Every instruction, every piece of history, every example you include competes for the same limited space. Engineers must actively prune stale context, compress conversation history, and prioritize what information earns its place in the window.
+      </div>
+      <div class="pillar-analogy">
+        <strong>Like a chef's mise en place.</strong> Before service, a great chef arranges every ingredient on the counter — only what's needed for tonight's menu, in exactly the right order. There's no room for yesterday's prep. Token Window Economics is the mise en place of AI engineering: ruthless curation of what's on the counter before the model starts cooking.
+      </div>
+    </div>
+
+    <div class="pillar-card reveal">
+      <div class="pillar-num">PILLAR 03</div>
+      <div class="pillar-title">Runtime Verification Loops</div>
+      <div class="pillar-body">
+        Replacing manual code review with autonomous sandboxes where AI-generated code branches are automatically tested in isolated environments before they're accepted. The engineer designs the verification system; the system does the reviewing. This closes the loop between generation and validation without human bottlenecks.
+      </div>
+      <div class="pillar-analogy">
+        <strong>Like a spell-checker that can run the whole document.</strong> A basic spell-checker flags typos after you type. A Runtime Verification Loop is more like a full manuscript editor who — the instant you write a chapter — runs it against plot continuity, character consistency, and style guides simultaneously, flagging contradictions before they compound.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing-block reveal">
+    <div class="section-label" style="margin-top: 0;">
+      <span>What This Means for You</span>
+    </div>
+
+    <div class="essay-body">
+      <p>
+        The role of the systems architect is evolving in real time. We are no longer designing static codebases — we are engineering the <em>cognitive boundaries</em>, structural inputs, and feedback telemetry systems within which autonomous code factories operate.
       </p>
-
-      <p style="margin-bottom: 1.5rem;">
-        The high-leverage constraint is no longer the capacity to write code; it is the structural engineering of context. When human engineers write code, they operate within a biological context window, pulling libraries and architectural patterns from mental RAM. When an AI agent system builds software, its entire world, logical constraints, and execution boundaries are defined strictly by the state of its input tokens. 
+      <p>
+        The future belongs not to those who can type syntax the fastest, but to those who can choreograph context with systemic precision. The highest-leverage skill in software is no longer writing code — it's knowing exactly what to put in the room before the AI walks in.
       </p>
+    </div>
 
-      <blockquote style="border-left: 2px solid var(--accent); padding: 0.5rem 0 0.5rem 1.5rem; margin: 2rem 0; font-family: 'Fraunces', serif; font-style: italic; font-size: 1.3rem; color: var(--headline); line-height: 1.5;">
-        "In a generative software factory, code is a transient execution byproduct. The prompt architecture is the actual source of truth."
-      </blockquote>
-
-      <p style="margin-bottom: 1.5rem;">
-        This architectural shift forces engineering teams to transition from line-by-line syntax validation to systemic <strong>Context Orchestration</strong>. This discipline governs three core pillars:
+    <div class="analogy-card reveal" style="margin-top: 1.5rem;">
+      <div class="card-label">Final Analogy · The Big Picture</div>
+      <p>
+        Think of a traditional orchestra. For centuries, the most admired performer was the one who could play their instrument with the most virtuosity. Then recording technology arrived. Now a single producer in a studio can summon a full orchestra digitally. The scarce skill isn't playing the violin anymore — it's <em>composing the score</em>, knowing which instruments enter when, how the dynamics build, and what silence does to the listener. Context Orchestration is that score. The AI is the orchestra. <em>You are the composer.</em>
       </p>
+    </div>
+  </div>
 
-      <ul style="margin: 2rem 0; padding-left: 1.5rem; display: flex; flex-direction: column; gap: 1rem; list-style-type: square;">
-        <li><strong>Structural Framing:</strong> Designing deterministic scaffolding (like strict JSON schemas, system roles, and multi-agent topologies) that forces stochastic models to execute reliably.</li>
-        <li><strong>Token Window Economics:</strong> Treating the context window as a finite runtime resource, where historical conversation data and system instructions must be dynamically pruned, compressed, and balanced to minimize inference latency budgets.</li>
-        <li><strong>Runtime Verification Loops:</strong> Replacing manual code review with autonomous sandboxes where agent-generated branches run code through isolated test-driven verification pipelines before merging.</li>
-      </ul>
+  <footer>
+    <span>// SYSTEMIC ARCHITECTURE</span>
+    <span>JUNE 2026</span>
+  </footer>
 
-      <p style="margin-bottom: 1.5rem;">
-        The role of the systems architect is evolving. We are no longer designing static codebases; we are engineering the cognitive boundaries, structural inputs, and feedback telemetry systems within which autonomous code factories operate. The future belongs not to those who can type syntax the fastest, but to those who can choreograph context with absolute systemic precision.
-      </p>
-    </article>
-  </main>
+</div>
+
+<script>
+  // ── READING PROGRESS BAR ──
+  const bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const doc = document.documentElement;
+    const scrolled = doc.scrollTop || document.body.scrollTop;
+    const total = doc.scrollHeight - doc.clientHeight;
+    bar.style.width = Math.min(100, (scrolled / total) * 100) + '%';
+  });
+
+  // ── CURSOR GLOW ──
+  const glow = document.getElementById('cursor-glow');
+  document.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // ── SCROLL REVEAL ──
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // stagger children within a group
+        const delay = entry.target.dataset.delay || 0;
+        setTimeout(() => entry.target.classList.add('visible'), delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach((el, i) => observer.observe(el));
+
+  // ── TOKEN BAR ANIMATION ──
+  const tokenViz = document.getElementById('token-viz');
+  const tokenObserver = new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      document.querySelectorAll('.token-bar-fill').forEach((bar, i) => {
+        setTimeout(() => {
+          bar.style.width = bar.dataset.width + '%';
+        }, i * 140);
+      });
+      tokenObserver.disconnect();
+    }
+  }, { threshold: 0.3 });
+  tokenObserver.observe(tokenViz);
+
+  // ── PILLAR CARD STAGGER ──
+  const pillarCards = document.querySelectorAll('.pillar-card');
+  const pillarObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        pillarCards.forEach((card, i) => {
+          setTimeout(() => card.classList.add('visible'), i * 120);
+        });
+        pillarObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+  if (pillarCards.length) pillarObserver.observe(pillarCards[0]);
+</script>
 </body>
 </html>
