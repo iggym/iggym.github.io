@@ -78,7 +78,7 @@
   {
     "id": "prompt-matrix-evaluator",
     "title": "Prompt Matrix Evaluator",
-    "description": "comparative tool showcases the power of context optimization filters side-by-side, visually illustrating token reduction and constraint density tracking.",
+    "description": "Strips common filler from a prompt and shows the estimated token change. It does not measure constraint density.",
     "tags": [
       "Context Engineering",
       "Prompting",
