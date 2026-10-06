@@ -6,6 +6,9 @@
   <title>Agent Stateboard — Iggy Mwangi</title>
   <meta name="description" content="An interactive explainer: watch a planner, a worker, and a checker hand work along a fixed path, with a check before anything is accepted.">
   <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f8f7f4">
+  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../assets/css/tool.css">
   <style>
     .steps { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.6rem; counter-reset: step; }
@@ -31,7 +34,14 @@
   <a class="skip" href="#main">Skip to main content</a>
   <header class="tool-top">
     <a href="../#tools">← All tools</a>
-    <a class="site" href="../">Iggy Mwangi</a>
+    <div class="top-right">
+      <a class="site" href="../">Iggy Mwangi</a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" hidden>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        <span class="sr-only">Dark mode</span>
+      </button>
+    </div>
   </header>
 
   <main id="main" class="tool-main" tabindex="-1">
@@ -91,6 +101,7 @@
     <p>Want the real thing? See <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">Deterministic Agent Supervisor on GitHub</a>.</p>
   </footer>
 
+  <script src="../assets/js/theme.js"></script>
   <script src="../assets/js/tool-kit.js"></script>
   <script>
     var MAX_RETRIES = 2;

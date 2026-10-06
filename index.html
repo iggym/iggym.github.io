@@ -6,8 +6,8 @@
   <title>Iggy Mwangi — Practical AI tools and notes</title>
   <meta name="description" content="Free browser tools for working with prompts, short essays on running AI systems in production, and open-source projects by Iggy Mwangi, AI systems architect.">
   <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f4f0e8" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#f8f7f4">
+  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iggym.github.io/">
   <meta property="og:title" content="Iggy Mwangi — Practical AI tools and notes">
@@ -32,6 +32,11 @@
       <a href="#projects">Projects</a>
       <a href="#contact">Work with me</a>
       <a href="assets/resume/iggy-resume.pdf">Resume <span class="hint">(PDF)</span></a>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" hidden>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        <span class="sr-only">Dark mode</span>
+      </button>
     </nav>
   </header>
 
@@ -48,88 +53,29 @@
         <p class="previously"><span>Experience includes</span> Apple · AT&amp;T · Verizon · Sam’s Club</p>
       </div>
 
-      <figure class="stack-figure" aria-labelledby="stack-title">
-      <svg class="stack-art" viewBox="0 0 470 410" role="presentation" aria-hidden="true" focusable="false">
-        <g class="slab" data-layer="0">
-          <polygon class="slab-left" points="62,318 190,364 190,378 62,332"/>
-          <polygon class="slab-right" points="190,364 318,318 318,332 190,378"/>
-          <polygon class="slab-top" points="190,272 318,318 190,364 62,318"/>
-          <line class="slab-lead" x1="318" y1="325" x2="332" y2="325"/>
-          <text class="slab-label" x="336" y="329">Embedded</text>
-        </g>
-        <g class="slab" data-layer="1">
-          <polygon class="slab-left" points="62,256 190,302 190,316 62,270"/>
-          <polygon class="slab-right" points="190,302 318,256 318,270 190,316"/>
-          <polygon class="slab-top" points="190,210 318,256 190,302 62,256"/>
-          <line class="slab-lead" x1="318" y1="263" x2="332" y2="263"/>
-          <text class="slab-label" x="336" y="267">Mobile</text>
-        </g>
-        <g class="slab" data-layer="2">
-          <polygon class="slab-left" points="62,194 190,240 190,254 62,208"/>
-          <polygon class="slab-right" points="190,240 318,194 318,208 190,254"/>
-          <polygon class="slab-top" points="190,148 318,194 190,240 62,194"/>
-          <line class="slab-lead" x1="318" y1="201" x2="332" y2="201"/>
-          <text class="slab-label" x="336" y="205">Cloud</text>
-        </g>
-        <g class="slab" data-layer="3">
-          <polygon class="slab-left" points="62,132 190,178 190,192 62,146"/>
-          <polygon class="slab-right" points="190,178 318,132 318,146 190,192"/>
-          <polygon class="slab-top" points="190,86 318,132 190,178 62,132"/>
-          <line class="slab-lead" x1="318" y1="139" x2="332" y2="139"/>
-          <text class="slab-label" x="336" y="143">Machine learning</text>
-        </g>
-        <g class="slab" data-layer="4">
-          <polygon class="slab-left" points="62,70 190,116 190,130 62,84"/>
-          <polygon class="slab-right" points="190,116 318,70 318,84 190,130"/>
-          <polygon class="slab-top" points="190,24 318,70 190,116 62,70"/>
-          <line class="slab-lead" x1="318" y1="77" x2="332" y2="77"/>
-          <text class="slab-label" x="336" y="81">Agent systems</text>
-        </g>
-        <g class="flow">
-          <circle class="flow-dot" cx="156" cy="358" r="3.5"><animate attributeName="cy" values="358;40" dur="4.2s" begin="0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="4.2s" begin="0s" repeatCount="indefinite"/></circle>
-          <circle class="flow-dot" cx="212" cy="358" r="3.5"><animate attributeName="cy" values="358;40" dur="4.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="4.2s" begin="1.4s" repeatCount="indefinite"/></circle>
-          <circle class="flow-dot" cx="184" cy="358" r="3.5"><animate attributeName="cy" values="358;40" dur="4.2s" begin="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="4.2s" begin="2.8s" repeatCount="indefinite"/></circle>
-        </g>
-        <g class="net">
-          <line x1="140" y1="66" x2="190" y2="48"/>
-          <line x1="190" y1="48" x2="240" y2="66"/>
-          <line x1="240" y1="66" x2="140" y2="66" class="net-loop"/>
-          <circle cx="140" cy="66" r="7"/>
-          <circle cx="190" cy="48" r="7"/>
-          <circle cx="240" cy="66" r="7"/>
-        </g>
-      </svg>
+      <figure class="console-figure" aria-labelledby="console-cap">
+        <div class="console">
+          <div class="console-bar" aria-hidden="true">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="console-title">agent-run</span>
+          </div>
+          <ol class="console-body" id="console-body" aria-hidden="true">
+            <li class="l l-cmd"><span class="p">$</span> run "weekly ticket summary"</li>
+            <li class="l"><span class="i i-plan">▸</span><span class="k">plan</span><span class="t">3 acceptance criteria</span><span class="m">340 tok</span></li>
+            <li class="l"><span class="i i-build">▸</span><span class="k">build</span><span class="t">draft summary ready</span><span class="m">890 tok</span></li>
+            <li class="l"><span class="i i-bad">✗</span><span class="k">check</span><span class="t">category counts don’t add up</span><span class="m"></span></li>
+            <li class="l"><span class="i i-retry">↺</span><span class="k">build</span><span class="t">fix counts · retry 1 of 2</span><span class="m">410 tok</span></li>
+            <li class="l"><span class="i i-ok">✓</span><span class="k">check</span><span class="t">all criteria pass</span><span class="m">210 tok</span></li>
+            <li class="l"><span class="i i-ship">✓</span><span class="k">ship</span><span class="t">posted to #support-weekly</span><span class="m"></span></li>
+            <li class="l l-sum">done · 1 retry · 1,850 tokens</li>
+          </ol>
+        </div>
         <figcaption>
-          <h2 id="stack-title" class="eyebrow">My path up the stack</h2>
-          <div class="stack-picker" role="group" aria-label="Choose a layer" hidden>
-          <button type="button" data-layer="0" aria-pressed="false">Embedded</button>
-          <button type="button" data-layer="1" aria-pressed="false">Mobile</button>
-          <button type="button" data-layer="2" aria-pressed="false">Cloud</button>
-          <button type="button" data-layer="3" aria-pressed="false">Machine learning</button>
-          <button type="button" data-layer="4" aria-pressed="true">Agent systems</button>
-          </div>
-          <dl class="stack-caps" id="stack-caps">
-          <div class="stack-cap" data-layer="0">
-            <dt>Embedded</dt>
-            <dd>Firmware close to the hardware, where every byte and millisecond counts. The lesson I carried up: respect the constraints.</dd>
-          </div>
-          <div class="stack-cap" data-layer="1">
-            <dt>Mobile</dt>
-            <dd>Apps people carry everywhere, built for patchy networks, small screens, and impatient users.</dd>
-          </div>
-          <div class="stack-cap" data-layer="2">
-            <dt>Cloud</dt>
-            <dd>Services that keep running under real traffic, with the monitoring to show it.</dd>
-          </div>
-          <div class="stack-cap" data-layer="3">
-            <dt>Machine learning</dt>
-            <dd>Models in production, which means data pipelines and evaluation, not just training runs.</dd>
-          </div>
-          <div class="stack-cap" data-layer="4">
-            <dt>Agent systems</dt>
-            <dd>AI that plans and acts, kept on a fixed path with checks you can audit. This is where I work now.</dd>
-          </div>
-          </dl>
+          <span id="console-cap">A simulated agent run. Each step follows a fixed path, and nothing ships until it passes a check.</span>
+          <span class="console-controls" hidden>
+            <button type="button" id="console-pause" aria-pressed="false">Pause</button>
+            <button type="button" id="console-next">Next run</button>
+          </span>
         </figcaption>
       </figure>
     </section>
@@ -470,7 +416,7 @@
   <footer class="site-footer">
     <div>
       <h2 class="eyebrow">About this site</h2>
-      <p>Plain HTML, CSS, and a little JavaScript on GitHub Pages. Everything works without JavaScript, follows your device’s light or dark setting, and respects reduced-motion preferences. Anonymous page counts come from Cloudflare Web Analytics, which doesn’t use cookies.</p>
+      <p>Plain HTML, CSS, and a little JavaScript on GitHub Pages. The site works without JavaScript, offers light and dark themes (switch with the button at the top), and respects reduced-motion settings. Anonymous page counts come from Cloudflare Web Analytics, which doesn’t use cookies.</p>
       <p>If something here is hard to read or use, please <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">open an issue on GitHub</a> or message me on LinkedIn and I’ll fix it.</p>
     </div>
     <nav aria-label="Elsewhere">
@@ -481,6 +427,7 @@
     </nav>
   </footer>
   <script defer src="assets/js/prompt-tightener.js"></script>
+  <script defer src="assets/js/theme.js"></script>
   <script defer src="assets/js/home.js"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
