@@ -9,7 +9,8 @@
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006c">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
   <style>
     #raw, #result { min-height: 18rem; }
     .modes { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -21,6 +22,10 @@
     <a href="../#tools">← All tools</a>
     <div class="top-right">
       <a class="site" href="../">Iggy Mwangi</a>
+      <button type="button" class="site-map-btn" data-site-map hidden>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="sm-btn-label">Explore</span>
+      </button>
       <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" hidden>
         <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
@@ -85,8 +90,9 @@
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006c"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006c"></script>
+  <script src="../assets/js/theme.js?v=20261006d"></script>
+  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
+  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
   <script>
     var WORKER_URL = "https://claude-context-orchestrator.iggy-mw.workers.dev/api/orchestrate";
     var KEY = "cce_raw_input";

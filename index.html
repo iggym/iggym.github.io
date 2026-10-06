@@ -7,7 +7,7 @@
   <meta name="description" content="Free browser tools for working with prompts, short essays on running AI systems in production, and open-source projects by Iggy Mwangi, AI systems architect.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
-  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");if(localStorage.getItem("sim")==="hidden")document.documentElement.classList.add("sim-off")}catch(e){}</script>
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iggym.github.io/">
   <meta property="og:title" content="Iggy Mwangi — Practical AI tools and notes">
@@ -19,7 +19,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261006c">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261006d">
+  <link rel="stylesheet" href="assets/css/site-map.css?v=20261006d">
 </head>
 <body>
   <a class="skip" href="#main">Skip to main content</a>
@@ -32,6 +33,10 @@
       <a href="#projects">Projects</a>
       <a href="#contact">Work with me</a>
       <a href="assets/resume/iggy-resume.pdf">Resume <span class="hint">(PDF)</span></a>
+      <button type="button" class="site-map-btn" data-site-map hidden>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="sm-btn-label">Explore</span>
+      </button>
       <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" hidden>
         <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
         <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
@@ -90,11 +95,42 @@
           <a class="button" href="#demo">Try a tool right here</a>
           <a class="button button-quiet" href="#contact">Work with me</a>
         </div>
+        <p class="sim-row">
+          <button type="button" class="sim-toggle" id="sim-toggle" aria-controls="simulator" aria-expanded="true" hidden>
+            <span class="sim-caret" aria-hidden="true">▸</span> <span class="sim-toggle-label">Hide the agent simulator</span>
+          </button>
+        </p>
         <p class="previously"><span>Experience includes</span> Apple · AT&amp;T · Verizon · Sam’s Club</p>
       </div>
+
+      <figure class="console-figure" id="simulator" aria-labelledby="console-cap">
+        <div class="console">
+          <div class="console-bar" aria-hidden="true">
+            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+            <span class="console-title">agent-run</span>
+          </div>
+          <ol class="console-body" id="console-body" aria-hidden="true">
+            <li class="l l-cmd"><span class="p">$</span> run "weekly ticket summary"</li>
+            <li class="l"><span class="i i-plan">▸</span><span class="k">plan</span><span class="t">3 acceptance criteria</span><span class="m">340 tok</span></li>
+            <li class="l"><span class="i i-build">▸</span><span class="k">build</span><span class="t">draft summary ready</span><span class="m">890 tok</span></li>
+            <li class="l"><span class="i i-bad">✗</span><span class="k">check</span><span class="t">category counts don’t add up</span><span class="m"></span></li>
+            <li class="l"><span class="i i-retry">↺</span><span class="k">build</span><span class="t">fix counts · retry 1 of 2</span><span class="m">410 tok</span></li>
+            <li class="l"><span class="i i-ok">✓</span><span class="k">check</span><span class="t">all criteria pass</span><span class="m">210 tok</span></li>
+            <li class="l"><span class="i i-ship">✓</span><span class="k">ship</span><span class="t">posted to #support-weekly</span><span class="m"></span></li>
+            <li class="l l-sum">done · 1 retry · 1,850 tokens</li>
+          </ol>
+        </div>
+        <figcaption>
+          <span id="console-cap">A simulated agent run. Each step follows a fixed path, and nothing ships until it passes a check.</span>
+          <span class="console-controls" hidden>
+            <button type="button" id="console-pause" aria-pressed="false">Pause</button>
+            <button type="button" id="console-next">Next run</button>
+          </span>
+        </figcaption>
+      </figure>
     </section>
 
-    <section class="paths" aria-labelledby="paths-title">
+    <section class="paths" id="start" aria-labelledby="paths-title">
       <h2 id="paths-title" class="eyebrow">What brings you here?</h2>
       <ul class="path-list">
         <li>
@@ -458,9 +494,10 @@
       <a href="assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
     </nav>
   </footer>
-  <script defer src="assets/js/prompt-tightener.js?v=20261006c"></script>
-  <script defer src="assets/js/theme.js?v=20261006c"></script>
-  <script defer src="assets/js/home.js?v=20261006c"></script>
+  <script defer src="assets/js/prompt-tightener.js?v=20261006d"></script>
+  <script defer src="assets/js/theme.js?v=20261006d"></script>
+  <script defer src="assets/js/site-map.js?v=20261006d"></script>
+  <script defer src="assets/js/home.js?v=20261006d"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
 </html>

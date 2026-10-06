@@ -19,6 +19,164 @@
     update();
   })();
 
+  /* ---------- Agent console: types out simulated runs ---------- */
+  (function () {
+    var body = document.getElementById("console-body");
+    if (!body) return;
+    var controls = document.querySelector(".console-controls");
+    var pauseBtn = document.getElementById("console-pause");
+    var nextBtn = document.getElementById("console-next");
+
+    // [icon class, icon, step, text, tokens, tone]
+    var RUNS = [
+      { cmd: 'run "weekly ticket summary"', steps: [
+        ["i-plan", "▸", "plan", "3 acceptance criteria", "340 tok"],
+        ["i-build", "▸", "build", "draft summary ready", "890 tok"],
+        ["i-bad", "✗", "check", "category counts don’t add up", "", "bad"],
+        ["i-retry", "↺", "build", "fix counts · retry 1 of 2", "410 tok"],
+        ["i-ok", "✓", "check", "all criteria pass", "210 tok", "ok"],
+        ["i-ship", "✓", "ship", "posted to #support-weekly", ""]
+      ], sum: "done · 1 retry · 1,850 tokens" },
+      { cmd: 'run "upgrade to a newer model"', steps: [
+        ["i-plan", "▸", "plan", "120 saved test cases to compare", "280 tok"],
+        ["i-build", "▸", "build", "re-run tests on the new model", "6.1k tok"],
+        ["i-bad", "✗", "check", "3 answers changed format", "", "bad"],
+        ["i-retry", "↺", "build", "tighten output schema · retry 1 of 2", "520 tok"],
+        ["i-ok", "✓", "check", "120 / 120 match", "190 tok", "ok"],
+        ["i-ship", "✓", "ship", "new model live behind a flag", ""]
+      ], sum: "done · 1 retry · 7,090 tokens" },
+      { cmd: 'run "trim the support prompt"', steps: [
+        ["i-plan", "▸", "plan", "budget 800 tokens, keep every rule", "150 tok"],
+        ["i-build", "▸", "build", "draft at 1,240 tokens", "1.3k tok"],
+        ["i-bad", "✗", "check", "over budget by 440 tokens", "", "bad"],
+        ["i-retry", "↺", "build", "cut filler and repeats · retry 1 of 2", "640 tok"],
+        ["i-ok", "✓", "check", "760 tokens, all rules kept", "120 tok", "ok"],
+        ["i-ship", "✓", "ship", "prompt v7 saved", ""]
+      ], sum: "done · 1 retry · 2,210 tokens" }
+    ];
+
+    var run = 0, timers = [], paused = false, queue = [];
+
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    }
+    function stepLine(st) {
+      var li = el("li", "l" + (st[5] ? " " + st[5] : ""));
+      li.appendChild(el("span", "i " + st[0], st[1]));
+      li.appendChild(el("span", "k", st[2]));
+      li.appendChild(el("span", "t", st[3]));
+      li.appendChild(el("span", "m", st[4]));
+      return li;
+    }
+    function renderStatic(r) {
+      body.innerHTML = "";
+      var cmd = el("li", "l l-cmd");
+      cmd.appendChild(el("span", "p", "$"));
+      cmd.appendChild(document.createTextNode(" " + r.cmd));
+      body.appendChild(cmd);
+      r.steps.forEach(function (st) { body.appendChild(stepLine(st)); });
+      body.appendChild(el("li", "l l-sum", r.sum));
+    }
+
+    // A tiny scheduler so Pause can freeze the sequence where it is.
+    var pending = null;
+    function later(ms, fn) { queue.push({ ms: ms, fn: fn }); pump(); }
+    function pump() {
+      if (paused || timers.length || !queue.length) return;
+      var job = pending = queue.shift();
+      timers.push(setTimeout(function () { timers = []; pending = null; job.fn(); pump(); }, job.ms));
+    }
+    // Stop the waiting step and put it back at the front, so Pause is immediate.
+    function hold() {
+      timers.forEach(clearTimeout); timers = [];
+      if (pending) { queue.unshift(pending); pending = null; }
+    }
+    function clearAll() { timers.forEach(clearTimeout); timers = []; queue = []; pending = null; }
+
+    function play(r) {
+      body.innerHTML = "";
+      var cmd = el("li", "l l-cmd");
+      cmd.appendChild(el("span", "p", "$"));
+      var typed = document.createTextNode(" ");
+      cmd.appendChild(typed);
+      var caret = el("span", "caret");
+      cmd.appendChild(caret);
+      body.appendChild(cmd);
+      r.cmd.split("").forEach(function (ch) {
+        later(38, function () { typed.textContent += ch; });
+      });
+      later(380, function () { caret.remove(); });
+      r.steps.forEach(function (st, k) {
+        later(k === 0 ? 300 : (st[5] === "bad" || st[5] === "ok" ? 900 : 700), function () {
+          var li = stepLine(st);
+          li.classList.add("enter");
+          body.appendChild(li);
+        });
+      });
+      later(600, function () { var li = el("li", "l l-sum enter", r.sum); body.appendChild(li); });
+      later(4200, function () { run = (run + 1) % RUNS.length; play(RUNS[run]); });
+    }
+
+    controls.hidden = false;
+
+    // Show / hide the simulator from the link under the hero buttons.
+    // The choice is remembered on this device; while hidden, the run pauses.
+    var sim = document.getElementById("simulator");
+    var toggle = document.getElementById("sim-toggle");
+    var label = toggle.querySelector(".sim-toggle-label");
+    var startHidden = root.classList.contains("sim-off");
+    function userPaused() { return pauseBtn.getAttribute("aria-pressed") === "true"; }
+    function setShown(show, animate) {
+      toggle.setAttribute("aria-expanded", String(show));
+      label.textContent = show ? "Hide the agent simulator" : "Show the agent simulator";
+      try { localStorage.setItem("sim", show ? "shown" : "hidden"); } catch (e) { /* storage blocked */ }
+      if (show) {
+        sim.hidden = false;
+        root.classList.remove("sim-off");
+        if (animate && !reduced) {
+          sim.classList.add("sim-enter");
+          requestAnimationFrame(function () { requestAnimationFrame(function () { sim.classList.remove("sim-enter"); }); });
+        }
+        if (!reduced && !userPaused()) { paused = false; pump(); }
+      } else {
+        if (!reduced) { paused = true; hold(); }
+        var finish = function () { sim.hidden = true; sim.classList.remove("sim-leave"); root.classList.add("sim-off"); };
+        if (animate && !reduced) { sim.classList.add("sim-leave"); setTimeout(finish, 300); } else finish();
+      }
+    }
+    toggle.hidden = false;
+    toggle.addEventListener("click", function () { setShown(toggle.getAttribute("aria-expanded") !== "true", true); });
+    if (startHidden) { paused = true; sim.hidden = true; toggle.setAttribute("aria-expanded", "false"); label.textContent = "Show the agent simulator"; }
+
+    if (reduced) {
+      // No typing or looping: show a finished run and let visitors step through.
+      pauseBtn.hidden = true;
+      renderStatic(RUNS[run]);
+    } else {
+      play(RUNS[run]);
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden && !paused) { paused = true; hold(); }
+        else if (!document.hidden && !sim.hidden && pauseBtn.getAttribute("aria-pressed") !== "true") { paused = false; pump(); }
+      });
+    }
+
+    pauseBtn.addEventListener("click", function () {
+      paused = !paused;
+      pauseBtn.setAttribute("aria-pressed", String(paused));
+      pauseBtn.textContent = paused ? "Play" : "Pause";
+      if (paused) hold(); else pump();
+    });
+    nextBtn.addEventListener("click", function () {
+      clearAll();
+      run = (run + 1) % RUNS.length;
+      if (reduced || paused) renderStatic(RUNS[run]);
+      else play(RUNS[run]);
+    });
+  })();
+
   /* ---------- Live prompt-tightening demo ---------- */
   (function () {
     var input = document.getElementById("demo-in");
