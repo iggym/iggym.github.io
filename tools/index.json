@@ -1,8 +1,8 @@
 [
   {
     "id": "context-extractor",
-    "title": "Context Extraction System",
-    "description": "Nine-category modular prompt context architecture for session consistency.",
+    "title": "Context Extractor",
+    "description": "Pulls the goals, rules, decisions, open questions, and key facts out of a long chat into a short summary.",
     "tags": [
       "Context Engineering",
       "Prompting"
@@ -13,8 +13,8 @@
   },
   {
     "id": "context-engine",
-    "title": "Portable Context Engine System",
-    "description": "Portable Context Handler.",
+    "title": "Portable Context Engine",
+    "description": "Reusable instruction profiles with fill-in variables, copied as one block into any AI chat.",
     "tags": [
       "Context Engineering",
       "Prompting"
@@ -25,8 +25,8 @@
   },
   {
     "id": "ai-aggregator",
-    "title": "Multi-Model Workspace Aggregator",
-    "description": "Multi-Model Workspace Aggregator.",
+    "title": "Multi-Model Workspace",
+    "description": "Ask an OpenAI and an Anthropic model the same question side by side with your own keys.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -39,7 +39,7 @@
   {
     "id": "context-window-optimizer",
     "title": "Context Window Optimizer",
-    "description": "visualizes dynamic context window packing, sliding memory anchors, and token calculations.",
+    "description": "Shows how much of a model's context window a prompt fills, with tips if it is too long.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -52,7 +52,7 @@
   {
     "id": "deterministic-agent-stateboard",
     "title": "Agent Stateboard",
-    "description": "visualizes a rigorous, finite-state machine approach to multi-agent loops, completely eliminating open-ended conversational drift by forcing strict structural guardrails between transitions.",
+    "description": "Simulation of a planner, worker, and checker passing work along a fixed path, including a failed check.",
     "tags": [
       "Agents",
       "Prompting",
@@ -65,7 +65,7 @@
   {
     "id": "nanobanana-json-compiler",
     "title": "NanoBanana Compiler",
-    "description": "interactive web compiler turns modular layout configurations directly into context-rich system prompts and structural configurations targeting the Nano Banana diagramming paradigm.",
+    "description": "Turns a few architecture choices into an image-model prompt and JSON spec for a diagram.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -78,7 +78,7 @@
   {
     "id": "prompt-matrix-evaluator",
     "title": "Prompt Matrix Evaluator",
-    "description": "Strips common filler from a prompt and shows the estimated token change. It does not measure constraint density.",
+    "description": "Removes common filler from a prompt and shows the estimated token change.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -90,8 +90,8 @@
   },
   {
     "id": "agentic-backpressure-throttle",
-    "title": "Deterministic Token Router",
-    "description": "high-throughput Token Rate Limiter and Context Prioritization Gateway.",
+    "title": "Token Router",
+    "description": "Simulation of a shared token budget serving urgent requests first and holding background jobs.",
     "tags": [
       "Context Engineering",
       "Agents",
@@ -103,8 +103,8 @@
   },
   {
     "id": "claude-context-engine-premium",
-    "title": "Claude Context Engine Premium",
-    "description": "Premium Claude context-engine workspace for advanced prompt and context orchestration.",
+    "title": "Claude Context Engine",
+    "description": "Rewrites messy context into a tighter prompt using a hosted model. Sends text to a server.",
     "tags": [
       "Context Engineering",
       "Claude",
@@ -116,8 +116,8 @@
   },
   {
     "id": "token-conscious-diff-stager",
-    "title": "Token-Conscious Prompt Diff & Stager",
-    "description": "Token-aware prompt diff and staging workspace for controlled prompt revisions.",
+    "title": "Prompt Diff & Stager",
+    "description": "Word-by-word prompt comparison with fill-in variables, snapshots, and token estimates.",
     "tags": [
       "Context Engineering",
       "Prompting",

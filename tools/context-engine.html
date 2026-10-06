@@ -1,453 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Context Engine // Local AI Staging</title>
-    <style>
-        :root {
-            --bg-main: #0f1115;
-            --bg-card: #161920;
-            --bg-input: #1d212a;
-            --border: #2a313e;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --success: #10b981;
-            --radius: 8px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            padding: 16px;
-            line-height: 1.5;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                grid-template-columns: 350px 1fr;
-            }
-        }
-
-        header {
-            grid-column: 1 / -1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 12px;
-        }
-
-        h1 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.025em; }
-        h2 { font-size: 0.95rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
-
-        .card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 6px;
-            color: var(--text-muted);
-        }
-
-        input, textarea, select {
-            width: 100%;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            color: var(--text-main);
-            padding: 10px;
-            font-size: 0.9rem;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        textarea { resize: vertical; font-family: monospace; }
-
-        .btn {
-            background-color: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius);
-            padding: 10px 16px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-
-        .btn:hover { background-color: var(--accent-hover); }
-        .btn-secondary { background-color: transparent; border: 1px solid var(--border); color: var(--text-main); }
-        .btn-secondary:hover { background-color: var(--bg-input); }
-
-        .profile-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 16px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .profile-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-size: 0.85rem;
-        }
-
-        .profile-item.active {
-            border-color: var(--accent);
-            background-color: rgba(59, 130, 246, 0.1);
-        }
-
-        .profile-item button {
-            background: none;
-            border: none;
-            color: #ef4444;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .flex-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .dynamic-variables {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 12px;
-            margin-bottom: 16px;
-        }
-
-        .badge {
-            display: inline-block;
-            font-size: 0.75rem;
-            font-family: monospace;
-            background: var(--border);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-right: 4px;
-            margin-bottom: 4px;
-        }
-
-        .output-box {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            padding: 12px;
-            border-radius: var(--radius);
-            font-family: monospace;
-            font-size: 0.85rem;
-            white-space: pre-wrap;
-            max-height: 300px;
-            overflow-y: auto;
-            margin-top: 12px;
-        }
-
-        .notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--success);
-            color: white;
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 1000;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portable Context Engine — Iggy Mwangi</title>
+  <meta name="description" content="Save reusable AI instructions as profiles, fill in {{variables}}, add today's task, and copy one ready-to-paste block into any AI chat. Runs in your browser.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/tool.css">
+  <style>
+    .layout { display: grid; grid-template-columns: 17rem minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+    @media (max-width: 1100px) { .layout { grid-template-columns: 1fr 1fr; } .layout > :first-child { grid-column: 1 / -1; } }
+    @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+    .profiles { list-style: none; margin: 0 0 0.75rem; padding: 0; display: grid; gap: 0.35rem; }
+    .profiles li { display: flex; gap: 0.35rem; align-items: stretch; }
+    .profiles .pick {
+      flex: 1; text-align: left; font: inherit; cursor: pointer; min-height: 44px;
+      padding: 0.45rem 0.7rem; border-radius: 0.5rem; border: 1px solid var(--line);
+      background: var(--bg); color: var(--ink); overflow-wrap: anywhere;
+    }
+    .profiles .pick[aria-current="true"] { border-color: var(--accent); box-shadow: inset 4px 0 0 var(--accent); font-weight: 650; }
+    .profiles .pick:hover { border-color: var(--ink); }
+    .profiles .del { min-width: 44px; font: inherit; cursor: pointer; border-radius: 0.5rem; border: 1px solid var(--line); background: var(--bg); color: var(--muted); }
+    .profiles .del:hover { color: var(--bad); border-color: var(--bad); }
+    #system { min-height: 14rem; }
+    #preview { max-height: 28rem; }
+  </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="tool-top">
+    <a href="../#tools">← All tools</a>
+    <a class="site" href="../">Iggy Mwangi</a>
+  </header>
 
-    <div class="container">
-        <header>
-            <h1>Context Engine // Staging</h1>
-            <button class="btn btn-secondary" style="width: auto;" onclick="exportManifest()">Export JSON</button>
-        </header>
-
-        <!-- LEFT PANEL: PROFILE MANIFEST & CONFIG -->
-        <div class="left-panel flex-actions" style="flex-direction: column; gap: 20px;">
-            <div class="card">
-                <h2>Profiles</h2>
-                <div class="profile-list" id="profileList"></div>
-                <div class="form-group">
-                    <input type="text" id="newProfileName" placeholder="New Profile Name...">
-                </div>
-                <button class="btn btn-secondary" onclick="createNewProfile()">Add Profile</button>
-            </div>
-
-            <div class="card">
-                <h2>Active Blueprint</h2>
-                <div class="form-group">
-                    <label for="systemPrompt">System Constraints & Persona</label>
-                    <textarea id="systemPrompt" rows="8" placeholder="Enter background context rules. Use {{variable_name}} to declare custom fields."></textarea>
-                </div>
-                <button class="btn" onclick="saveActiveProfile()">Save Configuration</button>
-            </div>
-        </div>
-
-        <!-- RIGHT PANEL: INTERACTIVE INJECTION & COPY MATRIX -->
-        <div class="right-panel">
-            <div class="card" style="margin-bottom: 20px;">
-                <h2>Dynamic Variables</h2>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
-                    Detected fields in your system text wrapper will auto-render input boxes below.
-                </p>
-                <div id="variableFieldsContainer"></div>
-            </div>
-
-            <div class="card">
-                <h2>Active Execution</h2>
-                <div class="form-group">
-                    <label for="userInput">Raw Intent / Current Task</label>
-                    <textarea id="userInput" rows="6" placeholder="What are we building or solving right now?"></textarea>
-                </div>
-                <button class="btn" style="background-color: var(--success);" onclick="compileAndCopy()">Compile & Copy Staging Block</button>
-                
-                <h2 style="margin-top: 24px; margin-bottom: 6px;">Live Preview Output</h2>
-                <div class="output-box" id="livePreview">System compilation idle...</div>
-            </div>
-        </div>
+  <main id="main" class="tool-main" tabindex="-1">
+    <div class="tool-intro">
+      <h1>Portable Context Engine</h1>
+      <p class="lede">Keep the instructions you give AI assistants over and over, like your role, your preferences, and house rules, as reusable profiles. Fill in the details that change, add today’s task, and copy one block you can paste into any AI chat.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
+      <details class="how">
+        <summary>How to use it</summary>
+        <ol>
+          <li>Pick a profile or add your own.</li>
+          <li>Write your standing instructions. Put <code>{{name}}</code> wherever something changes from task to task. Edits save automatically.</li>
+          <li>Fill in the boxes that appear for each <code>{{name}}</code>, then describe today’s task.</li>
+          <li>Copy the result and paste it at the start of a new AI chat. Use <strong>Export</strong> to back up your profiles or move them to another browser.</li>
+        </ol>
+      </details>
     </div>
 
-    <div class="notification" id="toast">Copied to clipboard!</div>
+    <div class="layout">
+      <section class="panel" aria-labelledby="profiles-title">
+        <h2 id="profiles-title">Profiles</h2>
+        <ul class="profiles" id="profiles"></ul>
+        <div class="field">
+          <label for="new-name">New profile name</label>
+          <div class="row" style="flex-wrap:nowrap">
+            <input type="text" id="new-name" placeholder="e.g. Code reviewer">
+            <button type="button" class="btn btn-small" id="add">Add</button>
+          </div>
+        </div>
+        <div class="row">
+          <button type="button" class="btn btn-quiet btn-small" id="export">Export</button>
+          <button type="button" class="btn btn-quiet btn-small" id="import">Import</button>
+          <input type="file" id="import-file" accept="application/json,.json" hidden>
+        </div>
+      </section>
 
-    <script>
-        // Default startup states if local storage is blank
-        const defaultManifest = {
-            activeId: "dev-vanilla",
-            profiles: {
-                "dev-vanilla": {
-                    name: "Vanilla Development",
-                    system: "You are an expert AI software developer. The user prefers a strict mobile-first engineering environment. Prioritize single-file, zero-dependency architectures using pure modern HTML, CSS, and vanilla JavaScript. Avoid complex external frameworks, build steps, or npm installs unless explicitly requested.\n\nCurrent Stack Focus: {{tech_focus}}\nCode Guidelines: {{architecture_style}}"
-                },
-                "brand-strategy": {
-                    name: "Luxury Brand Strategy",
-                    system: "You are a master brand strategist specializing in premium independent services. The objective is to design high-margin value propositions away from commoditized volume markets.\n\nTarget Demographic: {{target_audience}}\nTone of Voice: Elevated, minimalist, highly intentional."
-                }
-            }
-        };
+      <section class="panel" aria-labelledby="edit-title">
+        <h2 id="edit-title">Standing instructions</h2>
+        <div class="field">
+          <label for="system">Instructions for “<span id="active-name"></span>”</label>
+          <textarea id="system" aria-describedby="system-hint"></textarea>
+          <span class="hint" id="system-hint">Saved automatically as you type. Use <code>{{name}}</code> for parts that change.</span>
+        </div>
+        <h3 class="panel-title" style="margin-top:0.5rem">Fill in the details</h3>
+        <div id="vars"></div>
+      </section>
 
-        let manifest = JSON.parse(localStorage.getItem('context_manifest')) || defaultManifest;
+      <section class="panel" aria-labelledby="task-title">
+        <h2 id="task-title">Today’s task</h2>
+        <div class="field">
+          <label for="task">What do you want help with right now?</label>
+          <textarea id="task" rows="5" placeholder="e.g. Review this pull request for security issues."></textarea>
+        </div>
+        <div class="row-between">
+          <h3 class="panel-title" style="margin:0">Ready to paste</h3>
+          <span class="meta" id="tokens">~0 tokens</span>
+        </div>
+        <pre class="output" id="preview" tabindex="0" aria-label="Ready to paste"></pre>
+        <div class="row" style="margin-top:0.75rem">
+          <button type="button" class="btn" id="copy">Copy</button>
+        </div>
+      </section>
+    </div>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
 
-        // Extract brackets like {{variable}}
-        function extractVariables(text) {
-            const regex = /\{\{([^}]+)\}\}/g;
-            const matches = [];
-            let match;
-            while ((match = regex.exec(text)) !== null) {
-                if (!matches.includes(match[1].trim())) {
-                    matches.push(match[1].trim());
-                }
-            }
-            return matches;
+  <footer class="tool-foot">
+    <p>Everything runs in this browser tab. Profiles are saved in this browser’s storage and never uploaded. Export them to keep a backup.</p>
+    <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
+  </footer>
+
+  <script src="../assets/js/tool-kit.js"></script>
+  <script>
+    var KEY = "context_manifest";
+    var DEFAULTS = {
+      activeId: "writer",
+      profiles: {
+        "writer": {
+          name: "Clear writer",
+          system: "You are an editor who writes in plain language. Use short sentences and everyday words. Explain any technical term the first time you use it.\n\nAudience: {{audience}}\nLength: {{length}}"
+        },
+        "dev-vanilla": {
+          name: "Web developer",
+          system: "You are an experienced web developer. Prefer single-file, zero-dependency solutions using modern HTML, CSS, and plain JavaScript. Don't add frameworks, build steps, or npm packages unless I ask.\n\nCurrent focus: {{tech_focus}}\nCode style: {{architecture_style}}"
+        },
+        "brand-strategy": {
+          name: "Brand strategist",
+          system: "You are a brand strategist for small independent businesses. Focus on clear value propositions rather than competing on price.\n\nTarget customers: {{target_audience}}\nTone: calm, specific, and confident."
         }
+      }
+    };
 
-        function renderProfiles() {
-            const list = document.getElementById('profileList');
-            list.innerHTML = '';
-            for (const [id, profile] of Object.entries(manifest.profiles)) {
-                const div = document.createElement('div');
-                div.className = `profile-item ${id === manifest.activeId ? 'active' : ''}`;
-                div.onclick = () => switchProfile(id);
-                
-                const nameSpan = document.createElement('span');
-                nameSpan.textContent = profile.name;
-                div.appendChild(nameSpan);
+    function isValid(m) {
+      return m && typeof m === "object" && m.profiles && typeof m.profiles === "object" &&
+        Object.keys(m.profiles).length > 0 &&
+        Object.keys(m.profiles).every(function (k) { var p = m.profiles[k]; return p && typeof p.name === "string" && typeof p.system === "string"; });
+    }
 
-                const delBtn = document.createElement('button');
-                delBtn.textContent = '✕';
-                delBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    deleteProfile(id);
-                };
-                div.appendChild(delBtn);
-                list.appendChild(div);
-            }
+    var manifest = ToolKit.store.get(KEY, null);
+    if (!isValid(manifest)) manifest = JSON.parse(JSON.stringify(DEFAULTS));
+    if (!manifest.profiles[manifest.activeId]) manifest.activeId = Object.keys(manifest.profiles)[0];
+    manifest.values = manifest.values || {};
+
+    var els = {
+      list: document.getElementById("profiles"),
+      system: document.getElementById("system"),
+      vars: document.getElementById("vars"),
+      task: document.getElementById("task"),
+      preview: document.getElementById("preview")
+    };
+
+    function active() { return manifest.profiles[manifest.activeId]; }
+    function save() {
+      if (!ToolKit.store.set(KEY, manifest)) ToolKit.announce("Couldn't save. This browser is blocking storage; export to keep your work.");
+    }
+
+    function placeholders(text) {
+      var re = /\{\{\s*([^{}]+?)\s*\}\}/g, found = [], m;
+      while ((m = re.exec(text)) !== null) if (found.indexOf(m[1]) === -1) found.push(m[1]);
+      return found;
+    }
+
+    function renderProfiles() {
+      els.list.innerHTML = "";
+      Object.keys(manifest.profiles).forEach(function (id) {
+        var p = manifest.profiles[id];
+        var li = document.createElement("li");
+        var pick = document.createElement("button");
+        pick.type = "button"; pick.className = "pick"; pick.textContent = p.name;
+        if (id === manifest.activeId) pick.setAttribute("aria-current", "true");
+        pick.addEventListener("click", function () { switchTo(id); });
+        var del = document.createElement("button");
+        del.type = "button"; del.className = "del"; del.textContent = "✕";
+        del.setAttribute("aria-label", "Delete profile " + p.name);
+        del.addEventListener("click", function () { remove(id); });
+        li.appendChild(pick); li.appendChild(del);
+        els.list.appendChild(li);
+      });
+      document.getElementById("active-name").textContent = active().name;
+    }
+
+    function renderVars() {
+      var names = placeholders(els.system.value);
+      var current = Array.prototype.map.call(els.vars.querySelectorAll("input"), function (i) { return i.dataset.name; });
+      if (names.length === current.length && names.every(function (n, i) { return n === current[i]; })) return;
+      els.vars.innerHTML = "";
+      if (!names.length) {
+        els.vars.innerHTML = '<p class="hint">Nothing to fill in. Add <code>{{name}}</code> to your instructions to create a box here.</p>';
+        return;
+      }
+      names.forEach(function (name, i) {
+        var wrap = document.createElement("div"); wrap.className = "field";
+        var label = document.createElement("label"); label.htmlFor = "v-" + i; label.textContent = name.replace(/[_-]+/g, " ");
+        var input = document.createElement("input"); input.type = "text"; input.id = "v-" + i; input.dataset.name = name;
+        input.value = manifest.values[name] || "";
+        input.addEventListener("input", function () { manifest.values[name] = input.value; save(); renderPreview(); });
+        wrap.appendChild(label); wrap.appendChild(input); els.vars.appendChild(wrap);
+      });
+    }
+
+    function compile() {
+      var system = els.system.value.replace(/\{\{\s*([^{}]+?)\s*\}\}/g, function (all, name) {
+        var v = (manifest.values[name] || "").trim();
+        return v || "[not set: " + name + "]";
+      });
+      var task = els.task.value.trim();
+      return "## Instructions\n" + system.trim() + "\n\n## Task\n" + (task || "[describe your task here]");
+    }
+
+    function renderPreview() {
+      var text = compile();
+      els.preview.textContent = text;
+      document.getElementById("tokens").textContent = "~" + ToolKit.estimateTokens(text) + " tokens";
+    }
+
+    function switchTo(id) {
+      manifest.activeId = id;
+      els.system.value = active().system;
+      save(); renderProfiles(); renderVars(); renderPreview();
+      ToolKit.announce("Switched to " + active().name + ".");
+    }
+
+    function remove(id) {
+      var name = manifest.profiles[id].name;
+      if (Object.keys(manifest.profiles).length <= 1) { ToolKit.announce("Keep at least one profile."); alert("Keep at least one profile."); return; }
+      if (!confirm("Delete the profile “" + name + "”?")) return;
+      delete manifest.profiles[id];
+      if (manifest.activeId === id) manifest.activeId = Object.keys(manifest.profiles)[0];
+      switchTo(manifest.activeId);
+      ToolKit.announce("Deleted " + name + ".");
+    }
+
+    document.getElementById("add").addEventListener("click", function () {
+      var input = document.getElementById("new-name");
+      var name = input.value.trim();
+      if (!name) { input.focus(); ToolKit.announce("Type a name for the new profile first."); return; }
+      var id = "p-" + Date.now();
+      manifest.profiles[id] = { name: name, system: "Instructions for " + name + ". Use {{detail}} for anything that changes." };
+      input.value = "";
+      switchTo(id);
+      els.system.focus();
+      els.system.select();
+    });
+    document.getElementById("new-name").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") { e.preventDefault(); document.getElementById("add").click(); }
+    });
+
+    els.system.addEventListener("input", function () {
+      active().system = els.system.value; save(); renderVars(); renderPreview();
+    });
+    els.task.addEventListener("input", renderPreview);
+    document.getElementById("copy").addEventListener("click", function () { ToolKit.copyText(compile(), this); });
+
+    document.getElementById("export").addEventListener("click", function () {
+      var blob = new Blob([JSON.stringify(manifest, null, 2)], { type: "application/json" });
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = "context-profiles.json";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      ToolKit.announce("Profiles exported.");
+    });
+    document.getElementById("import").addEventListener("click", function () { document.getElementById("import-file").click(); });
+    document.getElementById("import-file").addEventListener("change", function () {
+      var file = this.files && this.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var data = JSON.parse(reader.result);
+          if (!isValid(data)) throw new Error("bad shape");
+          Object.keys(data.profiles).forEach(function (id) { manifest.profiles[id] = { name: data.profiles[id].name, system: data.profiles[id].system }; });
+          if (data.values) Object.assign(manifest.values, data.values);
+          switchTo(data.activeId && manifest.profiles[data.activeId] ? data.activeId : manifest.activeId);
+          ToolKit.announce("Imported " + Object.keys(data.profiles).length + " profiles.");
+        } catch (err) {
+          ToolKit.announce("That file isn't a profile export from this tool.");
+          alert("That file isn't a profile export from this tool.");
         }
+      };
+      reader.readAsText(file);
+      this.value = "";
+    });
 
-        function switchProfile(id) {
-            manifest.activeId = id;
-            document.getElementById('systemPrompt').value = manifest.profiles[id].system;
-            renderProfiles();
-            generateVariableInputs();
-            updatePreview();
-            saveToStorage();
-        }
-
-        function createNewProfile() {
-            const nameInput = document.getElementById('newProfileName');
-            const name = nameInput.value.trim();
-            if (!name) return;
-            const id = 'p-' + Date.now();
-            manifest.profiles[id] = {
-                name: name,
-                system: "System persona parameters for " + name + ". Declare options using {{variable}}."
-            };
-            nameInput.value = '';
-            switchProfile(id);
-        }
-
-        function deleteProfile(id) {
-            if (Object.keys(manifest.profiles).length <= 1) {
-                alert("You must retain at least one operational profile context.");
-                return;
-            }
-            delete manifest.profiles[id];
-            if (manifest.activeId === id) {
-                manifest.activeId = Object.keys(manifest.profiles)[0];
-            }
-            switchProfile(manifest.activeId);
-        }
-
-        function saveActiveProfile() {
-            const systemText = document.getElementById('systemPrompt').value;
-            manifest.profiles[manifest.activeId].system = systemText;
-            saveToStorage();
-            generateVariableInputs();
-            updatePreview();
-            showToast("Configuration saved locally.");
-        }
-
-        function generateVariableInputs() {
-            const systemText = document.getElementById('systemPrompt').value;
-            const variables = extractVariables(systemText);
-            const container = document.getElementById('variableFieldsContainer');
-            
-            // Retain old values if possible
-            const oldValues = {};
-            container.querySelectorAll('input').forEach(inp => {
-                oldValues[inp.dataset.var] = inp.value;
-            });
-
-            container.innerHTML = '';
-
-            if (variables.length === 0) {
-                container.innerHTML = '<p style="font-size: 0.85rem; color: var(--text-muted);">No variable templates declared inside {{ }} brackets.</p>';
-                return;
-            }
-
-            variables.forEach(v => {
-                const group = document.createElement('div');
-                group.className = 'form-group';
-                
-                const lbl = document.createElement('label');
-                lbl.textContent = v.replace(/_/g, ' ');
-                
-                const inp = document.createElement('input');
-                inp.type = 'text';
-                inp.dataset.var = v;
-                inp.value = oldValues[v] || '';
-                inp.placeholder = `Inject value for ${v}...`;
-                inp.oninput = updatePreview;
-
-                group.appendChild(lbl);
-                group.appendChild(inp);
-                container.appendChild(group);
-            });
-        }
-
-        function compileContext() {
-            let compiled = manifest.profiles[manifest.activeId].system;
-            const container = document.getElementById('variableFieldsContainer');
-            
-            container.querySelectorAll('input').forEach(inp => {
-                const variable = inp.dataset.var;
-                const value = inp.value || `[Missing Field: ${variable}]`;
-                compiled = compiled.replaceAll(`{{${variable}}}`, value);
-            });
-
-            const userInput = document.getElementById('userInput').value;
-            
-            return `=== SYSTEM OPERATIONS PROTOCOL ===\n${compiled}\n\n=== RUNTIME EXECUTION REQUEST ===\n${userInput || '[No immediate intent specified yet]'}`;
-        }
-
-        function updatePreview() {
-            document.getElementById('livePreview').textContent = compileContext();
-        }
-
-        function compileAndCopy() {
-            const finalPayload = compileContext();
-            navigator.clipboard.writeText(finalPayload).then(() => {
-                showToast("Compiled context copied to clipboard!");
-            }).catch(err => {
-                alert("Clipboard access blocked. Please manually copy from Live Preview.");
-            });
-        }
-
-        function exportManifest() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", "context_manifest.json");
-            dlAnchor.click();
-        }
-
-        function saveToStorage() {
-            localStorage.setItem('context_manifest', JSON.stringify(manifest));
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg;
-            toast.style.opacity = '1';
-            setTimeout(() => { toast.style.opacity = '0'; }, 2500);
-        }
-
-        // Event hooks for text tracking
-        document.getElementById('systemPrompt').oninput = () => {
-            generateVariableInputs();
-            updatePreview();
-        };
-        document.getElementById('userInput').oninput = updatePreview;
-
-        // Bootstrapping Sequence
-        document.getElementById('systemPrompt').value = manifest.profiles[manifest.activeId].system;
-        renderProfiles();
-        generateVariableInputs();
-        updatePreview();
-    </script>
+    els.system.value = active().system;
+    renderProfiles(); renderVars(); renderPreview();
+  </script>
 </body>
 </html>

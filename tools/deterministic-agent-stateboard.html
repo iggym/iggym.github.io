@@ -1,239 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agent Stateboard // Iggy</title>
-    <style>
-        :root {
-            --bg-color: #0b0b0c;
-            --panel-bg: #121214;
-            --border-color: #1f1f23;
-            --text-main: #f4f4f6;
-            --text-muted: #8a8a93;
-            --accent-blue: #2563eb;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            padding: 2rem;
-            line-height: 1.5;
-        }
-
-        header {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
-        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); }
-
-        .breadcrumb {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-        }
-
-        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
-        .breadcrumb a:hover { color: var(--accent-blue); text-decoration: underline; text-underline-offset: 4px; }
-        .breadcrumb span { color: var(--text-main); }
-
-        .workspace { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; }
-        @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } }
-
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .panel-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .btn {
-            background: var(--accent-blue);
-            color: #fff;
-            border: none;
-            padding: 0.75rem 1.2rem;
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background 0.2s ease;
-        }
-        .btn:hover { background: #1d4ed8; }
-
-        /* Grid State Map */
-        .state-map { display: flex; flex-direction: column; gap: 1rem; }
-        .state-node {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.3s ease;
-        }
-        .state-node.active { border-color: var(--accent-blue); box-shadow: 0 0 12px rgba(37, 99, 235, 0.15); }
-        .state-node.success { border-color: var(--accent-green); }
-        
-        .node-info { display: flex; flex-direction: column; }
-        .node-name { font-family: var(--font-mono); font-size: 0.9rem; font-weight: bold; }
-        .node-desc { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem; }
-        
-        .node-badge {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 3px;
-            background: #27272a;
-            color: var(--text-muted);
-        }
-        .active .node-badge { background: rgba(37, 99, 235, 0.2); color: #93c5fd; }
-        .success .node-badge { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
-
-        .telemetry-feed {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            height: 380px;
-            overflow-y: auto;
-            color: #d4d4d8;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Stateboard — Iggy Mwangi</title>
+  <meta name="description" content="An interactive explainer: watch a planner, a worker, and a checker hand work along a fixed path, with a check before anything is accepted.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/tool.css">
+  <style>
+    .steps { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.6rem; counter-reset: step; }
+    .step {
+      display: grid; grid-template-columns: 2.2rem 1fr auto; gap: 0.75rem; align-items: center;
+      border: 1px solid var(--line); border-radius: 0.75rem; padding: 0.7rem 0.85rem; background: var(--bg);
+    }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%;
+      border: 2px solid var(--line-strong); font-weight: 700; font-family: var(--mono);
+    }
+    .step.active { border-color: var(--info); box-shadow: inset 4px 0 0 var(--info); }
+    .step.done { border-color: var(--ok); }
+    .step.failed { border-color: var(--bad); box-shadow: inset 4px 0 0 var(--bad); }
+    .step h3 { margin: 0; font-size: 1rem; }
+    .step p { margin: 0.1rem 0 0; color: var(--muted); font-size: 0.95rem; }
+    .arrow { text-align: center; color: var(--muted); margin: -0.3rem 0; font-size: 0.9rem; }
+    .log { margin: 0; }
+  </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="tool-top">
+    <a href="../#tools">← All tools</a>
+    <a class="site" href="../">Iggy Mwangi</a>
+  </header>
 
-    <header>
-        <div>
-            <nav class="breadcrumb">
-                <a href="https://iggym.github.io/">Home</a> / <span>deterministic-agent-stateboard</span>
-            </nav>
-            <h1>Deterministic Agent Stateboard</h1>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">State Machine Isolation // Anti-Hallucination Pipeline</p>
+  <main id="main" class="tool-main" tabindex="-1">
+    <div class="tool-intro">
+      <h1>Agent Stateboard</h1>
+      <p class="lede">An AI “agent” that can decide its own next step can wander off course. A sturdier design fixes the path in code. A planner hands to a worker, the worker hands to a checker, and nothing is accepted until the checker approves it. Run the steps below to watch it happen.</p>
+      <p class="tags"><span class="tag tag-demo">Simulation</span></p>
+      <details class="how">
+        <summary>What this shows</summary>
+        <ul>
+          <li>Each step can only hand off to the next one. The model can’t skip the checker or invent a new step.</li>
+          <li>Turn on “Checker rejects the first attempt” to see a failed check send work back to the worker, with a limit on retries.</li>
+          <li>This is a simulation. No AI model runs, and the token numbers are illustrative.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="grid-2">
+      <section class="panel" aria-labelledby="flow-title">
+        <h2 id="flow-title">The fixed path</h2>
+        <ol class="steps">
+          <li class="step" id="step-planner">
+            <div><h3>Planner</h3><p>Breaks the request into a short plan with clear acceptance criteria.</p></div>
+            <span class="badge badge-idle" id="badge-planner">Waiting</span>
+          </li>
+          <li class="step" id="step-worker">
+            <div><h3>Worker</h3><p>Produces the result, following the plan and nothing else.</p></div>
+            <span class="badge badge-idle" id="badge-worker">Waiting</span>
+          </li>
+          <li class="step" id="step-checker">
+            <div><h3>Checker</h3><p>Validates the result against the plan and a strict format before it’s accepted.</p></div>
+            <span class="badge badge-idle" id="badge-checker">Waiting</span>
+          </li>
+        </ol>
+        <label class="check"><input type="checkbox" id="fail-once" checked> <span>Checker rejects the first attempt <small>Shows the retry path</small></span></label>
+        <div class="row" style="margin-top:0.6rem">
+          <button type="button" class="btn" id="run">Run the steps</button>
+          <button type="button" class="btn btn-quiet" id="step-btn">Next step</button>
+          <button type="button" class="btn btn-quiet" id="reset">Reset</button>
         </div>
-        <div class="status" id="global-status">// ORCHESTRATOR: IDLE</div>
-    </header>
+        <p class="hint" style="margin-top:0.6rem">“Next step” lets you go one handoff at a time.</p>
+      </section>
 
-    <main class="workspace">
-        <section class="panel">
-            <div class="panel-title">01 // Finite Graph Map</div>
-            <div class="state-map">
-                <div id="node-planner" class="state-node">
-                    <div class="node-info">
-                        <span class="node-name">PLANNER_AGENT</span>
-                        <span class="node-desc">Deconstructs macro execution schema constraints.</span>
-                    </div>
-                    <span class="node-badge" id="badge-planner">PENDING</span>
-                </div>
-                <div id="node-executor" class="state-node">
-                    <div class="node-info">
-                        <span class="node-name">EXECUTOR_NODE</span>
-                        <span class="node-desc">Generates functional baseline artifact.</span>
-                    </div>
-                    <span class="node-badge" id="badge-executor">PENDING</span>
-                </div>
-                <div id="node-critic" class="state-node">
-                    <div class="node-info">
-                        <span class="node-name">CRITIC_GUARDRAIL</span>
-                        <span class="node-desc">Enforces mathematical validation & RFC schema check.</span>
-                    </div>
-                    <span class="node-badge" id="badge-critic">PENDING</span>
-                </div>
-            </div>
-            <button class="btn" onclick="runSimulation()">Trigger Orchestration Sequence</button>
-        </section>
+      <section class="panel" aria-labelledby="log-title">
+        <div class="row-between">
+          <h2 id="log-title" class="panel-title">What happened</h2>
+          <span class="badge badge-idle" id="overall">Idle</span>
+        </div>
+        <ol class="output log" id="log" aria-live="polite" tabindex="0" aria-label="Event log"></ol>
+      </section>
+    </div>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
 
-        <section class="panel">
-            <div class="panel-title">02 // Live Telemetry & Verification Stream</div>
-            <div id="telemetry" class="telemetry-feed">// System ready. Click trigger to monitor deterministic context flows.</div>
-        </section>
-    </main>
+  <footer class="tool-foot">
+    <p>This page is a simulation. Nothing is sent anywhere or saved.</p>
+    <p>Want the real thing? See <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">Deterministic Agent Supervisor on GitHub</a>.</p>
+  </footer>
 
-    <script>
-        const feed = document.getElementById('telemetry');
-        
-        function log(msg, color = '#d4d4d8') {
-            const timestamp = new Date().toISOString().slice(11, 19);
-            feed.innerHTML += `\n<span style="color: var(--text-muted)">[${timestamp}]</span> <span style="color: ${color}">${msg}</span>`;
-            feed.scrollTop = feed.scrollHeight;
-        }
+  <script src="../assets/js/tool-kit.js"></script>
+  <script>
+    var MAX_RETRIES = 2;
+    var logEl = document.getElementById("log");
+    var timer = null, script = [], cursor = 0, tokens = 0;
 
-        function updateNode(id, status, cls) {
-            const node = document.getElementById(`node-${id}`);
-            const badge = document.getElementById(`badge-${id}`);
-            node.className = `state-node ${cls}`;
-            badge.innerText = status;
-        }
+    function setStep(id, label, kind, cls) {
+      var step = document.getElementById("step-" + id);
+      step.className = "step" + (cls ? " " + cls : "");
+      var badge = document.getElementById("badge-" + id);
+      badge.textContent = label;
+      badge.className = "badge badge-" + kind;
+    }
+    function setOverall(label, kind) {
+      var el = document.getElementById("overall");
+      el.textContent = label; el.className = "badge badge-" + kind;
+    }
+    function log(text) {
+      var li = document.createElement("li");
+      var t = document.createElement("time");
+      t.textContent = "step " + (logEl.children.length + 1);
+      li.appendChild(t);
+      li.appendChild(document.createTextNode(text));
+      logEl.appendChild(li);
+      logEl.scrollTop = logEl.scrollHeight;
+    }
 
-        function runSimulation() {
-            feed.innerHTML = '';
-            document.getElementById('global-status').innerText = '// ORCHESTRATOR: RUNNING';
-            document.getElementById('global-status').style.color = 'var(--accent-blue)';
-            
-            // Phase 1: Planner
-            updateNode('planner', 'RUNNING', 'active');
-            updateNode('executor', 'PENDING', '');
-            updateNode('critic', 'PENDING', '');
-            log('Initializing PLANNER_AGENT sequence...', 'var(--accent-blue)');
-            
-            setTimeout(() => {
-                log('✔ Macro constraints mapped. Tokens Consumed: 342t.');
-                updateNode('planner', 'VALIDATED', 'success');
-                
-                // Phase 2: Executor
-                updateNode('executor', 'RUNNING', 'active');
-                log('Handing off state to EXECUTOR_NODE...', 'var(--accent-blue)');
-                
-                setTimeout(() => {
-                    log('✔ Compilation file array written to transient buffer memory.');
-                    log('Tokens Consumed: 894t.');
-                    updateNode('executor', 'COMPILED', 'success');
-                    
-                    // Phase 3: Critic
-                    updateNode('critic', 'RUNNING', 'active');
-                    log('Invoking CRITIC_GUARDRAIL strict JSON schema match...', 'var(--accent-blue)');
-                    
-                    setTimeout(() => {
-                        log('✔ RFC validation passed. Hallucination probability: 0.000%.');
-                        log('Tokens Consumed: 215t.');
-                        updateNode('critic', 'SECURED', 'success');
-                        
-                        document.getElementById('global-status').innerText = '// ORCHESTRATOR: HALTED (SUCCESS)';
-                        document.getElementById('global-status').style.color = 'var(--accent-green)';
-                        log('\n// SEQUENCE COMPLETE. Total Pipeline Overhead: 1,453 tokens.', 'var(--accent-green)');
-                    }, 1200);
-                }, 1200);
-            }, 1000);
-        }
-    </script>
+    // Build the sequence of handoffs for this run.
+    function buildScript() {
+      var failFirst = document.getElementById("fail-once").checked;
+      var s = [];
+      s.push(function () {
+        setOverall("Running", "info");
+        setStep("planner", "Working", "info", "active");
+        log("Request received: “Summarize last week’s support tickets as JSON.” Planner starts.");
+      });
+      s.push(function () {
+        tokens += 340;
+        setStep("planner", "Done", "ok", "done");
+        log("Planner wrote 3 acceptance criteria: valid JSON, one entry per ticket category, counts add up. (~340 tokens)");
+      });
+      var attempts = failFirst ? 2 : 1;
+      for (var a = 1; a <= attempts; a++) {
+        (function (attempt, willFail) {
+          s.push(function () {
+            setStep("worker", "Working", "info", "active");
+            setStep("checker", "Waiting", "idle", "");
+            log(attempt === 1 ? "Handoff: Planner → Worker. The worker only sees the plan, not the whole conversation."
+                              : "Handoff: Checker → Worker with the exact failure reason. Retry " + (attempt - 1) + " of " + MAX_RETRIES + ".");
+          });
+          s.push(function () {
+            tokens += 890;
+            setStep("worker", "Done", "ok", "done");
+            log("Worker produced a draft. (~890 tokens)");
+          });
+          s.push(function () {
+            setStep("checker", "Checking", "info", "active");
+            log("Handoff: Worker → Checker. Validating against the plan’s criteria.");
+          });
+          s.push(function () {
+            tokens += 210;
+            if (willFail) {
+              setStep("checker", "Rejected", "bad", "failed");
+              setStep("worker", "Needs fix", "warn", "");
+              log("Rejected: category counts add up to 41 but there are 43 tickets. Sent back to the worker. Nothing was accepted. (~210 tokens)");
+            } else {
+              setStep("checker", "Approved", "ok", "done");
+              log("Approved: JSON is valid and all 3 criteria pass. Result accepted. (~210 tokens)");
+            }
+          });
+        })(a, failFirst && a === 1);
+      }
+      s.push(function () {
+        setOverall("Finished", "ok");
+        log("Done. Total ≈ " + tokens.toLocaleString() + " tokens across " + (failFirst ? "two attempts" : "one attempt") + ". The path never changed: Planner → Worker → Checker.");
+        ToolKit.announce("Run finished.");
+        finish();
+      });
+      return s;
+    }
+
+    function reset() {
+      clearInterval(timer); timer = null;
+      script = []; cursor = 0; tokens = 0;
+      logEl.innerHTML = "";
+      ["planner", "worker", "checker"].forEach(function (id) { setStep(id, "Waiting", "idle", ""); });
+      setOverall("Idle", "idle");
+      document.getElementById("run").disabled = false;
+      document.getElementById("step-btn").disabled = false;
+      document.getElementById("fail-once").disabled = false;
+    }
+    function finish() {
+      clearInterval(timer); timer = null;
+      document.getElementById("run").disabled = true;
+      document.getElementById("step-btn").disabled = true;
+    }
+    function advance() {
+      if (!script.length) { script = buildScript(); document.getElementById("fail-once").disabled = true; }
+      if (cursor < script.length) script[cursor++]();
+    }
+
+    document.getElementById("run").addEventListener("click", function () {
+      if (timer) return;
+      this.disabled = true;
+      var delay = ToolKit.prefersReducedMotion() ? 400 : 1100;
+      advance();
+      timer = setInterval(advance, delay);
+    });
+    document.getElementById("step-btn").addEventListener("click", function () {
+      if (timer) { clearInterval(timer); timer = null; document.getElementById("run").disabled = false; }
+      advance();
+    });
+    document.getElementById("reset").addEventListener("click", function () { reset(); ToolKit.announce("Reset."); });
+    reset();
+  </script>
 </body>
 </html>

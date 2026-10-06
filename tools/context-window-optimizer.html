@@ -1,296 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Context Window Optimizer // Iggy</title>
-    <style>
-        :root {
-            --bg-color: #0b0b0c;
-            --panel-bg: #121214;
-            --border-color: #1f1f23;
-            --text-main: #f4f4f6;
-            --text-muted: #8a8a93;
-            --accent-blue: #2563eb;
-            --accent-green: #10b981;
-            --accent-orange: #f59e0b;
-            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            padding: 2rem;
-            line-height: 1.5;
-        }
-
-        header {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
-        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); }
-
-        .breadcrumb {
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-        }
-
-        .breadcrumb a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .breadcrumb a:hover {
-            color: var(--accent-blue);
-            text-decoration: underline;
-            text-underline-offset: 4px;
-        }
-
-        .breadcrumb span {
-            color: var(--text-main);
-        }
-
-        .workspace {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 900px) {
-            .workspace {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .panel-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .config-row {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        select, textarea {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-            border-radius: 4px;
-            padding: 0.75rem;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-        }
-
-        select { width: 100%; cursor: pointer; }
-        textarea { width: 100%; height: 380px; resize: none; outline: none; }
-        textarea:focus { border-color: var(--accent-blue); }
-
-        /* Visualization Elements */
-        .meter-container {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            height: 24px;
-            width: 100%;
-            overflow: hidden;
-            display: flex;
-        }
-
-        .meter-segment {
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-        #segment-system { background-color: var(--accent-blue); width: 0%; }
-        #segment-user { background-color: var(--accent-green); width: 0%; }
-        #segment-free { background-color: #27272a; width: 100%; }
-
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        .metric-card {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            padding: 0.75rem;
-            border-radius: 4px;
-            text-align: center;
-        }
-
-        .metric-val { font-family: var(--font-mono); font-size: 1.1rem; font-weight: bold; color: var(--text-main); }
-        .metric-lbl { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; margin-top: 0.25rem; }
-
-        .output-stream {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            padding: 1rem;
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            white-space: pre-wrap;
-            height: 350px;
-            overflow-y: auto;
-            color: #d4d4d8;
-        }
-
-        .anchor-tag {
-            color: var(--accent-blue);
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Window Optimizer — Iggy Mwangi</title>
+  <meta name="description" content="Paste a prompt and see roughly how much of a model's context window it uses, split into instructions and content. Runs in your browser.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/tool.css">
+  <style>
+    #prompt { min-height: 18rem; }
+    .seg-sys { background: var(--info); }
+    .seg-user { background: var(--accent); }
+    .seg-reply { background: repeating-linear-gradient(45deg, var(--ok), var(--ok) 4px, transparent 4px, transparent 8px); }
+    .key { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin: 0.5rem 0 1rem; font-size: 0.92rem; color: var(--muted); }
+    .key span::before { content: ""; display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 3px; margin-right: 0.35rem; vertical-align: -0.1rem; }
+    .key .k-sys::before { background: var(--info); }
+    .key .k-user::before { background: var(--accent); }
+    .key .k-reply::before { background: var(--ok); }
+    .key .k-free::before { background: var(--bg-sunk); border: 1px solid var(--line-strong); }
+  </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="tool-top">
+    <a href="../#tools">← All tools</a>
+    <a class="site" href="../">Iggy Mwangi</a>
+  </header>
 
-    <header>
-        <div>
-            <nav class="breadcrumb">
-                <a href="https://iggym.github.io/">Home</a> / <span>context-window-optimizer</span>
-            </nav>
-            <h1>Context Window Optimizer</h1>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">Inverted Intelligence // Precision Token Architecture</p>
-        </div>
-        <div class="status">// VOLTAGE ENGINE: ACTIVE</div>
-    </header>
+  <main id="main" class="tool-main" tabindex="-1">
+    <div class="tool-intro">
+      <h1>Context Window Optimizer</h1>
+      <p class="lede">A model can only read so much text at once. That limit is its <em>context window</em>. Paste a prompt to see roughly how much of the window your instructions and content take up, and how much room is left for the reply.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+      <details class="how">
+        <summary>How to use it</summary>
+        <ol>
+          <li>Paste your prompt. To split it, put standing rules after <code>[SYSTEM_PROMPT]</code> and the material to work on after <code>[USER_CONTENT]</code>. Without markers, everything counts as content.</li>
+          <li>Choose a window size close to the model you use, and how long a reply you expect.</li>
+          <li>If the bar runs out of room, trim the content first. Rules are usually short and worth keeping.</li>
+        </ol>
+      </details>
+    </div>
 
-    <main class="workspace">
-        <section class="panel">
-            <div class="panel-title">
-                <span>01 // Prompt Ingestion Engine</span>
-                <span>Vanilla Layer</span>
-            </div>
-            
-            <div class="config-row">
-                <select id="context-limit" onchange="calculateContext()">
-                    <option value="8192">Target Model: 8K Window (e.g., GPT-4o-mini baseline)</option>
-                    <option value="32768" selected>Target Model: 32K Window (Standard Execution)</option>
-                    <option value="131072">Target Model: 128K Window (Enterprise Tier)</option>
-                </select>
-            </div>
-
-            <textarea id="prompt-input" placeholder="[SYSTEM_PROMPT]\n// Define rules here...\n\n[USER_CONTENT]\n// Drop raw payload content here..." oninput="calculateContext()">[SYSTEM_PROMPT]
-You are a context-optimized routing agent. Respond strictly in valid RFC-8259 compliance layouts. Do not append conversational text wrappers.
+    <div class="grid-2">
+      <section class="panel" aria-labelledby="in-title">
+        <h2 id="in-title"><label for="prompt">Your prompt</label></h2>
+        <textarea id="prompt">[SYSTEM_PROMPT]
+You are a support assistant for an online bookstore. Answer in plain language. If you don't know, say so. Reply in valid JSON with the keys "answer" and "confidence".
 
 [USER_CONTENT]
-Design an autonomous architecture matrix mapping a dynamic feedback loop for local inference operations.</textarea>
-        </section>
+A customer writes: "I ordered two books last Tuesday and only one arrived. The tracking page says delivered. What should I do?"</textarea>
+        <div class="grid-2" style="margin-top:0.85rem">
+          <div class="field">
+            <label for="limit">Context window</label>
+            <select id="limit">
+              <option value="8192">8K tokens (small or older models)</option>
+              <option value="32768">32K tokens</option>
+              <option value="128000" selected>128K tokens (common today)</option>
+              <option value="200000">200K tokens</option>
+              <option value="1000000">1M tokens (largest current models)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="reply">Room for the reply</label>
+            <select id="reply">
+              <option value="1000">About 1,000 tokens (a few paragraphs)</option>
+              <option value="4000" selected>About 4,000 tokens (a long answer)</option>
+              <option value="16000">About 16,000 tokens (a long document)</option>
+            </select>
+          </div>
+        </div>
+      </section>
 
-        <section class="panel">
-            <div class="panel-title">
-                <span>02 // Context Token & Architecture Profiler</span>
-                <span>Real-Time Payload</span>
-            </div>
+      <section class="panel" aria-labelledby="out-title">
+        <h2 id="out-title">How much room it uses</h2>
+        <div class="meter" id="meter" role="img" aria-label="Context window usage" aria-describedby="usage-text">
+          <span class="seg-sys" id="seg-sys"></span>
+          <span class="seg-user" id="seg-user"></span>
+          <span class="seg-reply" id="seg-reply"></span>
+        </div>
+        <div class="key" aria-hidden="true"><span class="k-sys">Instructions</span><span class="k-user">Content</span><span class="k-reply">Reply</span><span class="k-free">Free</span></div>
+        <dl class="stat-row">
+          <div class="stat"><dt>Instructions</dt><dd id="v-sys">0</dd></div>
+          <div class="stat"><dt>Content</dt><dd id="v-user">0</dd></div>
+          <div class="stat"><dt>Window used</dt><dd id="v-pct">0%</dd></div>
+        </dl>
+        <p id="usage-text" aria-live="polite"></p>
+        <div id="advice" class="notice" hidden></div>
+        <h3 class="panel-title" style="margin-top:1rem">What the model receives</h3>
+        <pre class="output" id="preview" tabindex="0" aria-label="Prompt split into instructions and content"></pre>
+      </section>
+    </div>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
 
-            <div class="meter-container">
-                <div id="segment-system" class="meter-segment"></div>
-                <div id="segment-user" class="meter-segment"></div>
-                <div id="segment-free" class="meter-segment"></div>
-            </div>
+  <footer class="tool-foot">
+    <p>Your text never leaves this browser tab and isn’t saved. Token counts are estimates (about four characters per token). Real counts depend on the model.</p>
+    <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
+  </footer>
 
-            <div class="metrics-grid">
-                <div class="metric-card">
-                    <div id="val-system" class="metric-val">0</div>
-                    <div class="metric-lbl">System Tokens</div>
-                </div>
-                <div class="metric-card">
-                    <div id="val-user" class="metric-val">0</div>
-                    <div class="metric-lbl">User Tokens</div>
-                </div>
-                <div class="metric-card">
-                    <div id="val-efficiency" class="metric-val">0%</div>
-                    <div class="metric-lbl">Density Rate</div>
-                </div>
-            </div>
+  <script src="../assets/js/tool-kit.js"></script>
+  <script>
+    var els = {
+      prompt: document.getElementById("prompt"), limit: document.getElementById("limit"), reply: document.getElementById("reply")
+    };
 
-            <div class="panel-title" style="margin-top: 1rem;">03 // Optimized Output Context Window</div>
-            <div id="output-view" class="output-stream"></div>
-        </section>
-    </main>
+    function split(input) {
+      var sys = input.match(/\[SYSTEM_PROMPT\]([\s\S]*?)(?=\[USER_CONTENT\]|$)/i);
+      var usr = input.match(/\[USER_CONTENT\]([\s\S]*)$/i);
+      if (!sys && !usr) return { system: "", user: input.trim() };
+      return { system: sys ? sys[1].trim() : "", user: usr ? usr[1].trim() : "" };
+    }
 
-    <script>
-        function estimateTokens(text) {
-            if (!text) return 0;
-            // Clean architectural token metric estimator: ~4 characters per token heuristic
-            return Math.ceil(text.length / 4);
-        }
+    function pct(n, d) { return d ? (n / d) * 100 : 0; }
+    function fmt(n) { return n.toLocaleString(); }
 
-        function calculateContext() {
-            const input = document.getElementById('prompt-input').value;
-            const limit = parseInt(document.getElementById('context-limit').value);
-            
-            let systemText = "";
-            let userText = "";
+    function update() {
+      var parts = split(els.prompt.value);
+      var limit = +els.limit.value, reply = +els.reply.value;
+      var s = ToolKit.estimateTokens(parts.system), u = ToolKit.estimateTokens(parts.user);
+      var used = s + u, total = used + reply;
 
-            // Simple robust regex parsing to extract blocks cleanly without exterior tooling
-            const systemMatch = input.match(/\[SYSTEM_PROMPT\]([\s\S]*?)(?=\[USER_CONTENT\]|$)/i);
-            const userMatch = input.match(/\[USER_CONTENT\]([\s\S]*?)$/i);
+      var sp = Math.min(pct(s, limit), 100);
+      var up = Math.min(pct(u, limit), 100 - sp);
+      var rp = Math.min(pct(reply, limit), 100 - sp - up);
+      document.getElementById("seg-sys").style.width = sp + "%";
+      document.getElementById("seg-user").style.width = up + "%";
+      document.getElementById("seg-reply").style.width = rp + "%";
 
-            if (systemMatch && systemMatch[1]) systemText = systemMatch[1].trim();
-            if (userMatch && userMatch[1]) userText = userMatch[1].trim();
-            
-            // If no boundaries found, classify the entire bucket as User space
-            if (!systemMatch && !userMatch) {
-                userText = input;
-            }
+      document.getElementById("v-sys").textContent = fmt(s);
+      document.getElementById("v-user").textContent = fmt(u);
+      var usedPct = pct(total, limit);
+      document.getElementById("v-pct").textContent = (usedPct < 1 && total > 0 ? "<1" : Math.round(usedPct)) + "%";
 
-            const systemTokens = estimateTokens(systemText);
-            const userTokens = estimateTokens(userText);
-            const totalUsed = systemTokens + userTokens;
-            
-            // Calculate scale dynamics
-            const systemPct = Math.min((systemTokens / limit) * 100, 100);
-            const userPct = Math.min((userTokens / limit) * 100, 100 - systemPct);
-            const freePct = 100 - (systemPct + userPct);
+      var free = limit - total;
+      document.getElementById("usage-text").textContent = free >= 0
+        ? "About " + fmt(used) + " tokens of prompt plus " + fmt(reply) + " for the reply, out of " + fmt(limit) + ". Roughly " + fmt(free) + " tokens to spare."
+        : "This is about " + fmt(-free) + " tokens more than a window of " + fmt(limit) + " tokens can hold once the reply is included.";
 
-            // Live transform UI layout segments
-            document.getElementById('segment-system').style.width = systemPct + '%';
-            document.getElementById('segment-user').style.width = userPct + '%';
-            document.getElementById('segment-free').style.width = freePct + '%';
+      var advice = document.getElementById("advice");
+      if (free < 0) {
+        advice.hidden = false; advice.className = "notice bad";
+        advice.textContent = "Too long. The model would drop or ignore part of this. Cut the content, split it into smaller requests, or choose a model with a larger window.";
+      } else if (usedPct > 75) {
+        advice.hidden = false; advice.className = "notice";
+        advice.textContent = "Getting full. Models can miss details buried in the middle of very long prompts, so trim what the task doesn’t need.";
+      } else if (s > 0 && u > 0 && s > u * 3 && s > 500) {
+        advice.hidden = false; advice.className = "notice info";
+        advice.textContent = "Your instructions are much longer than the content. Long rule lists cost tokens on every request, so see if any rules can go.";
+      } else {
+        advice.hidden = true;
+      }
 
-            // Numbers update
-            document.getElementById('val-system').innerText = systemTokens.toLocaleString();
-            document.getElementById('val-user').innerText = userTokens.toLocaleString();
-            
-            const density = limit > 0 ? Math.round((totalUsed / limit) * 100) : 0;
-            document.getElementById('val-efficiency').innerText = density + '%';
+      document.getElementById("preview").textContent =
+        "INSTRUCTIONS (~" + fmt(s) + " tokens)\n" + (parts.system || "(none)") +
+        "\n\nCONTENT (~" + fmt(u) + " tokens)\n" + (parts.user || "(none)");
+    }
 
-            // Generate engineered output payload visualization
-            const outputView = document.getElementById('output-view');
-            outputView.innerHTML = `<span class="anchor-tag">// ANCHOR: SYSTEM DESIGN MATRIX (${systemTokens} t)</span>\n${systemText}\n\n<span class="anchor-tag">// SLIDING WINDOW: TRANSACTION CONTENT (${userTokens} t)</span>\n${userText}`;
-        }
-
-        // Initialize immediately on document rendering completion
-        window.onload = calculateContext;
-    </script>
+    els.prompt.addEventListener("input", update);
+    els.limit.addEventListener("change", update);
+    els.reply.addEventListener("change", update);
+    update();
+  </script>
 </body>
 </html>
