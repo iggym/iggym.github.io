@@ -1,0 +1,341 @@
+/* ==========================================================================
+   Content sites: the /sites/ index page and the colour band on the homepage.
+   Rides on the tokens in home.css, so it follows the light/dark theme and
+   prints sensibly. Motion is skipped when the visitor prefers less.
+   ========================================================================== */
+
+/* ---------- Page hero ---------- */
+.sites-hero {
+  width: min(var(--measure), calc(100% - 2rem));
+  margin-inline: auto;
+  padding: 3.25rem 0 0.5rem;
+}
+.sites-hero h1 {
+  font-family: var(--serif);
+  font-weight: 460;
+  font-size: clamp(2rem, 4.6vw, 3.5rem);
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  max-width: 24ch;
+}
+
+/* ---------- Ribbon: a moving strip of the artwork ---------- */
+.ribbon { margin: 0; }
+.ribbon-mask {
+  overflow: hidden;
+  display: grid;
+  gap: 0.7rem;
+  padding: 1.5rem 0 0.5rem;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.ribbon-row {
+  display: flex;
+  width: max-content;
+  gap: 0.7rem;
+  will-change: transform;
+  animation: ribbon-slide 110s linear infinite;
+}
+.ribbon-row.ribbon-reverse { animation-direction: reverse; animation-duration: 140s; }
+.ribbon-copy { display: flex; gap: 0.7rem; }
+.ribbon-row img {
+  display: block;
+  flex: none;
+  width: 19rem;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 0.65rem;
+  background: var(--bg-sunk);
+  box-shadow: var(--shadow-sm);
+}
+@keyframes ribbon-slide {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+/* Sits still for anyone who prefers less motion, and for print. */
+@media (prefers-reduced-motion: reduce) {
+  .ribbon-row { animation: none !important; }
+}
+
+.nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+
+/* ---------- Jump list ---------- */
+.jump {
+  width: min(var(--measure), calc(100% - 2rem));
+  margin: 2.75rem auto 0;
+}
+.jump ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.jump a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.3rem 0.95rem;
+  background: var(--bg-raise);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow-sm);
+  font-weight: 600;
+  font-size: 0.97rem;
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.jump a:hover { border-color: var(--ink); transform: translateY(-1px); }
+.swatch {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 22%, transparent);
+}
+.jump-count { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+
+/* ---------- Groups of sites ---------- */
+.sites-list {
+  width: min(var(--measure), calc(100% - 2rem));
+  margin-inline: auto;
+}
+.site-group { padding: 3.25rem 0 0; }
+.site-group-head { padding-bottom: 0.2rem; }
+.site-group-head::after {
+  content: "";
+  display: block;
+  height: 3px;
+  border-radius: 2px;
+  margin-top: 0.95rem;
+  background: linear-gradient(90deg, var(--group-accent), color-mix(in srgb, var(--group-accent) 8%, transparent));
+}
+.site-group-head h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--serif);
+  font-weight: 460;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.35rem;
+}
+.group-num {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--group-accent);
+}
+.group-blurb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 0.7rem;
+  margin: 0;
+  color: var(--muted);
+}
+.group-count {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--group-accent);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+  white-space: nowrap;
+}
+
+.site-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19.5rem, 1fr));
+  gap: 1.25rem;
+}
+
+/* ---------- One site ---------- */
+.site-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-raise);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+}
+.site-card:hover, .site-card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--card-accent);
+  box-shadow: var(--shadow-md);
+}
+.site-shot {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-sunk);
+}
+.site-shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.site-card:hover .site-shot img, .site-card:focus-within .site-shot img { transform: scale(1.05); }
+.site-shot-edge {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 4px;
+  background: var(--card-accent);
+}
+
+.site-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 1rem 1.1rem 0.9rem;
+}
+.site-kind {
+  margin: 0 0 0.3rem;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--card-accent);
+}
+.site-name {
+  font-family: var(--serif);
+  font-weight: 560;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0 0 0.4rem;
+}
+.site-name a { text-decoration: none; }
+.site-card:hover .site-name a { color: var(--card-accent); text-decoration: underline; text-underline-offset: 0.18em; }
+.site-desc { margin: 0; color: var(--muted); font-size: 0.99rem; }
+
+.site-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 1.1rem;
+  margin: auto 0 0;
+  padding-top: 0.5rem;
+}
+.site-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.site-go span { transition: transform 0.2s ease; }
+.site-card:hover .site-go { color: var(--card-accent); }
+.site-card:hover .site-go span { transform: translateX(4px); }
+.site-repo, .site-repo-none {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.92rem;
+  color: var(--muted);
+}
+.site-repo { text-decoration: none; }
+.site-repo:hover { color: var(--ink); text-decoration: underline; }
+.site-repo-none { font-style: italic; }
+
+/* ---------- Closing note ---------- */
+.sites-note {
+  width: min(var(--measure), calc(100% - 2rem));
+  margin: 4.5rem auto 0;
+  padding: 1.5rem 1.6rem 1.3rem;
+  background: var(--bg-raise);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-sm);
+}
+.sites-note h2 {
+  font-family: var(--serif);
+  font-weight: 460;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.5rem;
+}
+.sites-note p { margin: 0 0 0.75rem; color: var(--muted); max-width: 62ch; }
+.sites-note a { color: var(--ink); }
+.sites-note .actions { margin-top: 0.4rem; }
+
+/* ---------- The band on the homepage ---------- */
+.sites-band { margin-top: 1.5rem; }
+.sites-band-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  width: min(var(--measure), calc(100% - 2rem));
+  margin-inline: auto;
+  padding: 1.6rem 0 0.5rem;
+}
+.sites-band h2 {
+  font-family: var(--serif);
+  font-weight: 460;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.35rem;
+}
+.sites-band p {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--muted);
+}
+.sites-band-text { flex: 1 1 26rem; }
+.sites-band .button { white-space: nowrap; }
+.sites-band-link span { display: inline-block; transition: transform 0.2s ease; }
+.sites-band .button:hover span { transform: translateX(4px); }
+
+/* ---------- Reveal on scroll (only with JS and motion allowed) ---------- */
+html.js.motion .site-card.reveal, html.js.motion .sites-note.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+}
+html.js.motion .site-card.reveal.in, html.js.motion .sites-note.reveal.in { opacity: 1; transform: none; }
+html.js.motion .site-card.reveal.in:hover, html.js.motion .site-card.reveal.in:focus-within { transform: translateY(-4px); }
+
+/* ---------- Small screens ---------- */
+@media (max-width: 640px) {
+  .sites-hero { padding-top: 2rem; }
+  .sites-hero h1 { max-width: none; }
+  .site-grid { grid-template-columns: 1fr; }
+  .jump { margin-top: 1.75rem; }
+  .site-group { padding-top: 2.5rem; }
+  .ribbon-row img { width: 15rem; }
+  .sites-band-inner { padding-top: 1.2rem; }
+}
+
+/* In dark mode the artwork stays vivid; drop the highlights a touch so the
+   cards read as part of the page rather than glowing off it. */
+:root[data-theme="dark"] .site-shot img,
+:root[data-theme="dark"] .ribbon-row img { filter: brightness(0.94) saturate(1.02); }
+
+@media (forced-colors: active) {
+  .site-card, .jump a, .sites-note, .ribbon-row img { border: 1px solid CanvasText; }
+}
+
+@media print {
+  .ribbon, .jump { display: none; }
+  .site-card { break-inside: avoid; box-shadow: none; }
+  .site-shot { aspect-ratio: auto; }
+}

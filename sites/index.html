@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content sites — Iggy Mwangi</title>
+  <meta name="description" content="Seventeen standalone sites by Iggy Mwangi: AI production patterns, an incident runbook, ops and field notes, a weekly briefing, a tool bench, plus essays on maps, minds, and reading.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f8f7f4">
+  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://iggym.github.io/sites/">
+  <meta property="og:title" content="Content sites — Iggy Mwangi">
+  <meta property="og:description" content="Seventeen standalone sites on building AI that survives production — plus a few about maps, minds, and reading.">
+  <meta property="og:image" content="https://iggym.github.io/assets/img/sites/applied-ai-engineering.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Content sites — Iggy Mwangi">
+  <meta name="twitter:description" content="Seventeen standalone sites on building AI that survives production — plus a few about maps, minds, and reading.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://iggym.github.io/sites/">
+  <link rel="stylesheet" href="../assets/css/home.css?v=20261006e">
+  <link rel="stylesheet" href="../assets/css/sites.css?v=20261006e">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006e">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="wordmark" href="../">Iggy Mwangi</a>
+    <nav class="nav" aria-label="Primary">
+      <a href="../#tools">Tools</a>
+      <a href="../#writing">Writing</a>
+      <a href="../#projects">Projects</a>
+      <a href="./" aria-current="page">Sites</a>
+      <a href="../#contact">Work with me</a>
+      <a href="../assets/resume/iggy-resume.pdf">Resume <span class="hint">(PDF)</span></a>
+      <button type="button" class="site-map-btn" data-site-map hidden>
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+        <span class="sm-btn-label">Explore</span>
+      </button>
+      <button type="button" class="theme-toggle" data-theme-toggle aria-pressed="false" hidden>
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+        <span class="sr-only">Dark mode</span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="sites-hero" aria-labelledby="sites-title">
+      <p class="availability"><span class="pulse" aria-hidden="true"></span> 17 sites · 5 subjects · nothing to sign up for</p>
+      <h1 id="sites-title">Seventeen sites, one subject each.</h1>
+      <p class="lede">Every subject gets its own place to live: a pattern library, an incident runbook, field notes from the pager, a weekly briefing, a bench of small tools — plus a few essays about maps, minds, and reading that have nothing to do with AI. Free to read, nothing to install, and each one keeps its own hours.</p>
+      <div class="actions">
+        <a class="button" href="#patterns">Start with the patterns</a>
+        <a class="button button-quiet" href="../">Back to the tools</a>
+      </div>
+    </section>
+
+    <div class="ribbon" aria-hidden="true">
+      <div class="ribbon-mask">
+        <div class="ribbon-row">
+          <img src="../assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <div class="ribbon-copy" aria-hidden="true">
+            <img src="../assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          </div>
+        </div>
+
+        <div class="ribbon-row ribbon-reverse">
+          <img src="../assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <img src="../assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          <div class="ribbon-copy" aria-hidden="true">
+            <img src="../assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+            <img src="../assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <nav class="jump" aria-label="Jump to a subject">
+      <ul>
+        <li><a href="#patterns"><span class="swatch" aria-hidden="true" style="--c: #7c3aed"></span>Design and patterns <span class="jump-count">4</span></a></li>
+        <li><a href="#operations"><span class="swatch" aria-hidden="true" style="--c: #e11d48"></span>Production and operations <span class="jump-count">4</span></a></li>
+        <li><a href="#keeping-up"><span class="swatch" aria-hidden="true" style="--c: #f97316"></span>Keeping up <span class="jump-count">3</span></a></li>
+        <li><a href="#reading"><span class="swatch" aria-hidden="true" style="--c: #c026d3"></span>Reading and attention <span class="jump-count">2</span></a></li>
+        <li><a href="#wider"><span class="swatch" aria-hidden="true" style="--c: #0d9488"></span>Minds, maps, and the wider argument <span class="jump-count">4</span></a></li>
+      </ul>
+    </nav>
+
+    <div class="sites-list">
+      <section class="site-group" id="patterns" aria-labelledby="patterns-title" style="--group-accent: #7c3aed">
+        <header class="site-group-head">
+          <h2 id="patterns-title"><span class="group-num" aria-hidden="true">01</span>Design and patterns</h2>
+          <p class="group-blurb">How the systems get put together, named, and argued for. <span class="group-count">4 sites</span></p>
+        </header>
+        <ul class="site-grid">
+        <li class="site-card" style="--card-accent: #ff5a36">
+          <a class="site-shot" href="https://iggym.github.io/applied-ai-engineering/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/applied-ai-engineering.jpg" alt="" width="1000" height="625" loading="eager" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Flagship · synthesis</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/applied-ai-engineering/" rel="noopener">Applied AI Engineering</a></h3>
+            <p class="site-desc">The hub that ties the rest together: where the patterns surfacing across the other sites add up to a strategic argument, not another failure list.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/applied-ai-engineering/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/applied-ai-engineering" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #17b3a3">
+          <a class="site-shot" href="https://iggym.github.io/production-ai-patterns/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/production-ai-patterns.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Reference · pattern language</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/production-ai-patterns/" rel="noopener">Production AI Patterns</a></h3>
+            <p class="site-desc">Named, reusable patterns for the decisions that decide whether an AI system survives real traffic: context, cost, reliability, observability, and security.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/production-ai-patterns/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/production-ai-patterns" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #a855f7">
+          <a class="site-shot" href="https://iggym.github.io/agentic-engineering/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/agentic-engineering.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Guide · agent systems</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/agentic-engineering/" rel="noopener">Agentic Engineering</a></h3>
+            <p class="site-desc">Orchestration, context isolation, tool use, and the harness that holds an agent together — narrower and more diagnostic than the pattern library.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/agentic-engineering/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/agentic-engineering" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #84cc16">
+          <a class="site-shot" href="https://iggym.github.io/awesome-ai-architecture/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/awesome-ai-architecture.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Reading list · curated</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/awesome-ai-architecture/" rel="noopener">Awesome AI Architecture</a></h3>
+            <p class="site-desc">A map of AI infrastructure tooling, organised by the failure mode each tool addresses, with explicit exclusion criteria instead of a link dump.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/awesome-ai-architecture/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/awesome-ai-architecture" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        </ul>
+      </section>
+
+      <section class="site-group" id="operations" aria-labelledby="operations-title" style="--group-accent: #e11d48">
+        <header class="site-group-head">
+          <h2 id="operations-title"><span class="group-num" aria-hidden="true">02</span>Production and operations</h2>
+          <p class="group-blurb">What the pager, the customer site, and the ten-thousandth user teach you. <span class="group-count">4 sites</span></p>
+        </header>
+        <ul class="site-grid">
+        <li class="site-card" style="--card-accent: #06b6d4">
+          <a class="site-shot" href="https://iggym.github.io/scaling-ai-systems/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/scaling-ai-systems.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Case studies · cost anatomy</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/scaling-ai-systems/" rel="noopener">Scaling AI Systems</a></h3>
+            <p class="site-desc">What breaks between the pilot and the ten-thousandth user — boundary problems, spend curves, and the failures that only turn up at real scale.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/scaling-ai-systems/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/scaling-ai-systems" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #dc2626">
+          <a class="site-shot" href="https://iggym.github.io/the-ai-runbook/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/the-ai-runbook.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Reference · incident procedures</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/the-ai-runbook/" rel="noopener">The AI Runbook</a></h3>
+            <p class="site-desc">Symptom, immediate action, diagnosis, fix, prevention. Step-by-step procedures written to be read mid-incident, at three in the morning, under pressure.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/the-ai-runbook/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/the-ai-runbook" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #10b981">
+          <a class="site-shot" href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/ai-ops-field-notes.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Dispatches · on call</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener">AI Ops Field Notes</a></h3>
+            <p class="site-desc">Short, sharp incident dispatches from AI systems in production — war-story shaped, with no lessons-learned headers.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/ai-ops-field-notes" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #f59e0b">
+          <a class="site-shot" href="https://iggym.github.io/fde-field-notes/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/fde-field-notes.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Field notes · deployment</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/fde-field-notes/" rel="noopener">FDE Field Notes</a></h3>
+            <p class="site-desc">Discovery, scoping, customer judgment calls, and the skill nobody puts in the job posting for forward-deployed engineers.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/fde-field-notes/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/fde-field-notes" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        </ul>
+      </section>
+
+      <section class="site-group" id="keeping-up" aria-labelledby="keeping-up-title" style="--group-accent: #f97316">
+        <header class="site-group-head">
+          <h2 id="keeping-up-title"><span class="group-num" aria-hidden="true">03</span>Keeping up</h2>
+          <p class="group-blurb">Briefings, benches, and a library you can come back to. <span class="group-count">3 sites</span></p>
+        </header>
+        <ul class="site-grid">
+        <li class="site-card" style="--card-accent: #ff6b00">
+          <a class="site-shot" href="https://iggym.github.io/agentic-infra-weekly/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/agentic-infra-weekly.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Briefing · weekly archive</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/agentic-infra-weekly/" rel="noopener">Agentic Infra Weekly</a></h3>
+            <p class="site-desc">A weekly read on production agentic systems, infrastructure, and reliability, with each issue built around one reframe worth remembering.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/agentic-infra-weekly/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/agentic-infra-weekly" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #34d399">
+          <a class="site-shot" href="https://iggym.github.io/systems-bench/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/systems-bench.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Workbench · 24 tools</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/systems-bench/" rel="noopener">Systems Bench</a></h3>
+            <p class="site-desc">Single-purpose, client-side tools for agent harnesses, loops, workflows, evals, cost, safety, and observability. No accounts, no telemetry.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/systems-bench/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/systems-bench" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #b91c1c">
+          <a class="site-shot" href="https://iggym.github.io/ai-systems-articles/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/ai-systems-articles.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Library · long reads</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/ai-systems-articles/" rel="noopener">AI Systems Articles</a></h3>
+            <p class="site-desc">Deep, practical articles on context engineering, context orchestration, and verifiability and governance for autonomous systems.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/ai-systems-articles/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/ai-systems-articles" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        </ul>
+      </section>
+
+      <section class="site-group" id="reading" aria-labelledby="reading-title" style="--group-accent: #c026d3">
+        <header class="site-group-head">
+          <h2 id="reading-title"><span class="group-num" aria-hidden="true">04</span>Reading and attention</h2>
+          <p class="group-blurb">How we take things in, when everything is designed to interrupt. <span class="group-count">2 sites</span></p>
+        </header>
+        <ul class="site-grid">
+        <li class="site-card" style="--card-accent: #d97706">
+          <a class="site-shot" href="https://iggym.github.io/sovereign-reader/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/sovereign-reader.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Tool · single file</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/sovereign-reader/" rel="noopener">Aura Reader</a></h3>
+            <p class="site-desc">A reading desk that turns long-form text into deep work: quiet-eye isolation, an optokinetic pacer, and the rest of the internet switched off.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/sovereign-reader/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/sovereign-reader" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #c026d3">
+          <a class="site-shot" href="https://iggym.github.io/last-interface/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/last-interface.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Essays · signal wire</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/last-interface/" rel="noopener">The Last Interface</a></h3>
+            <p class="site-desc">Control, permission, and autonomy in future software — transmissions read as they arrive on a wire, instead of filed away into a grid.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/last-interface/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/last-interface" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        </ul>
+      </section>
+
+      <section class="site-group" id="wider" aria-labelledby="wider-title" style="--group-accent: #0d9488">
+        <header class="site-group-head">
+          <h2 id="wider-title"><span class="group-num" aria-hidden="true">05</span>Minds, maps, and the wider argument</h2>
+          <p class="group-blurb">Where the AI work meets history, attention, and where we all come from. <span class="group-count">4 sites</span></p>
+        </header>
+        <ul class="site-grid">
+        <li class="site-card" style="--card-accent: #059669">
+          <a class="site-shot" href="https://iggym.github.io/cognitio-viva/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/cognitio-viva.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Interactive essays · evergreen</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/cognitio-viva/" rel="noopener">Cognitio Viva</a></h3>
+            <p class="site-desc">Living cognition: animated, interactive essays engineered against the neuroscience of attention, memory, and agency.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/cognitio-viva/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/cognitio-viva" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #2563eb">
+          <a class="site-shot" href="https://iggym.github.io/cogitatio-elegans/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/cogitatio-elegans.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Essays · culture and history</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/cogitatio-elegans/" rel="noopener">Cogitatio Elegans</a></h3>
+            <p class="site-desc">An evolving set of essays on human evolution, technological leverage, scientific discovery, and the mirrors history holds up to now.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/cogitatio-elegans/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/cogitatio-elegans" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #b45309">
+          <a class="site-shot" href="https://one-origin.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/one-origin.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Data essay · interactive</p>
+            <h3 class="site-name"><a href="https://one-origin.pages.dev/" rel="noopener">One Origin</a></h3>
+            <p class="site-desc">The true size of Africa, why a 1569 sailing map still shapes how the world looks, and the three-hundred-thousand-year line that connects every reader to one place.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://one-origin.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <span class="site-repo-none">Live site only</span>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #65a30d">
+          <a class="site-shot" href="https://iggym.github.io/apex-ai-consumer-index/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/apex-ai-consumer-index.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Field guide · interactive</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/apex-ai-consumer-index/" rel="noopener">Apex AI Consumer Index</a></h3>
+            <p class="site-desc">An interactive read on the consumer AI market: adoption, spend, who is actually winning, and the gap between foot traffic and full cash registers.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/apex-ai-consumer-index/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/apex-ai-consumer-index" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        </ul>
+      </section>
+    </div>
+
+    <section class="sites-note" aria-labelledby="note-title">
+      <h2 id="note-title">How these are made</h2>
+      <p>Same rules as the rest of this site: hand-written HTML, CSS, and a little JavaScript, no build step and no framework. They work without JavaScript, follow your light or dark setting, keep no accounts, and don’t track you. Each one lives in its own repository, so the source link on any card takes you straight to the code.</p>
+      <p>If one of them is useful — or hard to read on your device — I’d like to hear about it. The contact links are on <a href="../#contact">the homepage</a>.</p>
+      <div class="actions">
+        <a class="button button-quiet" href="../#tools">Try the browser tools</a>
+        <a class="button button-quiet" href="../#writing">Read the two essays</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <h2 class="eyebrow">Elsewhere</h2>
+      <p>17 sites, one author. If you only remember one thing about this collection: everything on it is free to read, and none of it wants your email address.</p>
+    </div>
+    <nav aria-label="Elsewhere">
+      <a href="https://github.com/iggym" rel="noopener">GitHub</a>
+      <a href="https://www.linkedin.com/in/iggym" rel="noopener">LinkedIn</a>
+      <a href="https://x.com/iggym" rel="noopener">X</a>
+      <a href="../assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
+    </nav>
+  </footer>
+
+  <script defer src="../assets/js/theme.js?v=20261006e"></script>
+  <script defer src="../assets/js/site-map.js?v=20261006e"></script>
+  <script defer src="../assets/js/sites.js?v=20261006e"></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
+</body>
+</html>
