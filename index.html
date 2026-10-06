@@ -3,264 +3,329 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iggy Mwangi — AI Systems Architect</title>
-  <meta name="description" content="Tighten a prompt and see the estimated token change. Prompt Matrix Evaluator strips common filler. It does not score constraints.">
+  <title>Iggy Mwangi — Practical AI tools and notes</title>
+  <meta name="description" content="Free browser tools for working with prompts, short essays on running AI systems in production, and open-source projects by Iggy Mwangi, AI systems architect.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f0e8" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iggym.github.io/">
-  <meta property="og:title" content="Iggy Mwangi — AI Systems Architect">
-  <meta property="og:description" content="Tighten a prompt and see the estimated token change with Prompt Matrix Evaluator.">
+  <meta property="og:title" content="Iggy Mwangi — Practical AI tools and notes">
+  <meta property="og:description" content="Free browser tools for prompts, notes on production AI, and open-source projects.">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Iggy Mwangi — AI Systems Architect">
-  <meta name="twitter:description" content="Tighten a prompt and see the estimated token change with Prompt Matrix Evaluator.">
+  <meta name="twitter:title" content="Iggy Mwangi — Practical AI tools and notes">
+  <meta name="twitter:description" content="Free browser tools for prompts, notes on production AI, and open-source projects.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/home.css">
 </head>
 <body>
-  <a class="skip" href="#work">Skip to work</a>
+  <a class="skip" href="#main">Skip to main content</a>
 
   <header class="site-header">
-    <a class="wordmark" href="#top">Iggy Mwangi</a>
+    <a class="wordmark" href="#main">Iggy Mwangi</a>
     <nav class="nav" aria-label="Primary">
-      <a href="#work">Work</a>
       <a href="#tools">Tools</a>
-      <a href="#notes">Notes</a>
-      <a href="assets/resume/iggy-resume.pdf">Resume</a>
-      <a href="https://github.com/iggym" rel="noopener">GitHub</a>
+      <a href="#writing">Writing</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Work with me</a>
+      <a href="assets/resume/iggy-resume.pdf">Resume <span class="hint">(PDF)</span></a>
     </nav>
   </header>
 
-  <main id="top">
-    <section class="hero">
-      <p class="kicker">Start here · about ten minutes</p>
-      <h1>Tighten a prompt and see the token change.</h1>
-      <p class="lede">Prompt Matrix Evaluator strips common filler from a prompt you paste and shows an estimated token count before and after. It does not score constraints.</p>
-      <p class="now">Iggy Mwangi, AI systems architect in Dallas–Fort Worth. More tools and notes are below once this one is useful.</p>
-      <div class="actions">
-        <a class="button" href="tools/prompt-matrix-evaluator.html">Try Prompt Matrix Evaluator</a>
-        <a class="button button-quiet" href="#tools">More tools</a>
-        <a class="button button-quiet" href="#work">Work</a>
-      </div>
+  <main id="main" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">Practical tools and notes for building with AI.</h1>
+      <p class="lede">I’m Iggy Mwangi, an AI systems architect in Dallas–Fort Worth. This site has free tools that run in your browser, short essays on keeping AI systems working in production, and my open-source projects. Nothing here needs an account.</p>
     </section>
 
-    <section class="focus" aria-label="Focus">
-      <article>
-        <h2>Constrained agentics</h2>
-        <p>Open-ended loops break in production. State machines and structured outputs keep an agent on a path you can audit.</p>
-      </article>
-      <article>
-        <h2>Context budgeting</h2>
-        <p>Long histories bury the instructions that matter. Sliding windows and tighter prompts keep the useful part of the context in view.</p>
-      </article>
-      <article>
-        <h2>Production guardrails</h2>
-        <p>Tool calls and branch updates need a check before they land. Policy and isolated execution are part of the system, not a footnote.</p>
-      </article>
+    <section class="paths" aria-labelledby="paths-title">
+      <h2 id="paths-title" class="eyebrow">What brings you here?</h2>
+      <ul class="path-list">
+        <li>
+          <a href="#tools">
+            <strong>I want to tidy up a prompt</strong>
+            <span>Shorten it, reuse it across chats, or compare two versions. Free, in your browser.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#writing">
+            <strong>I want to learn how AI systems hold up</strong>
+            <span>Essays and reference guides on context, cost, reliability, and incidents.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#projects">
+            <strong>I’m looking for code I can use</strong>
+            <span>Open-source guardrails, audit tools, and context utilities on GitHub.</span>
+          </a>
+        </li>
+        <li>
+          <a href="#contact">
+            <strong>I’d like to hire or work with Iggy</strong>
+            <span>What I help with, my background, and how to get in touch.</span>
+          </a>
+        </li>
+      </ul>
     </section>
 
-    <section id="work" class="section">
+    <section id="tools" class="section" aria-labelledby="tools-title">
       <div class="section-head">
-        <h2>Work</h2>
-        <p>Public repositories. Descriptions are the ones on GitHub.</p>
+        <h2 id="tools-title">Tools</h2>
+        <p>Single pages you can open and use right away. Each one says where your text goes.</p>
       </div>
-      <ul class="projects">
+
+      <details class="explainer">
+        <summary>New to this? Three words you’ll see a lot</summary>
+        <dl>
+          <dt>Prompt</dt>
+          <dd>The instructions and text you give an AI model, like a message in a chat.</dd>
+          <dt>Token</dt>
+          <dd>The unit models read and bill by. A token is roughly three-quarters of an English word, so fewer tokens usually means faster and cheaper replies.</dd>
+          <dt>Context window</dt>
+          <dd>How much text a model can consider at once. When a conversation outgrows it, older parts get dropped or ignored.</dd>
+        </dl>
+      </details>
+
+      <div class="legend" aria-labelledby="legend-title">
+        <h3 id="legend-title" class="eyebrow">What the labels mean</h3>
+        <ul>
+          <li><span class="tag tag-local">Stays on your device</span> Your text is processed in this browser tab and not sent anywhere.</li>
+          <li><span class="tag tag-saved">Remembers your work</span> Saves to this browser’s storage so it’s there next visit. Clear your site data to remove it.</li>
+          <li><span class="tag tag-key">Needs your API key</span> Sends your prompt to OpenAI or Anthropic using a key you supply.</li>
+          <li><span class="tag tag-server">Sends text to a server</span> Your text goes to a server I run, which passes it to a hosted model.</li>
+          <li><span class="tag tag-demo">Simulation</span> An interactive explainer. The numbers are illustrative, not live measurements.</li>
+        </ul>
+      </div>
+
+      <h3 class="group-title">Make a prompt shorter</h3>
+      <ul class="cards">
+        <li class="card">
+          <h4><a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a></h4>
+          <p>Paste a prompt and it removes common filler (“could you please”, “make sure to”) and shows the estimated token count before and after. A good first tool to try.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+        </li>
+        <li class="card">
+          <h4><a href="tools/context-extractor.html">Context Extractor (ContextSlim)</a></h4>
+          <p>Paste a long chat or notes and pick which of nine kinds of information to keep, such as goals, rules, or history. It returns a compact summary you can paste into a new chat.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
+        </li>
+        <li class="card">
+          <h4><a href="tools/claude_context_engine_premium.html">Claude Context Engine</a></h4>
+          <p>Rewrites pasted context into a tighter prompt using a hosted model, with options to strip lockfile noise and move rules to the end. Don’t paste anything private.</p>
+          <p class="tags"><span class="tag tag-server">Sends text to a server</span> <span class="tag tag-saved">Remembers your work</span></p>
+        </li>
+      </ul>
+
+      <h3 class="group-title">Build, reuse, and compare prompts</h3>
+      <ul class="cards">
+        <li class="card">
+          <h4><a href="tools/context-engine.html">Portable Context Engine</a></h4>
+          <p>Save reusable “profiles” (a persona plus rules) and fill in variables like <code>{{project}}</code>. Copy the finished block into any AI chat.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
+        </li>
+        <li class="card">
+          <h4><a href="tools/token-conscious-diff-stager.html">Prompt Diff &amp; Stager</a></h4>
+          <p>Compare two versions of a prompt word by word, keep a history of snapshots, and see the token estimate of what you’ll send.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
+        </li>
+        <li class="card">
+          <h4><a href="tools/nanobanana-json-compiler.html">NanoBanana Compiler</a></h4>
+          <p>Choose a few cloud architecture options and it writes a JSON spec you can hand to an image model to draw the diagram.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+        </li>
+        <li class="card">
+          <h4><a href="tools/ai-aggregator.html">Multi-Model Workspace</a></h4>
+          <p>Send one question to an OpenAI model and an Anthropic model side by side. Without keys it runs in a mock mode so you can see how it works. Keys are stored in this browser.</p>
+          <p class="tags"><span class="tag tag-key">Needs your API key</span> <span class="tag tag-saved">Remembers your work</span></p>
+        </li>
+      </ul>
+
+      <h3 class="group-title">See how the ideas work</h3>
+      <ul class="cards">
+        <li class="card">
+          <h4><a href="tools/context-window-optimizer.html">Context Window Optimizer</a></h4>
+          <p>Edit a sample prompt and watch how much of an 8K, 32K, or 128K context window it uses.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+        </li>
+        <li class="card">
+          <h4><a href="tools/deterministic-agent-stateboard.html">Agent Stateboard</a></h4>
+          <p>Run a planner, executor, and checker passing work along a fixed path, with a check before each handoff.</p>
+          <p class="tags"><span class="tag tag-demo">Simulation</span></p>
+        </li>
+        <li class="card">
+          <h4><a href="tools/agentic-backpressure-throttle.html">Token Router</a></h4>
+          <p>Watch a shared token budget give urgent requests priority and hold back background jobs when traffic spikes.</p>
+          <p class="tags"><span class="tag tag-demo">Simulation</span></p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="writing" class="section" aria-labelledby="writing-title">
+      <div class="section-head">
+        <h2 id="writing-title">Writing</h2>
+        <p>Two essays on this site, plus longer guides kept on GitHub.</p>
+      </div>
+      <ul class="rows">
+        <li>
+          <a href="articles/context-orchestration.html">
+            <span class="meta">Essay · June 2026 · 6 min read</span>
+            <span class="row-title">The shift from coding to context orchestration</span>
+            <span class="row-text">As more software runs on models, the leverage moves into how prompts are structured, bounded, and checked.</span>
+          </a>
+        </li>
+        <li>
+          <a href="articles/token-economics.html">
+            <span class="meta">Essay · May 2026 · 4 min read</span>
+            <span class="row-title">Token window economics</span>
+            <span class="row-text">How long chat histories, multi-agent overhead, and strict output formats eat into response time.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/iggym/the-ai-runbook" rel="noopener">
+            <span class="meta">Guide · on GitHub</span>
+            <span class="row-title">The AI Runbook</span>
+            <span class="row-text">What to do when an AI feature breaks: symptom, first action, diagnosis, fix, prevention. Written to be read mid-incident.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/iggym/production-ai-patterns" rel="noopener">
+            <span class="meta">Guide · on GitHub</span>
+            <span class="row-title">Production AI Patterns</span>
+            <span class="row-text">Named patterns for the decisions that decide whether an AI system survives real traffic: context, cost, reliability, observability, and security.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/iggym/agentic-engineering" rel="noopener">
+            <span class="meta">Guide · on GitHub</span>
+            <span class="row-title">Agentic Engineering</span>
+            <span class="row-text">Orchestration, context, and tool use for agents built to do real work.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://github.com/iggym/awesome-ai-architecture" rel="noopener">
+            <span class="meta">Reading list · on GitHub</span>
+            <span class="row-title">Awesome AI Architecture</span>
+            <span class="row-text">A map of AI infrastructure tools, organized by the problem each one solves.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://iggym.github.io/everyday-ai-done-right/">
+            <span class="meta">Site · for everyone</span>
+            <span class="row-title">Everyday AI, done right</span>
+            <span class="row-text">A companion site on using AI well in everyday work.</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <div class="section-head">
+        <h2 id="projects-title">Projects</h2>
+        <p>Open-source code on GitHub. Free to read, use, and adapt under each repo’s license.</p>
+      </div>
+      <ul class="rows rows-2">
         <li>
           <a href="https://github.com/iggym/surfacelock" rel="noopener">
             <span class="meta">Python</span>
-            <h3>SurfaceLock</h3>
-            <p>A lockfile for the AI surface of your codebase.</p>
+            <span class="row-title">SurfaceLock</span>
+            <span class="row-text">A lockfile for the AI surface of your codebase: the prompts, models, and settings it depends on.</span>
           </a>
         </li>
         <li>
           <a href="https://github.com/iggym/modelbump" rel="noopener">
             <span class="meta">Python</span>
-            <h3>ModelBump</h3>
-            <p>Behavioral diff for model upgrades and deprecations.</p>
+            <span class="row-title">ModelBump</span>
+            <span class="row-text">A behavioral diff for model upgrades and deprecations.</span>
           </a>
         </li>
         <li>
           <a href="https://github.com/iggym/aiboom" rel="noopener">
             <span class="meta">Python</span>
-            <h3>AIBoM</h3>
-            <p>An audit-ready AI Bill of Materials from your repo, in one command.</p>
+            <span class="row-title">AIBoM</span>
+            <span class="row-text">Generates an audit-ready AI Bill of Materials from your repo in one command.</span>
           </a>
         </li>
         <li>
           <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">
             <span class="meta">Python · Rust</span>
-            <h3>Deterministic Agent Supervisor</h3>
-            <p>Keeps LLM reasoning apart from a compiled state machine that rejects unauthorized execution transitions.</p>
+            <span class="row-title">Deterministic Agent Supervisor</span>
+            <span class="row-text">Keeps model reasoning separate from a compiled state machine that blocks unauthorized actions.</span>
           </a>
         </li>
         <li>
           <a href="https://github.com/iggym/factory-gate" rel="noopener">
             <span class="meta">JavaScript</span>
-            <h3>Factory Gate</h3>
-            <p>Policy guardrails that check agent state transitions before a change is ingested on the target branch.</p>
+            <span class="row-title">Factory Gate</span>
+            <span class="row-text">Policy checks on an AI agent’s changes before they land on your main branch.</span>
           </a>
         </li>
         <li>
           <a href="https://github.com/iggym/sliding-window-trim-engine" rel="noopener">
             <span class="meta">Go</span>
-            <h3>Sliding Window Trim Engine</h3>
-            <p>Pre-tokenization utility that prunes redundant history blocks and cuts context overhead.</p>
+            <span class="row-title">Sliding Window Trim Engine</span>
+            <span class="row-text">Trims repeated chat history before it’s sent, cutting context size and cost.</span>
           </a>
         </li>
         <li>
           <a href="https://github.com/iggym/circuit-x" rel="noopener">
             <span class="meta">HTML</span>
-            <h3>CircuitX</h3>
-            <p>Exposes internal feature circuit paths inside deep neural weights and code LLMs.</p>
+            <span class="row-title">CircuitX</span>
+            <span class="row-text">Explores which internal features a code model uses, for interpretability research.</span>
           </a>
         </li>
         <li>
-          <a href="https://iggym.github.io/utility-belt/" rel="noopener">
-            <span class="meta">Live · HTML</span>
-            <h3>Utility Belt</h3>
-            <p>Simple browser utilities, built instead of doing the thing I was supposed to be doing.</p>
+          <a href="https://iggym.github.io/utility-belt/">
+            <span class="meta">Live site</span>
+            <span class="row-title">Utility Belt</span>
+            <span class="row-text">Small everyday browser utilities. No AI required.</span>
           </a>
         </li>
       </ul>
     </section>
 
-    <section id="tools" class="section">
+    <section id="contact" class="section" aria-labelledby="contact-title">
       <div class="section-head">
-        <h2>Tools on this site</h2>
-        <p>Small pages shipped here. Open one and use it.</p>
+        <h2 id="contact-title">Work with me</h2>
+        <p>Open to consulting, collaboration, and roles.</p>
       </div>
-      <ul class="list">
-        <li>
-          <a href="tools/prompt-matrix-evaluator.html">
-            <h3>Prompt Matrix Evaluator</h3>
-            <p>Strips common filler from a prompt and shows the estimated token change. It does not measure constraint density.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/context-extractor.html">
-            <h3>Context Extraction System</h3>
-            <p>Nine-category modular prompt context architecture for session consistency.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/context-engine.html">
-            <h3>Portable Context Engine</h3>
-            <p>A portable context handler.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/ai-aggregator.html">
-            <h3>Multi-Model Workspace Aggregator</h3>
-            <p>One workspace across models.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/context-window-optimizer.html">
-            <h3>Context Window Optimizer</h3>
-            <p>Visualizes context packing, sliding memory anchors, and token counts.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/deterministic-agent-stateboard.html">
-            <h3>Agent Stateboard</h3>
-            <p>A finite-state view of multi-agent loops, with a guardrail between each transition.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/nanobanana-json-compiler.html">
-            <h3>NanoBanana Compiler</h3>
-            <p>Turns modular layout configurations into system prompts and structural configs.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/agentic-backpressure-throttle.html">
-            <h3>Deterministic Token Router</h3>
-            <p>A token rate limiter and context prioritization gateway.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/claude_context_engine_premium.html">
-            <h3>Claude Context Engine</h3>
-            <p>A workspace for prompt and context orchestration aimed at Claude.</p>
-          </a>
-        </li>
-        <li>
-          <a href="tools/token-conscious-diff-stager.html">
-            <h3>Token-Conscious Prompt Diff &amp; Stager</h3>
-            <p>Diff and stage prompt revisions with the token cost in view.</p>
-          </a>
-        </li>
-      </ul>
-    </section>
-
-    <section id="notes" class="section">
-      <div class="section-head">
-        <h2>Notes</h2>
-        <p>Essays on this site, plus public writing repos.</p>
+      <div class="contact">
+        <div>
+          <h3 class="group-title">What I help teams with</h3>
+          <ul class="checks">
+            <li><strong>Making AI agents dependable.</strong> Fixed workflows and structured outputs, so an agent follows a path you can audit instead of improvising.</li>
+            <li><strong>Keeping cost and latency in check.</strong> Tighter prompts and smarter context so the important instructions stay in view and bills stay predictable.</li>
+            <li><strong>Shipping safely.</strong> Checks on tool calls and code changes before they land, with isolated execution and clear policies.</li>
+          </ul>
+          <h3 class="group-title">Background</h3>
+          <p>Software engineer who has worked up the stack from embedded firmware to mobile, cloud, machine learning, and now agent systems, at companies including Apple, AT&amp;T, Verizon, and Sam’s Club.</p>
+        </div>
+        <div class="contact-card">
+          <h3 class="group-title">Get in touch</h3>
+          <ul class="contact-links">
+            <li><a href="https://www.linkedin.com/in/iggym" rel="noopener">Message me on LinkedIn</a></li>
+            <li><a href="https://x.com/iggym" rel="noopener">Follow or DM on X <span class="hint">@iggym</span></a></li>
+            <li><a href="https://github.com/iggym" rel="noopener">See all code on GitHub</a></li>
+            <li><a href="assets/resume/iggy-resume.pdf">Download résumé <span class="hint">(PDF, 122 KB)</span></a></li>
+          </ul>
+        </div>
       </div>
-      <ul class="notes">
-        <li>
-          <a href="articles/context-orchestration.html">
-            <span class="meta">June 2026 · 6 min</span>
-            <h3>The shift from coding to context orchestration</h3>
-            <p>As systems move to generative runtimes, the leverage moves into prompt structure, token boundaries, and validation.</p>
-          </a>
-        </li>
-        <li>
-          <a href="articles/token-economics.html">
-            <span class="meta">May 2026 · 4 min</span>
-            <h3>Token window economics</h3>
-            <p>How long histories, multi-agent overhead, and strict JSON schemas spend the latency budget.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/iggym/production-ai-patterns" rel="noopener">
-            <span class="meta">GitHub</span>
-            <h3>Production AI Patterns</h3>
-            <p>Named patterns for the decisions that decide whether an AI system survives production traffic: context, cost, reliability, observability, and security.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/iggym/the-ai-runbook" rel="noopener">
-            <span class="meta">GitHub</span>
-            <h3>The AI Runbook</h3>
-            <p>Incident procedures meant to be read mid-incident: symptom, immediate action, diagnosis, fix, prevention.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/iggym/agentic-engineering" rel="noopener">
-            <span class="meta">GitHub</span>
-            <h3>Agentic Engineering</h3>
-            <p>Orchestration, context, and tool use for agents built to work, not demo.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://github.com/iggym/awesome-ai-architecture" rel="noopener">
-            <span class="meta">GitHub</span>
-            <h3>Awesome AI Architecture</h3>
-            <p>An opinionated map of AI infrastructure tooling, organized by the failure mode each tool addresses.</p>
-          </a>
-        </li>
-        <li>
-          <a href="https://iggym.github.io/everyday-ai-done-right/" rel="noopener">
-            <span class="meta">Live</span>
-            <h3>Everyday AI, done right</h3>
-            <p>Everyday AI, done right.</p>
-          </a>
-        </li>
-      </ul>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>Iggy Mwangi. Production-ready AI infrastructure for systems that have to keep working.</p>
+    <div>
+      <h2 class="eyebrow">About this site</h2>
+      <p>Plain HTML and CSS on GitHub Pages. It works without JavaScript, follows your device’s light or dark setting, and respects reduced-motion preferences. Anonymous page counts come from Cloudflare Web Analytics, which doesn’t use cookies.</p>
+      <p>If something here is hard to read or use, please <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">open an issue on GitHub</a> or message me on LinkedIn and I’ll fix it.</p>
+    </div>
     <nav aria-label="Elsewhere">
       <a href="https://github.com/iggym" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/iggym" rel="noopener">LinkedIn</a>
       <a href="https://x.com/iggym" rel="noopener">X</a>
-      <a href="assets/resume/iggy-resume.pdf">Resume</a>
+      <a href="assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
     </nav>
-    <p class="fine">Built on GitHub Pages. This page is static HTML and CSS.</p>
   </footer>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
