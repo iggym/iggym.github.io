@@ -18,6 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/home.css">
 </head>
 <body>
@@ -36,8 +37,101 @@
 
   <main id="main" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
-      <h1 id="hero-title">Practical tools and notes for building with AI.</h1>
-      <p class="lede">I’m Iggy Mwangi, an AI systems architect in Dallas–Fort Worth. This site has free tools that run in your browser, short essays on keeping AI systems working in production, and my open-source projects. Nothing here needs an account.</p>
+      <div class="hero-text">
+        <p class="availability"><span class="pulse" aria-hidden="true"></span> Open to consulting, collaboration, and roles</p>
+        <h1 id="hero-title">Practical tools and notes for building with <span class="swash">AI</span>.</h1>
+        <p class="lede">I’m Iggy Mwangi, an AI systems architect in Dallas–Fort Worth. This site has free tools that run in your browser, short essays on keeping AI systems working in production, and my open-source projects. Nothing here needs an account.</p>
+        <div class="actions">
+          <a class="button" href="#demo">Try a tool right here</a>
+          <a class="button button-quiet" href="#contact">Work with me</a>
+        </div>
+        <p class="previously"><span>Experience includes</span> Apple · AT&amp;T · Verizon · Sam’s Club</p>
+      </div>
+
+      <figure class="stack-figure" aria-labelledby="stack-title">
+      <svg class="stack-art" viewBox="0 0 470 410" role="presentation" aria-hidden="true" focusable="false">
+        <g class="slab" data-layer="0">
+          <polygon class="slab-left" points="62,318 190,364 190,378 62,332"/>
+          <polygon class="slab-right" points="190,364 318,318 318,332 190,378"/>
+          <polygon class="slab-top" points="190,272 318,318 190,364 62,318"/>
+          <line class="slab-lead" x1="318" y1="325" x2="332" y2="325"/>
+          <text class="slab-label" x="336" y="329">Embedded</text>
+        </g>
+        <g class="slab" data-layer="1">
+          <polygon class="slab-left" points="62,256 190,302 190,316 62,270"/>
+          <polygon class="slab-right" points="190,302 318,256 318,270 190,316"/>
+          <polygon class="slab-top" points="190,210 318,256 190,302 62,256"/>
+          <line class="slab-lead" x1="318" y1="263" x2="332" y2="263"/>
+          <text class="slab-label" x="336" y="267">Mobile</text>
+        </g>
+        <g class="slab" data-layer="2">
+          <polygon class="slab-left" points="62,194 190,240 190,254 62,208"/>
+          <polygon class="slab-right" points="190,240 318,194 318,208 190,254"/>
+          <polygon class="slab-top" points="190,148 318,194 190,240 62,194"/>
+          <line class="slab-lead" x1="318" y1="201" x2="332" y2="201"/>
+          <text class="slab-label" x="336" y="205">Cloud</text>
+        </g>
+        <g class="slab" data-layer="3">
+          <polygon class="slab-left" points="62,132 190,178 190,192 62,146"/>
+          <polygon class="slab-right" points="190,178 318,132 318,146 190,192"/>
+          <polygon class="slab-top" points="190,86 318,132 190,178 62,132"/>
+          <line class="slab-lead" x1="318" y1="139" x2="332" y2="139"/>
+          <text class="slab-label" x="336" y="143">Machine learning</text>
+        </g>
+        <g class="slab" data-layer="4">
+          <polygon class="slab-left" points="62,70 190,116 190,130 62,84"/>
+          <polygon class="slab-right" points="190,116 318,70 318,84 190,130"/>
+          <polygon class="slab-top" points="190,24 318,70 190,116 62,70"/>
+          <line class="slab-lead" x1="318" y1="77" x2="332" y2="77"/>
+          <text class="slab-label" x="336" y="81">Agent systems</text>
+        </g>
+        <g class="flow">
+          <circle class="flow-dot" cx="156" cy="358" r="3.5"><animate attributeName="cy" values="358;40" dur="4.2s" begin="0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="4.2s" begin="0s" repeatCount="indefinite"/></circle>
+          <circle class="flow-dot" cx="212" cy="358" r="3.5"><animate attributeName="cy" values="358;40" dur="4.2s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="4.2s" begin="1.4s" repeatCount="indefinite"/></circle>
+          <circle class="flow-dot" cx="184" cy="358" r="3.5"><animate attributeName="cy" values="358;40" dur="4.2s" begin="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.85;1" dur="4.2s" begin="2.8s" repeatCount="indefinite"/></circle>
+        </g>
+        <g class="net">
+          <line x1="140" y1="66" x2="190" y2="48"/>
+          <line x1="190" y1="48" x2="240" y2="66"/>
+          <line x1="240" y1="66" x2="140" y2="66" class="net-loop"/>
+          <circle cx="140" cy="66" r="7"/>
+          <circle cx="190" cy="48" r="7"/>
+          <circle cx="240" cy="66" r="7"/>
+        </g>
+      </svg>
+        <figcaption>
+          <h2 id="stack-title" class="eyebrow">My path up the stack</h2>
+          <div class="stack-picker" role="group" aria-label="Choose a layer" hidden>
+          <button type="button" data-layer="0" aria-pressed="false">Embedded</button>
+          <button type="button" data-layer="1" aria-pressed="false">Mobile</button>
+          <button type="button" data-layer="2" aria-pressed="false">Cloud</button>
+          <button type="button" data-layer="3" aria-pressed="false">Machine learning</button>
+          <button type="button" data-layer="4" aria-pressed="true">Agent systems</button>
+          </div>
+          <dl class="stack-caps" id="stack-caps">
+          <div class="stack-cap" data-layer="0">
+            <dt>Embedded</dt>
+            <dd>Firmware close to the hardware, where every byte and millisecond counts. The lesson I carried up: respect the constraints.</dd>
+          </div>
+          <div class="stack-cap" data-layer="1">
+            <dt>Mobile</dt>
+            <dd>Apps people carry everywhere, built for patchy networks, small screens, and impatient users.</dd>
+          </div>
+          <div class="stack-cap" data-layer="2">
+            <dt>Cloud</dt>
+            <dd>Services that keep running under real traffic, with the monitoring to show it.</dd>
+          </div>
+          <div class="stack-cap" data-layer="3">
+            <dt>Machine learning</dt>
+            <dd>Models in production, which means data pipelines and evaluation, not just training runs.</dd>
+          </div>
+          <div class="stack-cap" data-layer="4">
+            <dt>Agent systems</dt>
+            <dd>AI that plans and acts, kept on a fixed path with checks you can audit. This is where I work now.</dd>
+          </div>
+          </dl>
+        </figcaption>
+      </figure>
     </section>
 
     <section class="paths" aria-labelledby="paths-title">
@@ -70,6 +164,30 @@
       </ul>
     </section>
 
+    <section id="demo" class="section demo" aria-labelledby="demo-title">
+      <div class="section-head">
+        <h2 id="demo-title">Try one right here</h2>
+        <p>A live copy of <a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>. Edit the prompt and watch the filler disappear.</p>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-pane">
+          <label for="demo-in" class="demo-label">A wordy prompt</label>
+          <textarea id="demo-in" rows="5" spellcheck="false">Hi! I would like you to write a short welcome email for new customers. Make sure to mention the free trial, and it is important that you keep it friendly. Thanks in advance!</textarea>
+        </div>
+        <div class="demo-pane" aria-live="polite">
+          <p class="demo-label" id="demo-cut-label">What gets cut</p>
+          <p class="demo-cut" id="demo-cut" aria-labelledby="demo-cut-label">Hi! <mark class="cut">I would like you to </mark>write a short welcome email for new customers. <mark class="cut">Make sure to </mark>mention the free trial, and <mark class="cut">it is important that you </mark>keep it friendly. <mark class="cut">Thanks in advance!</mark></p>
+          <p class="demo-label">Tightened</p>
+          <p class="demo-result" id="demo-result">Hi! Write a short welcome email for new customers. Mention the free trial, and keep it friendly.</p>
+          <div class="demo-bars" aria-hidden="true">
+            <span class="bar bar-before"><span id="bar-before" style="width:100%"></span></span>
+            <span class="bar bar-after"><span id="bar-after" style="width:55%"></span></span>
+          </div>
+          <p class="demo-meta" id="demo-meta">About 44 tokens down to about 24, roughly 45% fewer.</p>
+        </div>
+      </div>
+    </section>
+
     <section id="tools" class="section" aria-labelledby="tools-title">
       <div class="section-head">
         <h2 id="tools-title">Tools</h2>
@@ -97,6 +215,16 @@
           <li><span class="tag tag-server">Sends text to a server</span> Your text goes to a server I run, which passes it to a hosted model.</li>
           <li><span class="tag tag-demo">Simulation</span> An interactive explainer. The numbers are illustrative, not live measurements.</li>
         </ul>
+      </div>
+
+      <div class="filters" id="tool-filters" role="group" aria-label="Show tools that" hidden>
+        <span class="filters-label" aria-hidden="true">Show:</span>
+        <button type="button" data-filter="all" aria-pressed="true">All tools</button>
+        <button type="button" data-filter="tag-local" aria-pressed="false">Stay on your device</button>
+        <button type="button" data-filter="tag-key" aria-pressed="false">Use your API key</button>
+        <button type="button" data-filter="tag-server" aria-pressed="false">Send text to a server</button>
+        <button type="button" data-filter="tag-demo" aria-pressed="false">Simulations</button>
+        <span class="filters-count" id="filter-count" role="status"></span>
       </div>
 
       <h3 class="group-title">Make a prompt shorter</h3>
@@ -292,6 +420,31 @@
       </div>
       <div class="contact">
         <div>
+          <figure class="pipeline">
+            <svg viewBox="0 0 560 170" role="presentation" aria-hidden="true" focusable="false">
+              <defs>
+                <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="arrow-head"/></marker>
+              </defs>
+              <path id="pipe-main" class="pipe-line" d="M 82 60 L 478 60" />
+              <path class="pipe-line" d="M 82 60 L 150 60" marker-end="url(#arrow)"/>
+              <path class="pipe-line" d="M 214 60 L 282 60" marker-end="url(#arrow)"/>
+              <path class="pipe-line" d="M 346 60 L 414 60" marker-end="url(#arrow)"/>
+              <path id="pipe-loop" class="pipe-loop" d="M 380 84 C 380 150, 248 150, 248 88" marker-end="url(#arrow)"/>
+              <text class="pipe-note" x="314" y="156" text-anchor="middle">fails a check → back to build</text>
+              <circle class="pipe-dot" r="6">
+                <animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;0.66;0.66;1" keyTimes="0;0.55;0.7;1" calcMode="linear"><mpath href="#pipe-main"/></animateMotion>
+              </circle>
+              <circle class="pipe-dot pipe-dot-retry" r="5">
+                <animateMotion dur="5s" begin="2.2s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;0.4;1" calcMode="linear"><mpath href="#pipe-loop"/></animateMotion>
+              </circle>
+              <g class="pipe-node"><rect x="18" y="36" width="64" height="48" rx="12"/><text x="50" y="65" text-anchor="middle">Plan</text></g>
+              <g class="pipe-node"><rect x="150" y="36" width="64" height="48" rx="12"/><text x="182" y="65" text-anchor="middle">Build</text></g>
+              <g class="pipe-node pipe-check"><rect x="282" y="36" width="64" height="48" rx="12"/><text x="314" y="65" text-anchor="middle">Check</text></g>
+              <g class="pipe-node pipe-ship"><rect x="414" y="36" width="64" height="48" rx="12"/><text x="446" y="65" text-anchor="middle">Ship</text></g>
+            </svg>
+            <figcaption>How I build: every change follows a fixed path and passes a check before it ships.</figcaption>
+          </figure>
+
           <h3 class="group-title">What I help teams with</h3>
           <ul class="checks">
             <li><strong>Making AI agents dependable.</strong> Fixed workflows and structured outputs, so an agent follows a path you can audit instead of improvising.</li>
@@ -317,7 +470,7 @@
   <footer class="site-footer">
     <div>
       <h2 class="eyebrow">About this site</h2>
-      <p>Plain HTML and CSS on GitHub Pages. It works without JavaScript, follows your device’s light or dark setting, and respects reduced-motion preferences. Anonymous page counts come from Cloudflare Web Analytics, which doesn’t use cookies.</p>
+      <p>Plain HTML, CSS, and a little JavaScript on GitHub Pages. Everything works without JavaScript, follows your device’s light or dark setting, and respects reduced-motion preferences. Anonymous page counts come from Cloudflare Web Analytics, which doesn’t use cookies.</p>
       <p>If something here is hard to read or use, please <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">open an issue on GitHub</a> or message me on LinkedIn and I’ll fix it.</p>
     </div>
     <nav aria-label="Elsewhere">
@@ -327,6 +480,8 @@
       <a href="assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
     </nav>
   </footer>
+  <script defer src="assets/js/prompt-tightener.js"></script>
+  <script defer src="assets/js/home.js"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
 </html>
