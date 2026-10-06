@@ -1,0 +1,112 @@
+/* "What's on this site" dialog. Uses the color tokens from home.css or tool.css. */
+.site-map-btn {
+  display: inline-flex; align-items: center; gap: 0.45rem; min-height: 44px;
+  padding: 0 0.95rem; border-radius: 999px; cursor: pointer;
+  font: inherit; font-size: 0.95rem; font-weight: 600;
+  color: var(--ink); background: var(--bg-raise);
+  border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.site-map-btn:hover { border-color: var(--accent); transform: translateY(-1px); }
+.site-map-btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+.site-map {
+  width: min(58rem, calc(100% - 2rem));
+  max-height: min(86vh, 52rem);
+  padding: 0; border: 0; background: transparent; color: var(--ink);
+  overflow: visible;
+}
+.site-map::backdrop {
+  background: rgba(14, 15, 20, 0.42);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+html.sm-open { overflow: hidden; }
+
+.sm-panel {
+  display: flex; flex-direction: column;
+  max-height: min(86vh, 52rem);
+  background: var(--bg-raise);
+  border: 1px solid var(--line); border-radius: 1.1rem;
+  box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  overflow: hidden;
+}
+.sm-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.1rem 1.25rem 0.6rem;
+}
+.sm-title {
+  margin: 0; font-family: var(--serif); font-weight: 500;
+  font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em;
+}
+.sm-close {
+  display: grid; place-items: center; width: 44px; height: 44px; flex: none;
+  border-radius: 999px; border: 1px solid var(--line); background: var(--bg);
+  color: var(--ink); font-size: 1rem; cursor: pointer;
+}
+.sm-close:hover { border-color: var(--accent); color: var(--accent); }
+.sm-search { padding: 0 1.25rem 0.9rem; border-bottom: 1px solid var(--line); }
+.sm-search input {
+  width: 100%; min-height: 46px; padding: 0.55rem 0.9rem;
+  font: inherit; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line-strong); border-radius: 0.7rem;
+}
+.sm-search input:focus { border-color: var(--focus); outline: 3px solid var(--focus); outline-offset: 1px; }
+
+.sm-body {
+  overflow-y: auto; overscroll-behavior: contain;
+  padding: 1rem 1.25rem 1.4rem;
+  columns: 2 22rem; column-gap: 2rem;
+}
+.sm-group { margin-bottom: 1.1rem; }
+.sm-group-title { break-after: avoid; }
+.sm-item { break-inside: avoid; }
+.sm-group-title {
+  margin: 0 0 0.4rem; font-family: var(--mono); font-size: 0.8rem; font-weight: 500;
+  letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
+}
+.sm-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.15rem; }
+.sm-item a {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.1rem 0.75rem;
+  padding: 0.55rem 0.65rem; border-radius: 0.6rem; text-decoration: none; color: inherit;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+.sm-item a:hover, .sm-item a:focus-visible { background: var(--accent-soft); transform: translateX(3px); }
+.sm-name { font-weight: 600; grid-column: 1; }
+.sm-desc { grid-column: 1; color: var(--muted); font-size: 0.92rem; }
+.sm-tag {
+  grid-column: 2; grid-row: 1 / span 2; align-self: center;
+  font-family: var(--mono); font-size: 0.72rem; white-space: nowrap;
+  padding: 0.1rem 0.45rem; border: 1px solid currentColor; border-radius: 999px;
+}
+.sm-tag-local { color: var(--tag-local); }
+.sm-tag-server { color: var(--tag-server); }
+.sm-tag-key { color: var(--tag-key); }
+.sm-tag-demo { color: var(--tag-demo); }
+.sm-empty { color: var(--muted); margin: 0.5rem 0; column-span: all; }
+
+/* Motion: the panel scales up, items cascade in, and closing reverses it. */
+.site-map[open] .sm-panel { animation: sm-in 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.site-map[open]::backdrop { animation: sm-fade 0.3s ease both; }
+.site-map[open] .sm-item { animation: sm-item 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i) * 18ms + 90ms); }
+.site-map.closing .sm-panel { animation: sm-out 0.22s ease-in both; }
+.site-map.closing::backdrop { animation: sm-fade-out 0.22s ease-in both; }
+@keyframes sm-in { from { opacity: 0; transform: translateY(18px) scale(0.965); } to { opacity: 1; transform: none; } }
+@keyframes sm-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(10px) scale(0.98); } }
+@keyframes sm-item { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes sm-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes sm-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+@media (max-width: 700px) {
+  .site-map { width: calc(100% - 1rem); max-height: 92vh; margin-top: auto; margin-bottom: 0.5rem; }
+  .sm-panel { max-height: 92vh; }
+  .sm-body { columns: 1; }
+  .sm-item a { grid-template-columns: minmax(0, 1fr); }
+  .sm-tag { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 0.25rem; }
+  .site-map-btn .sm-btn-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .site-map-btn { padding: 0; width: 44px; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-map[open] .sm-panel, .site-map[open] .sm-item, .site-map[open]::backdrop,
+  .site-map.closing .sm-panel, .site-map.closing::backdrop { animation: none; }
+}
