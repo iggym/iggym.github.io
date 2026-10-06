@@ -10,46 +10,140 @@
   if (!reduced) root.classList.add("motion");
   requestAnimationFrame(function () { root.classList.add("loaded"); });
 
-  /* ---------- Career stack: pick a layer, or let it cycle ---------- */
+  /* ---------- Header: add a hairline once the page scrolls ---------- */
   (function () {
-    var picker = document.querySelector(".stack-picker");
-    if (!picker) return;
-    var buttons = picker.querySelectorAll("button");
-    var caps = document.querySelectorAll(".stack-cap");
-    var slabs = document.querySelectorAll(".slab");
-    var current = buttons.length - 1;
-    var timer = null;
-    var userTookOver = false;
-    picker.hidden = false;
+    var header = document.querySelector(".site-header");
+    if (!header) return;
+    function update() { header.classList.toggle("scrolled", window.scrollY > 8); }
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+  })();
 
-    function select(i) {
-      current = i;
-      buttons.forEach(function (b, k) { b.setAttribute("aria-pressed", String(k === i)); });
-      caps.forEach(function (c) { c.classList.toggle("on", +c.dataset.layer === i); });
-      slabs.forEach(function (s) { s.classList.toggle("on", +s.dataset.layer === i); });
-    }
-    function stop() {
-      clearInterval(timer); timer = null;
-      if (!userTookOver) {
-        userTookOver = true;
-        // Announce changes only once the visitor is driving, so the auto-cycle stays quiet.
-        document.getElementById("stack-caps").setAttribute("aria-live", "polite");
-      }
-    }
-    buttons.forEach(function (b, k) { b.addEventListener("click", function () { stop(); select(k); }); });
-    slabs.forEach(function (s) { s.addEventListener("click", function () { stop(); select(+s.dataset.layer); }); });
+  /* ---------- Agent console: types out simulated runs ---------- */
+  (function () {
+    var body = document.getElementById("console-body");
+    if (!body) return;
+    var controls = document.querySelector(".console-controls");
+    var pauseBtn = document.getElementById("console-pause");
+    var nextBtn = document.getElementById("console-next");
 
-    // Walk up the stack from the bottom once, then rest on the top layer.
-    select(reduced ? current : 0);
-    if (!reduced) {
-      var figure = picker.closest("figure");
-      timer = setInterval(function () {
-        if (current >= buttons.length - 1) { clearInterval(timer); timer = null; return; }
-        select(current + 1);
-      }, 2200);
-      figure.addEventListener("pointerenter", function () { if (timer) stop(); });
-      figure.addEventListener("focusin", function () { if (timer) stop(); });
+    // [icon class, icon, step, text, tokens, tone]
+    var RUNS = [
+      { cmd: 'run "weekly ticket summary"', steps: [
+        ["i-plan", "▸", "plan", "3 acceptance criteria", "340 tok"],
+        ["i-build", "▸", "build", "draft summary ready", "890 tok"],
+        ["i-bad", "✗", "check", "category counts don’t add up", "", "bad"],
+        ["i-retry", "↺", "build", "fix counts · retry 1 of 2", "410 tok"],
+        ["i-ok", "✓", "check", "all criteria pass", "210 tok", "ok"],
+        ["i-ship", "✓", "ship", "posted to #support-weekly", ""]
+      ], sum: "done · 1 retry · 1,850 tokens" },
+      { cmd: 'run "upgrade to a newer model"', steps: [
+        ["i-plan", "▸", "plan", "120 saved test cases to compare", "280 tok"],
+        ["i-build", "▸", "build", "re-run tests on the new model", "6.1k tok"],
+        ["i-bad", "✗", "check", "3 answers changed format", "", "bad"],
+        ["i-retry", "↺", "build", "tighten output schema · retry 1 of 2", "520 tok"],
+        ["i-ok", "✓", "check", "120 / 120 match", "190 tok", "ok"],
+        ["i-ship", "✓", "ship", "new model live behind a flag", ""]
+      ], sum: "done · 1 retry · 7,090 tokens" },
+      { cmd: 'run "trim the support prompt"', steps: [
+        ["i-plan", "▸", "plan", "budget 800 tokens, keep every rule", "150 tok"],
+        ["i-build", "▸", "build", "draft at 1,240 tokens", "1.3k tok"],
+        ["i-bad", "✗", "check", "over budget by 440 tokens", "", "bad"],
+        ["i-retry", "↺", "build", "cut filler and repeats · retry 1 of 2", "640 tok"],
+        ["i-ok", "✓", "check", "760 tokens, all rules kept", "120 tok", "ok"],
+        ["i-ship", "✓", "ship", "prompt v7 saved", ""]
+      ], sum: "done · 1 retry · 2,210 tokens" }
+    ];
+
+    var run = 0, timers = [], paused = false, queue = [];
+
+    function el(tag, cls, text) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
     }
+    function stepLine(st) {
+      var li = el("li", "l" + (st[5] ? " " + st[5] : ""));
+      li.appendChild(el("span", "i " + st[0], st[1]));
+      li.appendChild(el("span", "k", st[2]));
+      li.appendChild(el("span", "t", st[3]));
+      li.appendChild(el("span", "m", st[4]));
+      return li;
+    }
+    function renderStatic(r) {
+      body.innerHTML = "";
+      var cmd = el("li", "l l-cmd");
+      cmd.appendChild(el("span", "p", "$"));
+      cmd.appendChild(document.createTextNode(" " + r.cmd));
+      body.appendChild(cmd);
+      r.steps.forEach(function (st) { body.appendChild(stepLine(st)); });
+      body.appendChild(el("li", "l l-sum", r.sum));
+    }
+
+    // A tiny scheduler so Pause can freeze the sequence where it is.
+    var pending = null;
+    function later(ms, fn) { queue.push({ ms: ms, fn: fn }); pump(); }
+    function pump() {
+      if (paused || timers.length || !queue.length) return;
+      var job = pending = queue.shift();
+      timers.push(setTimeout(function () { timers = []; pending = null; job.fn(); pump(); }, job.ms));
+    }
+    // Stop the waiting step and put it back at the front, so Pause is immediate.
+    function hold() {
+      timers.forEach(clearTimeout); timers = [];
+      if (pending) { queue.unshift(pending); pending = null; }
+    }
+    function clearAll() { timers.forEach(clearTimeout); timers = []; queue = []; pending = null; }
+
+    function play(r) {
+      body.innerHTML = "";
+      var cmd = el("li", "l l-cmd");
+      cmd.appendChild(el("span", "p", "$"));
+      var typed = document.createTextNode(" ");
+      cmd.appendChild(typed);
+      var caret = el("span", "caret");
+      cmd.appendChild(caret);
+      body.appendChild(cmd);
+      r.cmd.split("").forEach(function (ch) {
+        later(38, function () { typed.textContent += ch; });
+      });
+      later(380, function () { caret.remove(); });
+      r.steps.forEach(function (st, k) {
+        later(k === 0 ? 300 : (st[5] === "bad" || st[5] === "ok" ? 900 : 700), function () {
+          var li = stepLine(st);
+          li.classList.add("enter");
+          body.appendChild(li);
+        });
+      });
+      later(600, function () { var li = el("li", "l l-sum enter", r.sum); body.appendChild(li); });
+      later(4200, function () { run = (run + 1) % RUNS.length; play(RUNS[run]); });
+    }
+
+    controls.hidden = false;
+    if (reduced) {
+      // No typing or looping: show a finished run and let visitors step through.
+      pauseBtn.hidden = true;
+      renderStatic(RUNS[run]);
+    } else {
+      play(RUNS[run]);
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden && !paused) { paused = true; hold(); } else if (!document.hidden && pauseBtn.getAttribute("aria-pressed") !== "true") { paused = false; pump(); }
+      });
+    }
+
+    pauseBtn.addEventListener("click", function () {
+      paused = !paused;
+      pauseBtn.setAttribute("aria-pressed", String(paused));
+      pauseBtn.textContent = paused ? "Play" : "Pause";
+      if (paused) hold(); else pump();
+    });
+    nextBtn.addEventListener("click", function () {
+      clearAll();
+      run = (run + 1) % RUNS.length;
+      if (reduced || paused) renderStatic(RUNS[run]);
+      else play(RUNS[run]);
+    });
   })();
 
   /* ---------- Live prompt-tightening demo ---------- */
