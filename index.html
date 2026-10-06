@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261006c">
 </head>
 <body>
   <a class="skip" href="#main">Skip to main content</a>
@@ -44,7 +44,47 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-text">
         <p class="availability"><span class="pulse" aria-hidden="true"></span> Open to consulting, collaboration, and roles</p>
-        <h1 id="hero-title">Practical tools and notes for building with <span class="swash">AI</span>.</h1>
+        <h1 id="hero-title" class="self-edit">
+          <span class="sr-only">Practical tools and notes for building with AI.</span>
+          <span class="h1-visual" aria-hidden="true"><span class="f" style="--i:0">Could</span><span class="f" style="--i:1">you</span><span class="f" style="--i:2">please</span><span class="f" style="--i:3">make</span><span class="f" style="--i:4">sure</span><span class="f" style="--i:5">to</span><span class="f" style="--i:6">build</span><span class="nw"><span class="swap"><span class="lo">p</span><span class="up">P</span></span>ractical</span> tools and notes for building with <span class="nw"><span class="swash">AI</span><span class="swap"><span class="lo">?</span><span class="up">.</span></span></span><span class="f f-end" style="--i:7">Thanks!</span></span>
+        </h1>
+        <p class="edit-note">
+          <span class="tok" aria-hidden="true"><span class="tok-old">~23</span> → <span class="tok-new">~12</span> tokens</span>
+          <span>This headline started as a wordy prompt. Cutting the filler took it from about 23 tokens to 12.</span>
+          <button type="button" class="replay" id="replay" hidden>Replay</button>
+        </p>
+        <script>
+          // Self-editing headline: wordy prompt -> filler struck -> filler collapses.
+          // Runs inline so the wordy version is in place before the first paint.
+          (function () {
+            var h = document.getElementById("hero-title");
+            var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            var btn = document.getElementById("replay");
+            var timers = [];
+            if (reduce || !h.animate) return;
+            function play() {
+              timers.forEach(clearTimeout); timers = [];
+              var fills = h.querySelectorAll(".f");
+              h.classList.remove("strike", "tight", "done");
+              fills.forEach(function (f) { f.style.maxWidth = ""; });
+              h.classList.add("wordy");
+              h.style.minHeight = "";
+              timers.push(setTimeout(function () { h.classList.add("strike"); }, 1100));
+              timers.push(setTimeout(function () {
+                h.style.minHeight = h.offsetHeight + "px";
+                fills.forEach(function (f) { f.style.maxWidth = f.scrollWidth + "px"; });
+                void h.offsetWidth;
+                h.classList.add("tight");
+                fills.forEach(function (f) { f.style.maxWidth = "0px"; });
+                h.style.minHeight = "0px";
+              }, 2300));
+              timers.push(setTimeout(function () { h.classList.remove("wordy", "strike", "tight"); h.classList.add("done"); }, 3300));
+            }
+            play();
+            btn.hidden = false;
+            btn.addEventListener("click", play);
+          })();
+        </script>
         <p class="lede">I’m Iggy Mwangi, an AI systems architect in Dallas–Fort Worth. This site has free tools that run in your browser, short essays on keeping AI systems working in production, and my open-source projects. Nothing here needs an account.</p>
         <div class="actions">
           <a class="button" href="#demo">Try a tool right here</a>
@@ -52,32 +92,6 @@
         </div>
         <p class="previously"><span>Experience includes</span> Apple · AT&amp;T · Verizon · Sam’s Club</p>
       </div>
-
-      <figure class="console-figure" aria-labelledby="console-cap">
-        <div class="console">
-          <div class="console-bar" aria-hidden="true">
-            <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
-            <span class="console-title">agent-run</span>
-          </div>
-          <ol class="console-body" id="console-body" aria-hidden="true">
-            <li class="l l-cmd"><span class="p">$</span> run "weekly ticket summary"</li>
-            <li class="l"><span class="i i-plan">▸</span><span class="k">plan</span><span class="t">3 acceptance criteria</span><span class="m">340 tok</span></li>
-            <li class="l"><span class="i i-build">▸</span><span class="k">build</span><span class="t">draft summary ready</span><span class="m">890 tok</span></li>
-            <li class="l"><span class="i i-bad">✗</span><span class="k">check</span><span class="t">category counts don’t add up</span><span class="m"></span></li>
-            <li class="l"><span class="i i-retry">↺</span><span class="k">build</span><span class="t">fix counts · retry 1 of 2</span><span class="m">410 tok</span></li>
-            <li class="l"><span class="i i-ok">✓</span><span class="k">check</span><span class="t">all criteria pass</span><span class="m">210 tok</span></li>
-            <li class="l"><span class="i i-ship">✓</span><span class="k">ship</span><span class="t">posted to #support-weekly</span><span class="m"></span></li>
-            <li class="l l-sum">done · 1 retry · 1,850 tokens</li>
-          </ol>
-        </div>
-        <figcaption>
-          <span id="console-cap">A simulated agent run. Each step follows a fixed path, and nothing ships until it passes a check.</span>
-          <span class="console-controls" hidden>
-            <button type="button" id="console-pause" aria-pressed="false">Pause</button>
-            <button type="button" id="console-next">Next run</button>
-          </span>
-        </figcaption>
-      </figure>
     </section>
 
     <section class="paths" aria-labelledby="paths-title">
@@ -176,16 +190,19 @@
       <h3 class="group-title">Make a prompt shorter</h3>
       <ul class="cards">
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/prompt-matrix-evaluator-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/prompt-matrix-evaluator-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a></h4>
           <p>Paste a prompt and it removes common filler (“could you please”, “make sure to”) and shows the estimated token count before and after. A good first tool to try.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-extractor-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-extractor-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-extractor.html">Context Extractor</a></h4>
           <p>Paste a long chat or notes and it pulls out the goals, rules, decisions, open questions, and key facts into a short summary you can paste into a fresh chat.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/claude_context_engine_premium-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/claude_context_engine_premium-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/claude_context_engine_premium.html">Claude Context Engine</a></h4>
           <p>Rewrites pasted context into a tighter prompt using a hosted model, with options to strip lockfile noise and move rules to the end. Don’t paste anything private.</p>
           <p class="tags"><span class="tag tag-server">Sends text to a server</span></p>
@@ -195,21 +212,25 @@
       <h3 class="group-title">Build, reuse, and compare prompts</h3>
       <ul class="cards">
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-engine-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-engine-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-engine.html">Portable Context Engine</a></h4>
           <p>Save reusable “profiles” (a persona plus rules) and fill in variables like <code>{{project}}</code>. Copy the finished block into any AI chat.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/token-conscious-diff-stager-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/token-conscious-diff-stager-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/token-conscious-diff-stager.html">Prompt Diff &amp; Stager</a></h4>
           <p>Compare two versions of a prompt word by word, keep a history of snapshots, and see the token estimate of what you’ll send.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/nanobanana-json-compiler-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/nanobanana-json-compiler-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/nanobanana-json-compiler.html">NanoBanana Compiler</a></h4>
           <p>Choose a few cloud architecture options and it writes a prompt, plus a JSON version, for an image model to draw the diagram.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/ai-aggregator-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/ai-aggregator-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/ai-aggregator.html">Multi-Model Workspace</a></h4>
           <p>Ask an OpenAI model and an Anthropic model the same question and compare the answers side by side. Without keys it runs a demo. Keys are only remembered if you choose.</p>
           <p class="tags"><span class="tag tag-key">Needs your API key</span></p>
@@ -219,16 +240,19 @@
       <h3 class="group-title">See how the ideas work</h3>
       <ul class="cards">
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-window-optimizer-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-window-optimizer-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-window-optimizer.html">Context Window Optimizer</a></h4>
           <p>Paste a prompt and see how much of a model’s context window it fills, from 8K up to 1M tokens, with tips if it’s too long.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/deterministic-agent-stateboard-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/deterministic-agent-stateboard-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/deterministic-agent-stateboard.html">Agent Stateboard</a></h4>
           <p>Watch a planner, worker, and checker pass work along a fixed path, including what happens when the check fails.</p>
           <p class="tags"><span class="tag tag-demo">Simulation</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/agentic-backpressure-throttle-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/agentic-backpressure-throttle-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/agentic-backpressure-throttle.html">Token Router</a></h4>
           <p>Watch a shared token budget serve a waiting user first and hold a big background job until there’s room.</p>
           <p class="tags"><span class="tag tag-demo">Simulation</span></p>
@@ -299,9 +323,10 @@
         <h2 id="projects-title">Projects</h2>
         <p>Open-source code on GitHub. Free to read, use, and adapt under each repo’s license.</p>
       </div>
-      <ul class="rows rows-2">
+      <ul class="rows rows-2 proj-grid">
         <li>
           <a href="https://github.com/iggym/surfacelock" rel="noopener">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/surfacelock" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Python</span>
             <span class="row-title">SurfaceLock</span>
             <span class="row-text">A lockfile for the AI surface of your codebase: the prompts, models, and settings it depends on.</span>
@@ -309,6 +334,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/modelbump" rel="noopener">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/modelbump" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Python</span>
             <span class="row-title">ModelBump</span>
             <span class="row-text">A behavioral diff for model upgrades and deprecations.</span>
@@ -316,6 +342,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/aiboom" rel="noopener">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/aiboom" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Python</span>
             <span class="row-title">AIBoM</span>
             <span class="row-text">Generates an audit-ready AI Bill of Materials from your repo in one command.</span>
@@ -323,6 +350,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/deterministic-agent-supervisor" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Python · Rust</span>
             <span class="row-title">Deterministic Agent Supervisor</span>
             <span class="row-text">Keeps model reasoning separate from a compiled state machine that blocks unauthorized actions.</span>
@@ -330,6 +358,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/factory-gate" rel="noopener">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/factory-gate" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">JavaScript</span>
             <span class="row-title">Factory Gate</span>
             <span class="row-text">Policy checks on an AI agent’s changes before they land on your main branch.</span>
@@ -337,6 +366,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/sliding-window-trim-engine" rel="noopener">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/sliding-window-trim-engine" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Go</span>
             <span class="row-title">Sliding Window Trim Engine</span>
             <span class="row-text">Trims repeated chat history before it’s sent, cutting context size and cost.</span>
@@ -344,6 +374,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/circuit-x" rel="noopener">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/circuit-x" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">HTML</span>
             <span class="row-title">CircuitX</span>
             <span class="row-text">Explores which internal features a code model uses, for interpretability research.</span>
@@ -351,6 +382,7 @@
         </li>
         <li>
           <a href="https://iggym.github.io/utility-belt/">
+            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/utility-belt" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Live site</span>
             <span class="row-title">Utility Belt</span>
             <span class="row-text">Small everyday browser utilities. No AI required.</span>
@@ -426,9 +458,9 @@
       <a href="assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
     </nav>
   </footer>
-  <script defer src="assets/js/prompt-tightener.js"></script>
-  <script defer src="assets/js/theme.js"></script>
-  <script defer src="assets/js/home.js"></script>
+  <script defer src="assets/js/prompt-tightener.js?v=20261006c"></script>
+  <script defer src="assets/js/theme.js?v=20261006c"></script>
+  <script defer src="assets/js/home.js?v=20261006c"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
 </html>
