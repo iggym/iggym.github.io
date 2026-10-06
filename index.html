@@ -107,14 +107,14 @@
           <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
         </li>
         <li class="card">
-          <h4><a href="tools/context-extractor.html">Context Extractor (ContextSlim)</a></h4>
-          <p>Paste a long chat or notes and pick which of nine kinds of information to keep, such as goals, rules, or history. It returns a compact summary you can paste into a new chat.</p>
+          <h4><a href="tools/context-extractor.html">Context Extractor</a></h4>
+          <p>Paste a long chat or notes and it pulls out the goals, rules, decisions, open questions, and key facts into a short summary you can paste into a fresh chat.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <h4><a href="tools/claude_context_engine_premium.html">Claude Context Engine</a></h4>
           <p>Rewrites pasted context into a tighter prompt using a hosted model, with options to strip lockfile noise and move rules to the end. Don’t paste anything private.</p>
-          <p class="tags"><span class="tag tag-server">Sends text to a server</span> <span class="tag tag-saved">Remembers your work</span></p>
+          <p class="tags"><span class="tag tag-server">Sends text to a server</span></p>
         </li>
       </ul>
 
@@ -132,13 +132,13 @@
         </li>
         <li class="card">
           <h4><a href="tools/nanobanana-json-compiler.html">NanoBanana Compiler</a></h4>
-          <p>Choose a few cloud architecture options and it writes a JSON spec you can hand to an image model to draw the diagram.</p>
+          <p>Choose a few cloud architecture options and it writes a prompt, plus a JSON version, for an image model to draw the diagram.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
         </li>
         <li class="card">
           <h4><a href="tools/ai-aggregator.html">Multi-Model Workspace</a></h4>
-          <p>Send one question to an OpenAI model and an Anthropic model side by side. Without keys it runs in a mock mode so you can see how it works. Keys are stored in this browser.</p>
-          <p class="tags"><span class="tag tag-key">Needs your API key</span> <span class="tag tag-saved">Remembers your work</span></p>
+          <p>Ask an OpenAI model and an Anthropic model the same question and compare the answers side by side. Without keys it runs a demo. Keys are only remembered if you choose.</p>
+          <p class="tags"><span class="tag tag-key">Needs your API key</span></p>
         </li>
       </ul>
 
@@ -146,17 +146,17 @@
       <ul class="cards">
         <li class="card">
           <h4><a href="tools/context-window-optimizer.html">Context Window Optimizer</a></h4>
-          <p>Edit a sample prompt and watch how much of an 8K, 32K, or 128K context window it uses.</p>
+          <p>Paste a prompt and see how much of a model’s context window it fills, from 8K up to 1M tokens, with tips if it’s too long.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
         </li>
         <li class="card">
           <h4><a href="tools/deterministic-agent-stateboard.html">Agent Stateboard</a></h4>
-          <p>Run a planner, executor, and checker passing work along a fixed path, with a check before each handoff.</p>
+          <p>Watch a planner, worker, and checker pass work along a fixed path, including what happens when the check fails.</p>
           <p class="tags"><span class="tag tag-demo">Simulation</span></p>
         </li>
         <li class="card">
           <h4><a href="tools/agentic-backpressure-throttle.html">Token Router</a></h4>
-          <p>Watch a shared token budget give urgent requests priority and hold back background jobs when traffic spikes.</p>
+          <p>Watch a shared token budget serve a waiting user first and hold a big background job until there’s room.</p>
           <p class="tags"><span class="tag tag-demo">Simulation</span></p>
         </li>
       </ul>

@@ -1,154 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NanoBanana Compiler // Iggy</title>
-    <style>
-        :root {
-            --bg-color: #0b0b0c;
-            --panel-bg: #121214;
-            --border-color: #1f1f23;
-            --text-main: #f4f4f6;
-            --text-muted: #8a8a93;
-            --accent-blue: #2563eb;
-            --accent-green: #10b981;
-            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            padding: 2rem;
-            line-height: 1.5;
-        }
-
-        header {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
-        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-blue); }
-
-        .breadcrumb { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
-        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
-        .breadcrumb a:hover { color: var(--accent-blue); text-decoration: underline; text-underline-offset: 4px; }
-        .breadcrumb span { color: var(--text-main); }
-
-        .workspace { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-        @media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } }
-
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .panel-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-        }
-
-        .option-group { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
-        label { font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
-        input[type="checkbox"], select { background: #18181b; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 4px; }
-        select { width: 100%; font-family: var(--font-mono); font-size: 0.85rem; }
-
-        .output-box {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: #e4e4e7;
-            height: 400px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NanoBanana Compiler — Iggy Mwangi</title>
+  <meta name="description" content="Pick a few cloud architecture options and get a ready-to-paste prompt and JSON spec for an image model like Nano Banana to draw the diagram.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/tool.css">
 </head>
 <body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="tool-top">
+    <a href="../#tools">← All tools</a>
+    <a class="site" href="../">Iggy Mwangi</a>
+  </header>
 
-    <header>
-        <div>
-            <nav class="breadcrumb">
-                <a href="https://iggym.github.io/">Home</a> / <span>nanobanana-json-compiler</span>
-            </nav>
-            <h1>NanoBanana Prompt Compiler</h1>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">CloudSpec Layout Matrix Builder</p>
+  <main id="main" class="tool-main" tabindex="-1">
+    <div class="tool-intro">
+      <h1>NanoBanana Compiler</h1>
+      <p class="lede">Describe a simple cloud architecture with a few choices, and this page writes a prompt you can give an image model, such as Google’s Nano Banana, to draw the diagram. It also gives a structured JSON version if you prefer to paste that.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+    </div>
+
+    <div class="grid-2">
+      <section class="panel" aria-labelledby="opt-title">
+        <h2 id="opt-title">Your architecture</h2>
+        <div class="field">
+          <label for="tier">Where the app runs</label>
+          <select id="tier">
+            <option value="serverless">Serverless functions at the edge (e.g. Cloudflare Workers, AWS Lambda)</option>
+            <option value="containers">Containers in a private network (e.g. Kubernetes, ECS)</option>
+            <option value="servers">Dedicated servers</option>
+          </select>
         </div>
-        <div class="status">// COMPILER: COLD INITIALIZED</div>
-    </header>
+        <fieldset>
+          <legend>Parts to include</legend>
+          <label class="check"><input type="checkbox" id="l-ingress" checked> <span>Entry point with rate limiting <small>load balancer or API gateway</small></span></label>
+          <label class="check"><input type="checkbox" id="l-cache" checked> <span>Cache <small>e.g. Redis</small></span></label>
+          <label class="check"><input type="checkbox" id="l-db"> <span>Database replicated across regions <small>e.g. PostgreSQL</small></span></label>
+          <label class="check"><input type="checkbox" id="l-queue"> <span>Background job queue</span></label>
+          <label class="check"><input type="checkbox" id="l-llm"> <span>Calls to an AI model API</span></label>
+        </fieldset>
+        <div class="field">
+          <label for="style">Diagram style</label>
+          <select id="style">
+            <option value="clean flat vector diagram with a white background and a limited color palette">Clean and flat</option>
+            <option value="isometric 3D technical illustration with soft shadows">Isometric 3D</option>
+            <option value="hand-drawn whiteboard sketch with marker lines">Whiteboard sketch</option>
+          </select>
+        </div>
+      </section>
 
-    <main class="workspace">
-        <section class="panel">
-            <div class="panel-title">01 // Architectural Topology Controls</div>
-            
-            <div style="margin-top:0.5rem;">
-                <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono)">COMPUTE ENGINE TIER</span>
-                <select id="compute-tier" onchange="compileSpec()">
-                    <option value="Serverless Edge (Cloudflare/AWS)">Serverless Edge Isolation Matrix</option>
-                    <option value="Distributed Micro-VPC Containers">Distributed Micro-VPC Mesh</option>
-                    <option value="Bare-Metal Bare Nodes">High-Performance Bare-Metal Clusters</option>
-                </select>
-            </div>
+      <section class="panel" aria-labelledby="out-title">
+        <div class="row-between">
+          <h2 id="out-title" class="panel-title">Image prompt</h2>
+          <button type="button" class="btn btn-small" id="copy-prompt">Copy prompt</button>
+        </div>
+        <pre class="output" id="prompt-out" tabindex="0" aria-label="Image prompt"></pre>
 
-            <div class="option-group">
-                <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono)">TOPOLOGY ASSETS ENFORCED</span>
-                <label><input type="checkbox" id="layer-ingress" checked onchange="compileSpec()"> Ingress Edge Rate Limiter Router</label>
-                <label><input type="checkbox" id="layer-cache" checked onchange="compileSpec()"> Transient Redis Context Buffer Cache</label>
-                <label><input type="checkbox" id="layer-db" onchange="compileSpec()"> Globally Replicated Relational Storage</label>
-            </div>
-        </section>
+        <div class="row-between" style="margin-top:1rem">
+          <h2 class="panel-title" id="json-title">JSON spec</h2>
+          <button type="button" class="btn btn-quiet btn-small" id="copy-json">Copy JSON</button>
+        </div>
+        <pre class="output" id="json-out" tabindex="0" aria-labelledby="json-title"></pre>
+      </section>
+    </div>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
 
-        <section class="panel">
-            <div class="panel-title">02 // Generated Nano Banana Spec JSON Payload</div>
-            <div id="json-output" class="output-box"></div>
-        </section>
-    </main>
+  <footer class="tool-foot">
+    <p>Everything runs in this browser tab. Nothing is sent anywhere or saved.</p>
+    <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
+  </footer>
 
-    <script>
-        function compileSpec() {
-            const tier = document.getElementById('compute-tier').value;
-            const ingress = document.getElementById('layer-ingress').checked;
-            const cache = document.getElementById('layer-cache').checked;
-            const db = document.getElementById('layer-db').checked;
+  <script src="../assets/js/tool-kit.js"></script>
+  <script>
+    var TIERS = {
+      serverless: { label: "Serverless edge functions", node: "App (serverless functions at the edge)" },
+      containers: { label: "Containers in a private network", node: "App (containers in a private network)" },
+      servers: { label: "Dedicated servers", node: "App (dedicated servers)" }
+    };
+    var promptText = "", jsonText = "";
 
-            const nodes = [];
-            if (ingress) nodes.push({ id: "node_edge_ingress", engine: "Proxy.V1", parameters: ["rate_limit_10k", "tls_1.3"] });
-            nodes.push({ id: "node_compute_core", engine: tier, sizing: "dynamic_scale" });
-            if (cache) nodes.push({ id: "node_context_cache", engine: "Redis.Transient", allocation: "16GB_RAM" });
-            if (db) nodes.push({ id: "node_persistent_ledger", engine: "PostgreSQL.Distributed", replica: "multi_region" });
+    function on(id) { return document.getElementById(id).checked; }
 
-            const payload = {
-                "$schema": "https://nanobanana.pro/schemas/v1/topology.json",
-                "generator_origin": "Iggy-CloudSpec-Generator",
-                "timestamp_epoch": Date.now(),
-                "execution_matrix": {
-                    "architecture_tier": tier,
-                    "topology_mesh": nodes
-                }
-            };
+    function compile() {
+      var tier = TIERS[document.getElementById("tier").value];
+      var style = document.getElementById("style").value;
 
-            document.getElementById('json-output').innerText = JSON.stringify(payload, null, 4);
-        }
+      var nodes = [{ id: "users", label: "Users" }];
+      var edges = [];
+      var prev = "users";
+      if (on("l-ingress")) { nodes.push({ id: "gateway", label: "API gateway with rate limiting" }); edges.push([prev, "gateway", "HTTPS requests"]); prev = "gateway"; }
+      nodes.push({ id: "app", label: tier.node });
+      edges.push([prev, "app", prev === "users" ? "HTTPS requests" : "allowed requests"]);
+      if (on("l-cache")) { nodes.push({ id: "cache", label: "Cache (Redis)" }); edges.push(["app", "cache", "read/write"]); }
+      if (on("l-db")) { nodes.push({ id: "db", label: "Database (PostgreSQL, replicated across regions)" }); edges.push(["app", "db", "queries"]); }
+      if (on("l-queue")) { nodes.push({ id: "queue", label: "Job queue" }); nodes.push({ id: "workers", label: "Background workers" }); edges.push(["app", "queue", "enqueue jobs"]); edges.push(["queue", "workers", "process"]); }
+      if (on("l-llm")) { nodes.push({ id: "llm", label: "AI model API" }); edges.push(["app", "llm", "prompts and responses"]); }
 
-        window.onload = compileSpec;
-    </script>
+      var labelOf = {};
+      nodes.forEach(function (n) { labelOf[n.id] = n.label; });
+
+      promptText =
+        "Draw a software architecture diagram as a " + style + ".\n\n" +
+        "Components (draw each as a labeled box, with the exact label text):\n" +
+        nodes.map(function (n) { return "- " + n.label; }).join("\n") + "\n\n" +
+        "Connections (draw as arrows, labeled):\n" +
+        edges.map(function (e) { return "- " + labelOf[e[0]] + " → " + labelOf[e[1]] + ": " + e[2]; }).join("\n") + "\n\n" +
+        "Lay it out left to right, starting from Users. Keep all text legible and spelled exactly as written. Add no other components, logos, or text.";
+
+      jsonText = JSON.stringify({
+        type: "architecture_diagram",
+        style: style,
+        layout: "left_to_right",
+        hosting: tier.label,
+        components: nodes,
+        connections: edges.map(function (e) { return { from: e[0], to: e[1], label: e[2] }; })
+      }, null, 2);
+
+      document.getElementById("prompt-out").textContent = promptText;
+      document.getElementById("json-out").textContent = jsonText;
+    }
+
+    document.querySelectorAll("select, input").forEach(function (el) { el.addEventListener("change", compile); });
+    document.getElementById("copy-prompt").addEventListener("click", function () { ToolKit.copyText(promptText, this); });
+    document.getElementById("copy-json").addEventListener("click", function () { ToolKit.copyText(jsonText, this); });
+    compile();
+  </script>
 </body>
 </html>

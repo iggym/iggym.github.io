@@ -1,382 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Model Workspace Aggregator</title>
-    <style>
-        :root {
-            --bg-main: #0b0d11;
-            --bg-panel: #13161c;
-            --bg-input: #1e232b;
-            --border: #2c333f;
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --openai-color: #10a37f;
-            --anthropic-color: #d97706;
-            --accent: #3b82f6;
-            --radius: 8px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        header {
-            background-color: var(--bg-panel);
-            border-bottom: 1px solid var(--border);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 10;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-
-        .brand-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        h1 { font-size: 1.1rem; font-weight: 600; }
-        
-        .back-link {
-            font-size: 0.8rem;
-            color: var(--accent);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .back-link:hover {
-            color: #2563eb;
-            text-decoration: underline;
-        }
-        
-        .api-settings {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .key-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 4px 8px;
-        }
-
-        .key-input-wrapper label {
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .key-input-wrapper input {
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-size: 0.85rem;
-            width: 140px;
-            outline: none;
-        }
-
-        .workspace {
-            flex: 1;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1px;
-            background-color: var(--border);
-            overflow: hidden;
-        }
-
-        @media (min-width: 768px) {
-            .workspace {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .model-panel {
-            background-color: var(--bg-panel);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 10px 16px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .panel-title {
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot.openai { background-color: var(--openai-color); }
-        .dot.anthropic { background-color: var(--anthropic-color); }
-
-        .model-select {
-            background: var(--bg-input);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 2px 6px;
-            font-size: 0.8rem;
-            outline: none;
-        }
-
-        .panel-output {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            color: #e5e7eb;
-        }
-
-        .panel-output.loading {
-            opacity: 0.5;
-        }
-
-        .input-console {
-            background-color: var(--bg-panel);
-            border-top: 1px solid var(--border);
-            padding: 16px;
-            display: flex;
-            gap: 12px;
-            align-items: flex-end;
-        }
-
-        .prompt-textarea {
-            flex: 1;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            color: var(--text-main);
-            padding: 12px;
-            font-size: 0.95rem;
-            resize: none;
-            height: 60px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .prompt-textarea:focus {
-            border-color: var(--accent);
-        }
-
-        .submit-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            padding: 0 24px;
-            height: 60px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .submit-btn:hover { background-color: #2563eb; }
-        .submit-btn:disabled { background-color: var(--border); cursor: not-allowed; color: var(--text-muted); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Model Workspace — Iggy Mwangi</title>
+  <meta name="description" content="Ask an OpenAI model and an Anthropic model the same question side by side, using your own API keys. Works in a demo mode without keys.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/tool.css">
+  <style>
+    .answer { min-height: 14rem; max-height: 36rem; font-family: var(--sans); font-size: 1rem; }
+    .answer.loading { color: var(--muted); }
+    #prompt { min-height: 7rem; font-family: var(--sans); font-size: 1rem; }
+  </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="tool-top">
+    <a href="../#tools">← All tools</a>
+    <a class="site" href="../">Iggy Mwangi</a>
+  </header>
 
-    <header>
-        <div class="brand-meta">
-            <h1>Multi-Model Workspace</h1>
-            <a href="https://iggym.github.io/#tools" class="back-link">← Iggy — AI Systems Architect & Builder</a>
-        </div>
-        <div class="api-settings">
-            <div class="key-input-wrapper">
-                <label style="color: var(--openai-color)">OpenAI Key</label>
-                <input type="password" id="openaiKey" placeholder="sk-..." onchange="saveKeys()">
-            </div>
-            <div class="key-input-wrapper">
-                <label style="color: var(--anthropic-color)">Anthropic Key</label>
-                <input type="password" id="anthropicKey" placeholder="sk-ant-..." onchange="saveKeys()">
-            </div>
-        </div>
-    </header>
-
-    <div class="workspace">
-        <div class="model-panel">
-            <div class="panel-header">
-                <div class="panel-title"><span class="dot openai"></span> OpenAI Engine</div>
-                <select id="openaiModel" class="model-select">
-                    <option value="gpt-4o-mini">gpt-4o-mini</option>
-                    <option value="gpt-4o">gpt-4o</option>
-                    <option value="o1-preview">o1-preview</option>
-                </select>
-            </div>
-            <div class="panel-output" id="openaiOutput">Submit a query below. If no API keys are provided, the interface runs in Mock Simulation Mode.</div>
-        </div>
-
-        <div class="model-panel">
-            <div class="panel-header">
-                <div class="panel-title"><span class="dot anthropic"></span> Anthropic Engine</div>
-                <select id="anthropicModel" class="model-select">
-                    <option value="claude-3-5-haiku-latest">claude-3-5-haiku</option>
-                    <option value="claude-3-5-sonnet-latest">claude-3-5-sonnet</option>
-                </select>
-            </div>
-            <div class="panel-output" id="anthropicOutput">Submit a query below. If no API keys are provided, the interface runs in Mock Simulation Mode.</div>
-        </div>
+  <main id="main" class="tool-main" tabindex="-1">
+    <div class="tool-intro">
+      <h1>Multi-Model Workspace</h1>
+      <p class="lede">Ask the same question to an OpenAI model and an Anthropic model and read the answers side by side. Bring your own API keys. Without keys it runs a demo so you can see how it works.</p>
+      <p class="tags"><span class="tag tag-key">Needs your API key</span> <span class="tag tag-saved">Can remember your keys</span></p>
+      <details class="how">
+        <summary>Where your keys and questions go</summary>
+        <ul>
+          <li>Your question goes straight from this browser to OpenAI and Anthropic, and is billed to your own accounts. It never passes through my server.</li>
+          <li>Keys stay in this tab’s memory unless you tick “Remember keys on this device”. Only do that on a computer you trust, and use <strong>Forget keys</strong> to remove them.</li>
+          <li>For safety, use a key with a low spending limit. Anyone with access to this browser profile could read a remembered key.</li>
+        </ul>
+      </details>
     </div>
 
-    <div class="input-console">
-        <textarea id="promptInput" class="prompt-textarea" placeholder="Type your dynamic query here... (Press Cmd/Ctrl + Enter to dispatch)"></textarea>
-        <button id="submitBtn" class="submit-btn" onclick="executeAggregatedQuery()">Dispatch</button>
+    <section class="panel" aria-labelledby="keys-title">
+      <h2 id="keys-title">API keys <span class="hint" style="font-weight:400">(optional)</span></h2>
+      <div class="grid-2">
+        <div class="field">
+          <label for="openai-key">OpenAI key</label>
+          <input type="password" id="openai-key" placeholder="sk-…" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="anthropic-key">Anthropic key</label>
+          <input type="password" id="anthropic-key" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+        </div>
+      </div>
+      <div class="row-between">
+        <label class="check"><input type="checkbox" id="remember"> <span>Remember keys on this device</span></label>
+        <div class="row">
+          <button type="button" class="btn btn-quiet btn-small" id="show-keys" aria-pressed="false">Show keys</button>
+          <button type="button" class="btn btn-quiet btn-small" id="forget">Forget keys</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:1rem" aria-labelledby="ask-title">
+      <h2 id="ask-title"><label for="prompt">Your question</label></h2>
+      <textarea id="prompt" aria-describedby="prompt-hint" placeholder="e.g. Explain what a context window is to a new teammate."></textarea>
+      <div class="row-between" style="margin-top:0.6rem">
+        <span class="hint" id="prompt-hint" style="margin:0">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> (or <kbd>⌘</kbd> + <kbd>Enter</kbd>) to send.</span>
+        <button type="button" class="btn" id="send">Ask both</button>
+      </div>
+    </section>
+
+    <div class="grid-2" style="margin-top:1rem">
+      <section class="panel" aria-labelledby="oa-title">
+        <div class="row-between">
+          <h2 id="oa-title" class="panel-title">OpenAI</h2>
+        </div>
+        <div class="field">
+          <label for="openai-model">Model</label>
+          <input type="text" id="openai-model" list="openai-models" value="gpt-4.1-mini" spellcheck="false" aria-describedby="oa-model-hint">
+          <datalist id="openai-models">
+            <option value="gpt-4.1-mini"></option>
+            <option value="gpt-4.1"></option>
+            <option value="gpt-4o-mini"></option>
+            <option value="gpt-4o"></option>
+          </datalist>
+          <span class="hint" id="oa-model-hint">Type any model name your key can use.</span>
+        </div>
+        <div class="output answer empty" id="openai-out" aria-live="polite" aria-busy="false">The answer will appear here.</div>
+        <div class="row" style="margin-top:0.6rem"><button type="button" class="btn btn-quiet btn-small" data-copy="openai-out">Copy answer</button></div>
+      </section>
+
+      <section class="panel" aria-labelledby="an-title">
+        <div class="row-between">
+          <h2 id="an-title" class="panel-title">Anthropic</h2>
+        </div>
+        <div class="field">
+          <label for="anthropic-model">Model</label>
+          <input type="text" id="anthropic-model" list="anthropic-models" value="claude-opus-5-5" spellcheck="false" aria-describedby="an-model-hint">
+          <datalist id="anthropic-models">
+            <option value="claude-opus-5-5"></option>
+            <option value="claude-sonnet-5-5"></option>
+            <option value="claude-haiku-4-5"></option>
+          </datalist>
+          <span class="hint" id="an-model-hint">Type any model name your key can use.</span>
+        </div>
+        <div class="output answer empty" id="anthropic-out" aria-live="polite" aria-busy="false">The answer will appear here.</div>
+        <div class="row" style="margin-top:0.6rem"><button type="button" class="btn btn-quiet btn-small" data-copy="anthropic-out">Copy answer</button></div>
+      </section>
     </div>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
 
-    <script>
-        document.getElementById('openaiKey').value = localStorage.getItem('key_openai') || '';
-        document.getElementById('anthropicKey').value = localStorage.getItem('key_anthropic') || '';
+  <footer class="tool-foot">
+    <p>Questions go directly from your browser to the providers you have keys for. This site has no server that sees them.</p>
+    <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
+  </footer>
 
-        function saveKeys() {
-            localStorage.setItem('key_openai', document.getElementById('openaiKey').value.trim());
-            localStorage.setItem('key_anthropic', document.getElementById('anthropicKey').value.trim());
+  <script src="../assets/js/tool-kit.js"></script>
+  <script>
+    var els = {
+      oaKey: document.getElementById("openai-key"),
+      anKey: document.getElementById("anthropic-key"),
+      remember: document.getElementById("remember"),
+      prompt: document.getElementById("prompt"),
+      send: document.getElementById("send"),
+      oaModel: document.getElementById("openai-model"),
+      anModel: document.getElementById("anthropic-model"),
+      oaOut: document.getElementById("openai-out"),
+      anOut: document.getElementById("anthropic-out")
+    };
+
+    // Older versions of this page saved keys automatically; keep honoring them but make it visible.
+    var savedOa = "", savedAn = "";
+    try { savedOa = localStorage.getItem("key_openai") || ""; savedAn = localStorage.getItem("key_anthropic") || ""; } catch (e) {}
+    if (savedOa || savedAn) { els.oaKey.value = savedOa; els.anKey.value = savedAn; els.remember.checked = true; }
+
+    function persistKeys() {
+      try {
+        if (els.remember.checked) {
+          localStorage.setItem("key_openai", els.oaKey.value.trim());
+          localStorage.setItem("key_anthropic", els.anKey.value.trim());
+        } else {
+          localStorage.removeItem("key_openai");
+          localStorage.removeItem("key_anthropic");
         }
+      } catch (e) { /* storage blocked: keys stay in memory only */ }
+    }
+    [els.oaKey, els.anKey].forEach(function (el) { el.addEventListener("change", persistKeys); });
+    els.remember.addEventListener("change", function () {
+      persistKeys();
+      ToolKit.announce(els.remember.checked ? "Keys will be remembered on this device." : "Keys removed from this device. They stay until you close the tab.");
+    });
+    document.getElementById("forget").addEventListener("click", function () {
+      els.oaKey.value = ""; els.anKey.value = ""; els.remember.checked = false; persistKeys();
+      ToolKit.announce("Keys forgotten.");
+    });
+    document.getElementById("show-keys").addEventListener("click", function () {
+      var show = this.getAttribute("aria-pressed") !== "true";
+      this.setAttribute("aria-pressed", String(show));
+      this.textContent = show ? "Hide keys" : "Show keys";
+      els.oaKey.type = els.anKey.type = show ? "text" : "password";
+    });
 
-        document.getElementById('promptInput').addEventListener('keydown', function(e) {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-                e.preventDefault();
-                executeAggregatedQuery();
-            }
+    function setOut(el, text, state) {
+      el.textContent = text;
+      el.className = "output answer" + (state === "loading" ? " loading" : "") + (state === "empty" ? " empty" : "");
+      el.setAttribute("aria-busy", state === "loading" ? "true" : "false");
+    }
+
+    function describeHttpError(provider, status, message) {
+      var hint = "";
+      if (status === 401 || status === 403) hint = "Check that the " + provider + " key is correct and active.";
+      else if (status === 404) hint = "That model name isn't available to your key. Try another one.";
+      else if (status === 429) hint = "You've hit a rate or spending limit. Wait a minute or check your account's billing.";
+      else if (status >= 500) hint = provider + " is having trouble right now. Try again shortly.";
+      return provider + " returned an error" + (status ? " (" + status + ")" : "") + ".\n\n" + (message || "") + (hint ? "\n\n" + hint : "");
+    }
+
+    async function askOpenAI(prompt, key) {
+      if (!key) { setOut(els.oaOut, "Skipped: no OpenAI key.", "empty"); return; }
+      setOut(els.oaOut, "Waiting for OpenAI…", "loading");
+      try {
+        var res = await fetch("https://api.openai.com/v1/chat/completions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
+          body: JSON.stringify({ model: els.oaModel.value.trim(), messages: [{ role: "user", content: prompt }] })
         });
+        var data = await res.json().catch(function () { return {}; });
+        if (!res.ok || data.error) { setOut(els.oaOut, describeHttpError("OpenAI", res.status, data.error && data.error.message)); return; }
+        var text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+        setOut(els.oaOut, text || "OpenAI sent back an empty answer.");
+      } catch (err) {
+        setOut(els.oaOut, "Couldn't reach OpenAI. Check your connection and try again.\n\n(" + err.message + ")");
+      }
+    }
 
-        async function executeAggregatedQuery() {
-            const prompt = document.getElementById('promptInput').value.trim();
-            if (!prompt) return;
+    async function askAnthropic(prompt, key) {
+      if (!key) { setOut(els.anOut, "Skipped: no Anthropic key.", "empty"); return; }
+      setOut(els.anOut, "Waiting for Anthropic…", "loading");
+      try {
+        var res = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": key,
+            "anthropic-version": "2023-06-01",
+            "anthropic-dangerous-direct-browser-access": "true"
+          },
+          body: JSON.stringify({
+            model: els.anModel.value.trim(),
+            max_tokens: 16000,
+            messages: [{ role: "user", content: prompt }]
+          })
+        });
+        var data = await res.json().catch(function () { return {}; });
+        if (!res.ok || data.type === "error") { setOut(els.anOut, describeHttpError("Anthropic", res.status, data.error && data.error.message)); return; }
+        if (data.stop_reason === "refusal") { setOut(els.anOut, "The model declined to answer this question."); return; }
+        // Responses can include thinking blocks; only show the text blocks.
+        var text = (data.content || []).filter(function (b) { return b.type === "text"; }).map(function (b) { return b.text; }).join("\n\n");
+        if (data.stop_reason === "max_tokens") text += "\n\n[The answer was cut off because it reached the length limit.]";
+        setOut(els.anOut, text || "Anthropic sent back an empty answer.");
+      } catch (err) {
+        setOut(els.anOut, "Couldn't reach Anthropic. Check your connection and try again.\n\n(" + err.message + ")");
+      }
+    }
 
-            const oaiKey = document.getElementById('openaiKey').value.trim();
-            const antKey = document.getElementById('anthropicKey').value.trim();
+    async function send() {
+      var prompt = els.prompt.value.trim();
+      if (!prompt) { els.prompt.focus(); ToolKit.announce("Type a question first."); return; }
+      var oa = els.oaKey.value.trim(), an = els.anKey.value.trim();
+      els.send.disabled = true;
+      ToolKit.announce("Sending…");
 
-            const oaiOutput = document.getElementById('openaiOutput');
-            const antOutput = document.getElementById('anthropicOutput');
-            const submitBtn = document.getElementById('submitBtn');
+      if (!oa && !an) {
+        setOut(els.oaOut, "Thinking…", "loading");
+        setOut(els.anOut, "Thinking…", "loading");
+        await new Promise(function (r) { setTimeout(r, 600); });
+        var demo = "Demo mode: no API key was entered, so no model was called.\n\nYour question was:\n“" + prompt + "”\n\nAdd a key above to get a real answer.";
+        setOut(els.oaOut, demo);
+        setOut(els.anOut, demo);
+      } else {
+        await Promise.all([askOpenAI(prompt, oa), askAnthropic(prompt, an)]);
+      }
+      els.send.disabled = false;
+      ToolKit.announce("Answers ready.");
+    }
 
-            oaiOutput.innerHTML = "Awaiting response pipeline...";
-            antOutput.innerHTML = "Awaiting response pipeline...";
-            oaiOutput.classList.add('loading');
-            antOutput.classList.add('loading');
-            submitBtn.disabled = true;
-
-            if (!oaiKey && !antKey) {
-                setTimeout(() => {
-                    oaiOutput.innerHTML = `[MOCK SIMULATION MODE - OpenAI]\n\nReceived prompt: "${prompt}"\n\nTo view real API outputs, insert your valid platform API secret keys into the top dashboard settings bar.`;
-                    antOutput.innerHTML = `[MOCK SIMULATION MODE - Anthropic]\n\nReceived prompt: "${prompt}"\n\nTo view real API outputs, insert your valid platform API secret keys into the top dashboard settings bar.`;
-                    oaiOutput.classList.remove('loading');
-                    antOutput.classList.remove('loading');
-                    submitBtn.disabled = false;
-                }, 1000);
-                return;
-            }
-
-            await Promise.all([
-                callOpenAI(prompt, oaiKey, oaiOutput),
-                callAnthropic(prompt, antKey, antOutput)
-            ]);
-
-            submitBtn.disabled = false;
-        }
-
-        async function callOpenAI(prompt, key, outputElement) {
-            if (!key) {
-                outputElement.innerHTML = "Skipped. No OpenAI key found.";
-                outputElement.classList.remove('loading');
-                return;
-            }
-            const model = document.getElementById('openaiModel').value;
-
-            try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${key}`
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        messages: [{ role: 'user', content: prompt }]
-                    })
-                });
-
-                const data = await response.json();
-                if (data.error) {
-                    outputElement.textContent = `API Error: ${data.error.message}`;
-                } else {
-                    outputElement.textContent = data.choices[0].message.content;
-                }
-            } catch (err) {
-                outputElement.textContent = `Network Exception Connection Failed: ${err.message}`;
-            } finally {
-                outputElement.classList.remove('loading');
-            }
-        }
-
-        async function callAnthropic(prompt, key, outputElement) {
-            if (!key) {
-                outputElement.innerHTML = "Skipped. No Anthropic key found.";
-                outputElement.classList.remove('loading');
-                return;
-            }
-            const model = document.getElementById('anthropicModel').value;
-
-            try {
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-api-key': key,
-                        'anthropic-version': '2023-06-01',
-                        'anthropic-dangerously-allow-browser': 'true'
-                    },
-                    body: JSON.stringify({
-                        model: model,
-                        max_tokens: 4096,
-                        messages: [{ role: 'user', content: prompt }]
-                    })
-                });
-
-                const data = await response.json();
-                if (data.error) {
-                    outputElement.textContent = `API Error: ${data.error.message}`;
-                } else {
-                    outputElement.textContent = data.content[0].text;
-                }
-            } catch (err) {
-                outputElement.textContent = `Network Exception Connection Failed: ${err.message}\n\nNote: If CORS blocking errors occur locally, launch your file using a local web server tool or a browser with disabled local CORS checks.`;
-            } finally {
-                outputElement.classList.remove('loading');
-            }
-        }
-    </script>
+    els.send.addEventListener("click", send);
+    els.prompt.addEventListener("keydown", function (e) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); send(); }
+    });
+    document.querySelectorAll("[data-copy]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var el = document.getElementById(btn.dataset.copy);
+        ToolKit.copyText(el.classList.contains("empty") ? "" : el.textContent, btn);
+      });
+    });
+  </script>
 </body>
 </html>

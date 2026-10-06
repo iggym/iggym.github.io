@@ -1,264 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prompt Matrix Evaluator // Iggy</title>
-    <meta name="description" content="Paste a prompt. This page strips common filler and shows the estimated token change. It does not score constraints.">
-    <style>
-        :root {
-            --bg-color: #0b0b0c;
-            --panel-bg: #121214;
-            --border-color: #1f1f23;
-            --text-main: #f4f4f6;
-            --text-muted: #8a8a93;
-            --accent-blue: #2563eb;
-            --accent-green: #10b981;
-            --font-mono: 'SF Mono', 'Menlo', 'Courier New', monospace;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            padding: 2rem;
-            line-height: 1.5;
-        }
-
-        header {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 1rem;
-        }
-
-        header h1 { font-size: 1.25rem; font-weight: 500; letter-spacing: -0.02em; margin-top: 0.25rem; }
-        header .status { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-green); white-space: nowrap; }
-
-        .breadcrumb { font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
-        .breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s ease; }
-        .breadcrumb a:hover { color: var(--accent-blue); text-decoration: underline; text-underline-offset: 4px; }
-        .breadcrumb span { color: var(--text-main); }
-
-        .note { font-size: 0.85rem; color: var(--text-muted); max-width: 42rem; }
-
-        .workspace { display: flex; flex-direction: column; gap: 2rem; }
-
-        .panel {
-            background: var(--panel-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-        }
-
-        .panel-title {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-muted);
-            font-family: var(--font-mono);
-            margin-bottom: 1rem;
-        }
-
-        textarea {
-            width: 100%; background: #18181b; border: 1px solid var(--border-color);
-            color: var(--text-main); border-radius: 4px; padding: 0.75rem;
-            font-family: var(--font-mono); font-size: 0.85rem; height: 100px; resize: vertical; outline: none;
-        }
-        textarea:focus { border-color: var(--accent-blue); }
-
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-        @media (max-width: 768px) {
-            body { padding: 1rem; }
-            header { flex-direction: column; align-items: flex-start; }
-            .matrix-grid { grid-template-columns: 1fr; }
-        }
-
-        .matrix-card {
-            background: #18181b;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .card-header {
-            display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;
-            border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;
-        }
-        .card-tag { font-family: var(--font-mono); font-size: 0.75rem; font-weight: bold; }
-        .card-meta { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted); text-align: right; }
-
-        .compiled-text { font-size: 0.85rem; white-space: pre-wrap; color: #d4d4d8; min-height: 120px; }
-
-        .copy-btn {
-            align-self: flex-start;
-            background: transparent;
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 0.35rem 0.6rem;
-            cursor: pointer;
-        }
-        .copy-btn:hover { border-color: var(--accent-blue); color: var(--accent-blue); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prompt Matrix Evaluator — Iggy Mwangi</title>
+  <meta name="description" content="Paste a prompt. This page removes common filler phrases and shows the estimated token count before and after. Runs entirely in your browser.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/tool.css">
+  <style>
+    mark.cut { background: var(--bad-bg); color: var(--bad); text-decoration: line-through; border-radius: 3px; padding: 0 1px; }
+    .removed-list { margin: 0.4rem 0 0; padding-left: 1.2rem; color: var(--muted); }
+  </style>
 </head>
 <body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="tool-top">
+    <a href="../#tools">← All tools</a>
+    <a class="site" href="../">Iggy Mwangi</a>
+  </header>
 
-    <header>
-        <div>
-            <nav class="breadcrumb">
-                <a href="https://iggym.github.io/">Home</a> / <span>prompt-matrix-evaluator</span>
-            </nav>
-            <h1>Prompt Matrix Evaluator</h1>
-            <p class="note">Paste a prompt. This page strips common filler and shows the estimated token change. It does not call a model and it does not score constraints.</p>
+  <main id="main" class="tool-main" tabindex="-1">
+    <div class="tool-intro">
+      <h1>Prompt Matrix Evaluator</h1>
+      <p class="lede">Paste a prompt and this page removes common filler, like “could you please” or “make sure to”, then shows the estimated token count before and after. It doesn’t call an AI model or judge whether your prompt is good.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+      <details class="how">
+        <summary>How to use it</summary>
+        <ol>
+          <li>Type or paste your prompt in the box.</li>
+          <li>Check the highlighted phrases in “What was removed”. Only filler is cut, never your actual request.</li>
+          <li>Copy the tightened version and use it wherever you were going to send the original.</li>
+        </ol>
+      </details>
+    </div>
+
+    <section class="panel" aria-labelledby="in-title">
+      <h2 id="in-title"><label for="raw-prompt">Your prompt</label></h2>
+      <textarea id="raw-prompt" rows="6" aria-describedby="raw-hint">Could you please explain how a queue retries a failed job? Make sure to say what happens if the worker crashes, and it is important that you keep it short.</textarea>
+      <p id="raw-hint" class="hint" style="margin-top:0.4rem">Token counts are estimates (about four characters per token). Real counts vary by model.</p>
+    </section>
+
+    <div class="grid-2" style="margin-top:1rem">
+      <section class="panel" aria-labelledby="orig-title">
+        <div class="row-between">
+          <h2 id="orig-title" class="panel-title">What was removed</h2>
+          <span class="meta" id="meta-original">--</span>
         </div>
-        <div class="status">// LOCAL · NO MODEL</div>
-    </header>
+        <div class="output" id="out-original"></div>
+        <ul class="removed-list" id="removed-list"></ul>
+      </section>
 
-    <main class="workspace">
-        <section class="panel">
-            <div class="panel-title">Prompt</div>
-            <textarea id="raw-prompt" oninput="processMatrix()">Please explain how a queue retries a failed job, and make sure to say what happens if things crash.</textarea>
+      <section class="panel" aria-labelledby="tight-title">
+        <div class="row-between">
+          <h2 id="tight-title" class="panel-title">Tightened prompt</h2>
+          <span class="meta" id="meta-tight">--</span>
+        </div>
+        <div class="output" id="out-tight"></div>
+        <div class="row" style="margin-top:0.75rem">
+          <button class="btn" type="button" id="copy-tight">Copy tightened prompt</button>
+        </div>
+      </section>
+    </div>
+    <p id="summary" class="sr-only" aria-live="polite"></p>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
 
-            <div class="matrix-grid">
-                <div class="matrix-card">
-                    <div class="card-header">
-                        <span class="card-tag" style="color: var(--accent-blue)">01 // AS TYPED</span>
-                        <span class="card-meta" id="meta-original">Estimate: --</span>
-                    </div>
-                    <div class="compiled-text" id="out-original"></div>
-                    <button class="copy-btn" type="button" id="copy-original">Copy</button>
-                </div>
+  <footer class="tool-foot">
+    <p>Your text never leaves this browser tab and isn’t saved.</p>
+    <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
+  </footer>
 
-                <div class="matrix-card">
-                    <div class="card-header">
-                        <span class="card-tag" style="color: var(--accent-green)">02 // TIGHTENED</span>
-                        <span class="card-meta" id="meta-tight">Estimate: --</span>
-                    </div>
-                    <div class="compiled-text" id="out-tight"></div>
-                    <button class="copy-btn" type="button" id="copy-tight">Copy</button>
-                </div>
-            </div>
-        </section>
-    </main>
+  <script src="../assets/js/tool-kit.js"></script>
+  <script>
+    // Phrases that add words without changing what is being asked.
+    // Each entry: [pattern, replacement]. Replacements keep the meaning intact.
+    var FILLER = [
+      [/(?<=^|[.!?] )(?:could|can|would|will) you (?:please |kindly )?(?=\w)/gim, ""],
+      [/\bi (?:would like|want|need) you to\s+/gi, ""],
+      [/\bi(?:'d| would) like (?:for )?you to\s+/gi, ""],
+      [/\b(?:please )?make sure (?:to|that you)\s+/gi, ""],
+      [/\b(?:please )?be sure to\s+/gi, ""],
+      [/\b(?:don'?t|do not) forget to\s+/gi, ""],
+      [/\bfeel free to\s+/gi, ""],
+      [/\bgo ahead and\s+/gi, ""],
+      [/\bit(?:'s| is) (?:very |really )?important (?:that you|to)\s+/gi, ""],
+      [/\bit(?:'s| is) (?:very |really )?important that\s+/gi, ""],
+      [/\bin a (?:detailed|thorough) manner\b/gi, "in detail"],
+      [/\bcompletely detailed\b/gi, "detailed"],
+      [/\b(?:basically|essentially),?\s+(?=\w)/gi, ""],
+      [/\bif possible,?\s*/gi, ""],
+      [/\bthank you(?: so much| in advance)?[.!]?\s*/gi, ""],
+      [/\bthanks(?: in advance)?[.!]?\s*/gi, ""],
+      [/\bplease,?\s+/gi, ""],
+      [/\bkindly\s+/gi, ""]
+    ];
 
-    <script>
-        var FILLER = [
-            /provide a completely detailed/gi,
-            /provide a detailed/gi,
-            /make sure to/gi,
-            /make sure that/gi,
-            /be sure to/gi,
-            /be sure that/gi,
-            /if things crash/gi,
-            /i would like you to/gi,
-            /i want you to/gi,
-            /i need you to/gi,
-            /could you please/gi,
-            /can you please/gi,
-            /would you please/gi,
-            /don'?t forget to/gi,
-            /do not forget to/gi,
-            /feel free to/gi,
-            /go ahead and/gi,
-            /it is important that/gi,
-            /it is important to/gi,
-            /it'?s important that/gi,
-            /it'?s important to/gi,
-            /as much as possible/gi,
-            /in a detailed manner/gi,
-            /\bplease\b/gi,
-            /\bkindly\b/gi
-        ];
+    function escapeHtml(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
 
-        function estimateTokens(text) {
-            return Math.ceil(text.length / 4);
+    // Find every filler match in the original, without overlaps, in order.
+    function findCuts(raw) {
+      var cuts = [];
+      FILLER.forEach(function (pair) {
+        var re = new RegExp(pair[0].source, pair[0].flags);
+        var m;
+        while ((m = re.exec(raw)) !== null) {
+          if (!m[0]) { re.lastIndex++; continue; }
+          cuts.push({ start: m.index, end: m.index + m[0].length, text: m[0], replace: pair[1] });
         }
+      });
+      cuts.sort(function (a, b) { return a.start - b.start || b.end - a.end; });
+      var kept = [], lastEnd = -1;
+      cuts.forEach(function (c) { if (c.start >= lastEnd) { kept.push(c); lastEnd = c.end; } });
+      return kept;
+    }
 
-        function tighten(raw) {
-            var text = raw;
-            for (var i = 0; i < FILLER.length; i++) {
-                text = text.replace(FILLER[i], " ");
-            }
-            text = text.replace(/[ \t]{2,}/g, " ");
-            text = text.replace(/[ \t]*\n[ \t]*/g, "\n");
-            text = text.replace(/\n{3,}/g, "\n\n");
-            text = text.replace(/\s+([,.;:!?])/g, "$1");
-            text = text.replace(/^[ \t]+/gm, "");
-            text = text.replace(/\s+,/g, ",");
-            text = text.replace(/,\s*,/g, ",");
-            text = text.trim();
-            if (text) text = text.charAt(0).toUpperCase() + text.slice(1);
-            return text;
+    function tidy(text) {
+      return text
+        .replace(/[ \t]{2,}/g, " ")
+        .replace(/[ \t]*\n[ \t]*/g, "\n")
+        .replace(/\n{3,}/g, "\n\n")
+        .replace(/\s+([,.;:!?])/g, "$1")
+        .replace(/,\s*([.!?])/g, "$1")
+        .trim();
+    }
+
+    function formatDelta(before, after) {
+      var d = before - after;
+      if (d === 0) return "no change";
+      var pct = before ? Math.round((d / before) * 100) : 0;
+      return d > 0 ? "about " + d + " fewer (" + pct + "%)" : "about " + Math.abs(d) + " more";
+    }
+
+    var input = document.getElementById("raw-prompt");
+    var outOriginal = document.getElementById("out-original");
+    var outTight = document.getElementById("out-tight");
+    var removedList = document.getElementById("removed-list");
+    var tightText = "";
+    var announceTimer;
+
+    function render() {
+      var raw = input.value;
+      var cuts = findCuts(raw);
+
+      var html = "", pos = 0, tight = "";
+      var capNext = false;
+      function addKept(segment) {
+        if (capNext && /\S/.test(segment)) {
+          segment = segment.replace(/^(\s*)([a-z])/, function (_, sp, ch) { return sp + ch.toUpperCase(); });
+          capNext = false;
         }
+        tight += segment;
+      }
+      cuts.forEach(function (c) {
+        var keptBefore = raw.slice(pos, c.start);
+        html += escapeHtml(keptBefore) + '<mark class="cut">' + escapeHtml(c.text) + "</mark>";
+        addKept(keptBefore);
+        // A cut at the start of a sentence leaves the next word lowercase; fix that.
+        var atSentenceStart = /(^|[.!?]\s*|\n\s*)$/.test(tight);
+        tight += c.replace;
+        capNext = atSentenceStart && !c.replace;
+        pos = c.end;
+      });
+      html += escapeHtml(raw.slice(pos));
+      addKept(raw.slice(pos));
+      tightText = tidy(tight);
 
-        function formatDelta(before, after) {
-            var delta = before - after;
-            if (delta === 0) return "no estimated change";
-            if (delta > 0) return "about " + delta + " fewer";
-            return "about " + Math.abs(delta) + " more";
-        }
+      var before = ToolKit.estimateTokens(raw);
+      var after = ToolKit.estimateTokens(tightText);
 
-        function processMatrix() {
-            var raw = document.getElementById("raw-prompt").value;
-            var tight = tighten(raw);
-            var before = estimateTokens(raw);
-            var after = estimateTokens(tight);
+      if (!raw.trim()) {
+        outOriginal.className = "output empty";
+        outOriginal.textContent = "Paste a prompt above to see what can be trimmed.";
+      } else {
+        outOriginal.className = "output";
+        outOriginal.innerHTML = html;
+      }
+      outTight.className = tightText ? "output" : "output empty";
+      outTight.textContent = tightText || "Nothing to show yet.";
 
-            document.getElementById("out-original").innerText = raw;
-            document.getElementById("out-tight").innerText = tight || "(nothing left after stripping filler)";
-            document.getElementById("meta-original").innerText = "Estimate: " + before + " tokens";
-            document.getElementById("meta-tight").innerText = "Estimate: " + after + " tokens · " + formatDelta(before, after);
-        }
+      removedList.innerHTML = "";
+      if (raw.trim() && cuts.length === 0) {
+        var li = document.createElement("li");
+        li.textContent = "No common filler found. Your prompt is already tight.";
+        removedList.appendChild(li);
+      }
+      var seen = {};
+      cuts.forEach(function (c) {
+        var key = c.text.trim().toLowerCase();
+        if (seen[key]) return;
+        seen[key] = true;
+        var li = document.createElement("li");
+        li.textContent = "“" + c.text.trim() + "”" + (c.replace ? " → “" + c.replace + "”" : " removed");
+        removedList.appendChild(li);
+      });
 
-        function copyText(id, button) {
-            var text = document.getElementById(id).innerText;
-            var done = function () {
-                var previous = button.textContent;
-                button.textContent = "Copied";
-                setTimeout(function () { button.textContent = previous; }, 1200);
-            };
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(done).catch(function () {
-                    fallbackCopy(text, done);
-                });
-            } else {
-                fallbackCopy(text, done);
-            }
-        }
+      document.getElementById("meta-original").textContent = "~" + before + " tokens";
+      document.getElementById("meta-tight").textContent = "~" + after + " tokens · " + formatDelta(before, after);
 
-        function fallbackCopy(text, done) {
-            var area = document.createElement("textarea");
-            area.value = text;
-            document.body.appendChild(area);
-            area.select();
-            try { document.execCommand("copy"); } catch (err) {}
-            document.body.removeChild(area);
-            done();
-        }
+      clearTimeout(announceTimer);
+      announceTimer = setTimeout(function () {
+        document.getElementById("summary").textContent =
+          cuts.length + " filler phrase" + (cuts.length === 1 ? "" : "s") + " removed. Estimated " + formatDelta(before, after) + " tokens.";
+      }, 800);
+    }
 
-        document.getElementById("copy-original").addEventListener("click", function () {
-            copyText("out-original", this);
-        });
-        document.getElementById("copy-tight").addEventListener("click", function () {
-            copyText("out-tight", this);
-        });
-
-        window.onload = processMatrix;
-    </script>
+    input.addEventListener("input", render);
+    document.getElementById("copy-tight").addEventListener("click", function () {
+      ToolKit.copyText(tightText, this);
+    });
+    render();
+  </script>
 </body>
 </html>

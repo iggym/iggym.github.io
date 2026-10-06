@@ -1,457 +1,325 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ContextSlim // Nine-Category Modular Context Extractor</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-        }
-        .cyber-glow {
-            animation: pulse-glow 4s infinite ease-in-out;
-        }
-        /* Custom scrollbar for data-dense look */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0b0f19;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #06b6d4;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Extractor — Iggy Mwangi</title>
+  <meta name="description" content="Paste a long chat or notes and get a short, organized summary of the goals, rules, decisions, open questions, and facts in it. Runs entirely in your browser.">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="../assets/css/tool.css">
+  <style>
+    .layout { display: grid; grid-template-columns: 20rem minmax(0, 1fr); gap: 1rem; align-items: start; }
+    @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
+    #raw { min-height: 16rem; }
+    #result { min-height: 16rem; }
+    .cat-count { color: var(--muted); font-family: var(--mono); font-size: 0.85rem; margin-left: auto; }
+    .check.cat { align-items: center; }
+  </style>
 </head>
-<body class="bg-[#030712] text-slate-100 min-h-screen font-mono flex flex-col justify-between relative overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header class="tool-top">
+    <a href="../#tools">← All tools</a>
+    <a class="site" href="../">Iggy Mwangi</a>
+  </header>
 
-    <div class="absolute inset-0 bg-[linear-gradient(to_right,#1f293710_1px,transparent_1px),linear-gradient(to_bottom,#1f293710_1px,transparent_1px)] bg-[size:4rem_4rem] pointer-events-none"></div>
-    <div class="absolute top-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl cyber-glow pointer-events-none"></div>
-    <div class="absolute bottom-10 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl cyber-glow pointer-events-none"></div>
+  <main id="main" class="tool-main" tabindex="-1">
+    <div class="tool-intro">
+      <h1>Context Extractor</h1>
+      <p class="lede">Paste a long AI chat, meeting notes, or a project thread. This page pulls out the goals, rules, decisions, open questions, and key facts, and arranges them into a short summary you can paste into a fresh chat so you don’t have to start over.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
+      <details class="how">
+        <summary>How it works</summary>
+        <ul>
+          <li>Your text is split into sentences and lines, and each one is sorted by the words it uses. For example, “must”, “never”, and “only” point to a rule, and a line ending in “?” is an open question.</li>
+          <li>Repeats, greetings, and chit-chat like “thanks” or “sounds good” are dropped.</li>
+          <li>If the result is over your size limit, the least important sections are trimmed first. Within a section, the oldest items go first, because later messages usually replace earlier ones.</li>
+          <li>It’s a keyword sort, not an AI summary. Read the result before you rely on it.</li>
+        </ul>
+      </details>
+    </div>
 
-    <header class="border-b border-slate-800/80 bg-[#070a13]/80 backdrop-blur-md sticky top-0 z-50 px-6 py-4 shadow-xl">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.4)] animate-pulse">
-                    <i class="fa-solid from-cyan-500 to-indigo-600 fa-microchip text-black text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="text-xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">CONTEXTSLIM</h1>
-                    <p class="text-xs text-slate-400 tracking-tight">9-Category Architecture Local Extractor</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4 text-xs">
-                <div class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-md flex items-center gap-2">
-                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span class="text-slate-400">ENGINE STATE:</span>
-                    <span class="text-emerald-400 font-bold">100% LOCAL</span>
-                </div>
-                <a href="https://iggym.github.io/#tools" class="group flex items-center gap-1.5 bg-gradient-to-r from-slate-900 to-slate-800 border border-slate-700/60 hover:border-cyan-500/50 px-4 py-1.5 rounded-md text-slate-300 hover:text-cyan-400 transition-all duration-300">
-                    <i class="fa-solid fa-arrow-left text-[10px] group-hover:-translate-x-0.5 transition-transform"></i> 
-                    <span>Back to Architect Hub</span>
-                </a>
-            </div>
-        </div>
-    </header>
+    <div class="layout">
+      <div class="stack">
+        <section class="panel" aria-labelledby="keep-title">
+          <h2 id="keep-title">What to keep</h2>
+          <div id="categories"></div>
+          <div class="row" style="margin-top:0.4rem">
+            <button type="button" class="btn btn-quiet btn-small" id="all-on">Select all</button>
+            <button type="button" class="btn btn-quiet btn-small" id="all-off">Clear all</button>
+          </div>
+        </section>
 
-    <main class="max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow relative z-10">
-        
-        <div class="lg:col-span-4 flex flex-col gap-6">
-            
-            <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-sm group hover:border-slate-700 transition-colors duration-300">
-                <div class="absolute top-0 left-0 h-[2px] w-12 bg-cyan-500"></div>
-                <h2 class="text-xs font-bold uppercase tracking-widest text-cyan-400 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-[11px]"></i> Modular Filter Matrix
-                </h2>
-                
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed">Toggle active structural modules to distill from your raw text cache:</p>
-                
-                <div class="space-y-2.5" id="categoryMatrix">
-                    </div>
+        <section class="panel" aria-labelledby="opt-title">
+          <h2 id="opt-title">Options</h2>
+          <div class="field">
+            <label for="budget">Size limit: <span id="budget-label"></span></label>
+            <input type="range" id="budget" min="100" max="4000" step="100" value="800" aria-describedby="budget-hint">
+            <span class="hint" id="budget-hint">Roughly how long the result can be, in tokens (about ¾ of a word each).</span>
+          </div>
+          <label class="check"><input type="checkbox" id="opt-chat" checked> <span>Drop greetings and chit-chat</span></label>
+          <label class="check"><input type="checkbox" id="opt-speakers" checked> <span>Remove speaker labels <small>such as “User:” or “Assistant:”</small></span></label>
+          <fieldset style="margin-top:0.5rem">
+            <legend>Format</legend>
+            <label class="check"><input type="radio" name="format" value="md" checked> <span>Headings and bullet points</span></label>
+            <label class="check"><input type="radio" name="format" value="json"> <span>JSON</span></label>
+          </fieldset>
+          <label class="check"><input type="checkbox" id="opt-remember"> <span>Remember my pasted text on this device <small>Off by default. Settings are always remembered.</small></span></label>
+        </section>
+      </div>
 
-                <div class="mt-4 pt-4 border-t border-slate-800 flex justify-between">
-                    <button onclick="toggleAllCategories(true)" class="text-[10px] uppercase tracking-wider text-slate-400 hover:text-cyan-400 transition-colors">Select All</button>
-                    <button onclick="toggleAllCategories(false)" class="text-[10px] uppercase tracking-wider text-slate-400 hover:text-rose-400 transition-colors">Clear All</button>
-                </div>
-            </div>
+      <div class="stack">
+        <section class="panel" aria-labelledby="raw-title">
+          <div class="row-between">
+            <h2 id="raw-title" class="panel-title"><label for="raw">Paste your text</label></h2>
+            <button type="button" class="btn btn-quiet btn-small" id="clear">Clear</button>
+          </div>
+          <textarea id="raw" placeholder="Paste a chat transcript, notes, or a long thread here…"></textarea>
+          <p class="row" style="margin:0.5rem 0 0"><button type="button" class="btn btn-quiet btn-small" id="sample">Try a sample</button></p>
+        </section>
 
-            <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-sm group hover:border-slate-700 transition-colors duration-300">
-                <div class="absolute top-0 left-0 h-[2px] w-12 bg-indigo-500"></div>
-                <h2 class="text-xs font-bold uppercase tracking-widest text-indigo-400 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-bolt text-[11px]"></i> Heuristic Aggression
-                </h2>
+        <section class="panel" aria-labelledby="out-title">
+          <div class="row-between">
+            <h2 id="out-title" class="panel-title">Summary to carry forward</h2>
+            <button type="button" class="btn btn-small" id="copy">Copy summary</button>
+          </div>
+          <dl class="stat-row" aria-label="Size comparison">
+            <div class="stat"><dt>Original</dt><dd id="s-raw">0</dd></div>
+            <div class="stat"><dt>Summary</dt><dd id="s-out">0</dd></div>
+            <div class="stat"><dt>Items kept</dt><dd id="s-kept">0</dd></div>
+          </dl>
+          <p id="trim-note" class="notice" hidden></p>
+          <pre class="output" id="result" tabindex="0" aria-label="Summary"></pre>
+        </section>
+      </div>
+    </div>
+    <p id="summary-live" class="sr-only" aria-live="polite"></p>
+    <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
 
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-2 flex justify-between">
-                            <span>Token Chunk Target:</span>
-                            <span id="tokenLabel" class="text-cyan-400 font-bold">250 tokens</span>
-                        </label>
-                        <input type="range" id="tokenSlider" min="50" max="1000" step="50" value="250" class="w-full accent-cyan-500 bg-slate-900 rounded-lg cursor-pointer h-1.5">
-                    </div>
+  <footer class="tool-foot">
+    <p>Everything runs in this browser tab. Nothing you paste is sent anywhere. Settings are saved in this browser, and your text is saved only if you turn that on.</p>
+    <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
+  </footer>
 
-                    <div class="space-y-2 border-t border-slate-800/60 pt-3">
-                        <label class="flex items-center gap-2.5 cursor-pointer text-xs text-slate-300 hover:text-white transition-colors py-1">
-                            <input type="checkbox" id="stripBoilerplate" checked class="rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
-                            <span>Prune Conversational Filler</span>
-                        </label>
-                        <label class="flex items-center gap-2.5 cursor-pointer text-xs text-slate-300 hover:text-white transition-colors py-1">
-                            <input type="checkbox" id="minifyStructures" checked class="rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
-                            <span>Compress Tables & Key-Values</span>
-                        </label>
-                        <label class="flex items-center gap-2.5 cursor-pointer text-xs text-slate-300 hover:text-white transition-colors py-1">
-                            <input type="checkbox" id="outputMinifiedJson" class="rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
-                            <span>Enforce Raw Minified JSON String</span>
-                        </label>
-                    </div>
-                </div>
-            </div>
+  <script src="../assets/js/tool-kit.js"></script>
+  <script>
+    // Categories in priority order: when trimming to the size limit, later ones go first.
+    var CATEGORIES = [
+      { id: "goals", label: "Goals", hint: "what you’re trying to do",
+        test: /\b(goal|objective|aim(?:ing)?|want(?:s|ed)? to|need(?:s)? to|trying to|so that|in order to|should be able to|the point is|purpose)\b/i },
+      { id: "rules", label: "Rules and limits", hint: "must, never, only",
+        test: /\b(must(?: not)?|never|always|don'?t|do not|shouldn'?t|should not|required?|requirement|only|at most|at least|no more than|limit(?:ed)?|avoid|forbidden|not allowed|mandatory|constraint)\b/i },
+      { id: "decisions", label: "Decisions", hint: "what was settled",
+        test: /\b(decided|decision|we(?:'ll| will) (?:use|go)|going with|go with|chose|chosen|agreed|settled on|switch(?:ed)? to|opted|let'?s use|we use|final answer|approved)\b/i },
+      { id: "questions", label: "Open questions and to-dos", hint: "unresolved items",
+        test: /(\?\s*$)|\b(todo|to-do|tbd|open question|not sure|unclear|figure out|follow up|follow-up|next step|pending|still need)\b/i },
+      { id: "problems", label: "Problems and errors", hint: "bugs, failures",
+        test: /\b(error|exception|fail(?:s|ed|ing|ure)?|bug|broken|crash(?:es|ed)?|issue|warning|timed out|traceback|regression|doesn'?t work|not working)\b/i },
+      { id: "facts", label: "Facts and settings", hint: "names, numbers, versions, links",
+        test: /(^[\w .\/-]{1,40}:\s+\S)|(https?:\/\/\S+)|(\b[\w-]+\.(?:js|ts|tsx|py|md|json|ya?ml|html|css|go|rs|java|rb|sql|toml)\b)|(\bv?\d+\.\d+(?:\.\d+)?\b)|(\b\d[\d,.]*\s?(?:ms|s|kb|mb|gb|tb|%|tokens?|users?|requests?|days?|hours?|minutes?|\$)\b)|(\$\d)/i },
+      { id: "code", label: "Code and data", hint: "code blocks, JSON",
+        test: null },
+      { id: "other", label: "Everything else", hint: "lines that matched nothing",
+        test: null, off: true }
+    ];
 
-            <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl relative overflow-hidden backdrop-blur-sm flex-grow">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4 flex items-center gap-2">
-                    <i class="fa-solid fa-chart-simple text-[11px]"></i> Compactor Telemetry
-                </h2>
-                
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <div class="bg-slate-900/50 border border-slate-800/80 p-3 rounded-lg">
-                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Raw Input</div>
-                        <div id="rawCharCount" class="text-lg font-bold text-slate-200 mt-0.5">0 <span class="text-xs text-slate-500">chars</span></div>
-                    </div>
-                    <div class="bg-slate-900/50 border border-slate-800/80 p-3 rounded-lg">
-                        <div class="text-[10px] text-slate-400 uppercase tracking-wider">Distilled</div>
-                        <div id="distilledCharCount" class="text-lg font-bold text-cyan-400 mt-0.5">0 <span class="text-xs text-cyan-600">chars</span></div>
-                    </div>
-                </div>
+    var CHATTER = /^(?:hi|hello|hey|thanks|thank you|thx|ok(?:ay)?|cool|great|sure|got it|sounds good|perfect|nice|awesome|yes|yep|no|nope|right|understood|of course|you'?re welcome|no problem|let me know[^.]*|hope this helps[^.]*|happy to help[^.]*|great question[^.]*|i hope[^.]*|certainly[^.]*|absolutely[^.]*)[.!,\s]*$/i;
+    var SPEAKER = /^\s*(?:\*\*)?(?:user|assistant|human|ai|system|me|you|claude|chatgpt|gpt|gemini|bot|q|a)(?:\*\*)?\s*[:>]\s*/i;
 
-                <div class="bg-slate-900/30 border border-slate-800/60 rounded-lg p-3.5">
-                    <div class="flex justify-between items-center text-xs text-slate-400 mb-1.5">
-                        <span>CONTEXT VALUE DENSITY RATIO:</span>
-                        <span id="ratioText" class="font-bold text-indigo-400">0%</span>
-                    </div>
-                    <div class="w-full bg-slate-950 rounded-full h-2.5 border border-slate-800 overflow-hidden">
-                        <div id="ratioBar" class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full w-0 transition-all duration-300"></div>
-                    </div>
-                    <p class="text-[10px] text-slate-500 mt-2 leading-tight"><i class="fa-solid fa-circle-info mr-1"></i> Higher percentage points to cleaner semantic signal relative to raw token overhead.</p>
-                </div>
-            </div>
-        </div>
+    var SAMPLE = [
+      "User: Hi! I want to build a small app that sends a weekly email summary of our support tickets.",
+      "Assistant: Happy to help! What does your stack look like?",
+      "User: Python 3.12 on AWS Lambda. Tickets live in Zendesk. It must not store customer emails anywhere.",
+      "Assistant: Got it. We could use the Zendesk export API or the search API. Which is better for you?",
+      "User: Let's use the search API, it's simpler.",
+      "Assistant: Sounds good. The Lambda timeout is 15 minutes, so we should page through results 100 at a time.",
+      "User: Thanks. Also the email should go out every Monday at 8am Central and only include tickets tagged billing.",
+      "User: Last run failed with a 429 Too Many Requests error from Zendesk.",
+      "Assistant: That's rate limiting. Add exponential backoff and retry at most 5 times.",
+      "User: Not sure yet whether we need a dashboard too. Can it also post to Slack?",
+      "```python\ndef fetch_page(cursor):\n    return zendesk.search(query='tags:billing', cursor=cursor, per_page=100)\n```"
+    ].join("\n");
 
-        <div class="lg:col-span-8 flex flex-col gap-6 h-full">
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow items-stretch">
-                
-                <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl flex flex-col min-h-[350px] md:min-h-[500px]">
-                    <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-xs font-bold uppercase tracking-widest text-slate-300 flex items-center gap-2">
-                            <i class="fa-solid fa-terminal text-cyan-500 text-[11px]"></i> Unstructured Session Cache
-                        </h2>
-                        <button onclick="clearInput()" class="text-[10px] uppercase text-slate-500 hover:text-rose-400 tracking-wider transition-colors">
-                            <i class="fa-solid fa-trash-can mr-1"></i> Wipe Cache
-                        </button>
-                    </div>
-                    <textarea id="rawInput" placeholder="// Paste raw system console outputs, unstructured conversation transcripts, documentation scraps, or structural markdown here to begin extraction..." class="w-full flex-grow bg-slate-950 border border-slate-800/80 rounded-lg p-3.5 text-xs font-mono text-slate-300 placeholder-slate-600 focus:outline-none focus:border-cyan-500/50 resize-none leading-relaxed"></textarea>
-                </div>
+    var state = ToolKit.store.get("context_extractor_v2", null) || {};
+    var enabled = state.enabled || {};
+    CATEGORIES.forEach(function (c) { if (enabled[c.id] === undefined) enabled[c.id] = !c.off; });
 
-                <div class="bg-[#070a13]/90 border border-slate-800 rounded-xl p-5 shadow-2xl flex flex-col min-h-[350px] md:min-h-[500px] relative">
-                    <div class="flex justify-between items-center mb-3">
-                        <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-400 flex items-center gap-2">
-                            <i class="fa-solid fa-database text-[11px]"></i> High-Density Context Vector
-                        </h2>
-                        <button id="copyBtn" onclick="copyToClipboard()" class="text-[10px] uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 hover:bg-cyan-500 hover:text-black transition-all duration-200 px-3 py-1 rounded font-bold flex items-center gap-1.5">
-                            <i class="fa-regular fa-copy"></i> Copy Context
-                        </button>
-                    </div>
-                    <div id="outputContainer" class="w-full flex-grow bg-slate-950 border border-slate-800/80 rounded-lg p-3.5 text-xs font-mono text-emerald-400/90 overflow-y-auto whitespace-pre-wrap leading-relaxed select-all"></div>
-                </div>
+    var els = {
+      raw: document.getElementById("raw"),
+      result: document.getElementById("result"),
+      budget: document.getElementById("budget"),
+      chat: document.getElementById("opt-chat"),
+      speakers: document.getElementById("opt-speakers"),
+      remember: document.getElementById("opt-remember"),
+      cats: document.getElementById("categories")
+    };
+    els.budget.value = state.budget || 800;
+    els.chat.checked = state.chat !== false;
+    els.speakers.checked = state.speakers !== false;
+    els.remember.checked = !!state.remember;
+    if (state.format === "json") document.querySelector('input[name="format"][value="json"]').checked = true;
+    if (state.remember && state.text) els.raw.value = state.text;
 
-            </div>
+    var countEls = {};
+    CATEGORIES.forEach(function (c) {
+      var label = document.createElement("label");
+      label.className = "check cat";
+      var box = document.createElement("input");
+      box.type = "checkbox";
+      box.checked = enabled[c.id];
+      box.addEventListener("change", function () { enabled[c.id] = box.checked; run(); });
+      var text = document.createElement("span");
+      text.innerHTML = "";
+      text.appendChild(document.createTextNode(c.label + " "));
+      var small = document.createElement("small");
+      small.textContent = c.hint;
+      text.appendChild(small);
+      var count = document.createElement("span");
+      count.className = "cat-count";
+      count.setAttribute("aria-label", "items found");
+      countEls[c.id] = count;
+      label.appendChild(box); label.appendChild(text); label.appendChild(count);
+      els.cats.appendChild(label);
+      c.box = box;
+    });
 
-        </div>
+    function format() { return document.querySelector('input[name="format"]:checked').value; }
 
-    </main>
-
-    <footer class="border-t border-slate-900 bg-[#04070f] px-6 py-4 text-center z-10">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-500">
-            <div>
-                &copy; 2026 ContextSlim Architecture Engine.
-            </div>
-            <div class="flex items-center gap-4">
-                <span class="flex items-center gap-1 text-[11px]"><i class="fa-solid fa-shield-halved text-cyan-700"></i> Client-Side Cryptographic Privacy Guaranteed</span>
-                <span class="text-slate-700">|</span>
-                <a href="https://iggym.github.io/#tools" class="hover:text-slate-300 transition-colors underline decoration-slate-800 hover:decoration-cyan-500">Iggy Mwangi Pro Frameworks</a>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Define the 9-Category Modular Architecture Modules
-        const architectureCategories = [
-            { id: 'meta', name: '1. Session Metadata', icon: 'fa-tags', color: 'text-cyan-400', default: true },
-            { id: 'goals', name: '2. Core Intent & Targets', icon: 'fa-crosshairs', color: 'text-indigo-400', default: true },
-            { id: 'constraints', name: '3. Hard Bounds & Rules', icon: 'fa-border-top-left', color: 'text-amber-400', default: true },
-            { id: 'state', name: '4. Memory State Vector', icon: 'fa-database', color: 'text-emerald-400', default: true },
-            { id: 'entities', name: '5. Entity Cross-References', icon: 'fa-diagram-project', color: 'text-purple-400', default: true },
-            { id: 'schemas', name: '6. Strict Data Interfaces', icon: 'fa-code-branch', color: 'text-sky-400', default: false },
-            { id: 'logic', name: '7. Pipeline Edge Logic', icon: 'fa-gear', color: 'text-blue-400', default: false },
-            { id: 'history', name: '8. Condensed Log Timeline', icon: 'fa-clock-rotate-left', color: 'text-orange-400', default: false },
-            { id: 'fallbacks', name: '9. Error Validation Paths', icon: 'fa-shield-heart', color: 'text-rose-400', default: false }
-        ];
-
-        // System Configuration State variables
-        let appState = {
-            categories: {},
-            tokenTarget: 250,
-            stripBoilerplate: true,
-            minifyStructures: true,
-            outputMinifiedJson: false,
-            rawText: ""
-        };
-
-        // Bootstrapping initialization
-        document.addEventListener("DOMContentLoaded", () => {
-            loadSavedState();
-            renderCategoryMatrix();
-            attachEventListeners();
-            executeDistillationPipeline();
-        });
-
-        // Initialize checkboxes inside markup UI
-        function renderCategoryMatrix() {
-            const container = document.getElementById("categoryMatrix");
-            container.innerHTML = "";
-            
-            architectureCategories.forEach(cat => {
-                const isActive = appState.categories[cat.id] !== undefined ? appState.categories[cat.id] : cat.default;
-                appState.categories[cat.id] = isActive; // Ensure sync
-
-                const row = document.createElement("label");
-                row.className = `flex items-center justify-between border border-slate-800/60 bg-slate-900/20 hover:bg-slate-900/60 px-3 py-2 rounded-lg cursor-pointer transition-all duration-200 select-none group/row ${isActive ? 'border-slate-700/60' : ''}`;
-                
-                row.innerHTML = `
-                    <div class="flex items-center gap-2.5 text-xs text-slate-300 group-hover/row:text-white transition-colors">
-                        <i class="fa-solid ${cat.icon} ${cat.color} text-[11px] w-4 text-center"></i>
-                        <span>${cat.name}</span>
-                    </div>
-                    <input type="checkbox" data-cat-id="${cat.id}" ${isActive ? 'checked' : ''} class="cat-checkbox rounded border-slate-800 text-cyan-500 bg-slate-900 focus:ring-0 focus:ring-offset-0 h-4 w-4">
-                `;
-                container.appendChild(row);
-            });
-
-            // Re-bind change listeners to checkboxes dynamically generated
-            document.querySelectorAll('.cat-checkbox').forEach(box => {
-                box.addEventListener('change', (e) => {
-                    const id = e.target.getAttribute('data-cat-id');
-                    appState.categories[id] = e.target.checked;
-                    // Update wrapper style border triggers
-                    e.target.closest('label').classList.toggle('border-slate-700/60', e.target.checked);
-                    saveStateToStorage();
-                    executeDistillationPipeline();
-                });
-            });
-        }
-
-        function attachEventListeners() {
-            const rawInput = document.getElementById("rawInput");
-            const tokenSlider = document.getElementById("tokenSlider");
-            const stripBoilerplate = document.getElementById("stripBoilerplate");
-            const minifyStructures = document.getElementById("minifyStructures");
-            const outputMinifiedJson = document.getElementById("outputMinifiedJson");
-
-            rawInput.addEventListener("input", (e) => {
-                appState.rawText = e.target.value;
-                executeDistillationPipeline();
-            });
-
-            tokenSlider.addEventListener("input", (e) => {
-                appState.tokenTarget = parseInt(e.target.value);
-                document.getElementById("tokenLabel").innerText = `${appState.tokenTarget} tokens`;
-                executeDistillationPipeline();
-            });
-
-            stripBoilerplate.addEventListener("change", (e) => {
-                appState.stripBoilerplate = e.target.checked;
-                executeDistillationPipeline();
-            });
-
-            minifyStructures.addEventListener("change", (e) => {
-                appState.minifyStructures = e.target.checked;
-                executeDistillationPipeline();
-            });
-
-            outputMinifiedJson.addEventListener("change", (e) => {
-                appState.outputMinifiedJson = e.target.checked;
-                executeDistillationPipeline();
-            });
-        }
-
-        function toggleAllCategories(status) {
-            architectureCategories.forEach(cat => {
-                appState.categories[cat.id] = status;
-            });
-            renderCategoryMatrix();
-            executeDistillationPipeline();
-        }
-
-        function clearInput() {
-            document.getElementById("rawInput").value = "";
-            appState.rawText = "";
-            executeDistillationPipeline();
-        }
-
-        // Complete Client-side Heuristic Pipeline Architecture Execution
-        function executeDistillationPipeline() {
-            let workingText = appState.rawText;
-            document.getElementById("rawCharCount").innerHTML = `${workingText.length} <span class="text-xs text-slate-500">chars</span>`;
-
-            if (!workingText.trim()) {
-                document.getElementById("outputContainer").innerText = "// System standing by. Ingest data to spin context block matrix...";
-                updateTelemetryMetrics(0, 0);
-                return;
-            }
-
-            // Phase 1: Noise/Boilerplate Extractor Filter Heuristics
-            if (appState.stripBoilerplate) {
-                workingText = workingText
-                    .replace(/[\u2018\u2019]/g, "'")
-                    .replace(/[\u201C\u201D]/g, '"') // Standardize unicode string blocks
-                    .replace(/!\[.*?\]\(.*?\)/g, '') // Strip images asset structures entirely
-                    .replace(/(as mentioned before|it is important to note that|clearly|basically|essentially|as a matter of fact|look at this)/gi, '')
-                    .replace(/\b(hello|hey|hi|regards|sincerely|thanks|thank you),?\s*\w*/gi, '') // Strip dialogue filler
-                    .replace(/\s+/g, ' '); // Squeeze heavy whitespaces down
-            }
-
-            // Phase 2: Structural Element Binding & Mapping Heuristics
-            if (appState.minifyStructures) {
-                // Squeeze markdown structural table strings into minified semantic structures
-                workingText = workingText.replace(/\|\s*(.*?)\s*\|\s*(.*?)\s*\|/g, '|$1|$2|');
-            }
-
-            // Phase 3: Segregating text chunks into targeted categories
-            const extractedContextBlocks = {};
-            
-            // Map common architectural terms dynamically if found inside text pool fallback
-            architectureCategories.forEach(cat => {
-                if (appState.categories[cat.id]) {
-                    // Primitive client-side substring classifier matching engine mapping strings
-                    const lowerText = workingText.toLowerCase();
-                    let sectionContent = [];
-
-                    if (cat.id === 'meta' && (lowerText.includes('version') || lowerText.includes('session') || lowerText.includes('user'))) {
-                        sectionContent.push("Session tracking parameters verified active via local edge storage mapping.");
-                    }
-                    if (cat.id === 'constraints' && (lowerText.includes('must') || lowerText.includes('stop') || lowerText.includes('rule'))) {
-                        sectionContent.push("Enforced parameters discovered inside raw structural scope boundaries.");
-                    }
-                    if (cat.id === 'entities' && (lowerText.includes('id') || lowerText.includes('company') || lowerText.includes('name'))) {
-                        sectionContent.push("Key system entities linked seamlessly without external vector pipeline calls.");
-                    }
-
-                    // Dynamically fill remaining context slots with size-controlled chunks
-                    if (sectionContent.length === 0 && workingText.length > 10) {
-                        const randomOffset = Math.floor(Math.random() * (workingText.length * 0.4));
-                        const calculatedSliceSize = Math.min(appState.tokenTarget * 4, workingText.length);
-                        sectionContent.push(workingText.substring(randomOffset, randomOffset + calculatedSliceSize).trim() + "...");
-                    }
-
-                    if (sectionContent.length > 0) {
-                        extractedContextBlocks[cat.name.toUpperCase()] = sectionContent.join(" | ");
-                    }
-                }
-            });
-
-            // Phase 4: Output Rendering Packaging Format Configuration Trigger
-            let finalOutputString = "";
-            if (appState.outputMinifiedJson) {
-                finalOutputString = JSON.stringify(extractedContextBlocks);
-            } else {
-                // Generate clean, highly organized payload string representation layout
-                Object.entries(extractedContextBlocks).forEach(([key, value]) => {
-                    finalOutputString += `[# ${key}]\n> ${value}\n\n`;
-                });
-            }
-
-            finalOutputString = finalOutputString.trim() || "// No valid architectural parameters matched. Enable more module filters.";
-            
-            // Render text string output window element update
-            document.getElementById("outputContainer").innerText = finalOutputString;
-            document.getElementById("distilledCharCount").innerHTML = `${finalOutputString.length} <span class="text-xs text-cyan-600">chars</span>`;
-            
-            updateTelemetryMetrics(appState.rawText.length, finalOutputString.length);
-            saveStateToStorage();
-        }
-
-      function updateTelemetryMetrics(rawLen, distilledLen) {
-    if (rawLen === 0) {
-        document.getElementById("ratioText").innerText = "0% Density";
-        document.getElementById("ratioBar").style.width = "0%";
-        return;
+    function save() {
+      ToolKit.store.set("context_extractor_v2", {
+        enabled: enabled, budget: +els.budget.value, chat: els.chat.checked,
+        speakers: els.speakers.checked, format: format(), remember: els.remember.checked,
+        text: els.remember.checked ? els.raw.value : ""
+      });
     }
-    // Directly calculates how dense the remaining payload is
-    const densityRatio = Math.min(Math.round((distilledLen / rawLen) * 100), 100);
-    
-    document.getElementById("ratioText").innerText = `${densityRatio}% Core Payload`;
-    document.getElementById("ratioBar").style.width = `${densityRatio}%`;
-}
 
-        // Clipboard Copy Utility Handler
-        function copyToClipboard() {
-            const outputText = document.getElementById("outputContainer").innerText;
-            if (!outputText || outputText.startsWith("//")) return;
+    // Split text into ordered units: whole code blocks, and sentences from everything else.
+    function splitUnits(text) {
+      var units = [];
+      var parts = text.split(/(```[\s\S]*?(?:```|$))/);
+      parts.forEach(function (part) {
+        if (!part) return;
+        if (part.indexOf("```") === 0) { units.push({ text: part.trim(), code: true }); return; }
+        part.split(/\n+/).forEach(function (line) {
+          if (els.speakers.checked) line = line.replace(SPEAKER, "");
+          line = line.replace(/^\s*(?:[-*•]|\d+[.)])\s+/, "").replace(/\s+/g, " ").trim();
+          if (!line) return;
+          var looksLikeData = /^[\[{].*[\]}],?$/.test(line);
+          if (looksLikeData) { units.push({ text: line, code: true }); return; }
+          line.split(/(?<=[.!?])\s+(?=["'(\[]?[A-Z0-9])/).forEach(function (s) {
+            s = s.trim();
+            if (s) units.push({ text: s, code: false });
+          });
+        });
+      });
+      return units;
+    }
 
-            navigator.clipboard.writeText(outputText).then(() => {
-                const copyBtn = document.getElementById("copyBtn");
-                copyBtn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> Copied Module!`;
-                copyBtn.classList.remove("text-cyan-400", "border-cyan-500/30");
-                copyBtn.classList.add("text-emerald-400", "border-emerald-500/30");
+    function classify(unit) {
+      if (unit.code) return "code";
+      // Order matters: the most specific signals win.
+      var order = ["decisions", "problems", "questions", "rules", "goals", "facts"];
+      for (var i = 0; i < order.length; i++) {
+        var cat = CATEGORIES.filter(function (c) { return c.id === order[i]; })[0];
+        if (cat.test.test(unit.text)) return cat.id;
+      }
+      return "other";
+    }
 
-                setTimeout(() => {
-                    copyBtn.innerHTML = `<i class="fa-regular fa-copy"></i> Copy Context`;
-                    copyBtn.classList.add("text-cyan-400", "border-cyan-500/30");
-                    copyBtn.classList.remove("text-emerald-400", "border-emerald-500/30");
-                }, 2000);
-            });
-        }
+    function run() {
+      var raw = els.raw.value;
+      var seen = {};
+      var buckets = {};
+      CATEGORIES.forEach(function (c) { buckets[c.id] = []; });
 
-        // Persist local state state arrays inside client storage
-        function saveStateToStorage() {
-            localStorage.setItem("contextslim_state", JSON.stringify({
-                categories: appState.categories,
-                tokenTarget: appState.tokenTarget,
-                stripBoilerplate: appState.stripBoilerplate,
-                minifyStructures: appState.minifyStructures,
-                outputMinifiedJson: appState.outputMinifiedJson,
-                rawText: appState.rawText
-            }));
-        }
+      splitUnits(raw).forEach(function (u, index) {
+        if (!u.code && els.chat.checked && CHATTER.test(u.text)) return;
+        var key = u.text.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+        if (!key || seen[key]) return;
+        seen[key] = true;
+        u.index = index;
+        buckets[classify(u)].push(u);
+      });
 
-        function loadSavedState() {
-            const saved = localStorage.getItem("contextslim_state");
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    appState = { ...appState, ...parsed };
-                    
-                    // UI sync settings parameters elements manual injection bindings
-                    document.getElementById("rawInput").value = appState.rawText || "";
-                    document.getElementById("tokenSlider").value = appState.tokenTarget;
-                    document.getElementById("tokenLabel").innerText = `${appState.tokenTarget} tokens`;
-                    document.getElementById("stripBoilerplate").checked = appState.stripBoilerplate;
-                    document.getElementById("minifyStructures").checked = appState.minifyStructures;
-                    document.getElementById("outputMinifiedJson").checked = appState.outputMinifiedJson;
-                } catch (err) {
-                    console.error("Error reading storage telemetry:", err);
-                }
-            }
-        }
-    </script>
+      CATEGORIES.forEach(function (c) { countEls[c.id].textContent = buckets[c.id].length; });
+
+      // Fit the size limit: drop from the lowest-priority section, oldest item first.
+      var chosen = CATEGORIES.filter(function (c) { return enabled[c.id] && buckets[c.id].length; })
+        .map(function (c) { return { cat: c, items: buckets[c.id].slice() }; });
+      var limit = +els.budget.value;
+      var dropped = 0;
+      function size() { return ToolKit.estimateTokens(render(chosen)); }
+      while (chosen.length && size() > limit) {
+        var last = chosen[chosen.length - 1];
+        last.items.shift();
+        dropped++;
+        if (!last.items.length) chosen.pop();
+      }
+
+      var output = render(chosen);
+      var kept = chosen.reduce(function (n, s) { return n + s.items.length; }, 0);
+
+      if (!raw.trim()) {
+        els.result.className = "output empty";
+        els.result.textContent = "Your summary will appear here.";
+      } else if (!output) {
+        els.result.className = "output empty";
+        els.result.textContent = "Nothing matched the sections you picked. Try turning on more sections, including “Everything else”.";
+      } else {
+        els.result.className = "output";
+        els.result.textContent = output;
+      }
+      document.getElementById("s-raw").textContent = "~" + ToolKit.estimateTokens(raw);
+      document.getElementById("s-out").textContent = "~" + ToolKit.estimateTokens(output);
+      document.getElementById("s-kept").textContent = kept;
+      document.getElementById("budget-label").textContent = "about " + (+els.budget.value).toLocaleString() + " tokens";
+
+      var note = document.getElementById("trim-note");
+      note.hidden = dropped === 0;
+      note.textContent = dropped ? dropped + " older item" + (dropped === 1 ? " was" : "s were") + " left out to fit the size limit. Raise the limit to include more." : "";
+
+      clearTimeout(run.timer);
+      run.timer = setTimeout(function () {
+        document.getElementById("summary-live").textContent = raw.trim()
+          ? "Summary updated: " + kept + " items kept" + (dropped ? ", " + dropped + " left out to fit the limit." : ".")
+          : "";
+      }, 900);
+      save();
+    }
+
+    function render(sections) {
+      if (!sections.length) return "";
+      // Present items in their original order within each section.
+      if (format() === "json") {
+        var obj = {};
+        sections.forEach(function (s) {
+          obj[s.cat.id] = s.items.slice().sort(byIndex).map(function (u) { return u.text; });
+        });
+        return JSON.stringify(obj, null, 2);
+      }
+      return sections.map(function (s) {
+        var body = s.items.slice().sort(byIndex).map(function (u) {
+          return u.code ? u.text : "- " + u.text;
+        }).join("\n");
+        return "## " + s.cat.label + "\n" + body;
+      }).join("\n\n");
+    }
+    function byIndex(a, b) { return a.index - b.index; }
+
+    els.raw.addEventListener("input", run);
+    [els.budget].forEach(function (el) { el.addEventListener("input", run); });
+    [els.chat, els.speakers, els.remember].forEach(function (el) { el.addEventListener("change", run); });
+    document.querySelectorAll('input[name="format"]').forEach(function (el) { el.addEventListener("change", run); });
+    document.getElementById("all-on").addEventListener("click", function () { CATEGORIES.forEach(function (c) { enabled[c.id] = c.box.checked = true; }); run(); });
+    document.getElementById("all-off").addEventListener("click", function () { CATEGORIES.forEach(function (c) { enabled[c.id] = c.box.checked = false; }); run(); });
+    document.getElementById("clear").addEventListener("click", function () { els.raw.value = ""; run(); els.raw.focus(); ToolKit.announce("Text cleared."); });
+    document.getElementById("sample").addEventListener("click", function () { els.raw.value = SAMPLE; run(); ToolKit.announce("Sample conversation loaded."); });
+    document.getElementById("copy").addEventListener("click", function () {
+      var text = els.result.classList.contains("empty") ? "" : els.result.textContent;
+      ToolKit.copyText(text, this);
+    });
+    run();
+  </script>
 </body>
 </html>
