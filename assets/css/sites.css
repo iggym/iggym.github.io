@@ -50,9 +50,13 @@
   background: var(--bg-sunk);
   box-shadow: var(--shadow-sm);
 }
+/* The row holds one full set of tiles and then a copy of that set, so sliding
+   it by half its own width lands exactly on the copy and the loop is seamless.
+   Half a row is half a gap short of the true cycle, hence the 0.35rem nudge
+   (half of the 0.7rem gap) — change them together. */
 @keyframes ribbon-slide {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to { transform: translateX(calc(-50% - 0.35rem)); }
 }
 /* Sits still for anyone who prefers less motion, and for print. */
 @media (prefers-reduced-motion: reduce) {
