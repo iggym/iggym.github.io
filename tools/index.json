@@ -2,7 +2,7 @@
   {
     "id": "context-extractor",
     "title": "Context Extractor",
-    "description": "Pulls the goals, rules, decisions, open questions, and key facts out of a long chat into a short summary.",
+    "description": "Turns a long chat into goals, rules, decisions, open questions, and facts, with per-item review and a handoff prompt.",
     "tags": [
       "Context Engineering",
       "Prompting"
@@ -14,7 +14,7 @@
   {
     "id": "context-engine",
     "title": "Portable Context Engine",
-    "description": "Reusable instruction profiles with fill-in variables, copied as one block into any AI chat.",
+    "description": "Reusable instruction profiles with variables, defaults, templates, and Markdown/XML/plain output.",
     "tags": [
       "Context Engineering",
       "Prompting"
@@ -26,7 +26,7 @@
   {
     "id": "ai-aggregator",
     "title": "Multi-Model Workspace",
-    "description": "Ask an OpenAI and an Anthropic model the same question side by side with your own keys.",
+    "description": "Side-by-side OpenAI and Anthropic answers with follow-ups, timings, token counts, and Markdown export.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -39,7 +39,7 @@
   {
     "id": "context-window-optimizer",
     "title": "Context Window Optimizer",
-    "description": "Shows how much of a model's context window a prompt fills, with tips if it is too long.",
+    "description": "Section-by-section context budget planner with fit, monthly cost, and trimming advice.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -52,7 +52,7 @@
   {
     "id": "deterministic-agent-stateboard",
     "title": "Agent Stateboard",
-    "description": "Simulation of a planner, worker, and checker passing work along a fixed path, including a failed check.",
+    "description": "Agent workflow designer with checks and retry limits, a failure simulator, and JSON/Mermaid/Python export.",
     "tags": [
       "Agents",
       "Prompting",
@@ -65,7 +65,7 @@
   {
     "id": "nanobanana-json-compiler",
     "title": "NanoBanana Compiler",
-    "description": "Turns a few architecture choices into an image-model prompt and JSON spec for a diagram.",
+    "description": "Architecture diagram builder with live preview and SVG, Mermaid, JSON, and image-prompt export.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -78,7 +78,7 @@
   {
     "id": "prompt-matrix-evaluator",
     "title": "Prompt Matrix Evaluator",
-    "description": "Removes common filler from a prompt and shows the estimated token change.",
+    "description": "Prompt linter and tightener with a quality checklist and monthly savings estimate.",
     "tags": [
       "Context Engineering",
       "Prompting",
@@ -91,7 +91,7 @@
   {
     "id": "agentic-backpressure-throttle",
     "title": "Token Router",
-    "description": "Simulation of a shared token budget serving urgent requests first and holding background jobs.",
+    "description": "Rate-limit planner: limits vs traffic, priority routing, backlog growth and clear time.",
     "tags": [
       "Context Engineering",
       "Agents",
@@ -104,7 +104,7 @@
   {
     "id": "claude-context-engine-premium",
     "title": "Claude Context Engine",
-    "description": "Rewrites messy context into a tighter prompt using a hosted model. Sends text to a server.",
+    "description": "Rewrites messy context into a tighter prompt via a hosted model, masking secrets first.",
     "tags": [
       "Context Engineering",
       "Claude",
@@ -117,7 +117,7 @@
   {
     "id": "token-conscious-diff-stager",
     "title": "Prompt Diff & Stager",
-    "description": "Word-by-word prompt comparison with fill-in variables, snapshots, and token estimates.",
+    "description": "Inline and side-by-side prompt diffs, placeholders, and exportable snapshots.",
     "tags": [
       "Context Engineering",
       "Prompting",

@@ -15,16 +15,16 @@
       { name: "What brings you here?", href: "#start", desc: "Four starting points depending on what you need." }
     ] },
     { title: "Tools", note: "Free, single-page tools", items: [
-      { name: "Prompt Matrix Evaluator", href: "tools/prompt-matrix-evaluator.html", desc: "Cut filler from a prompt and see the token change.", tag: "local" },
-      { name: "Context Extractor", href: "tools/context-extractor.html", desc: "Pull goals, rules, and decisions out of a long chat.", tag: "local" },
-      { name: "Claude Context Engine", href: "tools/claude_context_engine_premium.html", desc: "Rewrite messy context into a tighter prompt.", tag: "server" },
-      { name: "Portable Context Engine", href: "tools/context-engine.html", desc: "Reusable instruction profiles with fill-in variables.", tag: "local" },
-      { name: "Prompt Diff & Stager", href: "tools/token-conscious-diff-stager.html", desc: "Compare prompt versions word by word.", tag: "local" },
-      { name: "NanoBanana Compiler", href: "tools/nanobanana-json-compiler.html", desc: "Turn architecture choices into a diagram prompt.", tag: "local" },
-      { name: "Multi-Model Workspace", href: "tools/ai-aggregator.html", desc: "Ask OpenAI and Anthropic models side by side.", tag: "key" },
-      { name: "Context Window Optimizer", href: "tools/context-window-optimizer.html", desc: "See how much of a context window a prompt fills.", tag: "local" },
-      { name: "Agent Stateboard", href: "tools/deterministic-agent-stateboard.html", desc: "Watch a planner, worker, and checker hand off work.", tag: "demo" },
-      { name: "Token Router", href: "tools/agentic-backpressure-throttle.html", desc: "Watch a token budget serve urgent work first.", tag: "demo" }
+      { name: "Prompt Matrix Evaluator", href: "tools/prompt-matrix-evaluator.html", desc: "Check a prompt for gaps and cut the filler.", tag: "local" },
+      { name: "Context Extractor", href: "tools/context-extractor.html", desc: "Turn a long chat into a handoff prompt.", tag: "local" },
+      { name: "Claude Context Engine", href: "tools/claude_context_engine_premium.html", desc: "Rewrite messy context, with secrets masked.", tag: "server" },
+      { name: "Portable Context Engine", href: "tools/context-engine.html", desc: "Reusable instruction profiles and templates.", tag: "local" },
+      { name: "Prompt Diff & Stager", href: "tools/token-conscious-diff-stager.html", desc: "Compare prompt versions and keep snapshots.", tag: "local" },
+      { name: "NanoBanana Compiler", href: "tools/nanobanana-json-compiler.html", desc: "Build an architecture diagram; export SVG or Mermaid.", tag: "local" },
+      { name: "Multi-Model Workspace", href: "tools/ai-aggregator.html", desc: "Compare OpenAI and Anthropic answers with stats.", tag: "key" },
+      { name: "Context Window Optimizer", href: "tools/context-window-optimizer.html", desc: "Plan a context budget and its cost.", tag: "local" },
+      { name: "Agent Stateboard", href: "tools/deterministic-agent-stateboard.html", desc: "Design an agent with checks; export the spec.", tag: "local" },
+      { name: "Token Router", href: "tools/agentic-backpressure-throttle.html", desc: "Plan around rate limits and backlogs.", tag: "local" }
     ] },
     { title: "Writing", items: [
       { name: "The shift from coding to context orchestration", href: "articles/context-orchestration.html", desc: "Essay · 6 min read" },

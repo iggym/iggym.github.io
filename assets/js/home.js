@@ -254,7 +254,7 @@
   /* ---------- Reveal sections as they scroll into view ---------- */
   (function () {
     if (reduced || !("IntersectionObserver" in window)) return;
-    var targets = document.querySelectorAll(".paths, .section-head, .demo-grid, .legend, .cards, .rows, .contact, .site-footer");
+    var targets = document.querySelectorAll(".paths, .section-head, .demo-grid, .legend, .cards, .rows, .site-bento, .site-more, .contact, .site-footer");
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }

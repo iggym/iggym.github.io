@@ -19,9 +19,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261006d">
-  <link rel="stylesheet" href="assets/css/site-map.css?v=20261006d">
-  <link rel="stylesheet" href="assets/css/sites.css?v=20261006e">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261007a">
+  <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
 </head>
 <body>
   <a class="skip" href="#main">Skip to main content</a>
@@ -162,9 +161,9 @@
       </ul>
     </section>
 
-    <section id="demo" class="section demo" aria-labelledby="demo-title">
+    <section id="demo" class="section demo band-alt" aria-labelledby="demo-title">
       <div class="section-head">
-        <h2 id="demo-title">Try one right here</h2>
+        <h2 id="demo-title"><span class="sec-num" aria-hidden="true">01</span>Try one right here</h2>
         <p>A live copy of <a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>. Edit the prompt and watch the filler disappear.</p>
       </div>
       <div class="demo-grid">
@@ -188,7 +187,7 @@
 
     <section id="tools" class="section" aria-labelledby="tools-title">
       <div class="section-head">
-        <h2 id="tools-title">Tools</h2>
+        <h2 id="tools-title"><span class="sec-num" aria-hidden="true">02</span>Tools</h2>
         <p>Single pages you can open and use right away. Each one says where your text goes.</p>
       </div>
 
@@ -211,7 +210,6 @@
           <li><span class="tag tag-saved">Remembers your work</span> Saves to this browser’s storage so it’s there next visit. Clear your site data to remove it.</li>
           <li><span class="tag tag-key">Needs your API key</span> Sends your prompt to OpenAI or Anthropic using a key you supply.</li>
           <li><span class="tag tag-server">Sends text to a server</span> Your text goes to a server I run, which passes it to a hosted model.</li>
-          <li><span class="tag tag-demo">Simulation</span> An interactive explainer. The numbers are illustrative, not live measurements.</li>
         </ul>
       </div>
 
@@ -221,28 +219,27 @@
         <button type="button" data-filter="tag-local" aria-pressed="false">Stay on your device</button>
         <button type="button" data-filter="tag-key" aria-pressed="false">Use your API key</button>
         <button type="button" data-filter="tag-server" aria-pressed="false">Send text to a server</button>
-        <button type="button" data-filter="tag-demo" aria-pressed="false">Simulations</button>
         <span class="filters-count" id="filter-count" role="status"></span>
       </div>
 
-      <h3 class="group-title">Make a prompt shorter</h3>
+      <h3 class="group-title">Improve a prompt</h3>
       <ul class="cards">
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/prompt-matrix-evaluator-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/prompt-matrix-evaluator-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a></h4>
-          <p>Paste a prompt and it removes common filler (“could you please”, “make sure to”) and shows the estimated token count before and after. A good first tool to try.</p>
-          <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+          <p>Checks a prompt for a clear task, output format, length limit, audience, vague words, and contradictions, then cuts the filler and shows what that saves per month at your volume. A good first tool to try.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-extractor-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-extractor-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-extractor.html">Context Extractor</a></h4>
-          <p>Paste a long chat or notes and it pulls out the goals, rules, decisions, open questions, and key facts into a short summary you can paste into a fresh chat.</p>
+          <p>Paste a long chat or notes and get the goals, rules, decisions, open questions, and key facts. Untick or re-sort any item, then copy a ready-made handoff prompt for a fresh chat.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/claude_context_engine_premium-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/claude_context_engine_premium-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/claude_context_engine_premium.html">Claude Context Engine</a></h4>
-          <p>Rewrites pasted context into a tighter prompt using a hosted model, with options to strip lockfile noise and move rules to the end. Don’t paste anything private.</p>
+          <p>Rewrites messy logs, code, or notes into a tighter prompt using a hosted model. Secrets, emails, and phone numbers are masked before anything is sent, and you can preview exactly what goes out.</p>
           <p class="tags"><span class="tag tag-server">Sends text to a server</span></p>
         </li>
       </ul>
@@ -252,55 +249,55 @@
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-engine-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-engine-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-engine.html">Portable Context Engine</a></h4>
-          <p>Save reusable “profiles” (a persona plus rules) and fill in variables like <code>{{project}}</code>. Copy the finished block into any AI chat.</p>
+          <p>Reusable instruction profiles with fill-in variables and defaults, six starter templates, and Markdown, XML, or plain-text output for any AI chat or system prompt.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/token-conscious-diff-stager-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/token-conscious-diff-stager-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/token-conscious-diff-stager.html">Prompt Diff &amp; Stager</a></h4>
-          <p>Compare two versions of a prompt word by word, keep a history of snapshots, and see the token estimate of what you’ll send.</p>
+          <p>Compare two prompt versions inline or side by side, fill in placeholders, and keep snapshots you can export, import, and roll back to.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/nanobanana-json-compiler-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/nanobanana-json-compiler-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/nanobanana-json-compiler.html">NanoBanana Compiler</a></h4>
-          <p>Choose a few cloud architecture options and it writes a prompt, plus a JSON version, for an image model to draw the diagram.</p>
-          <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+          <p>Describe components and connections to get a live architecture diagram. Download it as SVG, paste Mermaid into your docs, or copy a prompt for an image model.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/ai-aggregator-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/ai-aggregator-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/ai-aggregator.html">Multi-Model Workspace</a></h4>
-          <p>Ask an OpenAI model and an Anthropic model the same question and compare the answers side by side. Without keys it runs a demo. Keys are only remembered if you choose.</p>
+          <p>Ask OpenAI and Anthropic models the same question side by side, with follow-ups, a shared system prompt, response times, token counts, and a Markdown export.</p>
           <p class="tags"><span class="tag tag-key">Needs your API key</span></p>
         </li>
       </ul>
 
-      <h3 class="group-title">See how the ideas work</h3>
+      <h3 class="group-title">Plan and design AI systems</h3>
       <ul class="cards">
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-window-optimizer-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-window-optimizer-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-window-optimizer.html">Context Window Optimizer</a></h4>
-          <p>Paste a prompt and see how much of a model’s context window it fills, from 8K up to 1M tokens, with tips if it’s too long.</p>
-          <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+          <p>Plan a request’s context budget section by section, see whether the reply fits, what it costs per month, and what to trim first.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/deterministic-agent-stateboard-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/deterministic-agent-stateboard-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/deterministic-agent-stateboard.html">Agent Stateboard</a></h4>
-          <p>Watch a planner, worker, and checker pass work along a fixed path, including what happens when the check fails.</p>
-          <p class="tags"><span class="tag tag-demo">Simulation</span></p>
+          <p>Design an agent as fixed steps with checks and retry limits, simulate failures, and export a state-machine spec, Mermaid diagram, or Python starter loop.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/agentic-backpressure-throttle-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/agentic-backpressure-throttle-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/agentic-backpressure-throttle.html">Token Router</a></h4>
-          <p>Watch a shared token budget serve a waiting user first and hold a big background job until there’s room.</p>
-          <p class="tags"><span class="tag tag-demo">Simulation</span></p>
+          <p>Enter your rate limits and traffic to see if you’ll hit them, how priority routing protects urgent work, and how long a backlog takes to clear.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
       </ul>
     </section>
 
-    <section id="writing" class="section" aria-labelledby="writing-title">
+    <section id="writing" class="section band-alt" aria-labelledby="writing-title">
       <div class="section-head">
-        <h2 id="writing-title">Writing</h2>
+        <h2 id="writing-title"><span class="sec-num" aria-hidden="true">03</span>Writing</h2>
         <p>Two essays on this site, plus longer guides kept on GitHub.</p>
       </div>
       <ul class="rows">
@@ -358,7 +355,7 @@
 
     <section id="projects" class="section" aria-labelledby="projects-title">
       <div class="section-head">
-        <h2 id="projects-title">Projects</h2>
+        <h2 id="projects-title"><span class="sec-num" aria-hidden="true">04</span>Projects</h2>
         <p>Open-source code on GitHub. Free to read, use, and adapt under each repo’s license.</p>
       </div>
       <ul class="rows rows-2 proj-grid">
@@ -429,100 +426,86 @@
       </ul>
     </section>
 
-    <section class="sites-band" aria-labelledby="sites-band-title">
-      <div class="ribbon" aria-hidden="true">
-        <div class="ribbon-mask">
-          <div class="ribbon-row">
-            <img src="assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <div class="ribbon-copy" aria-hidden="true">
-              <img src="assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            </div>
-          </div>
-          <div class="ribbon-row ribbon-reverse">
-            <img src="assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <img src="assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            <div class="ribbon-copy" aria-hidden="true">
-              <img src="assets/img/sites/thumbs/applied-ai-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/one-origin.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/fde-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/cognitio-viva.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/awesome-ai-architecture.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/apex-ai-consumer-index.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/agentic-infra-weekly.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/sovereign-reader.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/scaling-ai-systems.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/cogitatio-elegans.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/ai-systems-articles.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/ai-ops-field-notes.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-              <img src="assets/img/sites/thumbs/last-interface.jpg" alt="" width="420" height="262" loading="lazy" decoding="async">
-            </div>
-          </div>
-        </div>
+    <section id="sites" class="section band-alt" aria-labelledby="sites-title">
+      <div class="section-head">
+        <h2 id="sites-title"><span class="sec-num" aria-hidden="true">05</span>Seventeen sites, one per subject</h2>
+        <p>Pattern libraries, an incident runbook, field notes, a weekly briefing, a bench of small tools, and a few essays about maps, minds, and reading.</p>
       </div>
-      <div class="sites-band-inner">
-        <div class="sites-band-text">
-          <p class="eyebrow">Beyond this page</p>
-          <h2 id="sites-band-title">Seventeen sites, one per subject</h2>
-          <p>Pattern libraries, an incident runbook, ops and field notes, a weekly briefing, a bench of small tools — and a few essays about maps, minds, and reading. Each one has its own home.</p>
-        </div>
-        <a class="button sites-band-link" href="sites/">See all seventeen <span aria-hidden="true">→</span></a>
+      <ul class="site-bento">
+        <li class="site-tile site-tile-lg" style="--card-accent: #ff5a36">
+          <a href="https://iggym.github.io/applied-ai-engineering/" rel="noopener">
+            <span class="tile-art"><img src="assets/img/sites/applied-ai-engineering.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async"></span>
+            <span class="tile-body">
+              <span class="tile-kind">Flagship · synthesis</span>
+              <span class="tile-name">Applied AI Engineering</span>
+              <span class="tile-desc">The hub that ties the rest together: where the patterns surfacing across the other sites add up to a strategic argument, not another failure list.</span>
+            </span>
+          </a>
+        </li>
+        <li class="site-tile" style="--card-accent: #17b3a3">
+          <a href="https://iggym.github.io/production-ai-patterns/" rel="noopener">
+            <span class="tile-art"><img src="assets/img/sites/thumbs/production-ai-patterns.jpg" alt="" width="420" height="262" loading="lazy" decoding="async"></span>
+            <span class="tile-body">
+              <span class="tile-kind">Reference · pattern language</span>
+              <span class="tile-name">Production AI Patterns</span>
+              
+            </span>
+          </a>
+        </li>
+        <li class="site-tile" style="--card-accent: #dc2626">
+          <a href="https://iggym.github.io/the-ai-runbook/" rel="noopener">
+            <span class="tile-art"><img src="assets/img/sites/thumbs/the-ai-runbook.jpg" alt="" width="420" height="262" loading="lazy" decoding="async"></span>
+            <span class="tile-body">
+              <span class="tile-kind">Reference · incident procedures</span>
+              <span class="tile-name">The AI Runbook</span>
+              
+            </span>
+          </a>
+        </li>
+        <li class="site-tile" style="--card-accent: #a855f7">
+          <a href="https://iggym.github.io/agentic-engineering/" rel="noopener">
+            <span class="tile-art"><img src="assets/img/sites/thumbs/agentic-engineering.jpg" alt="" width="420" height="262" loading="lazy" decoding="async"></span>
+            <span class="tile-body">
+              <span class="tile-kind">Guide · agent systems</span>
+              <span class="tile-name">Agentic Engineering</span>
+              
+            </span>
+          </a>
+        </li>
+        <li class="site-tile" style="--card-accent: #34d399">
+          <a href="https://iggym.github.io/systems-bench/" rel="noopener">
+            <span class="tile-art"><img src="assets/img/sites/thumbs/systems-bench.jpg" alt="" width="420" height="262" loading="lazy" decoding="async"></span>
+            <span class="tile-body">
+              <span class="tile-kind">Workbench · 24 tools</span>
+              <span class="tile-name">Systems Bench</span>
+              
+            </span>
+          </a>
+        </li>
+      </ul>
+      <div class="site-more">
+        <p class="site-more-label">Also</p>
+        <ul class="site-chips">
+          <li><a href="https://iggym.github.io/awesome-ai-architecture/" rel="noopener" style="--card-accent: #84cc16">Awesome AI Architecture</a></li>
+          <li><a href="https://iggym.github.io/scaling-ai-systems/" rel="noopener" style="--card-accent: #06b6d4">Scaling AI Systems</a></li>
+          <li><a href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener" style="--card-accent: #10b981">AI Ops Field Notes</a></li>
+          <li><a href="https://iggym.github.io/fde-field-notes/" rel="noopener" style="--card-accent: #f59e0b">FDE Field Notes</a></li>
+          <li><a href="https://iggym.github.io/agentic-infra-weekly/" rel="noopener" style="--card-accent: #ff6b00">Agentic Infra Weekly</a></li>
+          <li><a href="https://iggym.github.io/ai-systems-articles/" rel="noopener" style="--card-accent: #b91c1c">AI Systems Articles</a></li>
+          <li><a href="https://iggym.github.io/sovereign-reader/" rel="noopener" style="--card-accent: #d97706">Aura Reader</a></li>
+          <li><a href="https://iggym.github.io/last-interface/" rel="noopener" style="--card-accent: #c026d3">The Last Interface</a></li>
+          <li><a href="https://iggym.github.io/cognitio-viva/" rel="noopener" style="--card-accent: #059669">Cognitio Viva</a></li>
+          <li><a href="https://iggym.github.io/cogitatio-elegans/" rel="noopener" style="--card-accent: #2563eb">Cogitatio Elegans</a></li>
+          <li><a href="https://one-origin.pages.dev/" rel="noopener" style="--card-accent: #b45309">One Origin</a></li>
+          <li><a href="https://iggym.github.io/apex-ai-consumer-index/" rel="noopener" style="--card-accent: #65a30d">Apex AI Consumer Index</a></li>
+        </ul>
+        <a class="button" href="sites/">See all seventeen <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
     <section id="contact" class="section" aria-labelledby="contact-title">
       <div class="section-head">
-        <h2 id="contact-title">Work with me</h2>
+        <h2 id="contact-title"><span class="sec-num" aria-hidden="true">06</span>Work with me</h2>
         <p>Open to consulting, collaboration, and roles.</p>
       </div>
       <div class="contact">
@@ -587,10 +570,10 @@
       <a href="assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
     </nav>
   </footer>
-  <script defer src="assets/js/prompt-tightener.js?v=20261006d"></script>
-  <script defer src="assets/js/theme.js?v=20261006d"></script>
-  <script defer src="assets/js/site-map.js?v=20261006d"></script>
-  <script defer src="assets/js/home.js?v=20261006d"></script>
+  <script defer src="assets/js/prompt-tightener.js?v=20261007a"></script>
+  <script defer src="assets/js/theme.js?v=20261007a"></script>
+  <script defer src="assets/js/site-map.js?v=20261007a"></script>
+  <script defer src="assets/js/home.js?v=20261007a"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
 </html>

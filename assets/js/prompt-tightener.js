@@ -30,10 +30,17 @@
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
+  function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
   // Find every filler match in the original, without overlaps, in order.
-  function findCuts(raw) {
+  function findCuts(raw, extra) {
     var cuts = [];
-    FILLER.forEach(function (pair) {
+    var rules = FILLER.slice();
+    (extra || []).forEach(function (phrase) {
+      phrase = String(phrase).trim();
+      if (phrase) rules.push([new RegExp("\\b" + escapeRe(phrase) + "\\b[,]?\\s*", "gi"), ""]);
+    });
+    rules.forEach(function (pair) {
       var re = new RegExp(pair[0].source, pair[0].flags);
       var m;
       while ((m = re.exec(raw)) !== null) {
@@ -52,14 +59,16 @@
       .replace(/[ \t]{2,}/g, " ")
       .replace(/[ \t]*\n[ \t]*/g, "\n")
       .replace(/\n{3,}/g, "\n\n")
+      .replace(/([.!?])(\s+\.)+/g, "$1")
       .replace(/\s+([,.;:!?])/g, "$1")
       .replace(/,\s*([.!?])/g, "$1")
       .trim();
   }
 
   // Returns { cuts, html, text }: html marks each cut with <mark class="cut">.
-  function tighten(raw) {
-    var cuts = findCuts(raw);
+  // `extra` is an optional list of the visitor's own phrases to remove.
+  function tighten(raw, extra) {
+    var cuts = findCuts(raw, extra);
     var html = "", pos = 0, tight = "", capNext = false;
     function addKept(segment) {
       if (capNext && /\S/.test(segment)) {

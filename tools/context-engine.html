@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
     .layout { display: grid; grid-template-columns: 17rem minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
     @media (max-width: 1100px) { .layout { grid-template-columns: 1fr 1fr; } .layout > :first-child { grid-column: 1 / -1; } }
@@ -75,6 +75,19 @@
             <button type="button" class="btn btn-small" id="add">Add</button>
           </div>
         </div>
+        <div class="field">
+          <label for="template">Or start from a template</label>
+          <div class="row" style="flex-wrap:nowrap">
+            <select id="template">
+              <option value="">Choose a template…</option>
+            </select>
+            <button type="button" class="btn btn-small" id="add-template">Add</button>
+          </div>
+        </div>
+        <div class="row" style="margin-bottom:0.6rem">
+          <button type="button" class="btn btn-quiet btn-small" id="rename">Rename</button>
+          <button type="button" class="btn btn-quiet btn-small" id="duplicate">Duplicate</button>
+        </div>
         <div class="row">
           <button type="button" class="btn btn-quiet btn-small" id="export">Export</button>
           <button type="button" class="btn btn-quiet btn-small" id="import">Import</button>
@@ -87,7 +100,7 @@
         <div class="field">
           <label for="system">Instructions for “<span id="active-name"></span>”</label>
           <textarea id="system" aria-describedby="system-hint"></textarea>
-          <span class="hint" id="system-hint">Saved automatically as you type. Use <code>{{name}}</code> for parts that change.</span>
+          <span class="hint" id="system-hint">Saved automatically. Use <code>{{name}}</code> for parts that change, or <code>{{name|default}}</code> to give it a default.</span>
         </div>
         <h3 class="panel-title" style="margin-top:0.5rem">Fill in the details</h3>
         <div id="vars"></div>
@@ -99,13 +112,23 @@
           <label for="task">What do you want help with right now?</label>
           <textarea id="task" rows="5" placeholder="e.g. Review this pull request for security issues."></textarea>
         </div>
+        <fieldset>
+          <legend>Format</legend>
+          <div class="row" role="group">
+            <label class="check"><input type="radio" name="fmt" value="md" checked> <span>Markdown headings</span></label>
+            <label class="check"><input type="radio" name="fmt" value="xml"> <span>XML tags <small>works well with Claude</small></span></label>
+            <label class="check"><input type="radio" name="fmt" value="plain"> <span>Plain text</span></label>
+          </div>
+        </fieldset>
         <div class="row-between">
           <h3 class="panel-title" style="margin:0">Ready to paste</h3>
           <span class="meta" id="tokens">~0 tokens</span>
         </div>
+        <p id="missing" class="notice" hidden></p>
         <pre class="output" id="preview" tabindex="0" aria-label="Ready to paste"></pre>
         <div class="row" style="margin-top:0.75rem">
-          <button type="button" class="btn" id="copy">Copy</button>
+          <button type="button" class="btn" id="copy">Copy everything</button>
+          <button type="button" class="btn btn-quiet" id="copy-system">Copy instructions only <span class="sr-only">(for a system prompt or custom instructions field)</span></button>
         </div>
       </section>
     </div>
@@ -117,9 +140,9 @@
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
     var KEY = "context_manifest";
     var DEFAULTS = {
@@ -164,9 +187,14 @@
       if (!ToolKit.store.set(KEY, manifest)) ToolKit.announce("Couldn't save. This browser is blocking storage; export to keep your work.");
     }
 
+    // {{name}} or {{name|default}}: returns [{ name, def }] in order of first use.
     function placeholders(text) {
-      var re = /\{\{\s*([^{}]+?)\s*\}\}/g, found = [], m;
-      while ((m = re.exec(text)) !== null) if (found.indexOf(m[1]) === -1) found.push(m[1]);
+      var re = /\{\{\s*([^{}|]+?)\s*(?:\|\s*([^{}]*?)\s*)?\}\}/g, found = [], seen = {}, m;
+      while ((m = re.exec(text)) !== null) {
+        if (seen[m[1]]) continue;
+        seen[m[1]] = true;
+        found.push({ name: m[1], def: m[2] || "" });
+      }
       return found;
     }
 
@@ -190,36 +218,53 @@
     }
 
     function renderVars() {
-      var names = placeholders(els.system.value);
-      var current = Array.prototype.map.call(els.vars.querySelectorAll("input"), function (i) { return i.dataset.name; });
-      if (names.length === current.length && names.every(function (n, i) { return n === current[i]; })) return;
+      var vars = placeholders(els.system.value);
+      var sig = vars.map(function (v) { return v.name + "|" + v.def; }).join("\n");
+      if (els.vars.dataset.sig === sig) return;
+      els.vars.dataset.sig = sig;
       els.vars.innerHTML = "";
-      if (!names.length) {
+      if (!vars.length) {
         els.vars.innerHTML = '<p class="hint">Nothing to fill in. Add <code>{{name}}</code> to your instructions to create a box here.</p>';
         return;
       }
-      names.forEach(function (name, i) {
+      vars.forEach(function (v, i) {
         var wrap = document.createElement("div"); wrap.className = "field";
-        var label = document.createElement("label"); label.htmlFor = "v-" + i; label.textContent = name.replace(/[_-]+/g, " ");
-        var input = document.createElement("input"); input.type = "text"; input.id = "v-" + i; input.dataset.name = name;
-        input.value = manifest.values[name] || "";
-        input.addEventListener("input", function () { manifest.values[name] = input.value; save(); renderPreview(); });
+        var label = document.createElement("label"); label.htmlFor = "v-" + i; label.textContent = v.name.replace(/[_-]+/g, " ");
+        var input = document.createElement("input"); input.type = "text"; input.id = "v-" + i; input.dataset.name = v.name;
+        input.value = manifest.values[v.name] || "";
+        if (v.def) input.placeholder = "Default: " + v.def;
+        input.addEventListener("input", function () { manifest.values[v.name] = input.value; save(); renderPreview(); });
         wrap.appendChild(label); wrap.appendChild(input); els.vars.appendChild(wrap);
       });
     }
 
-    function compile() {
-      var system = els.system.value.replace(/\{\{\s*([^{}]+?)\s*\}\}/g, function (all, name) {
-        var v = (manifest.values[name] || "").trim();
-        return v || "[not set: " + name + "]";
+    function fmt() { return document.querySelector('input[name="fmt"]:checked').value; }
+
+    // Fill in variables; returns { text, missing }.
+    function resolved() {
+      var missing = [];
+      var text = els.system.value.replace(/\{\{\s*([^{}|]+?)\s*(?:\|\s*([^{}]*?)\s*)?\}\}/g, function (all, name, def) {
+        var v = (manifest.values[name] || "").trim() || (def || "").trim();
+        if (!v) { if (missing.indexOf(name) === -1) missing.push(name); return "[" + name + "]"; }
+        return v;
       });
-      var task = els.task.value.trim();
-      return "## Instructions\n" + system.trim() + "\n\n## Task\n" + (task || "[describe your task here]");
+      return { text: text.trim(), missing: missing };
+    }
+
+    function compile() {
+      var system = resolved().text;
+      var task = els.task.value.trim() || "[describe your task here]";
+      if (fmt() === "xml") return "<instructions>\n" + system + "\n</instructions>\n\n<task>\n" + task + "\n</task>";
+      if (fmt() === "plain") return system + "\n\nTask: " + task;
+      return "## Instructions\n" + system + "\n\n## Task\n" + task;
     }
 
     function renderPreview() {
       var text = compile();
       els.preview.textContent = text;
+      var miss = resolved().missing, note = document.getElementById("missing");
+      note.hidden = !miss.length;
+      note.textContent = miss.length ? "Still to fill in: " + miss.join(", ") + "." : "";
       document.getElementById("tokens").textContent = "~" + ToolKit.estimateTokens(text) + " tokens";
     }
 
@@ -239,6 +284,41 @@
       switchTo(manifest.activeId);
       ToolKit.announce("Deleted " + name + ".");
     }
+
+    var TEMPLATES = [
+      { name: "Code reviewer", system: "You are a senior {{language|TypeScript}} engineer reviewing a pull request.\n\nFocus on, in order: correctness bugs, security issues, then readability. Ignore formatting that a linter would catch.\n\nFor each finding give: the file and line, what is wrong, why it matters, and a concrete fix. If you are unsure, say so instead of guessing.\n\nEnd with a one-line verdict: approve, approve with nits, or request changes." },
+      { name: "Plain-language explainer", system: "You explain technical topics to {{audience|smart people outside the field}}.\n\nUse short sentences and everyday words. Define any term the first time you use it. Prefer one concrete example over abstract description.\n\nKeep answers under {{length|200 words}} unless I ask for more." },
+      { name: "Meeting summarizer", system: "You turn meeting notes or transcripts into a summary for {{audience|people who missed the meeting}}.\n\nReturn exactly these sections:\n- Decisions (who decided what)\n- Action items (owner, task, due date if stated)\n- Open questions\n\nUse bullet points. Do not invent owners or dates that are not in the notes." },
+      { name: "Customer support reply", system: "You write replies for {{company|our company}}'s support team.\n\nTone: {{tone|warm and direct}}. Acknowledge the problem in the first sentence. Give the next step the customer should take, numbered if there are several. Never promise refunds or timelines; offer to escalate instead.\n\nKeep replies under 150 words." },
+      { name: "Data analyst", system: "You are a careful data analyst working with {{tool|SQL and Python (pandas)}}.\n\nBefore answering, state any assumptions about the data. Show the query or code, then the result in a small table, then one paragraph on what it means and its limits.\n\nIf the question cannot be answered from the data described, say what extra data would be needed." },
+      { name: "Technical writer", system: "You write documentation for {{product|our product}} aimed at {{audience|developers new to it}}.\n\nStructure: a one-sentence summary, prerequisites, numbered steps, and a short troubleshooting section. Use second person (you). Put commands and code in code blocks.\n\nPrefer the shortest path that works; mention alternatives only in a final note." }
+    ];
+    var tplSelect = document.getElementById("template");
+    TEMPLATES.forEach(function (t, i) { var o = document.createElement("option"); o.value = String(i); o.textContent = t.name; tplSelect.appendChild(o); });
+    document.getElementById("add-template").addEventListener("click", function () {
+      var t = TEMPLATES[+tplSelect.value];
+      if (!tplSelect.value || !t) { tplSelect.focus(); ToolKit.announce("Choose a template first."); return; }
+      var id = "p-" + Date.now();
+      manifest.profiles[id] = { name: t.name, system: t.system };
+      switchTo(id);
+      tplSelect.value = "";
+      ToolKit.announce("Added the " + t.name + " template.");
+    });
+    document.getElementById("rename").addEventListener("click", function () {
+      var name = prompt("New name for this profile:", active().name);
+      if (name && name.trim()) { active().name = name.trim(); save(); renderProfiles(); ToolKit.announce("Renamed to " + name.trim() + "."); }
+    });
+    document.getElementById("duplicate").addEventListener("click", function () {
+      var id = "p-" + Date.now();
+      manifest.profiles[id] = { name: active().name + " (copy)", system: els.system.value };
+      switchTo(id);
+      ToolKit.announce("Duplicated.");
+    });
+    document.querySelectorAll('input[name="fmt"]').forEach(function (r) {
+      if (r.value === (manifest.fmt || "md")) r.checked = true;
+      r.addEventListener("change", function () { manifest.fmt = fmt(); save(); renderPreview(); });
+    });
+    document.getElementById("copy-system").addEventListener("click", function () { ToolKit.copyText(resolved().text, this); });
 
     document.getElementById("add").addEventListener("click", function () {
       var input = document.getElementById("new-name");

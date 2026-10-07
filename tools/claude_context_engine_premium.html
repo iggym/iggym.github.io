@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
     #raw, #result { min-height: 18rem; }
     .modes { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -40,7 +40,7 @@
       <p class="lede">Paste messy context, such as logs, code dumps, config files, or meeting notes, and get back a tighter prompt that’s ready to give Claude or another assistant. A hosted AI model does the rewriting.</p>
       <p class="tags"><span class="tag tag-server">Sends text to a server</span></p>
       <div class="notice" role="note">
-        <p><strong>Don’t paste passwords, API keys, or private data.</strong> When you press Rewrite, your text is sent to a server I run, which passes it to a hosted AI model. If you need everything to stay on your device, use <a href="context-extractor.html">Context Extractor</a> or <a href="prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>.</p>
+        <p><strong>Avoid pasting passwords, API keys, or private data.</strong> Common secrets and personal details are masked automatically, but check the preview. When you press Rewrite, your text is sent to a server I run, which passes it to a hosted AI model. If you need everything to stay on your device, use <a href="context-extractor.html">Context Extractor</a> or <a href="prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>.</p>
       </div>
     </div>
 
@@ -63,11 +63,18 @@
 
         <details class="how" style="margin-bottom:0.85rem">
           <summary>More options</summary>
+          <label class="check"><input type="checkbox" id="mask" checked> <span>Mask secrets and personal data before sending <small>API keys, tokens, passwords in config, email addresses, phone numbers, and IP addresses are replaced with placeholders in your browser.</small></span></label>
           <label class="check"><input type="checkbox" id="vacuum" checked> <span>Remove clutter before sending <small>Dependency lists, copyright lines, and blank lines are cut in your browser first.</small></span></label>
           <label class="check"><input type="checkbox" id="anchor" checked> <span>Put the rules at the end <small>Models tend to pay most attention to the end of a long prompt.</small></span></label>
           <label class="check"><input type="checkbox" id="remember"> <span>Remember my pasted text on this device</span></label>
         </details>
 
+        <p id="mask-note" class="notice info" hidden></p>
+        <p id="size-note" class="notice" hidden></p>
+        <details style="margin-bottom:0.85rem">
+          <summary><strong>Preview exactly what will be sent</strong> <span class="meta" id="send-stats"></span></summary>
+          <pre class="output" id="preview" tabindex="0" aria-label="Text that will be sent" style="margin-top:0.5rem;max-height:16rem"></pre>
+        </details>
         <button type="button" class="btn" id="run">Rewrite</button>
       </section>
 
@@ -79,6 +86,14 @@
         <pre class="output empty" id="result" tabindex="0" aria-live="polite" aria-busy="false" aria-label="Rewritten prompt">The rewritten prompt will appear here.</pre>
         <div class="row" style="margin-top:0.75rem">
           <button type="button" class="btn" id="copy">Copy</button>
+          <button type="button" class="btn btn-quiet" id="again">Rewrite this result again</button>
+        </div>
+        <div class="row-between" style="margin-top:0.9rem" id="hist-row" hidden>
+          <span class="meta" id="hist-label"></span>
+          <div class="row">
+            <button type="button" class="btn btn-quiet btn-small" id="prev">← Earlier</button>
+            <button type="button" class="btn btn-quiet btn-small" id="next">Later →</button>
+          </div>
         </div>
       </section>
     </div>
@@ -90,9 +105,9 @@
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
     var WORKER_URL = "https://claude-context-orchestrator.iggy-mw.workers.dev/api/orchestrate";
     var KEY = "cce_raw_input";
@@ -147,16 +162,54 @@
       return "Something went wrong while rewriting. Please try again.\n\nDetails: " + (message || "unknown error");
     }
 
+    // Replace likely secrets and personal data with labelled placeholders before anything leaves the browser.
+    var MASKS = [
+      ["API key", /\b(?:sk|pk|rk)-(?:ant-|proj-|live-|test-)?[A-Za-z0-9_\-]{16,}\b/g],
+      ["AWS key", /\bAKIA[0-9A-Z]{16}\b/g],
+      ["GitHub token", /\bgh[pousr]_[A-Za-z0-9]{30,}\b/g],
+      ["Slack token", /\bxox[abprs]-[A-Za-z0-9-]{10,}\b/g],
+      ["JWT", /\beyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/g],
+      ["private key", /-----BEGIN [A-Z ]*PRIVATE KEY-----[\s\S]*?-----END [A-Z ]*PRIVATE KEY-----/g],
+      ["secret", /((?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key)\s*[:=]\s*["']?)(?!\[)([^\s"',;]{4,})/gi],
+      ["email", /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g],
+      ["phone number", /(?<![\w.])(?:\+?\d{1,3}[ .-]?)?\(?\d{3}\)?[ .-]\d{3}[ .-]\d{4}(?![\w.])/g],
+      ["IP address", /\b(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)\b/g]
+    ];
+    function mask(text) {
+      var counts = {};
+      if (!document.getElementById("mask").checked) return { text: text, counts: counts };
+      MASKS.forEach(function (m) {
+        text = text.replace(m[1], function (all, keep) {
+          counts[m[0]] = (counts[m[0]] || 0) + 1;
+          var tag = "[" + m[0].toUpperCase().replace(/ /g, "_") + "]";
+          return m[0] === "secret" ? keep + tag : tag;
+        });
+      });
+      return { text: text, counts: counts };
+    }
+    function prepared() { var m = mask(clean(els.raw.value)); return m; }
+    function refreshPreview() {
+      var m = prepared(), t = ToolKit.estimateTokens(m.text);
+      document.getElementById("preview").textContent = m.text || "Nothing yet.";
+      document.getElementById("send-stats").textContent = "~" + t.toLocaleString() + " tokens";
+      var keys = Object.keys(m.counts), note = document.getElementById("mask-note");
+      note.hidden = !keys.length;
+      note.textContent = keys.length ? "Masked before sending: " + keys.map(function (k) { return m.counts[k] + " " + k + (m.counts[k] === 1 ? "" : "s"); }).join(", ") + "." : "";
+      var size = document.getElementById("size-note");
+      size.hidden = t < 25000;
+      size.textContent = t >= 25000 ? "That’s about " + t.toLocaleString() + " tokens. Very large inputs may be rejected or slow. Try sending the most relevant part, or shrink it locally first with Context Extractor." : "";
+    }
+
     function clean(text) {
       if (!document.getElementById("vacuum").checked) return text;
       return text
         .replace(/("dependencies":\s*{[\s\S]*?})|("devDependencies":\s*{[\s\S]*?})/g, '"dependencies": "[removed]"')
-        .replace(/^.*\b(Copyright|All rights reserved)\b.*\n?/gim, "")
+        .replace(/^[ \t]*(?:\/\/|#|\*|\/\*|<!--)?[ \t]*(?:Copyright\b|\(c\)|©|All rights reserved).*\n?/gim, "")
         .replace(/^\s*[\r\n]/gm, "");
     }
 
     els.run.addEventListener("click", async function () {
-      var input = clean(els.raw.value);
+      var input = prepared().text;
       if (!input.trim()) { els.raw.focus(); ToolKit.announce("Paste some text first."); return; }
       els.run.disabled = true;
       lastOutput = "";
@@ -171,6 +224,7 @@
         var data = await res.json().catch(function () { return {}; });
         if (res.ok && data.success && data.result) {
           lastOutput = data.result;
+          results.push(lastOutput); shown = results.length - 1; renderHistory();
           setResult(lastOutput);
           var before = ToolKit.estimateTokens(els.raw.value), after = ToolKit.estimateTokens(lastOutput);
           var pct = before ? Math.round(((before - after) / before) * 100) : 0;
@@ -187,8 +241,26 @@
       els.run.disabled = false;
     });
 
+    var results = [], shown = -1;
+    function renderHistory() {
+      document.getElementById("hist-row").hidden = results.length < 2;
+      document.getElementById("hist-label").textContent = "Result " + (shown + 1) + " of " + results.length;
+      document.getElementById("prev").disabled = shown <= 0;
+      document.getElementById("next").disabled = shown >= results.length - 1;
+    }
+    function showResult(i) { shown = i; lastOutput = results[i]; setResult(lastOutput); renderHistory(); }
+    document.getElementById("prev").addEventListener("click", function () { if (shown > 0) showResult(shown - 1); });
+    document.getElementById("next").addEventListener("click", function () { if (shown < results.length - 1) showResult(shown + 1); });
+    document.getElementById("again").addEventListener("click", function () {
+      if (!lastOutput) { ToolKit.announce("Rewrite something first."); return; }
+      els.raw.value = lastOutput; updateStats(); persist(); refreshPreview(); els.run.click();
+    });
+    ["mask", "vacuum"].forEach(function (id) { document.getElementById(id).addEventListener("change", refreshPreview); });
+    els.raw.addEventListener("input", refreshPreview);
+
     document.getElementById("copy").addEventListener("click", function () { ToolKit.copyText(lastOutput, this); });
     updateStats();
+    refreshPreview();
   </script>
 </body>
 </html>
