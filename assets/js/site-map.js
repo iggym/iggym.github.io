@@ -11,11 +11,11 @@
 
   var SECTIONS = [
     { title: "Start here", items: [
-      { name: "Try a tool right here", href: "#demo", desc: "A live prompt-tightening demo on the homepage." },
+      { name: "Try a tool right here", href: "#demo", desc: "Score a prompt, see what’s missing, and get a structured rewrite." },
       { name: "What brings you here?", href: "#start", desc: "Four starting points depending on what you need." }
     ] },
     { title: "Tools", note: "Free, single-page tools", items: [
-      { name: "Prompt Matrix Evaluator", href: "tools/prompt-matrix-evaluator.html", desc: "Check a prompt for gaps and cut the filler.", tag: "local" },
+      { name: "Prompt Matrix Evaluator", href: "tools/prompt-matrix-evaluator.html", desc: "Score a prompt, fix gaps in one click, get a structured rewrite.", tag: "local" },
       { name: "Context Extractor", href: "tools/context-extractor.html", desc: "Turn a long chat into a handoff prompt.", tag: "local" },
       { name: "Claude Context Engine", href: "tools/claude_context_engine_premium.html", desc: "Rewrite messy context, with secrets masked.", tag: "server" },
       { name: "Portable Context Engine", href: "tools/context-engine.html", desc: "Reusable instruction profiles and templates.", tag: "local" },

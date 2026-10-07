@@ -14,6 +14,7 @@
   <style>
     mark.cut { background: var(--bad-bg); color: var(--bad); text-decoration: line-through; border-radius: 3px; padding: 0 1px; }
     #raw-prompt { min-height: 12rem; }
+    #example { width: auto; min-height: 36px; padding: 0.3rem 0.6rem; }
     .score { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
     .score-ring { --pct: 0; width: 64px; height: 64px; border-radius: 50%; flex: none;
       background: conic-gradient(var(--ring) calc(var(--pct) * 1%), var(--bg-sunk) 0);
@@ -30,6 +31,11 @@
     .checks p { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.93rem; }
     .checks code { background: var(--bg-sunk); padding: 0 0.25em; border-radius: 3px; }
     .removed-list { margin: 0.5rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: 0.93rem; }
+    .checks .q { color: var(--ink); font-style: italic; }
+    .fixes { display: grid; gap: 0.5rem; }
+    .fixes .group { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; }
+    .fixes .group-name { font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); min-width: 4.5rem; }
+    #out-structured { white-space: pre-wrap; font-family: var(--mono); font-size: 0.9rem; }
     .money { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.6rem; }
   </style>
 </head>
@@ -54,13 +60,14 @@
   <main id="main" class="tool-main" tabindex="-1">
     <div class="tool-intro">
       <h1>Prompt Matrix Evaluator</h1>
-      <p class="lede">Paste a prompt to get two things. First, a checklist of what it’s missing: a clear task, an output format, a length limit, an audience. It also flags vague words and contradictions. Second, a tightened copy with the filler removed, plus what that saves in tokens and money at your request volume.</p>
+      <p class="lede">Paste a prompt and get three things. A checklist of what it’s missing (task, output format, length, audience) that also flags vague words, contradictions, and leftover placeholders. One-click fixes for each gap. And two rewrites: a tightened copy with the filler removed, and a structured version with role, task, rules, and format laid out the way models follow most reliably.</p>
       <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your settings</span></p>
       <details class="how">
         <summary>How it works</summary>
         <ul>
           <li>The checks are plain rules, not an AI judge. They catch the gaps that most often produce vague or rambling answers.</li>
           <li>Tightening only removes politeness and filler (“could you please”, “make sure to”, “thanks in advance”). Your actual request is never changed.</li>
+          <li>The structured rewrite keeps your words and adds bracketed placeholders, like <code>[Who is this for?]</code>, wherever something is missing. Fill them in before you send it.</li>
           <li>Add phrases your team overuses under <strong>Your own filler</strong>, and they’ll be removed too.</li>
         </ul>
       </details>
@@ -72,12 +79,30 @@
           <div class="row-between">
             <h2 id="in-title" class="panel-title"><label for="raw-prompt">Your prompt</label></h2>
             <div class="row">
-              <button type="button" class="btn btn-quiet btn-small" id="sample">Try a weak example</button>
+              <label for="example" class="sr-only">Load an example</label>
+              <select id="example" class="btn-small">
+                <option value="">Load an example…</option>
+                <option value="email">Welcome email</option>
+                <option value="code">Code review</option>
+                <option value="marketing">Launch copy</option>
+                <option value="data">Data question</option>
+                <option value="support">Support bot</option>
+                <option value="meeting">Meeting summary</option>
+              </select>
               <button type="button" class="btn btn-quiet btn-small" id="clear">Clear</button>
             </div>
           </div>
           <textarea id="raw-prompt" spellcheck="true"></textarea>
           <p class="hint" style="margin:0.4rem 0 0">Token counts are estimates (about four characters per token).</p>
+        </section>
+
+        <section class="panel" aria-labelledby="fix-title">
+          <h2 id="fix-title" class="panel-title">Quick fixes</h2>
+          <div class="row-between" style="margin-bottom:0.6rem">
+            <p class="hint" style="margin:0">Each button edits your prompt and re-scores it.</p>
+            <button type="button" class="btn btn-quiet btn-small" id="undo" disabled>Undo last change</button>
+          </div>
+          <div class="fixes" id="fixes"></div>
         </section>
 
         <section class="panel" aria-labelledby="check-title">
@@ -91,6 +116,18 @@
       </div>
 
       <div class="stack">
+        <section class="panel" aria-labelledby="struct-title">
+          <div class="row-between">
+            <h2 id="struct-title" class="panel-title">Structured rewrite</h2>
+            <span class="meta" id="meta-struct"></span>
+          </div>
+          <div class="output" id="out-structured"></div>
+          <div class="row" style="margin-top:0.75rem">
+            <button class="btn" type="button" id="copy-struct">Copy structured prompt</button>
+            <button class="btn btn-quiet" type="button" id="use-struct">Edit this version</button>
+          </div>
+        </section>
+
         <section class="panel" aria-labelledby="tight-title">
           <div class="row-between">
             <h2 id="tight-title" class="panel-title">Tightened prompt</h2>
@@ -140,70 +177,28 @@
   </footer>
 
   <script src="../assets/js/theme.js?v=20261007a"></script>
-  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261008a"></script>
   <script src="../assets/js/tool-kit.js?v=20261007a"></script>
-  <script src="../assets/js/prompt-tightener.js?v=20261007a"></script>
+  <script src="../assets/js/prompt-tightener.js?v=20261008a"></script>
+  <script src="../assets/js/prompt-lint.js?v=20261008a"></script>
   <script>
     var DEFAULT = "You are an experienced technical writer. Write a release note for version 2.4 of our mobile app for existing customers. Cover the new offline mode and the faster sync. Use three short bullet points, under 60 words in total, and end with one sentence on how to update.";
-    var WEAK = "Hi! Could you please write something good about our new app update? Make sure to make it really detailed but also keep it short. It is important that you mention all the new stuff and things like that. DO NOT make it boring!!! Thanks in advance!";
-
-    var VERBS = "write|explain|summari[sz]e|list|create|generate|review|analy[sz]e|translate|classify|extract|draft|compare|fix|rewrite|describe|outline|suggest|recommend|answer|identify|convert|plan|design|evaluate|find|give|tell|build|refactor|debug|check|edit|produce|propose|turn|make";
-    var FORMAT = /\b(json|yaml|csv|xml|markdown|table|bullet(?:s| points?)?|numbered list|list|paragraphs?|sentences?|headings?|code block|steps?|email|outline|haiku|tweet|title|one line|format)\b/i;
-    var LENGTH = /(\b\d+\s*(?:-|to)?\s*\d*\s*(?:words?|sentences?|bullets?|bullet points?|paragraphs?|characters?|tokens?|lines?|items?|points?)\b)|\b(under|at most|no more than|maximum|max|up to|fewer than|one|two|three|four|five)\b[^.]{0,30}\b(words?|sentences?|bullets?|paragraphs?|lines?|points?|items?)\b|\b(brief|short|concise|one[- ]liner|tl;?dr)\b/i;
-    var AUDIENCE = /\b(you are|act as|as an? [a-z]+|for (?:a |an |my |our |the )?[a-z]+(?: [a-z]+)?(?: readers?| audience| customers?| users?| team| engineers?| beginners?| executives?| students?| managers?| developers?| kids)|audience|readers?|reader is|written for)\b/i;
-    var VAGUE = /\b(some|something|stuff|things?|etc\.?|good|nice|better|great|various|a lot|lots of|maybe|kind of|sort of|interesting|appropriate|relevant|properly|whatever)\b/gi;
-    var SHORT = /\b(short|brief|concise|succinct|minimal)\b/i;
-    var LONG = /\b(detailed|comprehensive|thorough|in[- ]depth|exhaustive|extensive)\b/i;
-
-    function sentences(t) { return t.split(/(?<=[.!?])\s+|\n+/).map(function (s) { return s.trim(); }).filter(Boolean); }
-
-    function lint(text) {
-      var t = text.trim(), out = [];
-      if (!t) return out;
-      var hasVerb = new RegExp("(^|[.!?\\n]\\s*|\\b(?:please|you to|can you|could you)\\s+)(" + VERBS + ")\\b", "i").test(t) || /\?\s*$/.test(t);
-      out.push(hasVerb
-        ? { s: "pass", t: "Clear task", d: "There’s an instruction or question to act on." }
-        : { s: "warn", t: "No clear task", d: "Start with what you want done, e.g. “Summarize…”, “Write…”, “List…”." });
-      out.push(FORMAT.test(t)
-        ? { s: "pass", t: "Output format", d: "You say what shape the answer should take." }
-        : { s: "warn", t: "No output format", d: "Say how the answer should look: bullets, a table, JSON, an email, a single paragraph." });
-      out.push(LENGTH.test(t)
-        ? { s: "pass", t: "Length limit", d: "The answer has a size to aim for." }
-        : { s: "warn", t: "No length limit", d: "Add a limit such as “under 100 words” or “three bullets”. Unbounded prompts produce long, costly answers." });
-      out.push(AUDIENCE.test(t)
-        ? { s: "pass", t: "Audience or role", d: "The model knows who it’s writing as or for." }
-        : { s: "tip", t: "No audience or role", d: "Say who it’s for (“for new customers”) or who to be (“You are a support lead”)." });
-      var vague = (t.match(VAGUE) || []).map(function (w) { return w.toLowerCase(); });
-      vague = vague.filter(function (w, i) { return vague.indexOf(w) === i; });
-      out.push(vague.length >= 2
-        ? { s: "warn", t: "Vague words", d: "Replace with specifics: " + vague.slice(0, 8).map(function (w) { return "<code>" + PromptTightener.escapeHtml(w) + "</code>"; }).join(", ") + "." , html: true }
-        : { s: "pass", t: "Specific wording", d: "Few vague words like “stuff”, “good”, or “etc.”." });
-      if (SHORT.test(t) && LONG.test(t)) out.push({ s: "warn", t: "Contradiction", d: "It asks for both “" + t.match(SHORT)[0] + "” and “" + t.match(LONG)[0] + "”. Pick one, or say which part should be detailed." });
-      var caps = (t.match(/\b[A-Z]{3,}\b/g) || []).filter(function (w) { return !/^(JSON|YAML|CSV|XML|HTML|CSS|API|SQL|URL|PDF|SDK|LLM|AI|UI|UX|ID|FAQ|TLDR|README|AWS|GCP|HTTP|HTTPS|REST|JWT|OK)$/.test(w); });
-      if (caps.length >= 2 || /!{2,}/.test(t)) out.push({ s: "warn", t: "Shouting", d: "ALL CAPS and “!!!” don’t make models more careful. State the rule once, calmly, and say why it matters." });
-      var negs = (t.match(/\b(don'?t|do not|never|avoid|no)\b/gi) || []).length;
-      if (negs >= 3) out.push({ s: "tip", t: "Mostly “don’ts”", d: "You have " + negs + " negative instructions. Say what to do instead; models follow positive instructions more reliably." });
-      var seen = {}, dup = null;
-      sentences(t).forEach(function (s) { var k = s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); if (k.length > 12) { if (seen[k]) dup = s; seen[k] = true; } });
-      if (dup) out.push({ s: "warn", t: "Repeated sentence", d: "“" + dup.slice(0, 80) + "” appears more than once." });
-      var ph = t.match(/\{\{[^}]*\}\}|\[(?:insert|your|todo|tbd)[^\]]*\]|\bTODO\b|\bTBD\b|<[A-Z_ ]{3,}>/i);
-      if (ph) out.push({ s: "warn", t: "Unfilled placeholder", d: "“" + ph[0] + "” still needs a real value." });
-      if (t.length > 500 && !/\b(example|e\.g\.|for instance|such as|like this)\b/i.test(t)) out.push({ s: "tip", t: "No example", d: "For longer prompts, one short example of a good answer usually beats more description." });
-      return out;
-    }
-
     var els = {
       input: document.getElementById("raw-prompt"), outTight: document.getElementById("out-tight"),
       outOriginal: document.getElementById("out-original"), removed: document.getElementById("removed-list"),
-      checks: document.getElementById("checks"), price: document.getElementById("price"), calls: document.getElementById("calls"),
+      checks: document.getElementById("checks"), fixes: document.getElementById("fixes"), outStruct: document.getElementById("out-structured"), price: document.getElementById("price"), calls: document.getElementById("calls"),
       own: document.getElementById("own")
     };
     var saved = ToolKit.store.get("pme_settings", {}) || {};
     if (saved.price) els.price.value = saved.price;
     if (saved.calls) els.calls.value = saved.calls;
     if (saved.own) els.own.value = saved.own;
-    els.input.value = DEFAULT;
-    var tightText = "";
+    // A prompt handed over from the homepage demo arrives as #p=…
+    var fromHash = "";
+    try { var m = location.hash.match(/^#p=(.*)$/); if (m) fromHash = decodeURIComponent(m[1]); } catch (e) {}
+    if (fromHash) history.replaceState(null, "", location.pathname + location.search);
+    els.input.value = fromHash || DEFAULT;
+    var tightText = "", structText = "", undoStack = [];
 
     function num(v) { var n = parseFloat(String(v).replace(/[^0-9.]/g, "")); return isFinite(n) ? n : 0; }
     function money(n) { return n >= 100 ? "$" + Math.round(n).toLocaleString() : "$" + n.toFixed(2); }
@@ -230,12 +225,17 @@
       var pct = before ? Math.round((saved / before) * 100) : 0;
       document.getElementById("meta-tight").textContent = "~" + before + " → ~" + after + " tokens" + (saved > 0 ? " (−" + pct + "%)" : "");
 
+      // Structured rewrite
+      structText = PromptLint.structure(raw, extra);
+      els.outStruct.className = structText ? "output" : "output empty";
+      els.outStruct.textContent = structText || "Paste a prompt to see it rebuilt into sections.";
+      var gaps = (structText.match(/\[[^\]]+\]/g) || []).length;
+      document.getElementById("meta-struct").textContent = structText ? (gaps ? gaps + " placeholder" + (gaps === 1 ? "" : "s") + " to fill" : "Ready to use") : "";
+
       // Checklist
-      var res = lint(raw);
+      var res = PromptLint.lint(raw);
       els.checks.innerHTML = "";
-      var scored = res.filter(function (x) { return x.s !== "tip"; });
-      var passed = scored.filter(function (x) { return x.s === "pass"; }).length;
-      res.sort(function (a, b) { var o = { warn: 0, tip: 1, pass: 2 }; return o[a.s] - o[b.s]; });
+      var sc = PromptLint.score(res), passed = sc.passed, scored = { length: sc.total };
       res.forEach(function (x) {
         var li = document.createElement("li"); li.className = x.s;
         var icon = document.createElement("span"); icon.className = "icon"; icon.setAttribute("aria-hidden", "true");
@@ -244,11 +244,34 @@
         var title = document.createElement("strong");
         title.textContent = (x.s === "pass" ? "Passed: " : x.s === "warn" ? "Fix: " : "Tip: ") + x.t;
         var d = document.createElement("p");
-        if (x.html) d.innerHTML = x.d; else d.textContent = x.d;
+        d.innerHTML = x.d; // PromptLint escapes user text in details
         body.appendChild(title); body.appendChild(d);
+        if (x.q && x.s !== "pass") { var q = document.createElement("p"); q.className = "q"; q.textContent = "Ask yourself: " + x.q; body.appendChild(q); }
         li.appendChild(icon); li.appendChild(body); els.checks.appendChild(li);
       });
-      var score = scored.length ? Math.round((passed / scored.length) * 100) : 0;
+      var score = sc.score;
+
+      // Quick fixes
+      els.fixes.innerHTML = "";
+      var groups = {};
+      PromptLint.quickFixes(raw, extra).forEach(function (f) {
+        if (!groups[f.group]) {
+          var g = document.createElement("div"); g.className = "group";
+          g.setAttribute("role", "group"); g.setAttribute("aria-label", f.group);
+          var n = document.createElement("span"); n.className = "group-name"; n.setAttribute("aria-hidden", "true"); n.textContent = f.group;
+          g.appendChild(n); els.fixes.appendChild(g); groups[f.group] = g;
+        }
+        var b = document.createElement("button"); b.type = "button"; b.className = "btn btn-quiet btn-small"; b.textContent = f.label;
+        b.addEventListener("click", function () {
+          undoStack.push(els.input.value);
+          els.input.value = f.apply(); render();
+          document.getElementById("undo").disabled = false;
+          ToolKit.announce("Applied: " + f.label + ". Score is now " + PromptLint.score(PromptLint.lint(els.input.value)).score + ".");
+          var first = els.fixes.querySelector("button"); (first || els.input).focus();
+        });
+        groups[f.group].appendChild(b);
+      });
+      if (!els.fixes.children.length) { var none = document.createElement("p"); none.className = "hint"; none.style.margin = "0"; none.textContent = raw.trim() ? "Nothing to fix automatically. Check the warnings above by hand." : "Paste a prompt to see fixes."; els.fixes.appendChild(none); }
       var ring = document.getElementById("ring");
       ring.style.setProperty("--pct", score);
       ring.style.setProperty("--ring", score >= 80 ? "var(--ok)" : score >= 50 ? "var(--warn)" : "var(--bad)");
@@ -267,11 +290,31 @@
     var timer;
     function soon() { clearTimeout(timer); timer = setTimeout(render, 120); }
     [els.input, els.price, els.calls, els.own].forEach(function (el) { el.addEventListener("input", soon); });
-    document.getElementById("sample").addEventListener("click", function () { els.input.value = WEAK; render(); ToolKit.announce("Weak example loaded. See the checklist."); });
+    document.getElementById("example").addEventListener("change", function () {
+      if (!this.value) return;
+      undoStack.push(els.input.value); document.getElementById("undo").disabled = false;
+      els.input.value = PromptLint.examples[this.value]; render();
+      ToolKit.announce(this.options[this.selectedIndex].text + " example loaded. Score " + PromptLint.score(PromptLint.lint(els.input.value)).score + ".");
+      this.value = "";
+    });
+    document.getElementById("undo").addEventListener("click", function () {
+      if (!undoStack.length) return;
+      els.input.value = undoStack.pop(); render();
+      this.disabled = !undoStack.length;
+      ToolKit.announce("Undone.");
+      if (this.disabled) els.input.focus();
+    });
+    document.getElementById("copy-struct").addEventListener("click", function () { ToolKit.copyText(structText, this); });
+    document.getElementById("use-struct").addEventListener("click", function () {
+      if (!structText) return;
+      undoStack.push(els.input.value); document.getElementById("undo").disabled = false;
+      els.input.value = structText; render(); els.input.focus(); ToolKit.announce("Structured version moved into the editor. Fill in the bracketed parts.");
+    });
     document.getElementById("clear").addEventListener("click", function () { els.input.value = ""; render(); els.input.focus(); });
     document.getElementById("copy-tight").addEventListener("click", function () { ToolKit.copyText(tightText, this); });
     document.getElementById("use-tight").addEventListener("click", function () {
       if (!tightText) return;
+      undoStack.push(els.input.value); document.getElementById("undo").disabled = false;
       els.input.value = tightText; render(); els.input.focus(); ToolKit.announce("Tightened version moved into the editor.");
     });
     render();
