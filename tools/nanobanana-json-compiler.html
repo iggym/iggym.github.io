@@ -4,13 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NanoBanana Compiler — Iggy Mwangi</title>
-  <meta name="description" content="Pick a few cloud architecture options and get a ready-to-paste prompt and JSON spec for an image model like Nano Banana to draw the diagram.">
+  <meta name="description" content="Describe a system's components and connections, see a live diagram, and export it as an SVG, Mermaid code, JSON, or a prompt for an image model like Nano Banana.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
+  <style>
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+    .layout > .wide { grid-column: 1 / -1; }
+    @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+    .rows-edit { display: grid; gap: 0.4rem; margin-bottom: 0.6rem; }
+    .r-node { display: grid; grid-template-columns: minmax(0, 1fr) 9.5rem 44px; gap: 0.4rem; }
+    .r-edge { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 44px; gap: 0.4rem; }
+    .r-node input, .r-node select, .r-edge input, .r-edge select { min-height: 40px; padding: 0.35rem 0.5rem; font-size: 0.93rem; }
+    .del { min-height: 40px; border-radius: 0.5rem; border: 1px solid var(--line); background: var(--bg); color: var(--muted); cursor: pointer; font: inherit; }
+    .del:hover { color: var(--bad); border-color: var(--bad); }
+    .col-labels { display: grid; gap: 0.4rem; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.2rem; }
+    .diagram { background: var(--bg); border: 1px solid var(--line); border-radius: 0.6rem; overflow: auto; min-height: 16rem; }
+    .diagram svg { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+    .tabs { display: flex; gap: 0.35rem; flex-wrap: wrap; margin: 1rem 0 0.5rem; }
+    .warn-list { margin: 0.4rem 0 0; padding-left: 1.2rem; color: var(--warn); font-size: 0.93rem; }
+  </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to main content</a>
@@ -33,117 +49,332 @@
   <main id="main" class="tool-main" tabindex="-1">
     <div class="tool-intro">
       <h1>NanoBanana Compiler</h1>
-      <p class="lede">Describe a simple cloud architecture with a few choices, and this page writes a prompt you can give an image model, such as Google’s Nano Banana, to draw the diagram. It also gives a structured JSON version if you prefer to paste that.</p>
-      <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+      <p class="lede">List the parts of a system and how they connect, and get a clean architecture diagram straight away. Download it as an SVG, paste the Mermaid code into GitHub, Notion, or your docs, or copy a prompt that asks an image model such as Google’s Nano Banana to draw a polished version.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
     </div>
 
-    <div class="grid-2">
-      <section class="panel" aria-labelledby="opt-title">
-        <h2 id="opt-title">Your architecture</h2>
-        <div class="field">
-          <label for="tier">Where the app runs</label>
-          <select id="tier">
-            <option value="serverless">Serverless functions at the edge (e.g. Cloudflare Workers, AWS Lambda)</option>
-            <option value="containers">Containers in a private network (e.g. Kubernetes, ECS)</option>
-            <option value="servers">Dedicated servers</option>
-          </select>
+    <div class="layout">
+      <div class="stack">
+        <section class="panel" aria-labelledby="preset-title">
+          <h2 id="preset-title" class="panel-title"><label for="preset">Start from a preset</label></h2>
+          <div class="row" style="flex-wrap:nowrap">
+            <select id="preset">
+              <option value="web">Web app with cache and database</option>
+              <option value="rag">RAG chatbot</option>
+              <option value="agent">Agent with tools and a checker</option>
+              <option value="batch">Batch data pipeline</option>
+              <option value="blank">Blank</option>
+            </select>
+            <button type="button" class="btn btn-small" id="load-preset">Load</button>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="nodes-title">
+          <h2 id="nodes-title" class="panel-title">Components</h2>
+          <div class="col-labels r-node" aria-hidden="true"><span>Name</span><span>Kind</span><span></span></div>
+          <div class="rows-edit" id="nodes"></div>
+          <button type="button" class="btn btn-quiet btn-small" id="add-node">+ Add component</button>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="panel" aria-labelledby="edges-title">
+          <h2 id="edges-title" class="panel-title">Connections</h2>
+          <div class="col-labels r-edge" aria-hidden="true"><span>From</span><span>To</span><span>Label</span><span></span></div>
+          <div class="rows-edit" id="edges"></div>
+          <button type="button" class="btn btn-quiet btn-small" id="add-edge">+ Add connection</button>
+          <ul class="warn-list" id="warnings"></ul>
+        </section>
+      </div>
+
+      <section class="panel wide" aria-labelledby="out-title">
+        <div class="row-between">
+          <h2 id="out-title" class="panel-title">Diagram</h2>
+          <button type="button" class="btn btn-quiet btn-small" id="download">Download SVG</button>
         </div>
-        <fieldset>
-          <legend>Parts to include</legend>
-          <label class="check"><input type="checkbox" id="l-ingress" checked> <span>Entry point with rate limiting <small>load balancer or API gateway</small></span></label>
-          <label class="check"><input type="checkbox" id="l-cache" checked> <span>Cache <small>e.g. Redis</small></span></label>
-          <label class="check"><input type="checkbox" id="l-db"> <span>Database replicated across regions <small>e.g. PostgreSQL</small></span></label>
-          <label class="check"><input type="checkbox" id="l-queue"> <span>Background job queue</span></label>
-          <label class="check"><input type="checkbox" id="l-llm"> <span>Calls to an AI model API</span></label>
-        </fieldset>
-        <div class="field">
-          <label for="style">Diagram style</label>
+        <div class="diagram" id="diagram" role="img" aria-label="Architecture diagram preview"></div>
+        <div class="tabs" role="group" aria-label="Export format">
+          <button type="button" class="btn btn-quiet btn-small" data-tab="prompt" aria-pressed="true">Image prompt</button>
+          <button type="button" class="btn btn-quiet btn-small" data-tab="mermaid" aria-pressed="false">Mermaid</button>
+          <button type="button" class="btn btn-quiet btn-small" data-tab="json" aria-pressed="false">JSON</button>
+        </div>
+        <div class="field" id="style-wrap">
+          <label for="style">Image style</label>
           <select id="style">
-            <option value="clean flat vector diagram with a white background and a limited color palette">Clean and flat</option>
+            <option value="clean flat vector diagram on a white background with a limited, consistent color palette">Clean and flat</option>
             <option value="isometric 3D technical illustration with soft shadows">Isometric 3D</option>
             <option value="hand-drawn whiteboard sketch with marker lines">Whiteboard sketch</option>
+            <option value="dark-mode diagram with glowing neon outlines on a near-black background">Dark neon</option>
           </select>
         </div>
-      </section>
-
-      <section class="panel" aria-labelledby="out-title">
-        <div class="row-between">
-          <h2 id="out-title" class="panel-title">Image prompt</h2>
-          <button type="button" class="btn btn-small" id="copy-prompt">Copy prompt</button>
+        <pre class="output" id="export" tabindex="0" aria-label="Export"></pre>
+        <div class="row" style="margin-top:0.75rem">
+          <button type="button" class="btn" id="copy">Copy</button>
         </div>
-        <pre class="output" id="prompt-out" tabindex="0" aria-label="Image prompt"></pre>
-
-        <div class="row-between" style="margin-top:1rem">
-          <h2 class="panel-title" id="json-title">JSON spec</h2>
-          <button type="button" class="btn btn-quiet btn-small" id="copy-json">Copy JSON</button>
-        </div>
-        <pre class="output" id="json-out" tabindex="0" aria-labelledby="json-title"></pre>
       </section>
     </div>
     <p id="status" class="sr-only" role="status" aria-live="polite"></p>
   </main>
 
   <footer class="tool-foot">
-    <p>Everything runs in this browser tab. Nothing is sent anywhere or saved.</p>
+    <p>Everything runs in this browser tab. Your diagram is saved in this browser so it’s here next time.</p>
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
-    var TIERS = {
-      serverless: { label: "Serverless edge functions", node: "App (serverless functions at the edge)" },
-      containers: { label: "Containers in a private network", node: "App (containers in a private network)" },
-      servers: { label: "Dedicated servers", node: "App (dedicated servers)" }
+    var KINDS = {
+      user: { label: "User / client", icon: "👤", shape: "round" },
+      gateway: { label: "Gateway / load balancer", icon: "⇄", shape: "rect" },
+      service: { label: "Service / app", icon: "⚙", shape: "rect" },
+      llm: { label: "AI model", icon: "✦", shape: "rect" },
+      database: { label: "Database", icon: "🗄", shape: "db" },
+      cache: { label: "Cache", icon: "⚡", shape: "rect" },
+      queue: { label: "Queue / stream", icon: "≋", shape: "rect" },
+      worker: { label: "Worker / job", icon: "⚒", shape: "rect" },
+      storage: { label: "File / object storage", icon: "▤", shape: "rect" },
+      external: { label: "External API", icon: "☁", shape: "round" },
+      vector: { label: "Vector store", icon: "◆", shape: "db" }
     };
-    var promptText = "", jsonText = "";
+    var PRESETS = {
+      web: { nodes: [["Users", "user"], ["API gateway", "gateway"], ["Web app", "service"], ["Redis cache", "cache"], ["PostgreSQL", "database"]],
+        edges: [["Users", "API gateway", "HTTPS"], ["API gateway", "Web app", "rate-limited requests"], ["Web app", "Redis cache", "read / write"], ["Web app", "PostgreSQL", "queries"]] },
+      rag: { nodes: [["User", "user"], ["Chat API", "service"], ["Embedding model", "llm"], ["Vector store", "vector"], ["LLM", "llm"], ["Document store", "storage"], ["Ingest worker", "worker"]],
+        edges: [["User", "Chat API", "question"], ["Chat API", "Embedding model", "embed query"], ["Chat API", "Vector store", "top-k search"], ["Chat API", "LLM", "prompt + context"], ["Document store", "Ingest worker", "new files"], ["Ingest worker", "Vector store", "chunks + vectors"]] },
+      agent: { nodes: [["User", "user"], ["Planner", "llm"], ["Worker", "llm"], ["Tool APIs", "external"], ["Checker", "service"], ["Result store", "database"]],
+        edges: [["User", "Planner", "request"], ["Planner", "Worker", "plan"], ["Worker", "Tool APIs", "tool calls"], ["Worker", "Checker", "draft"], ["Checker", "Worker", "fix requests"], ["Checker", "Result store", "approved result"]] },
+      batch: { nodes: [["Source bucket", "storage"], ["Scheduler", "service"], ["Job queue", "queue"], ["Workers", "worker"], ["Warehouse", "database"], ["Dashboard", "user"]],
+        edges: [["Scheduler", "Job queue", "nightly jobs"], ["Source bucket", "Workers", "raw files"], ["Job queue", "Workers", "tasks"], ["Workers", "Warehouse", "cleaned rows"], ["Warehouse", "Dashboard", "reports"]] },
+      blank: { nodes: [["Component A", "service"], ["Component B", "service"]], edges: [["Component A", "Component B", ""]] }
+    };
 
-    function on(id) { return document.getElementById(id).checked; }
+    var state = ToolKit.store.get("nb_diagram", null);
+    if (!state || !Array.isArray(state.nodes)) state = clonePreset("web");
+    var tab = "prompt";
+    var els = { nodes: document.getElementById("nodes"), edges: document.getElementById("edges"), diagram: document.getElementById("diagram"), out: document.getElementById("export"), style: document.getElementById("style") };
+    if (state.style) els.style.value = state.style;
 
-    function compile() {
-      var tier = TIERS[document.getElementById("tier").value];
-      var style = document.getElementById("style").value;
+    function clonePreset(k) { var p = PRESETS[k]; return { nodes: p.nodes.map(function (n) { return { name: n[0], kind: n[1] }; }), edges: p.edges.map(function (e) { return { from: e[0], to: e[1], label: e[2] }; }) }; }
+    function save() { state.style = els.style.value; ToolKit.store.set("nb_diagram", state); }
+    function names() { return state.nodes.map(function (n) { return n.name.trim(); }).filter(Boolean); }
+    function escapeXml(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
 
-      var nodes = [{ id: "users", label: "Users" }];
-      var edges = [];
-      var prev = "users";
-      if (on("l-ingress")) { nodes.push({ id: "gateway", label: "API gateway with rate limiting" }); edges.push([prev, "gateway", "HTTPS requests"]); prev = "gateway"; }
-      nodes.push({ id: "app", label: tier.node });
-      edges.push([prev, "app", prev === "users" ? "HTTPS requests" : "allowed requests"]);
-      if (on("l-cache")) { nodes.push({ id: "cache", label: "Cache (Redis)" }); edges.push(["app", "cache", "read/write"]); }
-      if (on("l-db")) { nodes.push({ id: "db", label: "Database (PostgreSQL, replicated across regions)" }); edges.push(["app", "db", "queries"]); }
-      if (on("l-queue")) { nodes.push({ id: "queue", label: "Job queue" }); nodes.push({ id: "workers", label: "Background workers" }); edges.push(["app", "queue", "enqueue jobs"]); edges.push(["queue", "workers", "process"]); }
-      if (on("l-llm")) { nodes.push({ id: "llm", label: "AI model API" }); edges.push(["app", "llm", "prompts and responses"]); }
-
-      var labelOf = {};
-      nodes.forEach(function (n) { labelOf[n.id] = n.label; });
-
-      promptText =
-        "Draw a software architecture diagram as a " + style + ".\n\n" +
-        "Components (draw each as a labeled box, with the exact label text):\n" +
-        nodes.map(function (n) { return "- " + n.label; }).join("\n") + "\n\n" +
-        "Connections (draw as arrows, labeled):\n" +
-        edges.map(function (e) { return "- " + labelOf[e[0]] + " → " + labelOf[e[1]] + ": " + e[2]; }).join("\n") + "\n\n" +
-        "Lay it out left to right, starting from Users. Keep all text legible and spelled exactly as written. Add no other components, logos, or text.";
-
-      jsonText = JSON.stringify({
-        type: "architecture_diagram",
-        style: style,
-        layout: "left_to_right",
-        hosting: tier.label,
-        components: nodes,
-        connections: edges.map(function (e) { return { from: e[0], to: e[1], label: e[2] }; })
-      }, null, 2);
-
-      document.getElementById("prompt-out").textContent = promptText;
-      document.getElementById("json-out").textContent = jsonText;
+    // ---------- Editors ----------
+    function renderEditors(focusSel) {
+      els.nodes.innerHTML = "";
+      state.nodes.forEach(function (n, i) {
+        var row = document.createElement("div"); row.className = "r-node";
+        var name = document.createElement("input"); name.type = "text"; name.value = n.name; name.setAttribute("aria-label", "Component " + (i + 1) + " name"); name.dataset.f = "n" + i;
+        name.addEventListener("change", function () {
+          var old = n.name; n.name = name.value;
+          state.edges.forEach(function (e) { if (e.from === old) e.from = n.name; if (e.to === old) e.to = n.name; });
+          renderEditors(); update();
+        });
+        name.addEventListener("input", function () { var old = n.name; n.name = name.value; state.edges.forEach(function (e) { if (e.from === old) e.from = n.name; if (e.to === old) e.to = n.name; }); update(); });
+        var kind = document.createElement("select"); kind.setAttribute("aria-label", "Component " + (i + 1) + " kind");
+        Object.keys(KINDS).forEach(function (k) { var o = document.createElement("option"); o.value = k; o.textContent = KINDS[k].label; if (k === n.kind) o.selected = true; kind.appendChild(o); });
+        kind.addEventListener("change", function () { n.kind = kind.value; update(); });
+        var del = document.createElement("button"); del.type = "button"; del.className = "del"; del.textContent = "✕"; del.setAttribute("aria-label", "Remove " + (n.name || "component"));
+        del.addEventListener("click", function () {
+          state.nodes.splice(i, 1);
+          state.edges = state.edges.filter(function (e) { return e.from !== n.name && e.to !== n.name; });
+          renderEditors(); update(); ToolKit.announce("Removed " + (n.name || "component") + " and its connections.");
+        });
+        row.appendChild(name); row.appendChild(kind); row.appendChild(del); els.nodes.appendChild(row);
+      });
+      els.edges.innerHTML = "";
+      var list = names();
+      state.edges.forEach(function (e, i) {
+        var row = document.createElement("div"); row.className = "r-edge";
+        function pick(field, label) {
+          var sel = document.createElement("select"); sel.setAttribute("aria-label", "Connection " + (i + 1) + " " + label);
+          list.forEach(function (nm) { var o = document.createElement("option"); o.value = nm; o.textContent = nm; if (nm === e[field]) o.selected = true; sel.appendChild(o); });
+          if (list.indexOf(e[field]) === -1) { var o = document.createElement("option"); o.value = e[field]; o.textContent = (e[field] || "—") + " (missing)"; o.selected = true; sel.appendChild(o); }
+          sel.addEventListener("change", function () { e[field] = sel.value; update(); });
+          return sel;
+        }
+        var lab = document.createElement("input"); lab.type = "text"; lab.value = e.label || ""; lab.placeholder = "optional"; lab.setAttribute("aria-label", "Connection " + (i + 1) + " label");
+        lab.addEventListener("input", function () { e.label = lab.value; update(); });
+        var del = document.createElement("button"); del.type = "button"; del.className = "del"; del.textContent = "✕"; del.setAttribute("aria-label", "Remove connection " + (i + 1));
+        del.addEventListener("click", function () { state.edges.splice(i, 1); renderEditors(); update(); });
+        row.appendChild(pick("from", "from")); row.appendChild(pick("to", "to")); row.appendChild(lab); row.appendChild(del); els.edges.appendChild(row);
+      });
+      if (focusSel) { var el = document.querySelector(focusSel); if (el) el.focus(); }
     }
 
-    document.querySelectorAll("select, input").forEach(function (el) { el.addEventListener("change", compile); });
-    document.getElementById("copy-prompt").addEventListener("click", function () { ToolKit.copyText(promptText, this); });
-    document.getElementById("copy-json").addEventListener("click", function () { ToolKit.copyText(jsonText, this); });
-    compile();
+    // ---------- Layout: columns by longest path from the starting components ----------
+    function layout() {
+      var nodes = state.nodes.filter(function (n) { return n.name.trim(); });
+      var idx = {}; nodes.forEach(function (n, i) { idx[n.name.trim()] = i; });
+      var edges = state.edges.filter(function (e) { return idx[e.from] !== undefined && idx[e.to] !== undefined && e.from !== e.to; });
+      var level = nodes.map(function () { return 0; });
+      // Relax a bounded number of times so cycles (e.g. retry loops) can't spin forever.
+      for (var pass = 0; pass < nodes.length; pass++) {
+        var changed = false;
+        edges.forEach(function (e) {
+          var a = idx[e.from], b = idx[e.to];
+          if (level[b] < level[a] + 1 && level[a] + 1 < nodes.length) { level[b] = level[a] + 1; changed = true; }
+        });
+        if (!changed) break;
+      }
+      var cols = {};
+      nodes.forEach(function (n, i) { (cols[level[i]] = cols[level[i]] || []).push(i); });
+      // Order each column by the average row of its inputs, which cuts down crossing lines.
+      var row = {};
+      Object.keys(cols).sort(function (a, b) { return a - b; }).forEach(function (k) {
+        var col = cols[k];
+        if (+k > 0) {
+          col.forEach(function (i) {
+            var preds = edges.filter(function (e) { return idx[e.to] === i && row[idx[e.from]] !== undefined; }).map(function (e) { return row[idx[e.from]]; });
+            col["w" + i] = preds.length ? preds.reduce(function (a, b) { return a + b; }, 0) / preds.length : 1e6 + i;
+          });
+          col.sort(function (a, b) { return col["w" + a] - col["w" + b]; });
+        }
+        col.forEach(function (i, r) { row[i] = r - (col.length - 1) / 2; });
+      });
+      var W = 160, H = 62, GX = 84, GY = 36, PAD = 28;
+      var maxRows = Math.max.apply(null, Object.keys(cols).map(function (k) { return cols[k].length; }).concat([1]));
+      var nCols = Object.keys(cols).length || 1;
+      var pos = {};
+      Object.keys(cols).forEach(function (k) {
+        var col = cols[k], colH = col.length * H + (col.length - 1) * GY, totalH = maxRows * H + (maxRows - 1) * GY;
+        col.forEach(function (i, r) { pos[i] = { x: PAD + k * (W + GX), y: PAD + (totalH - colH) / 2 + r * (H + GY) }; });
+      });
+      return { nodes: nodes, edges: edges, idx: idx, pos: pos, W: W, H: H,
+        width: PAD * 2 + nCols * W + (nCols - 1) * GX, height: PAD * 2 + maxRows * H + (maxRows - 1) * GY + 20 };
+    }
+
+    function svg(themeColors) {
+      var L = layout(), c = themeColors;
+      var out = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + L.width + " " + L.height + '" width="' + L.width + '" height="' + L.height + '" font-family="system-ui, -apple-system, Segoe UI, sans-serif">';
+      out += '<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="' + c.line + '"/></marker></defs>';
+      out += '<rect width="100%" height="100%" fill="' + c.bg + '"/>';
+      L.edges.forEach(function (e) {
+        var a = L.pos[L.idx[e.from]], b = L.pos[L.idx[e.to]];
+        var back = b.x <= a.x;
+        var x1 = back ? a.x + L.W / 2 : a.x + L.W, y1 = back ? a.y + L.H : a.y + L.H / 2;
+        var x2 = back ? b.x + L.W / 2 : b.x, y2 = back ? b.y + L.H : b.y + L.H / 2;
+        var d = back
+          ? "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + 60) + " " + x2 + "," + (y2 + 60) + " " + x2 + "," + (y2 + 4)
+          : "M" + x1 + "," + y1 + " C" + (x1 + 48) + "," + y1 + " " + (x2 - 48) + "," + y2 + " " + (x2 - 4) + "," + y2;
+        out += '<path d="' + d + '" fill="none" stroke="' + (back ? c.accent : c.line) + '" stroke-width="1.6"' + (back ? ' stroke-dasharray="5 4"' : "") + ' marker-end="url(#arr)"/>';
+        if (e.label) {
+          var mx = (x1 + x2) / 2, my = back ? Math.max(y1, y2) + 48 : (y1 + y2) / 2 - 8;
+          var tw = Math.min(150, e.label.length * 6.4 + 12);
+          out += '<rect x="' + (mx - tw / 2) + '" y="' + (my - 11) + '" width="' + tw + '" height="18" rx="9" fill="' + c.bg + '" opacity="0.92"/>';
+          out += '<text x="' + mx + '" y="' + (my + 2) + '" text-anchor="middle" font-size="11" fill="' + c.muted + '">' + escapeXml(e.label.length > 24 ? e.label.slice(0, 23) + "…" : e.label) + "</text>";
+        }
+      });
+      L.nodes.forEach(function (n, i) {
+        var p = L.pos[i], k = KINDS[n.kind] || KINDS.service;
+        var rx = k.shape === "round" ? 32 : 12;
+        out += '<rect x="' + p.x + '" y="' + p.y + '" width="' + L.W + '" height="' + L.H + '" rx="' + rx + '" fill="' + c.card + '" stroke="' + (n.kind === "llm" ? c.accent : c.border) + '" stroke-width="' + (n.kind === "llm" ? 2 : 1.4) + '"/>';
+        if (k.shape === "db") out += '<path d="M' + (p.x + 10) + "," + (p.y + 12) + " Q" + (p.x + L.W / 2) + "," + (p.y + 22) + " " + (p.x + L.W - 10) + "," + (p.y + 12) + '" fill="none" stroke="' + c.border + '" stroke-width="1"/>';
+        var nm = n.name.trim(); if (nm.length > 22) nm = nm.slice(0, 21) + "…";
+        out += '<text x="' + (p.x + L.W / 2) + '" y="' + (p.y + 28) + '" text-anchor="middle" font-size="14" font-weight="600" fill="' + c.ink + '">' + escapeXml(nm) + "</text>";
+        out += '<text x="' + (p.x + L.W / 2) + '" y="' + (p.y + 47) + '" text-anchor="middle" font-size="11" fill="' + c.muted + '">' + escapeXml(k.icon + "  " + k.label.split(" / ")[0]) + "</text>";
+      });
+      return out + "</svg>";
+    }
+
+    function colors() {
+      var cs = getComputedStyle(document.documentElement);
+      function v(n) { return cs.getPropertyValue(n).trim(); }
+      return { bg: v("--bg"), card: v("--bg-raise"), ink: v("--ink"), muted: v("--muted"), border: v("--line-strong"), line: v("--muted"), accent: v("--accent") };
+    }
+
+    // ---------- Exports ----------
+    function mermaidId(name) { return "n_" + name.replace(/[^A-Za-z0-9]+/g, "_").replace(/^_|_$/g, ""); }
+    function mermaid() {
+      var L = layout(), lines = ["flowchart LR"];
+      L.nodes.forEach(function (n) {
+        var id = mermaidId(n.name.trim()), label = n.name.trim().replace(/"/g, "'");
+        var k = KINDS[n.kind] || KINDS.service;
+        lines.push("  " + id + (k.shape === "db" ? '[("' + label + '")]' : k.shape === "round" ? '(["' + label + '"])' : '["' + label + '"]'));
+      });
+      L.edges.forEach(function (e) {
+        lines.push("  " + mermaidId(e.from) + (e.label ? ' -->|"' + e.label.replace(/"/g, "'") + '"| ' : " --> ") + mermaidId(e.to));
+      });
+      return lines.join("\n");
+    }
+    function prompt() {
+      var L = layout();
+      return "Draw a software architecture diagram as a " + els.style.value + ".\n\n" +
+        "Components (one labeled box each, using exactly this text):\n" +
+        L.nodes.map(function (n) { return "- " + n.name.trim() + " (" + (KINDS[n.kind] || KINDS.service).label.toLowerCase() + ")"; }).join("\n") + "\n\n" +
+        "Connections (labeled arrows):\n" +
+        L.edges.map(function (e) { return "- " + e.from + " → " + e.to + (e.label ? ": " + e.label : ""); }).join("\n") + "\n\n" +
+        "Lay it out left to right in the order the data flows. Keep every label legible and spelled exactly as written. Do not add components, logos, or text that are not listed.";
+    }
+    function json() {
+      var L = layout();
+      return JSON.stringify({ type: "architecture_diagram", layout: "left_to_right", style: els.style.value,
+        components: L.nodes.map(function (n) { return { id: mermaidId(n.name.trim()), label: n.name.trim(), kind: n.kind }; }),
+        connections: L.edges.map(function (e) { return { from: mermaidId(e.from), to: mermaidId(e.to), label: e.label || "" }; }) }, null, 2);
+    }
+    function exportText() { return tab === "mermaid" ? mermaid() : tab === "json" ? json() : prompt(); }
+
+    function warnings() {
+      var w = [], list = state.nodes.map(function (n) { return n.name.trim(); });
+      var dupes = list.filter(function (n, i) { return n && list.indexOf(n) !== i; });
+      if (dupes.length) w.push("Two components share the name “" + dupes[0] + "”. Give each a unique name.");
+      if (list.some(function (n) { return !n; })) w.push("A component has no name, so it’s left out.");
+      var used = {}; state.edges.forEach(function (e) { used[e.from] = used[e.to] = true; });
+      var lonely = list.filter(function (n) { return n && !used[n]; });
+      if (lonely.length) w.push("Not connected yet: " + lonely.join(", ") + ".");
+      return w;
+    }
+
+    function update() {
+      els.diagram.innerHTML = svg(colors());
+      var L = layout();
+      els.diagram.setAttribute("aria-label", "Architecture diagram with " + L.nodes.length + " components and " + L.edges.length + " connections.");
+      els.out.textContent = exportText();
+      document.getElementById("style-wrap").hidden = tab === "mermaid";
+      var ul = document.getElementById("warnings"); ul.innerHTML = "";
+      warnings().forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+      save();
+    }
+
+    document.getElementById("add-node").addEventListener("click", function () {
+      var n = 1; while (names().indexOf("Component " + n) !== -1) n++;
+      state.nodes.push({ name: "Component " + n, kind: "service" });
+      renderEditors('[data-f="n' + (state.nodes.length - 1) + '"]'); update();
+      var el = document.querySelector('[data-f="n' + (state.nodes.length - 1) + '"]'); if (el) el.select();
+    });
+    document.getElementById("add-edge").addEventListener("click", function () {
+      var list = names(); if (list.length < 2) { ToolKit.announce("Add at least two components first."); return; }
+      state.edges.push({ from: list[list.length - 2], to: list[list.length - 1], label: "" });
+      renderEditors(); update(); ToolKit.announce("Connection added. Choose where it goes from and to.");
+    });
+    document.getElementById("load-preset").addEventListener("click", function () {
+      state = Object.assign(clonePreset(document.getElementById("preset").value), { style: els.style.value });
+      renderEditors(); update(); ToolKit.announce("Preset loaded.");
+    });
+    document.querySelectorAll("[data-tab]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        tab = b.dataset.tab;
+        document.querySelectorAll("[data-tab]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        update();
+      });
+    });
+    els.style.addEventListener("change", update);
+    document.getElementById("copy").addEventListener("click", function () { ToolKit.copyText(exportText(), this); });
+    document.getElementById("download").addEventListener("click", function () {
+      // Export with light colors so the file looks right anywhere it's pasted.
+      var light = { bg: "#ffffff", card: "#ffffff", ink: "#16171b", muted: "#5a5d66", border: "#8f8c84", line: "#5a5d66", accent: "#4338ca" };
+      var blob = new Blob([svg(light)], { type: "image/svg+xml" });
+      var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "architecture.svg";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      ToolKit.announce("Diagram downloaded.");
+    });
+    // Re-draw when the theme changes so the preview matches.
+    new MutationObserver(update).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+    renderEditors(); update();
   </script>
 </body>
 </html>

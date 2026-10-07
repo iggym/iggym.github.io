@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
     .layout { display: grid; grid-template-columns: 20rem minmax(0, 1fr); gap: 1rem; align-items: start; }
     @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } }
@@ -18,6 +18,15 @@
     #result { min-height: 16rem; }
     .cat-count { color: var(--muted); font-family: var(--mono); font-size: 0.85rem; margin-left: auto; }
     .check.cat { align-items: center; }
+    .rv-group { margin-bottom: 0.9rem; }
+    .rv-group h3 { font-size: 0.95rem; margin: 0 0 0.35rem; }
+    .rv-item { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0.6rem; align-items: start;
+      padding: 0.45rem 0.55rem; border: 1px solid var(--line); border-radius: 0.55rem; background: var(--bg); margin-bottom: 0.35rem; }
+    .rv-item input[type=checkbox] { width: 1.15rem; height: 1.15rem; margin-top: 0.2rem; accent-color: var(--accent); }
+    .rv-item .rv-text { overflow-wrap: anywhere; font-size: 0.95rem; }
+    .rv-item.off .rv-text { color: var(--muted); text-decoration: line-through; }
+    .rv-item.trimmed .rv-text::after { content: " · left out by size limit"; color: var(--warn); font-size: 0.85rem; }
+    .rv-item select { width: auto; min-height: 36px; padding: 0.2rem 0.4rem; font-size: 0.88rem; }
   </style>
 </head>
 <body>
@@ -41,7 +50,7 @@
   <main id="main" class="tool-main" tabindex="-1">
     <div class="tool-intro">
       <h1>Context Extractor</h1>
-      <p class="lede">Paste a long AI chat, meeting notes, or a project thread. This page pulls out the goals, rules, decisions, open questions, and key facts, and arranges them into a short summary you can paste into a fresh chat so you don’t have to start over.</p>
+      <p class="lede">Paste a long AI chat, meeting notes, or a project thread. This page pulls out the goals, rules, decisions, open questions, and key facts, and arranges them into a short summary. Review each item, fix anything it sorted wrongly, then copy a ready-made handoff prompt into a fresh chat so you don’t have to start over.</p>
       <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
       <details class="how">
         <summary>How it works</summary>
@@ -78,7 +87,12 @@
             <legend>Format</legend>
             <label class="check"><input type="radio" name="format" value="md" checked> <span>Headings and bullet points</span></label>
             <label class="check"><input type="radio" name="format" value="json"> <span>JSON</span></label>
+            <label class="check"><input type="radio" name="format" value="handoff"> <span>Handoff prompt <small>Ready to paste into a new chat, with your next request at the end</small></span></label>
           </fieldset>
+          <div class="field" id="next-wrap" hidden>
+            <label for="next">Your next request</label>
+            <textarea id="next" rows="2" style="min-height:4rem" placeholder="e.g. Now write the Lambda handler."></textarea>
+          </div>
           <label class="check"><input type="checkbox" id="opt-remember"> <span>Remember my pasted text on this device <small>Off by default. Settings are always remembered.</small></span></label>
         </section>
       </div>
@@ -106,6 +120,15 @@
           <p id="trim-note" class="notice" hidden></p>
           <pre class="output" id="result" tabindex="0" aria-label="Summary"></pre>
         </section>
+
+        <section class="panel" aria-labelledby="review-title">
+          <div class="row-between">
+            <h2 id="review-title" class="panel-title">Review the items</h2>
+            <button type="button" class="btn btn-quiet btn-small" id="reset-review">Undo my changes</button>
+          </div>
+          <p class="hint">Untick anything that shouldn’t carry forward, or move it to a better section. Your choices stick while you edit.</p>
+          <div id="review"></div>
+        </section>
       </div>
     </div>
     <p id="summary-live" class="sr-only" aria-live="polite"></p>
@@ -117,9 +140,9 @@
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
     // Categories in priority order: when trimming to the size limit, later ones go first.
     var CATEGORIES = [
@@ -175,7 +198,7 @@
     els.chat.checked = state.chat !== false;
     els.speakers.checked = state.speakers !== false;
     els.remember.checked = !!state.remember;
-    if (state.format === "json") document.querySelector('input[name="format"][value="json"]').checked = true;
+    if (state.format === "json" || state.format === "handoff") document.querySelector('input[name="format"][value="' + state.format + '"]').checked = true;
     if (state.remember && state.text) els.raw.value = state.text;
 
     var countEls = {};
@@ -244,11 +267,16 @@
       return "other";
     }
 
+    // Visitor's per-item choices, keyed by the item's normalized text.
+    var overrides = {};
+    var lastAll = [];
+
     function run() {
       var raw = els.raw.value;
       var seen = {};
       var buckets = {};
       CATEGORIES.forEach(function (c) { buckets[c.id] = []; });
+      var all = [];
 
       splitUnits(raw).forEach(function (u, index) {
         if (!u.code && els.chat.checked && CHATTER.test(u.text)) return;
@@ -256,8 +284,15 @@
         if (!key || seen[key]) return;
         seen[key] = true;
         u.index = index;
-        buckets[classify(u)].push(u);
+        u.key = key;
+        u.auto = classify(u);
+        var o = overrides[key] || {};
+        u.cat = o.cat || u.auto;
+        u.off = !!o.off;
+        all.push(u);
+        if (!u.off) buckets[u.cat].push(u);
       });
+      lastAll = all;
 
       CATEGORIES.forEach(function (c) { countEls[c.id].textContent = buckets[c.id].length; });
 
@@ -267,8 +302,10 @@
       var limit = +els.budget.value;
       var dropped = 0;
       function size() { return ToolKit.estimateTokens(render(chosen)); }
+      all.forEach(function (u) { u.trimmed = false; });
       while (chosen.length && size() > limit) {
         var last = chosen[chosen.length - 1];
+        last.items[0].trimmed = true;
         last.items.shift();
         dropped++;
         if (!last.items.length) chosen.pop();
@@ -296,6 +333,8 @@
       note.hidden = dropped === 0;
       note.textContent = dropped ? dropped + " older item" + (dropped === 1 ? " was" : "s were") + " left out to fit the size limit. Raise the limit to include more." : "";
 
+      renderReview(all);
+      document.getElementById("next-wrap").hidden = format() !== "handoff";
       clearTimeout(run.timer);
       run.timer = setTimeout(function () {
         document.getElementById("summary-live").textContent = raw.trim()
@@ -315,12 +354,53 @@
         });
         return JSON.stringify(obj, null, 2);
       }
-      return sections.map(function (s) {
+      var md = sections.map(function (s) {
         var body = s.items.slice().sort(byIndex).map(function (u) {
           return u.code ? u.text : "- " + u.text;
         }).join("\n");
         return "## " + s.cat.label + "\n" + body;
       }).join("\n\n");
+      if (format() === "handoff") {
+        var next = (document.getElementById("next").value || "").trim();
+        return "I’m continuing earlier work. Here is what has been established so far. Treat it as settled unless I say otherwise.\n\n" +
+          md + "\n\n## What I need now\n" + (next || "Pick up from here. Start by confirming the open questions above.");
+      }
+      return md;
+    }
+
+    // Review list: one row per extracted item, grouped by its current section.
+    function renderReview(all) {
+      var box = document.getElementById("review");
+      var focusKey = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.key : null;
+      var focusKind = document.activeElement ? document.activeElement.tagName : null;
+      box.innerHTML = "";
+      if (!all.length) { box.innerHTML = '<p class="hint" style="margin:0">Items will appear here once you paste some text.</p>'; return; }
+      CATEGORIES.forEach(function (c) {
+        var items = all.filter(function (u) { return u.cat === c.id; });
+        if (!items.length) return;
+        var g = document.createElement("div"); g.className = "rv-group";
+        var h = document.createElement("h3"); h.textContent = c.label + (enabled[c.id] ? "" : " (section turned off)");
+        g.appendChild(h);
+        items.sort(byIndex).forEach(function (u) {
+          var row = document.createElement("div");
+          row.className = "rv-item" + (u.off ? " off" : "") + (u.trimmed ? " trimmed" : "");
+          var box2 = document.createElement("input"); box2.type = "checkbox"; box2.checked = !u.off; box2.dataset.key = u.key;
+          box2.setAttribute("aria-label", "Keep: " + u.text.slice(0, 80));
+          box2.addEventListener("change", function () { overrides[u.key] = Object.assign({}, overrides[u.key], { off: !box2.checked }); run(); });
+          var txt = document.createElement("span"); txt.className = "rv-text"; txt.textContent = u.code ? u.text.slice(0, 160) + (u.text.length > 160 ? "…" : "") : u.text;
+          var sel = document.createElement("select"); sel.dataset.key = u.key;
+          sel.setAttribute("aria-label", "Section for: " + u.text.slice(0, 80));
+          CATEGORIES.forEach(function (c2) { var o = document.createElement("option"); o.value = c2.id; o.textContent = c2.label; if (c2.id === u.cat) o.selected = true; sel.appendChild(o); });
+          sel.addEventListener("change", function () { overrides[u.key] = Object.assign({}, overrides[u.key], { cat: sel.value }); if (!enabled[sel.value]) { enabled[sel.value] = true; CATEGORIES.forEach(function (c3) { if (c3.id === sel.value) c3.box.checked = true; }); } run(); });
+          row.appendChild(box2); row.appendChild(txt); row.appendChild(sel); g.appendChild(row);
+        });
+        box.appendChild(g);
+      });
+      // Keep keyboard focus on the control the visitor just used.
+      if (focusKey) {
+        var again = box.querySelector((focusKind === "SELECT" ? "select" : "input") + '[data-key="' + CSS.escape(focusKey) + '"]');
+        if (again) again.focus();
+      }
     }
     function byIndex(a, b) { return a.index - b.index; }
 
@@ -328,9 +408,11 @@
     [els.budget].forEach(function (el) { el.addEventListener("input", run); });
     [els.chat, els.speakers, els.remember].forEach(function (el) { el.addEventListener("change", run); });
     document.querySelectorAll('input[name="format"]').forEach(function (el) { el.addEventListener("change", run); });
+    document.getElementById("next").addEventListener("input", run);
+    document.getElementById("reset-review").addEventListener("click", function () { overrides = {}; run(); ToolKit.announce("Item choices reset."); });
     document.getElementById("all-on").addEventListener("click", function () { CATEGORIES.forEach(function (c) { enabled[c.id] = c.box.checked = true; }); run(); });
     document.getElementById("all-off").addEventListener("click", function () { CATEGORIES.forEach(function (c) { enabled[c.id] = c.box.checked = false; }); run(); });
-    document.getElementById("clear").addEventListener("click", function () { els.raw.value = ""; run(); els.raw.focus(); ToolKit.announce("Text cleared."); });
+    document.getElementById("clear").addEventListener("click", function () { overrides = {}; els.raw.value = ""; run(); els.raw.focus(); ToolKit.announce("Text cleared."); });
     document.getElementById("sample").addEventListener("click", function () { els.raw.value = SAMPLE; run(); ToolKit.announce("Sample conversation loaded."); });
     document.getElementById("copy").addEventListener("click", function () {
       var text = els.result.classList.contains("empty") ? "" : els.result.textContent;

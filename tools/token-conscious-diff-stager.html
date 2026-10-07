@@ -9,8 +9,8 @@
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
     .layout { display: grid; grid-template-columns: minmax(0, 1fr) 19rem; gap: 1rem; align-items: start; }
     @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
@@ -19,6 +19,13 @@
     ins { background: var(--ok-bg); color: var(--ok); text-decoration: underline; }
     del { background: var(--bad-bg); color: var(--bad); text-decoration: line-through; }
     .legend-inline { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.92rem; color: var(--muted); }
+    .sbs { display: grid; grid-template-columns: 1fr 1fr; font-family: var(--mono); font-size: 0.88rem; border: 1px solid var(--line); border-radius: 0.5rem; overflow: hidden; }
+    .sbs div { padding: 0.15rem 0.6rem; white-space: pre-wrap; overflow-wrap: anywhere; min-height: 1.5em; border-bottom: 1px solid var(--line); }
+    .sbs .l { border-right: 1px solid var(--line); }
+    .sbs .del { background: var(--bad-bg); color: var(--bad); }
+    .sbs .ins { background: var(--ok-bg); color: var(--ok); }
+    .sbs .gap { background: var(--bg-sunk); }
+    .sbs .hd { font-family: var(--sans); font-weight: 600; background: var(--bg-sunk); }
     .snapshots { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
     .snapshots li { border: 1px solid var(--line); border-radius: 0.6rem; padding: 0.55rem 0.7rem; background: var(--bg); }
     .snapshots .name { font-weight: 600; overflow-wrap: anywhere; }
@@ -84,6 +91,16 @@
             <h2 id="diff-title" class="panel-title">What changed</h2>
             <div class="legend-inline" aria-hidden="true"><span><ins>added</ins></span><span><del>removed</del></span></div>
           </div>
+          <div class="row-between" style="margin-bottom:0.5rem">
+            <div class="row" role="group" aria-label="Comparison view">
+              <button type="button" class="btn btn-quiet btn-small" data-view="words" aria-pressed="true">Inline words</button>
+              <button type="button" class="btn btn-quiet btn-small" data-view="lines" aria-pressed="false">Side by side</button>
+            </div>
+            <div class="row">
+              <button type="button" class="btn btn-quiet btn-small" id="swap">Swap</button>
+              <button type="button" class="btn btn-quiet btn-small" id="promote" title="Copy After into Before, so your next edits compare against it">Make After the new Before</button>
+            </div>
+          </div>
           <p class="hint" id="diff-summary">Type in both boxes to compare them.</p>
           <div id="diff" class="output" tabindex="0" aria-describedby="diff-summary" aria-label="Word-by-word comparison"></div>
         </section>
@@ -110,7 +127,13 @@
               <button type="button" class="btn btn-small" id="snap-save">Save</button>
             </div>
           </div>
+          <p class="hint" style="margin:-0.3rem 0 0.6rem">Tip: press <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>S</kbd> to save a snapshot.</p>
           <ul id="snapshots" class="snapshots" aria-live="polite"></ul>
+          <div class="row" style="margin-top:0.75rem">
+            <button type="button" class="btn btn-quiet btn-small" id="snap-export">Export snapshots</button>
+            <button type="button" class="btn btn-quiet btn-small" id="snap-import">Import</button>
+            <input type="file" id="snap-file" accept="application/json,.json" hidden>
+          </div>
         </section>
       </div>
     </div>
@@ -122,9 +145,9 @@
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
     var base = document.getElementById("base");
     var current = document.getElementById("current");
@@ -142,8 +165,11 @@
     // Tokens keep their whitespace so the output reads like the original text.
     function tokenize(s) { return s.match(/\s+|[^\s]+/g) || []; }
 
-    function diff(a, b) {
-      var A = tokenize(a), B = tokenize(b);
+    function lines(s) { return s.match(/[^\n]*\n|[^\n]+/g) || []; }
+
+    function diff(a, b, tok) {
+      tok = tok || tokenize;
+      var A = tok(a), B = tok(b);
       // Trim shared prefix and suffix to keep the table small.
       var start = 0;
       while (start < A.length && start < B.length && A[start] === B[start]) start++;
@@ -214,6 +240,8 @@
         document.getElementById("diff-summary").textContent = "Type in both boxes to compare them.";
         return;
       }
+      if (view === "lines") { renderSideBySide(a, b); return; }
+      diffEl.setAttribute("aria-label", "Word-by-word comparison");
       var ops = diff(a, b), added = 0, removed = 0;
       diffEl.className = "output";
       diffEl.innerHTML = ops.map(function (op) {
@@ -226,6 +254,37 @@
       document.getElementById("diff-summary").textContent =
         added + " word" + (added === 1 ? "" : "s") + " added, " + removed + " removed. Estimated tokens: " +
         (dt === 0 ? "no change." : (dt > 0 ? "about " + dt + " more." : "about " + (-dt) + " fewer."));
+    }
+
+    var view = ToolKit.store.get("diff_view", "words") === "lines" ? "lines" : "words";
+
+    // Line-level comparison in two columns; removed lines pair up with the lines that replaced them.
+    function renderSideBySide(a, b) {
+      var ops = diff(a, b, lines), rows = [], dels = [], added = 0, removed = 0;
+      function split(t) { return t.replace(/\n$/, "").split("\n"); }
+      function flush() { dels.forEach(function (d) { rows.push([d, "del", "", "gap"]); }); dels = []; }
+      ops.forEach(function (op) {
+        var ls = split(op[1]);
+        if (op[0] === "eq") { flush(); ls.forEach(function (l) { rows.push([l, "", l, ""]); }); }
+        else if (op[0] === "del") { removed += ls.length; dels = dels.concat(ls); }
+        else {
+          added += ls.length;
+          ls.forEach(function (l) {
+            if (dels.length) rows.push([dels.shift(), "del", l, "ins"]);
+            else rows.push(["", "gap", l, "ins"]);
+          });
+        }
+      });
+      flush();
+      diffEl.className = "output";
+      diffEl.setAttribute("aria-label", "Side-by-side line comparison");
+      var html = '<div class="sbs"><div class="l hd">Before</div><div class="hd">After</div>';
+      rows.forEach(function (r) {
+        html += '<div class="l ' + r[1] + '">' + (r[1] === "del" ? "<span class='sr-only'>Removed: </span>" : "") + escapeHtml(r[0]) + '</div>' +
+                '<div class="' + r[3] + '">' + (r[3] === "ins" ? "<span class='sr-only'>Added: </span>" : "") + escapeHtml(r[2]) + '</div>';
+      });
+      diffEl.innerHTML = html + "</div>";
+      document.getElementById("diff-summary").textContent = added + " line" + (added === 1 ? "" : "s") + " added, " + removed + " removed.";
     }
 
     function placeholders(text) {
@@ -325,6 +384,49 @@
       });
     }
 
+    document.querySelectorAll("[data-view]").forEach(function (btn) {
+      btn.setAttribute("aria-pressed", String(btn.dataset.view === view));
+      btn.addEventListener("click", function () {
+        view = btn.dataset.view; ToolKit.store.set("diff_view", view);
+        document.querySelectorAll("[data-view]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === btn)); });
+        renderDiff();
+      });
+    });
+    document.getElementById("swap").addEventListener("click", function () {
+      var t = base.value; base.value = current.value; current.value = t; update(); ToolKit.announce("Swapped Before and After.");
+    });
+    document.getElementById("promote").addEventListener("click", function () {
+      base.value = current.value; update(); current.focus(); ToolKit.announce("After copied into Before. Keep editing After to compare against it.");
+    });
+    document.addEventListener("keydown", function (e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); document.getElementById("snap-save").click(); }
+    });
+    document.getElementById("snap-export").addEventListener("click", function () {
+      var data = JSON.stringify({ type: "prompt-snapshots", version: 1, snapshots: snapshots() }, null, 2);
+      var blob = new Blob([data], { type: "application/json" });
+      var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "prompt-snapshots.json";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      ToolKit.announce("Snapshots exported.");
+    });
+    document.getElementById("snap-import").addEventListener("click", function () { document.getElementById("snap-file").click(); });
+    document.getElementById("snap-file").addEventListener("change", function () {
+      var file = this.files && this.files[0]; if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        try {
+          var data = JSON.parse(reader.result);
+          var list = Array.isArray(data) ? data : data.snapshots;
+          if (!Array.isArray(list)) throw new Error("bad");
+          var existing = snapshots(), ids = {};
+          existing.forEach(function (x) { ids[x.id] = true; });
+          var added = list.filter(function (x) { return x && typeof x.currentText === "string" && !ids[x.id]; });
+          ToolKit.store.set(KEY_SNAPS, added.concat(existing));
+          renderSnapshots(); ToolKit.announce("Imported " + added.length + " snapshots.");
+        } catch (err) { alert("That file isn't a snapshot export from this tool."); }
+      };
+      reader.readAsText(file); this.value = "";
+    });
     document.getElementById("snap-save").addEventListener("click", function () {
       var nameInput = document.getElementById("snap-name");
       var note = nameInput.value.trim() || "Snapshot " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });

@@ -4,16 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Prompt Matrix Evaluator — Iggy Mwangi</title>
-  <meta name="description" content="Paste a prompt. This page removes common filler phrases and shows the estimated token count before and after. Runs entirely in your browser.">
+  <meta name="description" content="Lint and tighten a prompt: checks for a clear task, output format, length, audience, vague words and contradictions, removes filler, and shows what the savings are worth at your request volume. Runs in your browser.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
     mark.cut { background: var(--bad-bg); color: var(--bad); text-decoration: line-through; border-radius: 3px; padding: 0 1px; }
-    .removed-list { margin: 0.4rem 0 0; padding-left: 1.2rem; color: var(--muted); }
+    #raw-prompt { min-height: 12rem; }
+    .score { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+    .score-ring { --pct: 0; width: 64px; height: 64px; border-radius: 50%; flex: none;
+      background: conic-gradient(var(--ring) calc(var(--pct) * 1%), var(--bg-sunk) 0);
+      display: grid; place-items: center; }
+    .score-ring span { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-raise); display: grid; place-items: center;
+      font-family: var(--mono); font-weight: 700; }
+    .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+    .checks li { display: grid; grid-template-columns: 1.6rem 1fr; gap: 0.5rem; padding: 0.55rem 0.65rem; border-radius: 0.6rem; background: var(--bg); border: 1px solid var(--line); }
+    .checks .icon { font-weight: 700; text-align: center; }
+    .checks .pass .icon { color: var(--ok); }
+    .checks .warn .icon { color: var(--warn); }
+    .checks .tip .icon { color: var(--info); }
+    .checks strong { display: block; }
+    .checks p { margin: 0.15rem 0 0; color: var(--muted); font-size: 0.93rem; }
+    .checks code { background: var(--bg-sunk); padding: 0 0.25em; border-radius: 3px; }
+    .removed-list { margin: 0.5rem 0 0; padding-left: 1.2rem; color: var(--muted); font-size: 0.93rem; }
+    .money { display: grid; grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr)); gap: 0.6rem; }
   </style>
 </head>
 <body>
@@ -37,121 +54,225 @@
   <main id="main" class="tool-main" tabindex="-1">
     <div class="tool-intro">
       <h1>Prompt Matrix Evaluator</h1>
-      <p class="lede">Paste a prompt and this page removes common filler, like “could you please” or “make sure to”, then shows the estimated token count before and after. It doesn’t call an AI model or judge whether your prompt is good.</p>
-      <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+      <p class="lede">Paste a prompt to get two things. First, a checklist of what it’s missing: a clear task, an output format, a length limit, an audience. It also flags vague words and contradictions. Second, a tightened copy with the filler removed, plus what that saves in tokens and money at your request volume.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your settings</span></p>
       <details class="how">
-        <summary>How to use it</summary>
-        <ol>
-          <li>Type or paste your prompt in the box.</li>
-          <li>Check the highlighted phrases in “What was removed”. Only filler is cut, never your actual request.</li>
-          <li>Copy the tightened version and use it wherever you were going to send the original.</li>
-        </ol>
+        <summary>How it works</summary>
+        <ul>
+          <li>The checks are plain rules, not an AI judge. They catch the gaps that most often produce vague or rambling answers.</li>
+          <li>Tightening only removes politeness and filler (“could you please”, “make sure to”, “thanks in advance”). Your actual request is never changed.</li>
+          <li>Add phrases your team overuses under <strong>Your own filler</strong>, and they’ll be removed too.</li>
+        </ul>
       </details>
     </div>
 
-    <section class="panel" aria-labelledby="in-title">
-      <h2 id="in-title"><label for="raw-prompt">Your prompt</label></h2>
-      <textarea id="raw-prompt" rows="6" aria-describedby="raw-hint">Could you please explain how a queue retries a failed job? Make sure to say what happens if the worker crashes, and it is important that you keep it short.</textarea>
-      <p id="raw-hint" class="hint" style="margin-top:0.4rem">Token counts are estimates (about four characters per token). Real counts vary by model.</p>
-    </section>
+    <div class="grid-2">
+      <div class="stack">
+        <section class="panel" aria-labelledby="in-title">
+          <div class="row-between">
+            <h2 id="in-title" class="panel-title"><label for="raw-prompt">Your prompt</label></h2>
+            <div class="row">
+              <button type="button" class="btn btn-quiet btn-small" id="sample">Try a weak example</button>
+              <button type="button" class="btn btn-quiet btn-small" id="clear">Clear</button>
+            </div>
+          </div>
+          <textarea id="raw-prompt" spellcheck="true"></textarea>
+          <p class="hint" style="margin:0.4rem 0 0">Token counts are estimates (about four characters per token).</p>
+        </section>
 
-    <div class="grid-2" style="margin-top:1rem">
-      <section class="panel" aria-labelledby="orig-title">
-        <div class="row-between">
-          <h2 id="orig-title" class="panel-title">What was removed</h2>
-          <span class="meta" id="meta-original">--</span>
-        </div>
-        <div class="output" id="out-original"></div>
-        <ul class="removed-list" id="removed-list"></ul>
-      </section>
+        <section class="panel" aria-labelledby="check-title">
+          <h2 id="check-title" class="panel-title">Checklist</h2>
+          <div class="score">
+            <div class="score-ring" id="ring" aria-hidden="true"><span id="score-num">0</span></div>
+            <p id="score-text" style="margin:0" aria-live="polite"></p>
+          </div>
+          <ul class="checks" id="checks"></ul>
+        </section>
+      </div>
 
-      <section class="panel" aria-labelledby="tight-title">
-        <div class="row-between">
-          <h2 id="tight-title" class="panel-title">Tightened prompt</h2>
-          <span class="meta" id="meta-tight">--</span>
-        </div>
-        <div class="output" id="out-tight"></div>
-        <div class="row" style="margin-top:0.75rem">
-          <button class="btn" type="button" id="copy-tight">Copy tightened prompt</button>
-        </div>
-      </section>
+      <div class="stack">
+        <section class="panel" aria-labelledby="tight-title">
+          <div class="row-between">
+            <h2 id="tight-title" class="panel-title">Tightened prompt</h2>
+            <span class="meta" id="meta-tight">--</span>
+          </div>
+          <div class="output" id="out-tight"></div>
+          <div class="row" style="margin-top:0.75rem">
+            <button class="btn" type="button" id="copy-tight">Copy tightened prompt</button>
+            <button class="btn btn-quiet" type="button" id="use-tight">Edit the tightened version</button>
+          </div>
+          <details style="margin-top:0.85rem">
+            <summary><strong>What was removed</strong> <span class="meta" id="cut-count"></span></summary>
+            <div class="output" id="out-original" style="margin-top:0.6rem"></div>
+            <ul class="removed-list" id="removed-list"></ul>
+          </details>
+        </section>
+
+        <section class="panel" aria-labelledby="money-title">
+          <h2 id="money-title" class="panel-title">What the savings are worth</h2>
+          <div class="money">
+            <div class="field">
+              <label for="price">Input price, $ per 1M tokens</label>
+              <input type="text" inputmode="decimal" id="price" value="3.00">
+            </div>
+            <div class="field">
+              <label for="calls">Requests per day</label>
+              <input type="text" inputmode="numeric" id="calls" value="1000">
+            </div>
+          </div>
+          <p id="money-out" aria-live="polite" style="margin:0"></p>
+          <p class="hint" style="margin:0.4rem 0 0">Check your provider’s current pricing; this uses the number you enter.</p>
+        </section>
+
+        <section class="panel" aria-labelledby="own-title">
+          <h2 id="own-title" class="panel-title"><label for="own">Your own filler</label></h2>
+          <p class="hint">Phrases to remove, one per line. Saved in this browser.</p>
+          <textarea id="own" rows="3" style="min-height:5rem" placeholder="as discussed&#10;circle back"></textarea>
+        </section>
+      </div>
     </div>
-    <p id="summary" class="sr-only" aria-live="polite"></p>
     <p id="status" class="sr-only" role="status" aria-live="polite"></p>
   </main>
 
   <footer class="tool-foot">
-    <p>Your text never leaves this browser tab and isn’t saved.</p>
+    <p>Your prompt never leaves this browser tab and isn’t saved. Your settings and filler list are saved in this browser.</p>
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
-  <script src="../assets/js/prompt-tightener.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
+  <script src="../assets/js/prompt-tightener.js?v=20261007a"></script>
   <script>
-    function formatDelta(before, after) {
-      var d = before - after;
-      if (d === 0) return "no change";
-      var pct = before ? Math.round((d / before) * 100) : 0;
-      return d > 0 ? "about " + d + " fewer (" + pct + "%)" : "about " + Math.abs(d) + " more";
+    var DEFAULT = "You are an experienced technical writer. Write a release note for version 2.4 of our mobile app for existing customers. Cover the new offline mode and the faster sync. Use three short bullet points, under 60 words in total, and end with one sentence on how to update.";
+    var WEAK = "Hi! Could you please write something good about our new app update? Make sure to make it really detailed but also keep it short. It is important that you mention all the new stuff and things like that. DO NOT make it boring!!! Thanks in advance!";
+
+    var VERBS = "write|explain|summari[sz]e|list|create|generate|review|analy[sz]e|translate|classify|extract|draft|compare|fix|rewrite|describe|outline|suggest|recommend|answer|identify|convert|plan|design|evaluate|find|give|tell|build|refactor|debug|check|edit|produce|propose|turn|make";
+    var FORMAT = /\b(json|yaml|csv|xml|markdown|table|bullet(?:s| points?)?|numbered list|list|paragraphs?|sentences?|headings?|code block|steps?|email|outline|haiku|tweet|title|one line|format)\b/i;
+    var LENGTH = /(\b\d+\s*(?:-|to)?\s*\d*\s*(?:words?|sentences?|bullets?|bullet points?|paragraphs?|characters?|tokens?|lines?|items?|points?)\b)|\b(under|at most|no more than|maximum|max|up to|fewer than|one|two|three|four|five)\b[^.]{0,30}\b(words?|sentences?|bullets?|paragraphs?|lines?|points?|items?)\b|\b(brief|short|concise|one[- ]liner|tl;?dr)\b/i;
+    var AUDIENCE = /\b(you are|act as|as an? [a-z]+|for (?:a |an |my |our |the )?[a-z]+(?: [a-z]+)?(?: readers?| audience| customers?| users?| team| engineers?| beginners?| executives?| students?| managers?| developers?| kids)|audience|readers?|reader is|written for)\b/i;
+    var VAGUE = /\b(some|something|stuff|things?|etc\.?|good|nice|better|great|various|a lot|lots of|maybe|kind of|sort of|interesting|appropriate|relevant|properly|whatever)\b/gi;
+    var SHORT = /\b(short|brief|concise|succinct|minimal)\b/i;
+    var LONG = /\b(detailed|comprehensive|thorough|in[- ]depth|exhaustive|extensive)\b/i;
+
+    function sentences(t) { return t.split(/(?<=[.!?])\s+|\n+/).map(function (s) { return s.trim(); }).filter(Boolean); }
+
+    function lint(text) {
+      var t = text.trim(), out = [];
+      if (!t) return out;
+      var hasVerb = new RegExp("(^|[.!?\\n]\\s*|\\b(?:please|you to|can you|could you)\\s+)(" + VERBS + ")\\b", "i").test(t) || /\?\s*$/.test(t);
+      out.push(hasVerb
+        ? { s: "pass", t: "Clear task", d: "There’s an instruction or question to act on." }
+        : { s: "warn", t: "No clear task", d: "Start with what you want done, e.g. “Summarize…”, “Write…”, “List…”." });
+      out.push(FORMAT.test(t)
+        ? { s: "pass", t: "Output format", d: "You say what shape the answer should take." }
+        : { s: "warn", t: "No output format", d: "Say how the answer should look: bullets, a table, JSON, an email, a single paragraph." });
+      out.push(LENGTH.test(t)
+        ? { s: "pass", t: "Length limit", d: "The answer has a size to aim for." }
+        : { s: "warn", t: "No length limit", d: "Add a limit such as “under 100 words” or “three bullets”. Unbounded prompts produce long, costly answers." });
+      out.push(AUDIENCE.test(t)
+        ? { s: "pass", t: "Audience or role", d: "The model knows who it’s writing as or for." }
+        : { s: "tip", t: "No audience or role", d: "Say who it’s for (“for new customers”) or who to be (“You are a support lead”)." });
+      var vague = (t.match(VAGUE) || []).map(function (w) { return w.toLowerCase(); });
+      vague = vague.filter(function (w, i) { return vague.indexOf(w) === i; });
+      out.push(vague.length >= 2
+        ? { s: "warn", t: "Vague words", d: "Replace with specifics: " + vague.slice(0, 8).map(function (w) { return "<code>" + PromptTightener.escapeHtml(w) + "</code>"; }).join(", ") + "." , html: true }
+        : { s: "pass", t: "Specific wording", d: "Few vague words like “stuff”, “good”, or “etc.”." });
+      if (SHORT.test(t) && LONG.test(t)) out.push({ s: "warn", t: "Contradiction", d: "It asks for both “" + t.match(SHORT)[0] + "” and “" + t.match(LONG)[0] + "”. Pick one, or say which part should be detailed." });
+      var caps = (t.match(/\b[A-Z]{3,}\b/g) || []).filter(function (w) { return !/^(JSON|YAML|CSV|XML|HTML|CSS|API|SQL|URL|PDF|SDK|LLM|AI|UI|UX|ID|FAQ|TLDR|README|AWS|GCP|HTTP|HTTPS|REST|JWT|OK)$/.test(w); });
+      if (caps.length >= 2 || /!{2,}/.test(t)) out.push({ s: "warn", t: "Shouting", d: "ALL CAPS and “!!!” don’t make models more careful. State the rule once, calmly, and say why it matters." });
+      var negs = (t.match(/\b(don'?t|do not|never|avoid|no)\b/gi) || []).length;
+      if (negs >= 3) out.push({ s: "tip", t: "Mostly “don’ts”", d: "You have " + negs + " negative instructions. Say what to do instead; models follow positive instructions more reliably." });
+      var seen = {}, dup = null;
+      sentences(t).forEach(function (s) { var k = s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim(); if (k.length > 12) { if (seen[k]) dup = s; seen[k] = true; } });
+      if (dup) out.push({ s: "warn", t: "Repeated sentence", d: "“" + dup.slice(0, 80) + "” appears more than once." });
+      var ph = t.match(/\{\{[^}]*\}\}|\[(?:insert|your|todo|tbd)[^\]]*\]|\bTODO\b|\bTBD\b|<[A-Z_ ]{3,}>/i);
+      if (ph) out.push({ s: "warn", t: "Unfilled placeholder", d: "“" + ph[0] + "” still needs a real value." });
+      if (t.length > 500 && !/\b(example|e\.g\.|for instance|such as|like this)\b/i.test(t)) out.push({ s: "tip", t: "No example", d: "For longer prompts, one short example of a good answer usually beats more description." });
+      return out;
     }
 
-    var input = document.getElementById("raw-prompt");
-    var outOriginal = document.getElementById("out-original");
-    var outTight = document.getElementById("out-tight");
-    var removedList = document.getElementById("removed-list");
+    var els = {
+      input: document.getElementById("raw-prompt"), outTight: document.getElementById("out-tight"),
+      outOriginal: document.getElementById("out-original"), removed: document.getElementById("removed-list"),
+      checks: document.getElementById("checks"), price: document.getElementById("price"), calls: document.getElementById("calls"),
+      own: document.getElementById("own")
+    };
+    var saved = ToolKit.store.get("pme_settings", {}) || {};
+    if (saved.price) els.price.value = saved.price;
+    if (saved.calls) els.calls.value = saved.calls;
+    if (saved.own) els.own.value = saved.own;
+    els.input.value = DEFAULT;
     var tightText = "";
-    var announceTimer;
+
+    function num(v) { var n = parseFloat(String(v).replace(/[^0-9.]/g, "")); return isFinite(n) ? n : 0; }
+    function money(n) { return n >= 100 ? "$" + Math.round(n).toLocaleString() : "$" + n.toFixed(2); }
 
     function render() {
-      var raw = input.value;
-      var result = PromptTightener.tighten(raw);
-      var cuts = result.cuts, html = result.html;
-      tightText = result.text;
+      var raw = els.input.value;
+      var extra = els.own.value.split(/\n+/).map(function (s) { return s.trim(); }).filter(Boolean);
+      var r = PromptTightener.tighten(raw, extra);
+      tightText = r.text;
+      var before = ToolKit.estimateTokens(raw), after = ToolKit.estimateTokens(r.text), saved = before - after;
 
-      var before = ToolKit.estimateTokens(raw);
-      var after = ToolKit.estimateTokens(tightText);
-
-      if (!raw.trim()) {
-        outOriginal.className = "output empty";
-        outOriginal.textContent = "Paste a prompt above to see what can be trimmed.";
-      } else {
-        outOriginal.className = "output";
-        outOriginal.innerHTML = html;
-      }
-      outTight.className = tightText ? "output" : "output empty";
-      outTight.textContent = tightText || "Nothing to show yet.";
-
-      removedList.innerHTML = "";
-      if (raw.trim() && cuts.length === 0) {
+      els.outTight.className = r.text ? "output" : "output empty";
+      els.outTight.textContent = r.text || "Paste a prompt to see the tightened version.";
+      els.outOriginal.innerHTML = r.html || "";
+      document.getElementById("cut-count").textContent = r.cuts.length ? "(" + r.cuts.length + ")" : "(none)";
+      els.removed.innerHTML = "";
+      var seenCut = {};
+      r.cuts.forEach(function (c) {
+        var k = c.text.trim().toLowerCase(); if (seenCut[k]) return; seenCut[k] = true;
         var li = document.createElement("li");
-        li.textContent = "No common filler found. Your prompt is already tight.";
-        removedList.appendChild(li);
-      }
-      var seen = {};
-      cuts.forEach(function (c) {
-        var key = c.text.trim().toLowerCase();
-        if (seen[key]) return;
-        seen[key] = true;
-        var li = document.createElement("li");
-        li.textContent = "“" + c.text.trim() + "”" + (c.replace ? " → “" + c.replace + "”" : " removed");
-        removedList.appendChild(li);
+        li.textContent = "“" + c.text.trim() + "”" + (c.replace ? " → “" + c.replace + "”" : "");
+        els.removed.appendChild(li);
       });
+      var pct = before ? Math.round((saved / before) * 100) : 0;
+      document.getElementById("meta-tight").textContent = "~" + before + " → ~" + after + " tokens" + (saved > 0 ? " (−" + pct + "%)" : "");
 
-      document.getElementById("meta-original").textContent = "~" + before + " tokens";
-      document.getElementById("meta-tight").textContent = "~" + after + " tokens · " + formatDelta(before, after);
+      // Checklist
+      var res = lint(raw);
+      els.checks.innerHTML = "";
+      var scored = res.filter(function (x) { return x.s !== "tip"; });
+      var passed = scored.filter(function (x) { return x.s === "pass"; }).length;
+      res.sort(function (a, b) { var o = { warn: 0, tip: 1, pass: 2 }; return o[a.s] - o[b.s]; });
+      res.forEach(function (x) {
+        var li = document.createElement("li"); li.className = x.s;
+        var icon = document.createElement("span"); icon.className = "icon"; icon.setAttribute("aria-hidden", "true");
+        icon.textContent = x.s === "pass" ? "✓" : x.s === "warn" ? "!" : "i";
+        var body = document.createElement("div");
+        var title = document.createElement("strong");
+        title.textContent = (x.s === "pass" ? "Passed: " : x.s === "warn" ? "Fix: " : "Tip: ") + x.t;
+        var d = document.createElement("p");
+        if (x.html) d.innerHTML = x.d; else d.textContent = x.d;
+        body.appendChild(title); body.appendChild(d);
+        li.appendChild(icon); li.appendChild(body); els.checks.appendChild(li);
+      });
+      var score = scored.length ? Math.round((passed / scored.length) * 100) : 0;
+      var ring = document.getElementById("ring");
+      ring.style.setProperty("--pct", score);
+      ring.style.setProperty("--ring", score >= 80 ? "var(--ok)" : score >= 50 ? "var(--warn)" : "var(--bad)");
+      document.getElementById("score-num").textContent = raw.trim() ? score : "–";
+      document.getElementById("score-text").textContent = !raw.trim() ? "Paste a prompt to check it." :
+        passed + " of " + scored.length + " checks passed." + (score >= 80 ? " This prompt is in good shape." : score >= 50 ? " A few fixes will make answers more predictable." : " Expect vague or rambling answers until these are fixed.");
 
-      clearTimeout(announceTimer);
-      announceTimer = setTimeout(function () {
-        document.getElementById("summary").textContent =
-          cuts.length + " filler phrase" + (cuts.length === 1 ? "" : "s") + " removed. Estimated " + formatDelta(before, after) + " tokens.";
-      }, 800);
+      // Money
+      var price = num(els.price.value), calls = num(els.calls.value);
+      var perMonth = saved * calls * 30 * price / 1e6;
+      document.getElementById("money-out").textContent = saved <= 0 ? "No filler to cut, so no savings from tightening." :
+        "About " + saved + " fewer tokens per request, roughly " + (saved * calls * 30).toLocaleString() + " tokens and " + money(perMonth) + " a month at " + calls.toLocaleString() + " requests a day.";
+      ToolKit.store.set("pme_settings", { price: els.price.value, calls: els.calls.value, own: els.own.value });
     }
 
-    input.addEventListener("input", render);
-    document.getElementById("copy-tight").addEventListener("click", function () {
-      ToolKit.copyText(tightText, this);
+    var timer;
+    function soon() { clearTimeout(timer); timer = setTimeout(render, 120); }
+    [els.input, els.price, els.calls, els.own].forEach(function (el) { el.addEventListener("input", soon); });
+    document.getElementById("sample").addEventListener("click", function () { els.input.value = WEAK; render(); ToolKit.announce("Weak example loaded. See the checklist."); });
+    document.getElementById("clear").addEventListener("click", function () { els.input.value = ""; render(); els.input.focus(); });
+    document.getElementById("copy-tight").addEventListener("click", function () { ToolKit.copyText(tightText, this); });
+    document.getElementById("use-tight").addEventListener("click", function () {
+      if (!tightText) return;
+      els.input.value = tightText; render(); els.input.focus(); ToolKit.announce("Tightened version moved into the editor.");
     });
     render();
   </script>

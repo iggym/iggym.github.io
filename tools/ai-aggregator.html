@@ -9,10 +9,17 @@
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
     .answer { min-height: 14rem; max-height: 36rem; font-family: var(--sans); font-size: 1rem; }
+    .turn { border-top: 1px solid var(--line); padding: 0.75rem 0; }
+    .turn h3 { font-size: 1rem; margin: 0 0 0.5rem; }
+    .turn .q { white-space: pre-wrap; margin: 0 0 0.6rem; }
+    .turn .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .turn .a { background: var(--bg); border: 1px solid var(--line); border-radius: 0.5rem; padding: 0.6rem 0.7rem; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.95rem; max-height: 18rem; overflow: auto; }
+    .turn .a b { display: block; font-family: var(--mono); font-size: 0.8rem; font-weight: 500; color: var(--muted); margin-bottom: 0.3rem; }
+    @media (max-width: 760px) { .turn .pair { grid-template-columns: 1fr; } }
     .answer.loading { color: var(--muted); }
     #prompt { min-height: 7rem; font-family: var(--sans); font-size: 1rem; }
   </style>
@@ -38,7 +45,7 @@
   <main id="main" class="tool-main" tabindex="-1">
     <div class="tool-intro">
       <h1>Multi-Model Workspace</h1>
-      <p class="lede">Ask the same question to an OpenAI model and an Anthropic model and read the answers side by side. Bring your own API keys. Without keys it runs a demo so you can see how it works.</p>
+      <p class="lede">Ask the same question to an OpenAI model and an Anthropic model and read the answers side by side, with response times and token counts. Ask follow-ups, set a shared system prompt, and export the whole comparison as Markdown. Bring your own API keys. Without keys it runs a demo so you can see how it works.</p>
       <p class="tags"><span class="tag tag-key">Needs your API key</span> <span class="tag tag-saved">Can remember your keys</span></p>
       <details class="how">
         <summary>Where your keys and questions go</summary>
@@ -72,11 +79,31 @@
     </section>
 
     <section class="panel" style="margin-top:1rem" aria-labelledby="ask-title">
-      <h2 id="ask-title"><label for="prompt">Your question</label></h2>
+      <div class="row-between">
+        <h2 id="ask-title" class="panel-title"><label for="prompt">Your question</label></h2>
+        <span class="meta" id="turns">New conversation</span>
+      </div>
       <textarea id="prompt" aria-describedby="prompt-hint" placeholder="e.g. Explain what a context window is to a new teammate."></textarea>
+      <details style="margin-top:0.6rem">
+        <summary><strong>Settings</strong> <span class="hint">system prompt, answer length</span></summary>
+        <div class="grid-2" style="margin-top:0.6rem">
+          <div class="field">
+            <label for="system">System prompt <span class="hint">(sent to both)</span></label>
+            <textarea id="system" rows="3" style="min-height:5rem" placeholder="e.g. You are a concise senior engineer. Answer in under 150 words."></textarea>
+          </div>
+          <div class="field">
+            <label for="max-tokens">Maximum answer length, in tokens</label>
+            <input type="text" inputmode="numeric" id="max-tokens" value="2000">
+            <span class="hint">Lower is cheaper and faster. Both models get the same limit.</span>
+          </div>
+        </div>
+      </details>
       <div class="row-between" style="margin-top:0.6rem">
-        <span class="hint" id="prompt-hint" style="margin:0">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> (or <kbd>⌘</kbd> + <kbd>Enter</kbd>) to send.</span>
-        <button type="button" class="btn" id="send">Ask both</button>
+        <span class="hint" id="prompt-hint" style="margin:0">Press <kbd>Ctrl</kbd> + <kbd>Enter</kbd> (or <kbd>⌘</kbd> + <kbd>Enter</kbd>) to send. Follow-ups keep the conversation going.</span>
+        <div class="row">
+          <button type="button" class="btn btn-quiet" id="reset">New conversation</button>
+          <button type="button" class="btn" id="send">Ask both</button>
+        </div>
       </div>
     </section>
 
@@ -84,6 +111,7 @@
       <section class="panel" aria-labelledby="oa-title">
         <div class="row-between">
           <h2 id="oa-title" class="panel-title">OpenAI</h2>
+          <span class="meta" id="openai-stats"></span>
         </div>
         <div class="field">
           <label for="openai-model">Model</label>
@@ -97,12 +125,13 @@
           <span class="hint" id="oa-model-hint">Type any model name your key can use.</span>
         </div>
         <div class="output answer empty" id="openai-out" aria-live="polite" aria-busy="false">The answer will appear here.</div>
-        <div class="row" style="margin-top:0.6rem"><button type="button" class="btn btn-quiet btn-small" data-copy="openai-out">Copy answer</button></div>
+        <div class="row" style="margin-top:0.6rem"><button type="button" class="btn btn-quiet btn-small" data-copy="openai">Copy answer</button></div>
       </section>
 
       <section class="panel" aria-labelledby="an-title">
         <div class="row-between">
           <h2 id="an-title" class="panel-title">Anthropic</h2>
+          <span class="meta" id="anthropic-stats"></span>
         </div>
         <div class="field">
           <label for="anthropic-model">Model</label>
@@ -115,9 +144,21 @@
           <span class="hint" id="an-model-hint">Type any model name your key can use.</span>
         </div>
         <div class="output answer empty" id="anthropic-out" aria-live="polite" aria-busy="false">The answer will appear here.</div>
-        <div class="row" style="margin-top:0.6rem"><button type="button" class="btn btn-quiet btn-small" data-copy="anthropic-out">Copy answer</button></div>
+        <div class="row" style="margin-top:0.6rem"><button type="button" class="btn btn-quiet btn-small" data-copy="anthropic">Copy answer</button></div>
       </section>
     </div>
+
+    <section class="panel" style="margin-top:1rem" aria-labelledby="log-title">
+      <div class="row-between">
+        <h2 id="log-title" class="panel-title">This conversation</h2>
+        <div class="row">
+          <button type="button" class="btn btn-quiet btn-small" id="copy-md">Copy as Markdown</button>
+          <button type="button" class="btn btn-quiet btn-small" id="download-md">Download .md</button>
+        </div>
+      </div>
+      <p class="hint" id="log-empty">Each question and both answers are collected here, with timings and token counts, so you can share the comparison.</p>
+      <div id="log"></div>
+    </section>
     <p id="status" class="sr-only" role="status" aria-live="polite"></p>
   </main>
 
@@ -126,9 +167,9 @@
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
     var els = {
       oaKey: document.getElementById("openai-key"),
@@ -185,31 +226,59 @@
       if (status === 401 || status === 403) hint = "Check that the " + provider + " key is correct and active.";
       else if (status === 404) hint = "That model name isn't available to your key. Try another one.";
       else if (status === 429) hint = "You've hit a rate or spending limit. Wait a minute or check your account's billing.";
+      else if (status === 400) hint = "The request was rejected. Try a lower maximum length or a different model.";
       else if (status >= 500) hint = provider + " is having trouble right now. Try again shortly.";
       return provider + " returned an error" + (status ? " (" + status + ")" : "") + ".\n\n" + (message || "") + (hint ? "\n\n" + hint : "");
     }
 
-    async function askOpenAI(prompt, key) {
-      if (!key) { setOut(els.oaOut, "Skipped: no OpenAI key.", "empty"); return; }
-      setOut(els.oaOut, "Waiting for OpenAI…", "loading");
+    // Each provider keeps its own message history so follow-ups have context.
+    var convo = { openai: [], anthropic: [] };
+    var turns = [];
+    var sysEl = document.getElementById("system"), maxEl = document.getElementById("max-tokens");
+    var settings = ToolKit.store.get("mmw_settings", {}) || {};
+    if (settings.system) sysEl.value = settings.system;
+    if (settings.max) maxEl.value = settings.max;
+    if (settings.oaModel) els.oaModel.value = settings.oaModel;
+    if (settings.anModel) els.anModel.value = settings.anModel;
+    function saveSettings() {
+      ToolKit.store.set("mmw_settings", { system: sysEl.value, max: maxEl.value, oaModel: els.oaModel.value, anModel: els.anModel.value });
+    }
+    [sysEl, maxEl, els.oaModel, els.anModel].forEach(function (el) { el.addEventListener("change", saveSettings); });
+    function maxTokens() { var n = parseInt(maxEl.value, 10); return n > 0 ? Math.min(n, 64000) : 2000; }
+
+    function stats(r) {
+      if (!r || !r.ok) return "";
+      var parts = [(r.ms / 1000).toFixed(1) + "s"];
+      if (r.inTok != null) parts.push(r.inTok.toLocaleString() + " in");
+      if (r.outTok != null) parts.push(r.outTok.toLocaleString() + " out");
+      return parts.join(" · ");
+    }
+
+    async function askOpenAI(key) {
+      var start = performance.now();
+      var messages = (sysEl.value.trim() ? [{ role: "system", content: sysEl.value.trim() }] : []).concat(convo.openai);
       try {
         var res = await fetch("https://api.openai.com/v1/chat/completions", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
-          body: JSON.stringify({ model: els.oaModel.value.trim(), messages: [{ role: "user", content: prompt }] })
+          body: JSON.stringify({ model: els.oaModel.value.trim(), messages: messages, max_completion_tokens: maxTokens() })
         });
         var data = await res.json().catch(function () { return {}; });
-        if (!res.ok || data.error) { setOut(els.oaOut, describeHttpError("OpenAI", res.status, data.error && data.error.message)); return; }
+        var ms = performance.now() - start;
+        if (!res.ok || data.error) return { ok: false, text: describeHttpError("OpenAI", res.status, data.error && data.error.message) };
         var text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-        setOut(els.oaOut, text || "OpenAI sent back an empty answer.");
+        if (data.choices && data.choices[0] && data.choices[0].finish_reason === "length") text = (text || "") + "\n\n[Cut off at the maximum length.]";
+        var u = data.usage || {};
+        return { ok: true, text: text || "OpenAI sent back an empty answer.", ms: ms, inTok: u.prompt_tokens, outTok: u.completion_tokens };
       } catch (err) {
-        setOut(els.oaOut, "Couldn't reach OpenAI. Check your connection and try again.\n\n(" + err.message + ")");
+        return { ok: false, text: "Couldn't reach OpenAI. Check your connection and try again.\n\n(" + err.message + ")" };
       }
     }
 
-    async function askAnthropic(prompt, key) {
-      if (!key) { setOut(els.anOut, "Skipped: no Anthropic key.", "empty"); return; }
-      setOut(els.anOut, "Waiting for Anthropic…", "loading");
+    async function askAnthropic(key) {
+      var start = performance.now();
+      var body = { model: els.anModel.value.trim(), max_tokens: maxTokens(), messages: convo.anthropic };
+      if (sysEl.value.trim()) body.system = sysEl.value.trim();
       try {
         var res = await fetch("https://api.anthropic.com/v1/messages", {
           method: "POST",
@@ -219,22 +288,35 @@
             "anthropic-version": "2023-06-01",
             "anthropic-dangerous-direct-browser-access": "true"
           },
-          body: JSON.stringify({
-            model: els.anModel.value.trim(),
-            max_tokens: 16000,
-            messages: [{ role: "user", content: prompt }]
-          })
+          body: JSON.stringify(body)
         });
         var data = await res.json().catch(function () { return {}; });
-        if (!res.ok || data.type === "error") { setOut(els.anOut, describeHttpError("Anthropic", res.status, data.error && data.error.message)); return; }
-        if (data.stop_reason === "refusal") { setOut(els.anOut, "The model declined to answer this question."); return; }
+        var ms = performance.now() - start;
+        if (!res.ok || data.type === "error") return { ok: false, text: describeHttpError("Anthropic", res.status, data.error && data.error.message) };
+        if (data.stop_reason === "refusal") return { ok: true, text: "The model declined to answer this question.", ms: ms };
         // Responses can include thinking blocks; only show the text blocks.
         var text = (data.content || []).filter(function (b) { return b.type === "text"; }).map(function (b) { return b.text; }).join("\n\n");
-        if (data.stop_reason === "max_tokens") text += "\n\n[The answer was cut off because it reached the length limit.]";
-        setOut(els.anOut, text || "Anthropic sent back an empty answer.");
+        if (data.stop_reason === "max_tokens") text += "\n\n[Cut off at the maximum length.]";
+        var u = data.usage || {};
+        return { ok: true, text: text || "Anthropic sent back an empty answer.", ms: ms, inTok: u.input_tokens, outTok: u.output_tokens };
       } catch (err) {
-        setOut(els.anOut, "Couldn't reach Anthropic. Check your connection and try again.\n\n(" + err.message + ")");
+        return { ok: false, text: "Couldn't reach Anthropic. Check your connection and try again.\n\n(" + err.message + ")" };
       }
+    }
+
+    async function run(provider, key, prompt) {
+      var out = provider === "openai" ? els.oaOut : els.anOut;
+      var statEl = document.getElementById(provider + "-stats");
+      if (!key) { setOut(out, "Skipped: no " + (provider === "openai" ? "OpenAI" : "Anthropic") + " key.", "empty"); statEl.textContent = ""; return { ok: false, skipped: true, text: "(skipped: no key)" }; }
+      setOut(out, "Waiting for " + (provider === "openai" ? "OpenAI" : "Anthropic") + "…", "loading");
+      statEl.textContent = "";
+      convo[provider].push({ role: "user", content: prompt });
+      var r = provider === "openai" ? await askOpenAI(key) : await askAnthropic(key);
+      if (r.ok) convo[provider].push({ role: "assistant", content: r.text });
+      else convo[provider].pop();   // don't keep a question that got no answer
+      setOut(out, r.text);
+      statEl.textContent = stats(r);
+      return r;
     }
 
     async function send() {
@@ -243,30 +325,79 @@
       var oa = els.oaKey.value.trim(), an = els.anKey.value.trim();
       els.send.disabled = true;
       ToolKit.announce("Sending…");
-
+      var results;
       if (!oa && !an) {
-        setOut(els.oaOut, "Thinking…", "loading");
-        setOut(els.anOut, "Thinking…", "loading");
+        setOut(els.oaOut, "Thinking…", "loading"); setOut(els.anOut, "Thinking…", "loading");
         await new Promise(function (r) { setTimeout(r, 600); });
         var demo = "Demo mode: no API key was entered, so no model was called.\n\nYour question was:\n“" + prompt + "”\n\nAdd a key above to get a real answer.";
-        setOut(els.oaOut, demo);
-        setOut(els.anOut, demo);
+        setOut(els.oaOut, demo); setOut(els.anOut, demo);
+        results = [{ ok: false, text: "(demo mode)" }, { ok: false, text: "(demo mode)" }];
       } else {
-        await Promise.all([askOpenAI(prompt, oa), askAnthropic(prompt, an)]);
+        results = await Promise.all([run("openai", oa, prompt), run("anthropic", an, prompt)]);
       }
+      turns.push({ q: prompt, oa: results[0], an: results[1], oaModel: els.oaModel.value.trim(), anModel: els.anModel.value.trim() });
+      renderLog();
+      els.prompt.value = "";
       els.send.disabled = false;
+      document.getElementById("turns").textContent = turns.length + " question" + (turns.length === 1 ? "" : "s") + " so far";
+      els.send.textContent = "Ask a follow-up";
       ToolKit.announce("Answers ready.");
+      els.prompt.focus();
+    }
+
+    function renderLog() {
+      var log = document.getElementById("log");
+      document.getElementById("log-empty").hidden = turns.length > 0;
+      log.innerHTML = "";
+      turns.forEach(function (t, i) {
+        var d = document.createElement("div"); d.className = "turn";
+        var h = document.createElement("h3"); h.textContent = "Question " + (i + 1); d.appendChild(h);
+        var q = document.createElement("p"); q.className = "q"; q.textContent = t.q; d.appendChild(q);
+        var pair = document.createElement("div"); pair.className = "pair";
+        [["OpenAI · " + t.oaModel, t.oa], ["Anthropic · " + t.anModel, t.an]].forEach(function (x) {
+          var a = document.createElement("div"); a.className = "a";
+          var b = document.createElement("b"); b.textContent = x[0] + (stats(x[1]) ? " · " + stats(x[1]) : "");
+          a.appendChild(b); a.appendChild(document.createTextNode(x[1].text)); pair.appendChild(a);
+        });
+        d.appendChild(pair); log.appendChild(d);
+      });
+    }
+
+    function markdown() {
+      var md = "# Model comparison\n\n";
+      if (sysEl.value.trim()) md += "**System prompt:** " + sysEl.value.trim() + "\n\n";
+      turns.forEach(function (t, i) {
+        md += "## Question " + (i + 1) + "\n\n" + t.q + "\n\n";
+        md += "### OpenAI (" + t.oaModel + ")" + (stats(t.oa) ? " · " + stats(t.oa) : "") + "\n\n" + t.oa.text + "\n\n";
+        md += "### Anthropic (" + t.anModel + ")" + (stats(t.an) ? " · " + stats(t.an) : "") + "\n\n" + t.an.text + "\n\n";
+      });
+      return md.trim() + "\n";
     }
 
     els.send.addEventListener("click", send);
     els.prompt.addEventListener("keydown", function (e) {
       if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); send(); }
     });
+    document.getElementById("reset").addEventListener("click", function () {
+      convo = { openai: [], anthropic: [] }; turns = []; renderLog();
+      setOut(els.oaOut, "The answer will appear here.", "empty"); setOut(els.anOut, "The answer will appear here.", "empty");
+      document.getElementById("openai-stats").textContent = ""; document.getElementById("anthropic-stats").textContent = "";
+      document.getElementById("turns").textContent = "New conversation"; els.send.textContent = "Ask both";
+      ToolKit.announce("Started a new conversation."); els.prompt.focus();
+    });
     document.querySelectorAll("[data-copy]").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var el = document.getElementById(btn.dataset.copy);
+        var el = btn.dataset.copy === "openai" ? els.oaOut : els.anOut;
         ToolKit.copyText(el.classList.contains("empty") ? "" : el.textContent, btn);
       });
+    });
+    document.getElementById("copy-md").addEventListener("click", function () { ToolKit.copyText(turns.length ? markdown() : "", this); });
+    document.getElementById("download-md").addEventListener("click", function () {
+      if (!turns.length) { ToolKit.announce("Ask a question first."); return; }
+      var blob = new Blob([markdown()], { type: "text/markdown" });
+      var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "model-comparison.md";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
     });
   </script>
 </body>

@@ -4,24 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Context Window Optimizer — Iggy Mwangi</title>
-  <meta name="description" content="Paste a prompt and see roughly how much of a model's context window it uses, split into instructions and content. Runs in your browser.">
+  <meta name="description" content="Plan a model's context budget: see how much the system prompt, tools, documents, chat history and question use, whether the reply still fits, what each request costs, and what to trim first. Runs in your browser.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
-    #prompt { min-height: 18rem; }
-    .seg-sys { background: var(--info); }
-    .seg-user { background: var(--accent); }
-    .seg-reply { background: repeating-linear-gradient(45deg, var(--ok), var(--ok) 4px, transparent 4px, transparent 8px); }
-    .key { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; margin: 0.5rem 0 1rem; font-size: 0.92rem; color: var(--muted); }
-    .key span::before { content: ""; display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 3px; margin-right: 0.35rem; vertical-align: -0.1rem; }
-    .key .k-sys::before { background: var(--info); }
-    .key .k-user::before { background: var(--accent); }
-    .key .k-reply::before { background: var(--ok); }
-    .key .k-free::before { background: var(--bg-sunk); border: 1px solid var(--line-strong); }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 1rem; align-items: start; }
+    @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+    .sec { border: 1px solid var(--line); border-left: 6px solid var(--c); border-radius: 0.7rem; background: var(--bg); padding: 0.7rem 0.8rem; margin-bottom: 0.6rem; }
+    .sec-head { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 0.5rem; align-items: center; }
+    .sec-head input { min-height: 38px; font-weight: 600; }
+    .sec textarea { min-height: 5.5rem; margin-top: 0.5rem; font-size: 0.88rem; }
+    .sec .alt { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.45rem; font-size: 0.9rem; color: var(--muted); flex-wrap: wrap; }
+    .sec .alt input { width: 8rem; min-height: 36px; padding: 0.25rem 0.5rem; }
+    .del { min-height: 38px; min-width: 38px; border-radius: 0.5rem; border: 1px solid var(--line); background: var(--bg-raise); color: var(--muted); cursor: pointer; }
+    .del:hover { color: var(--bad); border-color: var(--bad); }
+    .meter { height: 26px; border-radius: 0.5rem; }
+    .meter > span { transition: width 0.3s ease; }
+    .key { list-style: none; margin: 0.6rem 0 1rem; padding: 0; display: grid; gap: 0.3rem; font-size: 0.93rem; }
+    .key li { display: grid; grid-template-columns: 0.9rem minmax(0, 1fr) auto auto; gap: 0.5rem; align-items: center; }
+    .key .sw { width: 0.9rem; height: 0.9rem; border-radius: 3px; background: var(--c); }
+    .key .n { font-family: var(--mono); color: var(--muted); text-align: right; }
+    .advice { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+    .advice li { padding: 0.55rem 0.7rem; border-radius: 0.55rem; border-left: 4px solid var(--info); background: var(--info-bg); }
+    .advice li.bad { border-color: var(--bad); background: var(--bad-bg); }
+    .advice li.warn { border-color: var(--warn); background: var(--warn-bg); }
+    .advice li.ok { border-color: var(--ok); background: var(--ok-bg); }
+    .advice a { color: inherit; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
   </style>
 </head>
 <body>
@@ -45,139 +58,211 @@
   <main id="main" class="tool-main" tabindex="-1">
     <div class="tool-intro">
       <h1>Context Window Optimizer</h1>
-      <p class="lede">A model can only read so much text at once. That limit is its <em>context window</em>. Paste a prompt to see roughly how much of the window your instructions and content take up, and how much room is left for the reply.</p>
-      <p class="tags"><span class="tag tag-local">Stays on your device</span></p>
+      <p class="lede">Plan what goes into a model’s context window before you ship. Paste each part of a request, or just enter its size: system prompt, tool definitions, retrieved documents, chat history, and the question. See whether the reply still fits, what each request costs, and what to trim first.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your settings</span></p>
       <details class="how">
         <summary>How to use it</summary>
         <ol>
-          <li>Paste your prompt. To split it, put standing rules after <code>[SYSTEM_PROMPT]</code> and the material to work on after <code>[USER_CONTENT]</code>. Without markers, everything counts as content.</li>
-          <li>Choose a window size close to the model you use, and how long a reply you expect.</li>
-          <li>If the bar runs out of room, trim the content first. Rules are usually short and worth keeping.</li>
+          <li>For each section, paste real text or type an approximate token count. Use counts for things like long histories you don’t want to paste.</li>
+          <li>Set the window size and price for the model you use. Check your provider’s current numbers.</li>
+          <li>Read the advice. It points at the biggest section and the cheapest fix.</li>
         </ol>
       </details>
     </div>
 
-    <div class="grid-2">
-      <section class="panel" aria-labelledby="in-title">
-        <h2 id="in-title"><label for="prompt">Your prompt</label></h2>
-        <textarea id="prompt">[SYSTEM_PROMPT]
-You are a support assistant for an online bookstore. Answer in plain language. If you don't know, say so. Reply in valid JSON with the keys "answer" and "confidence".
-
-[USER_CONTENT]
-A customer writes: "I ordered two books last Tuesday and only one arrived. The tracking page says delivered. What should I do?"</textarea>
-        <div class="grid-2" style="margin-top:0.85rem">
-          <div class="field">
-            <label for="limit">Context window</label>
-            <select id="limit">
-              <option value="8192">8K tokens (small or older models)</option>
-              <option value="32768">32K tokens</option>
-              <option value="128000" selected>128K tokens (common today)</option>
-              <option value="200000">200K tokens</option>
-              <option value="1000000">1M tokens (largest current models)</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="reply">Room for the reply</label>
-            <select id="reply">
-              <option value="1000">About 1,000 tokens (a few paragraphs)</option>
-              <option value="4000" selected>About 4,000 tokens (a long answer)</option>
-              <option value="16000">About 16,000 tokens (a long document)</option>
-            </select>
-          </div>
+    <div class="layout">
+      <section class="panel" aria-labelledby="parts-title">
+        <div class="row-between">
+          <h2 id="parts-title" class="panel-title">What’s in each request</h2>
+          <button type="button" class="btn btn-quiet btn-small" id="example">Load a RAG example</button>
         </div>
+        <div id="sections"></div>
+        <button type="button" class="btn btn-quiet btn-small" id="add">+ Add a section</button>
       </section>
 
-      <section class="panel" aria-labelledby="out-title">
-        <h2 id="out-title">How much room it uses</h2>
-        <div class="meter" id="meter" role="img" aria-label="Context window usage" aria-describedby="usage-text">
-          <span class="seg-sys" id="seg-sys"></span>
-          <span class="seg-user" id="seg-user"></span>
-          <span class="seg-reply" id="seg-reply"></span>
-        </div>
-        <div class="key" aria-hidden="true"><span class="k-sys">Instructions</span><span class="k-user">Content</span><span class="k-reply">Reply</span><span class="k-free">Free</span></div>
-        <dl class="stat-row">
-          <div class="stat"><dt>Instructions</dt><dd id="v-sys">0</dd></div>
-          <div class="stat"><dt>Content</dt><dd id="v-user">0</dd></div>
-          <div class="stat"><dt>Window used</dt><dd id="v-pct">0%</dd></div>
-        </dl>
-        <p id="usage-text" aria-live="polite"></p>
-        <div id="advice" class="notice" hidden></div>
-        <h3 class="panel-title" style="margin-top:1rem">What the model receives</h3>
-        <pre class="output" id="preview" tabindex="0" aria-label="Prompt split into instructions and content"></pre>
-      </section>
+      <div class="stack">
+        <section class="panel" aria-labelledby="model-title">
+          <h2 id="model-title" class="panel-title">Model</h2>
+          <div class="two">
+            <div class="field">
+              <label for="window">Context window (tokens)</label>
+              <input type="text" inputmode="numeric" id="window" list="windows" value="200000">
+              <datalist id="windows"><option value="8192"></option><option value="32768"></option><option value="128000"></option><option value="200000"></option><option value="1000000"></option></datalist>
+            </div>
+            <div class="field">
+              <label for="reply">Reserved for the reply</label>
+              <input type="text" inputmode="numeric" id="reply" value="4000">
+            </div>
+            <div class="field">
+              <label for="price">Input price, $ per 1M tokens</label>
+              <input type="text" inputmode="decimal" id="price" value="3.00">
+            </div>
+            <div class="field">
+              <label for="out-price">Output price, $ per 1M tokens</label>
+              <input type="text" inputmode="decimal" id="out-price" value="15.00">
+            </div>
+            <div class="field">
+              <label for="calls">Requests per day</label>
+              <input type="text" inputmode="numeric" id="calls" value="1000">
+            </div>
+            <div class="field">
+              <label for="cached">Share of input that’s cached (%)</label>
+              <input type="text" inputmode="numeric" id="cached" value="0">
+              <span class="hint">Repeated prefixes like system prompts can often be cached. This assumes cached tokens cost about 10% of the normal price; use 0 if unsure.</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" aria-labelledby="use-title">
+          <h2 id="use-title" class="panel-title">Budget</h2>
+          <div class="meter" id="meter" role="img" aria-label="Context window usage" aria-describedby="summary"></div>
+          <ul class="key" id="key"></ul>
+          <dl class="stat-row">
+            <div class="stat"><dt>Window used</dt><dd id="v-used">0%</dd></div>
+            <div class="stat"><dt>Per request</dt><dd id="v-cost">$0</dd></div>
+            <div class="stat"><dt>Per month</dt><dd id="v-month">$0</dd></div>
+          </dl>
+          <p id="summary" aria-live="polite"></p>
+          <h3 class="panel-title" style="margin-top:0.75rem">What to do</h3>
+          <ul class="advice" id="advice"></ul>
+        </section>
+      </div>
     </div>
     <p id="status" class="sr-only" role="status" aria-live="polite"></p>
   </main>
 
   <footer class="tool-foot">
-    <p>Your text never leaves this browser tab and isn’t saved. Token counts are estimates (about four characters per token). Real counts depend on the model.</p>
+    <p>Your text never leaves this browser tab. Section names, counts, and model settings are saved in this browser; pasted text is not. Token counts are estimates (about four characters per token).</p>
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
-    var els = {
-      prompt: document.getElementById("prompt"), limit: document.getElementById("limit"), reply: document.getElementById("reply")
-    };
+    var COLORS = ["#4338ca", "#0f766e", "#b45309", "#be185d", "#2563eb", "#7c3aed", "#15803d", "#c2410c"];
+    var KINDS = { system: "System prompt", tools: "Tool definitions", docs: "Retrieved documents", history: "Chat history", question: "User question" };
+    var DEFAULT_SECTIONS = [
+      { name: "System prompt", kind: "system", text: "You are a support assistant for an online bookstore. Answer in plain language. If you don't know, say so. Reply in JSON with the keys \"answer\" and \"confidence\".", count: "" },
+      { name: "Tool definitions", kind: "tools", text: "", count: "1200" },
+      { name: "Retrieved documents", kind: "docs", text: "", count: "6000" },
+      { name: "Chat history", kind: "history", text: "", count: "3500" },
+      { name: "User question", kind: "question", text: "I ordered two books last Tuesday and only one arrived. Tracking says delivered. What should I do?", count: "" }
+    ];
+    var EXAMPLE = [
+      { name: "System prompt", kind: "system", text: "", count: "900" },
+      { name: "Tool definitions", kind: "tools", text: "", count: "2400" },
+      { name: "Retrieved documents (top 20 chunks)", kind: "docs", text: "", count: "48000" },
+      { name: "Chat history (30 turns)", kind: "history", text: "", count: "22000" },
+      { name: "User question", kind: "question", text: "", count: "80" }
+    ];
 
-    function split(input) {
-      var sys = input.match(/\[SYSTEM_PROMPT\]([\s\S]*?)(?=\[USER_CONTENT\]|$)/i);
-      var usr = input.match(/\[USER_CONTENT\]([\s\S]*)$/i);
-      if (!sys && !usr) return { system: "", user: input.trim() };
-      return { system: sys ? sys[1].trim() : "", user: usr ? usr[1].trim() : "" };
+    var saved = ToolKit.store.get("cwo_v2", null);
+    var sections = saved && Array.isArray(saved.sections) ? saved.sections.map(function (s) { return { name: s.name, kind: s.kind, text: "", count: s.count || "" }; }) : JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+    if (!saved) sections = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+    var F = ["window", "reply", "price", "out-price", "calls", "cached"];
+    F.forEach(function (id) { if (saved && saved[id] != null) document.getElementById(id).value = saved[id]; });
+
+    function num(id) { var n = parseFloat(String(document.getElementById(id).value).replace(/[^0-9.]/g, "")); return isFinite(n) ? n : 0; }
+    function fmt(n) { return Math.round(n).toLocaleString(); }
+    function money(n) { return n === 0 ? "$0" : n < 0.01 ? "<$0.01" : n < 100 ? "$" + n.toFixed(2) : "$" + Math.round(n).toLocaleString(); }
+    function tokensOf(s) { return s.text.trim() ? ToolKit.estimateTokens(s.text) : (parseInt(String(s.count).replace(/[^0-9]/g, ""), 10) || 0); }
+
+    function save() {
+      var o = { sections: sections.map(function (s) { return { name: s.name, kind: s.kind, count: s.text.trim() ? String(tokensOf(s)) : s.count }; }) };
+      F.forEach(function (id) { o[id] = document.getElementById(id).value; });
+      ToolKit.store.set("cwo_v2", o);
     }
 
-    function pct(n, d) { return d ? (n / d) * 100 : 0; }
-    function fmt(n) { return n.toLocaleString(); }
+    function renderSections() {
+      var box = document.getElementById("sections"); box.innerHTML = "";
+      sections.forEach(function (s, i) {
+        var d = document.createElement("div"); d.className = "sec"; d.style.setProperty("--c", COLORS[i % COLORS.length]);
+        var head = document.createElement("div"); head.className = "sec-head";
+        var name = document.createElement("input"); name.type = "text"; name.value = s.name; name.setAttribute("aria-label", "Section " + (i + 1) + " name");
+        name.addEventListener("input", function () { s.name = name.value; update(); });
+        var count = document.createElement("span"); count.className = "meta"; count.id = "c-" + i;
+        var del = document.createElement("button"); del.type = "button"; del.className = "del"; del.textContent = "✕"; del.setAttribute("aria-label", "Remove " + (s.name || "section"));
+        del.addEventListener("click", function () { sections.splice(i, 1); renderSections(); update(); });
+        head.appendChild(name); head.appendChild(count); head.appendChild(del);
+        var ta = document.createElement("textarea"); ta.value = s.text; ta.placeholder = "Paste this part of the request…";
+        ta.setAttribute("aria-label", (s.name || "Section") + " text");
+        ta.addEventListener("input", function () { s.text = ta.value; cnt.disabled = !!ta.value.trim(); update(); });
+        var alt = document.createElement("div"); alt.className = "alt";
+        var lab = document.createElement("label"); lab.htmlFor = "n-" + i; lab.textContent = "or enter a token count";
+        var cnt = document.createElement("input"); cnt.type = "text"; cnt.inputMode = "numeric"; cnt.id = "n-" + i; cnt.value = s.count; cnt.disabled = !!s.text.trim();
+        cnt.addEventListener("input", function () { s.count = cnt.value; update(); });
+        alt.appendChild(lab); alt.appendChild(cnt);
+        d.appendChild(head); d.appendChild(ta); d.appendChild(alt); box.appendChild(d);
+      });
+    }
 
     function update() {
-      var parts = split(els.prompt.value);
-      var limit = +els.limit.value, reply = +els.reply.value;
-      var s = ToolKit.estimateTokens(parts.system), u = ToolKit.estimateTokens(parts.user);
-      var used = s + u, total = used + reply;
+      var win = num("window"), reply = num("reply");
+      var parts = sections.map(function (s, i) { return { name: s.name || "Untitled", kind: s.kind, t: tokensOf(s), c: COLORS[i % COLORS.length] }; });
+      var input = parts.reduce(function (a, p) { return a + p.t; }, 0);
+      var total = input + reply, free = win - total;
+      parts.forEach(function (p, i) { var el = document.getElementById("c-" + i); if (el) el.textContent = "~" + fmt(p.t) + " tokens"; });
 
-      var sp = Math.min(pct(s, limit), 100);
-      var up = Math.min(pct(u, limit), 100 - sp);
-      var rp = Math.min(pct(reply, limit), 100 - sp - up);
-      document.getElementById("seg-sys").style.width = sp + "%";
-      document.getElementById("seg-user").style.width = up + "%";
-      document.getElementById("seg-reply").style.width = rp + "%";
+      // Meter
+      var meter = document.getElementById("meter"); meter.innerHTML = "";
+      var scale = Math.max(win, total) || 1;
+      parts.concat([{ name: "Reply", t: reply, c: "repeating-linear-gradient(45deg, var(--ok), var(--ok) 4px, transparent 4px, transparent 8px)" }]).forEach(function (p) {
+        var sp = document.createElement("span"); sp.style.width = (p.t / scale * 100) + "%"; sp.style.background = p.c; sp.title = p.name + ": " + fmt(p.t); meter.appendChild(sp);
+      });
+      var key = document.getElementById("key"); key.innerHTML = "";
+      parts.concat([{ name: "Reserved for reply", t: reply, c: "var(--ok)" }]).forEach(function (p) {
+        var li = document.createElement("li");
+        li.innerHTML = '<span class="sw" style="--c:' + p.c + '"></span><span></span><span class="n"></span><span class="n"></span>';
+        li.children[1].textContent = p.name; li.children[2].textContent = fmt(p.t); li.children[3].textContent = win ? Math.round(p.t / win * 100) + "%" : "–";
+        key.appendChild(li);
+      });
 
-      document.getElementById("v-sys").textContent = fmt(s);
-      document.getElementById("v-user").textContent = fmt(u);
-      var usedPct = pct(total, limit);
-      document.getElementById("v-pct").textContent = (usedPct < 1 && total > 0 ? "<1" : Math.round(usedPct)) + "%";
+      // Cost
+      var cachedShare = Math.min(100, num("cached")) / 100;
+      var inCost = input * num("price") / 1e6 * (1 - cachedShare * 0.9);   // assume cached reads cost about 10% of normal input
+      var outCost = reply * num("out-price") / 1e6;
+      var per = inCost + outCost, month = per * num("calls") * 30;
+      document.getElementById("v-used").textContent = win ? (total / win * 100 < 1 && total > 0 ? "<1" : Math.round(total / win * 100)) + "%" : "–";
+      document.getElementById("v-cost").textContent = money(per);
+      document.getElementById("v-month").textContent = money(month);
+      document.getElementById("summary").textContent = free >= 0
+        ? "About " + fmt(input) + " input tokens plus " + fmt(reply) + " reserved for the reply, out of " + fmt(win) + ". " + fmt(free) + " to spare. (Cost assumes the full reply is used.)"
+        : "Over by about " + fmt(-free) + " tokens once the reply is included.";
 
-      var free = limit - total;
-      document.getElementById("usage-text").textContent = free >= 0
-        ? "About " + fmt(used) + " tokens of prompt plus " + fmt(reply) + " for the reply, out of " + fmt(limit) + ". Roughly " + fmt(free) + " tokens to spare."
-        : "This is about " + fmt(-free) + " tokens more than a window of " + fmt(limit) + " tokens can hold once the reply is included.";
-
-      var advice = document.getElementById("advice");
-      if (free < 0) {
-        advice.hidden = false; advice.className = "notice bad";
-        advice.textContent = "Too long. The model would drop or ignore part of this. Cut the content, split it into smaller requests, or choose a model with a larger window.";
-      } else if (usedPct > 75) {
-        advice.hidden = false; advice.className = "notice";
-        advice.textContent = "Getting full. Models can miss details buried in the middle of very long prompts, so trim what the task doesn’t need.";
-      } else if (s > 0 && u > 0 && s > u * 3 && s > 500) {
-        advice.hidden = false; advice.className = "notice info";
-        advice.textContent = "Your instructions are much longer than the content. Long rule lists cost tokens on every request, so see if any rules can go.";
-      } else {
-        advice.hidden = true;
+      // Advice
+      var adv = [], sorted = parts.slice().sort(function (a, b) { return b.t - a.t; });
+      var biggest = sorted[0];
+      if (free < 0) adv.push(["bad", "This request doesn’t fit. Cut at least " + fmt(-free) + " tokens, starting with “" + biggest.name + "” (" + fmt(biggest.t) + "). Otherwise the provider will reject it or truncate it."]);
+      else if (win && total / win > 0.75) adv.push(["warn", "Over 75% full. Models tend to miss details buried in the middle of very long contexts, and long contexts are slower. Trim before you add more."]);
+      parts.forEach(function (p) {
+        var share = input ? p.t / input : 0;
+        if (p.kind === "history" && p.t > 4000) adv.push(["warn", "Chat history is " + fmt(p.t) + " tokens (" + Math.round(share * 100) + "% of input). Summarize older turns and keep only the last few verbatim. <a href=\"context-extractor.html\">Context Extractor</a> can do the summary."]);
+        if (p.kind === "docs" && p.t > 15000) adv.push(["warn", "Retrieved documents are " + fmt(p.t) + " tokens. Retrieve fewer, smaller chunks, or re-rank and keep only the top results. More context isn’t always better context."]);
+        if (p.kind === "tools" && p.t > 3000) adv.push(["tip", "Tool definitions take " + fmt(p.t) + " tokens on every request. Send only the tools this step needs, and shorten their descriptions."]);
+        if (p.kind === "system" && p.t > 1500) adv.push(["tip", "The system prompt is " + fmt(p.t) + " tokens and is paid on every call. Run it through <a href=\"prompt-matrix-evaluator.html\">Prompt Matrix Evaluator</a> and consider caching it."]);
+      });
+      if (cachedShare === 0 && sections.some(function (s) { return s.kind === "system" || s.kind === "tools"; })) {
+        var stable = parts.filter(function (p) { return p.kind === "system" || p.kind === "tools"; }).reduce(function (a, p) { return a + p.t; }, 0);
+        if (stable > 1024 && month > 1) adv.push(["tip", "About " + fmt(stable) + " tokens (system prompt and tools) repeat on every request. If your provider supports prompt caching, caching them could cut that part of the bill substantially. Try setting the cached share above."]);
       }
-
-      document.getElementById("preview").textContent =
-        "INSTRUCTIONS (~" + fmt(s) + " tokens)\n" + (parts.system || "(none)") +
-        "\n\nCONTENT (~" + fmt(u) + " tokens)\n" + (parts.user || "(none)");
+      if (!adv.length) adv.push(["ok", "Comfortable fit. Nothing urgent to trim."]);
+      var ul = document.getElementById("advice"); ul.innerHTML = "";
+      adv.forEach(function (a) { var li = document.createElement("li"); li.className = a[0]; li.innerHTML = a[1]; ul.appendChild(li); });
+      save();
     }
 
-    els.prompt.addEventListener("input", update);
-    els.limit.addEventListener("change", update);
-    els.reply.addEventListener("change", update);
-    update();
+    document.getElementById("add").addEventListener("click", function () {
+      sections.push({ name: "New section", kind: "other", text: "", count: "" });
+      renderSections(); update();
+      var inputs = document.querySelectorAll(".sec-head input"); var last = inputs[inputs.length - 1]; last.focus(); last.select();
+    });
+    document.getElementById("example").addEventListener("click", function () {
+      sections = JSON.parse(JSON.stringify(EXAMPLE)); document.getElementById("window").value = "128000";
+      renderSections(); update(); ToolKit.announce("Loaded a retrieval-augmented chat example.");
+    });
+    F.forEach(function (id) { document.getElementById(id).addEventListener("input", update); });
+    renderSections(); update();
   </script>
 </body>
 </html>

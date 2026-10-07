@@ -4,22 +4,43 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Token Router — Iggy Mwangi</title>
-  <meta name="description" content="An interactive explainer: watch a shared token budget serve urgent requests first and hold background jobs until there's room.">
+  <meta name="description" content="Plan around an AI provider's rate limits: enter your token and request limits and your traffic, and see whether you'll hit them, how a priority router splits capacity between urgent and background work, and how fast a backlog clears.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
-    .pool-fill { background: var(--info); transition: width 0.4s ease; }
-    .jobs { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.6rem; }
-    .job { display: flex; justify-content: space-between; gap: 0.75rem; align-items: center; border: 1px solid var(--line); border-radius: 0.75rem; padding: 0.7rem 0.85rem; background: var(--bg); }
-    .job.urgent { box-shadow: inset 4px 0 0 var(--ok); }
-    .job.background { box-shadow: inset 4px 0 0 var(--warn); }
-    .job h3 { margin: 0; font-size: 1rem; }
-    .job p { margin: 0.1rem 0 0; color: var(--muted); font-size: 0.95rem; }
-    .log { margin: 0; }
+    .viz { --s-urgent: #4338ca; --s-bg: #d97706; --grid: #e4e2dc; --limit: #16171b; }
+    :root[data-theme="dark"] .viz { --s-urgent: #7078ec; --s-bg: #c98500; --grid: #2c2d33; --limit: #edece9; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+    @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .cls { border: 1px solid var(--line); border-radius: 0.7rem; background: var(--bg); padding: 0.65rem 0.75rem; margin-bottom: 0.55rem; }
+    .cls-head { display: grid; grid-template-columns: minmax(0, 1fr) 9rem 40px; gap: 0.45rem; }
+    .cls-nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.45rem; margin-top: 0.45rem; }
+    .cls input, .cls select { min-height: 38px; padding: 0.3rem 0.5rem; font-size: 0.93rem; }
+    .cls label { font-size: 0.82rem; font-weight: 500; color: var(--muted); display: block; margin-bottom: 0.15rem; }
+    .del { min-height: 38px; border-radius: 0.5rem; border: 1px solid var(--line); background: var(--bg-raise); color: var(--muted); cursor: pointer; }
+    .del:hover { color: var(--bad); border-color: var(--bad); }
+    .chart-wrap { position: relative; }
+    .chart { width: 100%; height: auto; display: block; }
+    .chart .bar { cursor: default; }
+    .chart-tip { position: absolute; pointer-events: none; background: var(--bg-raise); color: var(--ink); border: 1px solid var(--line); border-radius: 0.5rem;
+      box-shadow: var(--shadow-md); padding: 0.45rem 0.6rem; font-size: 0.85rem; white-space: nowrap; transform: translate(-50%, -110%); }
+    .chart-tip .sw { display: inline-block; width: 0.7rem; height: 0.7rem; border-radius: 2px; margin-right: 0.35rem; vertical-align: -0.05rem; }
+    .legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1rem; font-size: 0.9rem; color: var(--muted); margin: 0.3rem 0 0.5rem; }
+    .legend .sw { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 2px; margin-right: 0.35rem; vertical-align: -0.1rem; }
+    .legend .ln { display: inline-block; width: 1.1rem; border-top: 2px dashed var(--limit); margin-right: 0.35rem; vertical-align: 0.2rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; font-family: var(--mono); }
+    th, td { text-align: right; padding: 0.3rem 0.4rem; border-bottom: 1px solid var(--line); }
+    th:first-child, td:first-child { text-align: left; }
+    .advice { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+    .advice li { padding: 0.55rem 0.7rem; border-radius: 0.55rem; border-left: 4px solid var(--info); background: var(--info-bg); }
+    .advice li.bad { border-color: var(--bad); background: var(--bad-bg); }
+    .advice li.warn { border-color: var(--warn); background: var(--warn-bg); }
+    .advice li.ok { border-color: var(--ok); background: var(--ok-bg); }
   </style>
 </head>
 <body>
@@ -40,144 +61,251 @@
     </div>
   </header>
 
-  <main id="main" class="tool-main" tabindex="-1">
+  <main id="main" class="tool-main viz" tabindex="-1">
     <div class="tool-intro">
       <h1>Token Router</h1>
-      <p class="lede">AI providers limit how many tokens you can use per minute. When a person is waiting on an answer and a big background job arrives at the same time, a router can serve the person first and hold the background job until the budget refills, instead of letting both slow down or fail.</p>
-      <p class="tags"><span class="tag tag-demo">Simulation</span></p>
+      <p class="lede">AI providers cap how many tokens and requests you can use each minute. Enter your limits and your traffic to see whether you’ll hit them. You’ll also see how a priority router keeps urgent work fast by holding back background jobs, how big the backlog gets, and how long it takes to clear.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your settings</span></p>
       <details class="how">
-        <summary>What this shows</summary>
+        <summary>How the model works</summary>
         <ul>
-          <li>The bar is a shared budget of 100,000 tokens that refills by 15,000 every tick, like a per-minute limit.</li>
-          <li>A live chat request (35,000 tokens) and a batch summary job (75,000 tokens) arrive together. That’s 110,000, more than the budget holds.</li>
-          <li>The router runs the urgent request now and makes the batch job wait until there’s enough room. Nothing fails.</li>
-          <li>This is a simulation. The numbers are illustrative.</li>
+          <li>Each minute, urgent traffic is served first, up to the token and request limits. Background traffic gets what’s left; anything that doesn’t fit waits in a queue.</li>
+          <li>Tokens count input plus output. Check how your provider counts them, and use your account’s actual limits.</li>
+          <li>It’s a planning estimate with steady traffic. Real traffic is burstier, so leave headroom.</li>
         </ul>
       </details>
     </div>
 
-    <div class="grid-2">
-      <section class="panel" aria-labelledby="pool-title">
-        <h2 id="pool-title">Shared token budget</h2>
-        <div class="row-between"><span>Available</span><strong class="meta" id="pool-text" style="color:var(--ink)">100,000 tokens</strong></div>
-        <div class="meter" style="margin:0.4rem 0 1rem" role="meter" id="pool-meter" aria-label="Available tokens" aria-valuemin="0" aria-valuemax="100000" aria-valuenow="100000">
-          <span class="pool-fill" id="pool-fill" style="width:100%"></span>
-        </div>
+    <div class="layout">
+      <div class="stack">
+        <section class="panel" aria-labelledby="lim-title">
+          <h2 id="lim-title" class="panel-title">Your limits</h2>
+          <div class="two">
+            <div class="field"><label for="tpm">Tokens per minute</label><input type="text" inputmode="numeric" id="tpm" value="150000"></div>
+            <div class="field"><label for="rpm">Requests per minute</label><input type="text" inputmode="numeric" id="rpm" value="500"></div>
+            <div class="field"><label for="latency">Average response time (seconds)</label><input type="text" inputmode="decimal" id="latency" value="4"></div>
+            <div class="field"><label for="minutes">Minutes to simulate</label><input type="text" inputmode="numeric" id="minutes" value="15"></div>
+          </div>
+        </section>
 
-        <h3 class="panel-title">Incoming work</h3>
-        <ul class="jobs">
-          <li class="job urgent">
-            <div><h3>Live chat reply</h3><p>Urgent · a person is waiting · needs 35,000 tokens</p></div>
-            <span class="badge badge-idle" id="badge-urgent">Not started</span>
-          </li>
-          <li class="job background">
-            <div><h3>Nightly batch summary</h3><p>Background · can wait · needs 75,000 tokens</p></div>
-            <span class="badge badge-idle" id="badge-batch">Not started</span>
-          </li>
-        </ul>
-        <div class="row">
-          <button type="button" class="btn" id="run">Send both at once</button>
-          <button type="button" class="btn btn-quiet" id="reset">Reset</button>
-        </div>
-      </section>
+        <section class="panel" aria-labelledby="traffic-title">
+          <div class="row-between">
+            <h2 id="traffic-title" class="panel-title">Your traffic</h2>
+            <button type="button" class="btn btn-quiet btn-small" id="spike">Simulate a 3× spike</button>
+          </div>
+          <div id="classes"></div>
+          <button type="button" class="btn btn-quiet btn-small" id="add">+ Add traffic</button>
+        </section>
+      </div>
 
-      <section class="panel" aria-labelledby="log-title">
-        <div class="row-between">
-          <h2 id="log-title" class="panel-title">What happened</h2>
-          <span class="badge badge-ok" id="health">Healthy</span>
-        </div>
-        <ol class="output log" id="log" aria-live="polite" tabindex="0" aria-label="Event log"></ol>
-      </section>
+      <div class="stack">
+        <section class="panel" aria-labelledby="res-title">
+          <h2 id="res-title" class="panel-title">What happens</h2>
+          <dl class="stat-row">
+            <div class="stat"><dt>Token demand</dt><dd id="s-tpm">–</dd></div>
+            <div class="stat"><dt>Urgent served</dt><dd id="s-urgent">–</dd></div>
+            <div class="stat"><dt>Backlog at end</dt><dd id="s-backlog">–</dd></div>
+          </dl>
+          <p id="summary" aria-live="polite" style="margin-top:0"></p>
+          <div class="legend" aria-hidden="true"><span><span class="sw" style="background:var(--s-urgent)"></span>Urgent tokens served</span><span><span class="sw" style="background:var(--s-bg)"></span>Background tokens served</span><span><span class="ln"></span>Token limit</span></div>
+          <div class="chart-wrap" id="chart-wrap">
+            <svg class="chart" id="chart" role="img" aria-labelledby="chart-desc"></svg>
+            <p id="chart-desc" class="sr-only"></p>
+            <div class="chart-tip" id="tip" hidden></div>
+          </div>
+          <details style="margin-top:0.6rem">
+            <summary><strong>Minute by minute (table)</strong></summary>
+            <div style="overflow-x:auto;margin-top:0.5rem"><table id="table"></table></div>
+          </details>
+        </section>
+
+        <section class="panel" aria-labelledby="adv-title">
+          <h2 id="adv-title" class="panel-title">Recommendations</h2>
+          <ul class="advice" id="advice"></ul>
+        </section>
+      </div>
     </div>
     <p id="status" class="sr-only" role="status" aria-live="polite"></p>
   </main>
 
   <footer class="tool-foot">
-    <p>This page is a simulation. Nothing is sent anywhere or saved.</p>
+    <p>Everything runs in this browser tab and your settings are saved in this browser. No requests are sent anywhere.</p>
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
-    var MAX = 100000, REFILL = 15000, URGENT = 35000, BATCH = 75000;
-    var tokens = MAX, timers = [];
-    var logEl = document.getElementById("log");
+    var DEFAULT = [
+      { name: "Live chat", pri: "urgent", rpm: "40", inTok: "1500", outTok: "400" },
+      { name: "Nightly document summaries", pri: "background", rpm: "8", inTok: "6000", outTok: "800" }
+    ];
+    var saved = ToolKit.store.get("router_v2", null);
+    var classes = saved && Array.isArray(saved.classes) ? saved.classes : JSON.parse(JSON.stringify(DEFAULT));
+    var F = ["tpm", "rpm", "latency", "minutes"];
+    F.forEach(function (id) { if (saved && saved[id] != null) document.getElementById(id).value = saved[id]; });
+    var spike = false;
 
-    function fmt(n) { return n.toLocaleString(); }
-    function setPool(n) {
-      tokens = Math.max(0, Math.min(MAX, n));
-      document.getElementById("pool-text").textContent = fmt(tokens) + " tokens";
-      document.getElementById("pool-fill").style.width = (tokens / MAX) * 100 + "%";
-      var meter = document.getElementById("pool-meter");
-      meter.setAttribute("aria-valuenow", tokens);
-      meter.setAttribute("aria-valuetext", fmt(tokens) + " of " + fmt(MAX) + " tokens available");
-    }
-    function badge(id, text, kind) { var b = document.getElementById(id); b.textContent = text; b.className = "badge badge-" + kind; }
-    function health(text, kind) { badge("health", text, kind); }
-    function log(text) {
-      var li = document.createElement("li");
-      var t = document.createElement("time"); t.textContent = "t" + logEl.children.length;
-      li.appendChild(t); li.appendChild(document.createTextNode(text));
-      logEl.appendChild(li); logEl.scrollTop = logEl.scrollHeight;
-    }
-    function later(ms, fn) { timers.push(setTimeout(fn, ToolKit.prefersReducedMotion() ? Math.min(ms, 300) : ms)); }
+    function n(v) { var x = parseFloat(String(v).replace(/[^0-9.]/g, "")); return isFinite(x) ? x : 0; }
+    function fmt(x) { return Math.round(x).toLocaleString(); }
+    function short(x) { return x >= 1e6 ? (x / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : x >= 1000 ? Math.round(x / 1000) + "k" : String(Math.round(x)); }
+    function save() { var o = { classes: classes }; F.forEach(function (id) { o[id] = document.getElementById(id).value; }); ToolKit.store.set("router_v2", o); }
 
-    function reset() {
-      timers.forEach(clearTimeout); timers = [];
-      setPool(MAX); logEl.innerHTML = "";
-      badge("badge-urgent", "Not started", "idle"); badge("badge-batch", "Not started", "idle");
-      health("Healthy", "ok");
-      document.getElementById("run").disabled = false;
-    }
-
-    function refillUntil(needed, then) {
-      if (tokens >= needed) { then(); return; }
-      later(900, function () {
-        setPool(tokens + REFILL);
-        log("Budget refilled by " + fmt(REFILL) + ". Now " + fmt(tokens) + " available; the batch job needs " + fmt(needed) + ".");
-        refillUntil(needed, then);
+    function renderClasses() {
+      var box = document.getElementById("classes"); box.innerHTML = "";
+      classes.forEach(function (c, i) {
+        var d = document.createElement("div"); d.className = "cls";
+        d.innerHTML =
+          '<div class="cls-head">' +
+            '<div><label for="cn' + i + '">Name</label><input type="text" id="cn' + i + '"></div>' +
+            '<div><label for="cp' + i + '">Priority</label><select id="cp' + i + '"><option value="urgent">Urgent</option><option value="background">Background</option></select></div>' +
+            '<div style="align-self:end"><button type="button" class="del" aria-label="Remove">✕</button></div>' +
+          '</div>' +
+          '<div class="cls-nums">' +
+            '<div><label for="cr' + i + '">Requests / min</label><input type="text" inputmode="numeric" id="cr' + i + '"></div>' +
+            '<div><label for="ci' + i + '">Input tokens each</label><input type="text" inputmode="numeric" id="ci' + i + '"></div>' +
+            '<div><label for="co' + i + '">Output tokens each</label><input type="text" inputmode="numeric" id="co' + i + '"></div>' +
+          '</div>';
+        var map = { cn: "name", cp: "pri", cr: "rpm", ci: "inTok", co: "outTok" };
+        Object.keys(map).forEach(function (k) {
+          var el = d.querySelector("#" + k + i); el.value = c[map[k]];
+          el.addEventListener(el.tagName === "SELECT" ? "change" : "input", function () { c[map[k]] = el.value; update(); });
+        });
+        var del = d.querySelector(".del"); del.setAttribute("aria-label", "Remove " + (c.name || "traffic"));
+        del.addEventListener("click", function () { classes.splice(i, 1); renderClasses(); update(); });
+        box.appendChild(d);
       });
     }
 
-    function run() {
-      reset();
-      document.getElementById("run").disabled = true;
-      log("Both requests arrive. Together they need " + fmt(URGENT + BATCH) + " tokens, but the budget holds " + fmt(MAX) + ".");
-      badge("badge-urgent", "Queued", "info"); badge("badge-batch", "Queued", "info");
-
-      later(800, function () {
-        setPool(tokens - URGENT);
-        badge("badge-urgent", "Running", "info");
-        log("Urgent first: the live chat reply takes " + fmt(URGENT) + " tokens. " + fmt(tokens) + " left.");
-      });
-      later(1700, function () {
-        badge("badge-urgent", "Done", "ok");
-        log("Live chat reply sent. The person got their answer without waiting on the batch job.");
-        badge("badge-batch", "Waiting", "warn");
-        health("Holding background work", "warn");
-        log("The batch job needs " + fmt(BATCH) + " but only " + fmt(tokens) + " is available, so it waits instead of failing.");
-        refillUntil(BATCH, function () {
-          later(700, function () {
-            setPool(tokens - BATCH);
-            badge("badge-batch", "Running", "info");
-            log("Enough room now. The batch job takes " + fmt(BATCH) + " tokens. " + fmt(tokens) + " left.");
-            later(1200, function () {
-              badge("badge-batch", "Done", "ok");
-              health("Healthy", "ok");
-              log("Batch summary finished. Both jobs completed, and the urgent one was never delayed.");
-              ToolKit.announce("Simulation finished.");
-              document.getElementById("run").disabled = false;
-            });
+    // Minute-by-minute simulation with a strict priority router.
+    function simulate() {
+      var C = n(document.getElementById("tpm").value), L = n(document.getElementById("rpm").value);
+      var mins = Math.max(1, Math.min(60, Math.round(n(document.getElementById("minutes").value)) || 15));
+      var mult = spike ? 3 : 1;
+      var cls = classes.map(function (c) { return { name: c.name || "Traffic", pri: c.pri, rpm: n(c.rpm) * mult, tok: n(c.inTok) + n(c.outTok), queue: 0, served: 0, arrived: 0 }; });
+      var rows = [];
+      for (var m = 1; m <= mins; m++) {
+        var capT = C, capR = L, row = { m: m, urgent: 0, bg: 0, backlog: 0, urgentShort: 0 };
+        ["urgent", "background"].forEach(function (pri) {
+          cls.filter(function (c) { return c.pri === pri; }).forEach(function (c) {
+            c.queue += c.rpm; c.arrived += c.rpm;
+            var byTok = c.tok > 0 ? Math.floor(capT / c.tok) : Infinity;
+            var take = Math.max(0, Math.min(c.queue, capR, byTok));
+            c.queue -= take; c.served += take; capT -= take * c.tok; capR -= take;
+            if (pri === "urgent") { row.urgent += take * c.tok; row.urgentShort += c.queue; }
+            else { row.bg += take * c.tok; }
           });
         });
+        row.backlog = cls.filter(function (c) { return c.pri === "background"; }).reduce(function (a, c) { return a + c.queue; }, 0);
+        row.urgentQueue = cls.filter(function (c) { return c.pri === "urgent"; }).reduce(function (a, c) { return a + c.queue; }, 0);
+        rows.push(row);
+      }
+      var demandT = cls.reduce(function (a, c) { return a + c.rpm * c.tok; }, 0);
+      var demandR = cls.reduce(function (a, c) { return a + c.rpm; }, 0);
+      var urg = cls.filter(function (c) { return c.pri === "urgent"; });
+      var urgArr = urg.reduce(function (a, c) { return a + c.arrived; }, 0), urgSrv = urg.reduce(function (a, c) { return a + c.served; }, 0);
+      var bg = cls.filter(function (c) { return c.pri === "background"; });
+      var bgRate = bg.reduce(function (a, c) { return a + c.rpm; }, 0);
+      var urgentT = urg.reduce(function (a, c) { return a + c.rpm * c.tok; }, 0);
+      var spareT = Math.max(0, C - urgentT);
+      var bgTokAvg = bgRate ? bg.reduce(function (a, c) { return a + c.rpm * c.tok; }, 0) / bgRate : 0;
+      var bgCapacity = bgTokAvg ? Math.min(spareT / bgTokAvg, Math.max(0, L - urg.reduce(function (a, c) { return a + c.rpm; }, 0))) : 0;
+      return { C: C, L: L, rows: rows, demandT: demandT, demandR: demandR, urgArr: urgArr, urgSrv: urgSrv, bgRate: bgRate, bgCapacity: bgCapacity, urgentT: urgentT, mins: mins };
+    }
+
+    function chart(R) {
+      var svg = document.getElementById("chart"), W = 560, H = 240, padL = 44, padR = 8, padT = 10, padB = 26;
+      var maxY = Math.max(R.C, Math.max.apply(null, R.rows.map(function (r) { return r.urgent + r.bg; }).concat([1]))) * 1.08;
+      var bw = (W - padL - padR) / R.rows.length, gap = Math.min(6, bw * 0.25);
+      function y(v) { return padT + (H - padT - padB) * (1 - v / maxY); }
+      var out = "";
+      [0, 0.25, 0.5, 0.75, 1].forEach(function (f) {
+        var v = maxY * f, yy = y(v);
+        out += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + yy + '" y2="' + yy + '" stroke="var(--grid)" stroke-width="1"/>';
+        out += '<text x="' + (padL - 6) + '" y="' + (yy + 4) + '" text-anchor="end" font-size="10" fill="var(--muted)">' + short(v) + "</text>";
+      });
+      R.rows.forEach(function (r, i) {
+        var x = padL + i * bw + gap / 2, w = Math.max(1, bw - gap);
+        var yU = y(r.urgent), yB = y(r.urgent + r.bg);
+        // 2px surface gap between the stacked segments
+        if (r.urgent > 0) out += '<rect class="bar" x="' + x + '" y="' + yU + '" width="' + w + '" height="' + Math.max(0, y(0) - yU) + '" fill="var(--s-urgent)" rx="2"/>';
+        if (r.bg > 0) out += '<rect class="bar" x="' + x + '" y="' + yB + '" width="' + w + '" height="' + Math.max(0, yU - yB - 2) + '" fill="var(--s-bg)" rx="2"/>';
+        out += '<rect class="hit" data-i="' + i + '" x="' + (padL + i * bw) + '" y="' + padT + '" width="' + bw + '" height="' + (H - padT - padB) + '" fill="transparent"/>';
+        if (R.rows.length <= 20 || i % 5 === 4 || i === 0) out += '<text x="' + (x + w / 2) + '" y="' + (H - 8) + '" text-anchor="middle" font-size="10" fill="var(--muted)">' + r.m + "</text>";
+      });
+      var yl = y(R.C);
+      out += '<line x1="' + padL + '" x2="' + (W - padR) + '" y1="' + yl + '" y2="' + yl + '" stroke="var(--limit)" stroke-width="2" stroke-dasharray="6 4"/>';
+      svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+      svg.innerHTML = out;
+      // Hover / focus tooltip per minute
+      var tip = document.getElementById("tip"), wrap = document.getElementById("chart-wrap");
+      svg.querySelectorAll(".hit").forEach(function (h) {
+        h.addEventListener("mouseenter", function () {
+          var r = R.rows[+h.dataset.i], box = h.getBoundingClientRect(), wb = wrap.getBoundingClientRect();
+          tip.innerHTML = "<strong>Minute " + r.m + "</strong><br><span class='sw' style='background:var(--s-urgent)'></span>Urgent " + fmt(r.urgent) +
+            "<br><span class='sw' style='background:var(--s-bg)'></span>Background " + fmt(r.bg) + "<br>Backlog " + fmt(r.backlog) + " requests";
+          tip.style.left = Math.min(Math.max(box.left - wb.left + box.width / 2, 80), wb.width - 80) + "px"; tip.style.top = (box.top - wb.top + box.height * 0.45) + "px"; tip.hidden = false;
+        });
+        h.addEventListener("mouseleave", function () { tip.hidden = true; });
       });
     }
 
-    document.getElementById("run").addEventListener("click", run);
-    document.getElementById("reset").addEventListener("click", function () { reset(); ToolKit.announce("Reset."); });
-    reset();
+    function update() {
+      var R = simulate();
+      var util = R.C ? R.demandT / R.C : 0, rUtil = R.L ? R.demandR / R.L : 0;
+      var urgPct = R.urgArr ? Math.round(R.urgSrv / R.urgArr * 100) : 100;
+      var last = R.rows[R.rows.length - 1] || { backlog: 0 };
+      document.getElementById("s-tpm").textContent = Math.round(util * 100) + "% of limit";
+      document.getElementById("s-urgent").textContent = urgPct + "%";
+      document.getElementById("s-backlog").textContent = fmt(last.backlog) + " req";
+      var clearMsg = "";
+      if (last.backlog > 0) {
+        // Clearing happens at normal traffic: spare background capacity minus new background arrivals.
+        var wasSpike = spike; spike = false; var R0 = simulate(); spike = wasSpike;
+        var net = R0.bgCapacity - R0.bgRate;
+        clearMsg = net > 0
+          ? (wasSpike ? " After the spike ends" : " If traffic eases") + ", the backlog clears in about " + Math.ceil(last.backlog / net) + " minutes at normal traffic."
+          : " At normal traffic the backlog never clears, because background demand exceeds what’s left over. Raise the limit or reduce background work.";
+      }
+      document.getElementById("summary").textContent = (spike ? "During a 3× spike: " : "") +
+        "Demand is about " + fmt(R.demandT) + " tokens and " + fmt(R.demandR) + " requests a minute, against limits of " + fmt(R.C) + " and " + fmt(R.L) + ". " +
+        (urgPct >= 100 ? "Urgent traffic is always served. " : "Only " + urgPct + "% of urgent requests fit; the rest wait. ") +
+        (last.backlog > 0 ? "Background work builds a backlog of " + fmt(last.backlog) + " requests after " + R.mins + " minutes." : "Background work keeps up.") + clearMsg;
+      document.getElementById("chart-desc").textContent = "Stacked bars of tokens served per minute for " + R.mins + " minutes, urgent below background, with the token limit at " + fmt(R.C) + ". Full numbers are in the table.";
+      chart(R);
+
+      var t = "<thead><tr><th>Minute</th><th>Urgent tokens</th><th>Background tokens</th><th>Backlog (req)</th></tr></thead><tbody>";
+      R.rows.forEach(function (r) { t += "<tr><td>" + r.m + "</td><td>" + fmt(r.urgent) + "</td><td>" + fmt(r.bg) + "</td><td>" + fmt(r.backlog) + "</td></tr>"; });
+      document.getElementById("table").innerHTML = t + "</tbody>";
+
+      var adv = [], lat = n(document.getElementById("latency").value);
+      var conc = Math.ceil(R.demandR * lat / 60);
+      if (R.urgentT > R.C) adv.push(["bad", "Urgent traffic alone needs " + fmt(R.urgentT) + " tokens a minute, more than your limit. Ask your provider for a higher tier, shorten urgent prompts, or move some of it to background."]);
+      else if (util > 1) adv.push(["warn", "You’re " + Math.round((util - 1) * 100) + "% over the token limit. Priority routing keeps urgent work fast, but background jobs will queue. Without it, every request would see errors and retries."]);
+      else if (util > 0.8) adv.push(["warn", "You’re at " + Math.round(util * 100) + "% of the token limit. Traffic spikes will tip you over; keep about 20% headroom."]);
+      else adv.push(["ok", "Comfortably within the token limit (" + Math.round(util * 100) + "%). Try “Simulate a 3× spike” to test your headroom."]);
+      if (rUtil > 1) adv.push(["warn", "Request rate is " + Math.round(rUtil * 100) + "% of the request limit. Batch small requests together where you can."]);
+      adv.push(["tip", "At about " + lat + "s per response you’ll have roughly " + conc + " requests in flight at once. Cap background concurrency so it can never take more than " + Math.max(0, Math.round((1 - (R.urgentT / Math.max(R.C, 1))) * 100)) + "% of capacity."]);
+      adv.push(["tip", "When you do get a 429 (rate limited) response, retry with exponential backoff and jitter, and honour any retry-after header. Don’t retry urgent and background work in the same queue."]);
+      var ul = document.getElementById("advice"); ul.innerHTML = "";
+      adv.forEach(function (a) { var li = document.createElement("li"); li.className = a[0]; li.textContent = a[1]; ul.appendChild(li); });
+      save();
+    }
+
+    document.getElementById("add").addEventListener("click", function () {
+      classes.push({ name: "New traffic", pri: "background", rpm: "10", inTok: "1000", outTok: "300" }); renderClasses(); update();
+      document.getElementById("cn" + (classes.length - 1)).select();
+    });
+    var spikeBtn = document.getElementById("spike");
+    spikeBtn.setAttribute("aria-pressed", "false");
+    spikeBtn.addEventListener("click", function () {
+      spike = !spike; spikeBtn.setAttribute("aria-pressed", String(spike));
+      spikeBtn.textContent = spike ? "Back to normal traffic" : "Simulate a 3× spike";
+      update(); ToolKit.announce(spike ? "Showing a 3× traffic spike." : "Back to normal traffic.");
+    });
+    F.forEach(function (id) { document.getElementById(id).addEventListener("input", update); });
+    renderClasses(); update();
   </script>
 </body>
 </html>

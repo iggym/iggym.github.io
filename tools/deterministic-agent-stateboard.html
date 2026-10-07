@@ -4,30 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Agent Stateboard — Iggy Mwangi</title>
-  <meta name="description" content="An interactive explainer: watch a planner, a worker, and a checker hand work along a fixed path, with a check before anything is accepted.">
+  <meta name="description" content="Design an AI agent as a fixed sequence of steps with checks and retry limits, simulate what happens when a check fails, and export it as a state-machine spec, a Mermaid diagram, or a Python starter loop.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261006d">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261006d">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
   <style>
-    .steps { list-style: none; margin: 0 0 1rem; padding: 0; display: grid; gap: 0.6rem; counter-reset: step; }
-    .step {
-      display: grid; grid-template-columns: 2.2rem 1fr auto; gap: 0.75rem; align-items: center;
-      border: 1px solid var(--line); border-radius: 0.75rem; padding: 0.7rem 0.85rem; background: var(--bg);
-    }
-    .step::before {
-      counter-increment: step; content: counter(step);
-      display: grid; place-items: center; width: 2.2rem; height: 2.2rem; border-radius: 50%;
-      border: 2px solid var(--line-strong); font-weight: 700; font-family: var(--mono);
-    }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
+    @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
+    .step { border: 1px solid var(--line); border-radius: 0.75rem; background: var(--bg); padding: 0.7rem 0.8rem; margin-bottom: 0.55rem; position: relative; }
     .step.active { border-color: var(--info); box-shadow: inset 4px 0 0 var(--info); }
-    .step.done { border-color: var(--ok); }
+    .step.done { border-color: var(--ok); box-shadow: inset 4px 0 0 var(--ok); }
     .step.failed { border-color: var(--bad); box-shadow: inset 4px 0 0 var(--bad); }
-    .step h3 { margin: 0; font-size: 1rem; }
-    .step p { margin: 0.1rem 0 0; color: var(--muted); font-size: 0.95rem; }
-    .arrow { text-align: center; color: var(--muted); margin: -0.3rem 0; font-size: 0.9rem; }
+    .step-head { display: grid; grid-template-columns: 2rem minmax(0, 1fr) 10rem auto; gap: 0.45rem; align-items: center; }
+    .num { width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; font-family: var(--mono); font-weight: 700; border: 2px solid var(--line-strong); }
+    .step input, .step select { min-height: 38px; padding: 0.3rem 0.5rem; font-size: 0.93rem; }
+    .step .does { margin-top: 0.45rem; }
+    .fail-row { display: flex; flex-wrap: wrap; gap: 0.5rem 0.75rem; align-items: center; margin-top: 0.45rem; font-size: 0.92rem; }
+    .fail-row select, .fail-row input { width: auto; }
+    .fail-row input { width: 4.5rem; }
+    .mini { display: flex; gap: 0.25rem; }
+    .mini button { min-width: 36px; min-height: 36px; border-radius: 0.45rem; border: 1px solid var(--line); background: var(--bg-raise); color: var(--muted); cursor: pointer; font: inherit; }
+    .mini button:hover { color: var(--ink); border-color: var(--ink); }
+    .mini button.x:hover { color: var(--bad); border-color: var(--bad); }
+    .tabs { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    @media (max-width: 560px) {
+      .step-head { grid-template-columns: 2rem minmax(0, 1fr); }
+      .step-head select, .step-head .mini { grid-column: 2; }
+    }
     .log { margin: 0; }
   </style>
 </head>
@@ -52,176 +58,322 @@
   <main id="main" class="tool-main" tabindex="-1">
     <div class="tool-intro">
       <h1>Agent Stateboard</h1>
-      <p class="lede">An AI “agent” that can decide its own next step can wander off course. A sturdier design fixes the path in code. A planner hands to a worker, the worker hands to a checker, and nothing is accepted until the checker approves it. Run the steps below to watch it happen.</p>
-      <p class="tags"><span class="tag tag-demo">Simulation</span></p>
+      <p class="lede">Design an AI agent as a fixed path instead of an open-ended loop. Set out the steps, add checks with retry limits, and decide where failures go. Watch it run, then export the design as a state-machine spec, a Mermaid diagram, or a Python starter loop.</p>
+      <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span> <span class="tag tag-demo">Includes a simulation</span></p>
       <details class="how">
-        <summary>What this shows</summary>
+        <summary>Why design agents this way?</summary>
         <ul>
-          <li>Each step can only hand off to the next one. The model can’t skip the checker or invent a new step.</li>
-          <li>Turn on “Checker rejects the first attempt” to see a failed check send work back to the worker, with a limit on retries.</li>
-          <li>This is a simulation. No AI model runs, and the token numbers are illustrative.</li>
+          <li>When the model picks its own next step, it can skip checks, loop forever, or wander off task. Fixing the path in code makes behaviour predictable and auditable.</li>
+          <li>Every check step needs a failure route and a retry limit. Without a limit, a stubborn failure becomes an infinite, expensive loop.</li>
+          <li>The simulation doesn’t call any model. It shows the control flow your design produces.</li>
         </ul>
       </details>
     </div>
 
-    <div class="grid-2">
-      <section class="panel" aria-labelledby="flow-title">
-        <h2 id="flow-title">The fixed path</h2>
-        <ol class="steps">
-          <li class="step" id="step-planner">
-            <div><h3>Planner</h3><p>Breaks the request into a short plan with clear acceptance criteria.</p></div>
-            <span class="badge badge-idle" id="badge-planner">Waiting</span>
-          </li>
-          <li class="step" id="step-worker">
-            <div><h3>Worker</h3><p>Produces the result, following the plan and nothing else.</p></div>
-            <span class="badge badge-idle" id="badge-worker">Waiting</span>
-          </li>
-          <li class="step" id="step-checker">
-            <div><h3>Checker</h3><p>Validates the result against the plan and a strict format before it’s accepted.</p></div>
-            <span class="badge badge-idle" id="badge-checker">Waiting</span>
-          </li>
-        </ol>
-        <label class="check"><input type="checkbox" id="fail-once" checked> <span>Checker rejects the first attempt <small>Shows the retry path</small></span></label>
-        <div class="row" style="margin-top:0.6rem">
-          <button type="button" class="btn" id="run">Run the steps</button>
-          <button type="button" class="btn btn-quiet" id="step-btn">Next step</button>
-          <button type="button" class="btn btn-quiet" id="reset">Reset</button>
+    <div class="layout">
+      <section class="panel" aria-labelledby="design-title">
+        <div class="row-between">
+          <h2 id="design-title" class="panel-title">Steps</h2>
+          <div class="row" style="flex-wrap:nowrap">
+            <label for="preset" class="sr-only">Preset</label>
+            <select id="preset" style="width:auto;min-height:36px;padding:0.2rem 0.5rem">
+              <option value="build">Plan, build, check</option>
+              <option value="research">Research with citations</option>
+              <option value="support">Support triage with approval</option>
+            </select>
+            <button type="button" class="btn btn-quiet btn-small" id="load">Load</button>
+          </div>
         </div>
-        <p class="hint" style="margin-top:0.6rem">“Next step” lets you go one handoff at a time.</p>
+        <div id="steps"></div>
+        <button type="button" class="btn btn-quiet btn-small" id="add">+ Add a step</button>
+        <ul class="warn-list" id="issues" style="margin:0.6rem 0 0;padding-left:1.2rem;color:var(--warn)"></ul>
       </section>
 
-      <section class="panel" aria-labelledby="log-title">
-        <div class="row-between">
-          <h2 id="log-title" class="panel-title">What happened</h2>
-          <span class="badge badge-idle" id="overall">Idle</span>
-        </div>
-        <ol class="output log" id="log" aria-live="polite" tabindex="0" aria-label="Event log"></ol>
-      </section>
+      <div class="stack">
+        <section class="panel" aria-labelledby="sim-title">
+          <div class="row-between">
+            <h2 id="sim-title" class="panel-title">Simulate a run</h2>
+            <span class="badge badge-idle" id="overall">Idle</span>
+          </div>
+          <div class="field">
+            <label for="scenario">When a check runs, it…</label>
+            <select id="scenario">
+              <option value="pass">passes first time</option>
+              <option value="once" selected>fails once, then passes</option>
+              <option value="always">keeps failing</option>
+            </select>
+          </div>
+          <div class="row">
+            <button type="button" class="btn" id="run">Run</button>
+            <button type="button" class="btn btn-quiet" id="step-btn">Next step</button>
+            <button type="button" class="btn btn-quiet" id="reset">Reset</button>
+          </div>
+          <ol class="output log" id="log" aria-live="polite" tabindex="0" aria-label="Run log" style="margin-top:0.75rem"></ol>
+        </section>
+
+        <section class="panel" aria-labelledby="exp-title">
+          <h2 id="exp-title" class="panel-title">Export</h2>
+          <div class="tabs" role="group" aria-label="Export format">
+            <button type="button" class="btn btn-quiet btn-small" data-tab="json" aria-pressed="true">State machine (JSON)</button>
+            <button type="button" class="btn btn-quiet btn-small" data-tab="mermaid" aria-pressed="false">Mermaid</button>
+            <button type="button" class="btn btn-quiet btn-small" data-tab="python" aria-pressed="false">Python loop</button>
+          </div>
+          <pre class="output" id="export" tabindex="0" aria-label="Export" style="max-height:24rem"></pre>
+          <div class="row" style="margin-top:0.75rem"><button type="button" class="btn" id="copy">Copy</button></div>
+        </section>
+      </div>
     </div>
     <p id="status" class="sr-only" role="status" aria-live="polite"></p>
   </main>
 
   <footer class="tool-foot">
-    <p>This page is a simulation. Nothing is sent anywhere or saved.</p>
-    <p>Want the real thing? See <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">Deterministic Agent Supervisor on GitHub</a>.</p>
+    <p>Everything runs in this browser tab. Your design is saved in this browser. No AI model is called.</p>
+    <p>Want a real implementation? See <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">Deterministic Agent Supervisor on GitHub</a>.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261006d"></script>
-  <script defer src="../assets/js/site-map.js?v=20261006d"></script>
-  <script src="../assets/js/tool-kit.js?v=20261006d"></script>
+  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script defer src="../assets/js/site-map.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
   <script>
-    var MAX_RETRIES = 2;
-    var logEl = document.getElementById("log");
-    var timer = null, script = [], cursor = 0, tokens = 0;
+    var KIND_LABEL = { llm: "Model call", tool: "Tool / code", check: "Check", human: "Human approval" };
+    var PRESETS = {
+      build: [
+        { name: "Plan", kind: "llm", does: "Turn the request into a short plan with acceptance criteria." },
+        { name: "Build", kind: "llm", does: "Produce the result, following the plan only." },
+        { name: "Check", kind: "check", does: "Validate against the criteria and the output schema.", onFail: "Build", retries: 2 },
+        { name: "Ship", kind: "tool", does: "Save the approved result and notify the user." }
+      ],
+      research: [
+        { name: "Search", kind: "tool", does: "Query the search API for up to 10 sources." },
+        { name: "Read", kind: "llm", does: "Extract relevant passages with their source URLs." },
+        { name: "Draft", kind: "llm", does: "Write the answer, citing a source for every claim." },
+        { name: "Cite check", kind: "check", does: "Every claim has a citation and every citation was retrieved.", onFail: "Draft", retries: 2 },
+        { name: "Deliver", kind: "tool", does: "Return the answer with its sources." }
+      ],
+      support: [
+        { name: "Classify", kind: "llm", does: "Label the ticket: billing, bug, or how-to." },
+        { name: "Draft reply", kind: "llm", does: "Write a reply using the help-center articles for that label." },
+        { name: "Policy check", kind: "check", does: "No refunds promised, no personal data repeated, under 150 words.", onFail: "Draft reply", retries: 1 },
+        { name: "Agent approval", kind: "human", does: "A support agent approves or edits the reply." },
+        { name: "Send", kind: "tool", does: "Send the reply and close the ticket." }
+      ]
+    };
 
-    function setStep(id, label, kind, cls) {
-      var step = document.getElementById("step-" + id);
-      step.className = "step" + (cls ? " " + cls : "");
-      var badge = document.getElementById("badge-" + id);
-      badge.textContent = label;
-      badge.className = "badge badge-" + kind;
-    }
-    function setOverall(label, kind) {
-      var el = document.getElementById("overall");
-      el.textContent = label; el.className = "badge badge-" + kind;
-    }
-    function log(text) {
-      var li = document.createElement("li");
-      var t = document.createElement("time");
-      t.textContent = "step " + (logEl.children.length + 1);
-      li.appendChild(t);
-      li.appendChild(document.createTextNode(text));
-      logEl.appendChild(li);
-      logEl.scrollTop = logEl.scrollHeight;
+    var steps = ToolKit.store.get("asb_steps", null);
+    if (!Array.isArray(steps) || !steps.length) steps = JSON.parse(JSON.stringify(PRESETS.build));
+    var tab = "json";
+
+    function slug(s) { return (s || "step").replace(/[^A-Za-z0-9]+/g, "_").replace(/^_|_$/g, "") || "step"; }
+    function save() { ToolKit.store.set("asb_steps", steps); }
+
+    function renderSteps() {
+      var box = document.getElementById("steps"); box.innerHTML = "";
+      steps.forEach(function (s, i) {
+        var d = document.createElement("div"); d.className = "step"; d.id = "st-" + i;
+        var head = document.createElement("div"); head.className = "step-head";
+        var num = document.createElement("span"); num.className = "num"; num.textContent = i + 1; num.setAttribute("aria-hidden", "true");
+        var name = document.createElement("input"); name.type = "text"; name.value = s.name; name.setAttribute("aria-label", "Step " + (i + 1) + " name");
+        name.addEventListener("input", function () {
+          var old = s.name; s.name = name.value;
+          steps.forEach(function (o) { if (o.onFail === old) o.onFail = s.name; });
+          update();
+        });
+        name.addEventListener("change", renderSteps);
+        var kind = document.createElement("select"); kind.setAttribute("aria-label", "Step " + (i + 1) + " kind");
+        Object.keys(KIND_LABEL).forEach(function (k) { var o = document.createElement("option"); o.value = k; o.textContent = KIND_LABEL[k]; if (k === s.kind) o.selected = true; kind.appendChild(o); });
+        kind.addEventListener("change", function () {
+          s.kind = kind.value;
+          if (s.kind === "check" && !s.onFail) { s.onFail = i > 0 ? steps[i - 1].name : "stop"; s.retries = 2; }
+          renderSteps(); update();
+        });
+        var mini = document.createElement("div"); mini.className = "mini";
+        [["↑", "Move up", function () { if (i > 0) { steps.splice(i - 1, 0, steps.splice(i, 1)[0]); renderSteps(); update(); } }],
+         ["↓", "Move down", function () { if (i < steps.length - 1) { steps.splice(i + 1, 0, steps.splice(i, 1)[0]); renderSteps(); update(); } }],
+         ["✕", "Remove", function () { var gone = s.name; steps.splice(i, 1); steps.forEach(function (o) { if (o.onFail === gone) o.onFail = "stop"; }); renderSteps(); update(); }]
+        ].forEach(function (b) {
+          var btn = document.createElement("button"); btn.type = "button"; btn.textContent = b[0]; btn.setAttribute("aria-label", b[1] + " step " + (s.name || i + 1));
+          if (b[0] === "✕") btn.className = "x";
+          btn.addEventListener("click", b[2]); mini.appendChild(btn);
+        });
+        head.appendChild(num); head.appendChild(name); head.appendChild(kind); head.appendChild(mini);
+        var does = document.createElement("input"); does.type = "text"; does.className = "does"; does.value = s.does || ""; does.placeholder = "What this step does";
+        does.setAttribute("aria-label", "What step " + (i + 1) + " does");
+        does.addEventListener("input", function () { s.does = does.value; update(); });
+        d.appendChild(head); d.appendChild(does);
+        if (s.kind === "check") {
+          var row = document.createElement("div"); row.className = "fail-row";
+          var l1 = document.createElement("label"); l1.htmlFor = "of-" + i; l1.textContent = "If it fails, go back to";
+          var sel = document.createElement("select"); sel.id = "of-" + i;
+          steps.forEach(function (o, j) { if (j < i) { var op = document.createElement("option"); op.value = o.name; op.textContent = o.name; if (o.name === s.onFail) op.selected = true; sel.appendChild(op); } });
+          var stopOp = document.createElement("option"); stopOp.value = "stop"; stopOp.textContent = "Stop and report"; if (s.onFail === "stop") stopOp.selected = true; sel.appendChild(stopOp);
+          sel.addEventListener("change", function () { s.onFail = sel.value; update(); });
+          var l2 = document.createElement("label"); l2.htmlFor = "rt-" + i; l2.textContent = "at most";
+          var rt = document.createElement("input"); rt.type = "text"; rt.inputMode = "numeric"; rt.id = "rt-" + i; rt.value = s.retries != null ? s.retries : 2;
+          rt.addEventListener("input", function () { s.retries = Math.max(0, Math.min(9, parseInt(rt.value, 10) || 0)); update(); });
+          var l3 = document.createElement("span"); l3.textContent = "times";
+          row.appendChild(l1); row.appendChild(sel); row.appendChild(l2); row.appendChild(rt); row.appendChild(l3);
+          d.appendChild(row);
+        }
+        box.appendChild(d);
+      });
     }
 
-    // Build the sequence of handoffs for this run.
-    function buildScript() {
-      var failFirst = document.getElementById("fail-once").checked;
-      var s = [];
-      s.push(function () {
-        setOverall("Running", "info");
-        setStep("planner", "Working", "info", "active");
-        log("Request received: “Summarize last week’s support tickets as JSON.” Planner starts.");
+    function issues() {
+      var out = [], names = steps.map(function (s) { return s.name.trim(); });
+      names.forEach(function (n, i) { if (n && names.indexOf(n) !== i) out.push("Two steps are called “" + n + "”. Give each a unique name."); });
+      if (!steps.some(function (s) { return s.kind === "check"; })) out.push("There’s no check step, so nothing verifies the result before the end.");
+      steps.forEach(function (s, i) {
+        if (s.kind === "check" && s.onFail !== "stop" && names.slice(0, i).indexOf(s.onFail) === -1) out.push("“" + s.name + "” sends failures to a step that isn’t before it.");
+        if (s.kind === "check" && s.onFail !== "stop" && !(s.retries > 0)) out.push("“" + s.name + "” retries 0 times, so a failure stops the run.");
       });
-      s.push(function () {
-        tokens += 340;
-        setStep("planner", "Done", "ok", "done");
-        log("Planner wrote 3 acceptance criteria: valid JSON, one entry per ticket category, counts add up. (~340 tokens)");
+      var last = steps[steps.length - 1];
+      if (last && last.kind === "llm") out.push("The last step is a model call with no check after it.");
+      return out.filter(function (x, i, a) { return a.indexOf(x) === i; });
+    }
+
+    // ---------- Exports ----------
+    function spec() {
+      var states = {};
+      steps.forEach(function (s, i) {
+        var next = i < steps.length - 1 ? slug(steps[i + 1].name) : "done";
+        var st = { type: s.kind, description: s.does || "" };
+        if (s.kind === "check") {
+          st.on_pass = next;
+          st.on_fail = s.onFail === "stop" ? "failed" : slug(s.onFail);
+          st.max_retries = s.onFail === "stop" ? 0 : (s.retries || 0);
+          st.on_retries_exhausted = "failed";
+        } else if (s.kind === "human") { st.on_approve = next; st.on_reject = "failed"; }
+        else st.next = next;
+        states[slug(s.name)] = st;
       });
-      var attempts = failFirst ? 2 : 1;
-      for (var a = 1; a <= attempts; a++) {
-        (function (attempt, willFail) {
-          s.push(function () {
-            setStep("worker", "Working", "info", "active");
-            setStep("checker", "Waiting", "idle", "");
-            log(attempt === 1 ? "Handoff: Planner → Worker. The worker only sees the plan, not the whole conversation."
-                              : "Handoff: Checker → Worker with the exact failure reason. Retry " + (attempt - 1) + " of " + MAX_RETRIES + ".");
-          });
-          s.push(function () {
-            tokens += 890;
-            setStep("worker", "Done", "ok", "done");
-            log("Worker produced a draft. (~890 tokens)");
-          });
-          s.push(function () {
-            setStep("checker", "Checking", "info", "active");
-            log("Handoff: Worker → Checker. Validating against the plan’s criteria.");
-          });
-          s.push(function () {
-            tokens += 210;
-            if (willFail) {
-              setStep("checker", "Rejected", "bad", "failed");
-              setStep("worker", "Needs fix", "warn", "");
-              log("Rejected: category counts add up to 41 but there are 43 tickets. Sent back to the worker. Nothing was accepted. (~210 tokens)");
-            } else {
-              setStep("checker", "Approved", "ok", "done");
-              log("Approved: JSON is valid and all 3 criteria pass. Result accepted. (~210 tokens)");
+      states.done = { type: "final" }; states.failed = { type: "final", description: "Stopped; report the last failure reason." };
+      return { initial: steps.length ? slug(steps[0].name) : "done", states: states };
+    }
+    function mermaid() {
+      var L = ["stateDiagram-v2", "  [*] --> " + (steps.length ? slug(steps[0].name) : "done")];
+      steps.forEach(function (s, i) {
+        var id = slug(s.name), next = i < steps.length - 1 ? slug(steps[i + 1].name) : "done";
+        if (s.kind === "check") {
+          L.push("  " + id + " --> " + next + " : pass");
+          if (s.onFail === "stop") L.push("  " + id + " --> failed : fail");
+          else { L.push("  " + id + " --> " + slug(s.onFail) + " : fail (retry ≤ " + (s.retries || 0) + ")"); L.push("  " + id + " --> failed : retries used up"); }
+        } else if (s.kind === "human") { L.push("  " + id + " --> " + next + " : approved"); L.push("  " + id + " --> failed : rejected"); }
+        else L.push("  " + id + " --> " + next);
+      });
+      L.push("  done --> [*]", "  failed --> [*]");
+      return L.join("\n");
+    }
+    function python() {
+      var S = spec(), lines = [];
+      lines.push("# Generated by Agent Stateboard. Fill in each run_* function.");
+      lines.push("MAX_RETRIES = {" + steps.filter(function (s) { return s.kind === "check" && s.onFail !== "stop"; }).map(function (s) { return '"' + slug(s.name) + '": ' + (s.retries || 0); }).join(", ") + "}");
+      lines.push("", "def run_agent(request):", "    state, ctx, retries = \"" + S.initial + "\", {\"request\": request}, {}");
+      lines.push("    while state not in (\"done\", \"failed\"):");
+      steps.forEach(function (s, i) {
+        var id = slug(s.name), st = S.states[id];
+        lines.push("        " + (i === 0 ? "if" : "elif") + " state == \"" + id + "\":  # " + KIND_LABEL[s.kind] + (s.does ? ": " + s.does : ""));
+        if (s.kind === "check") {
+          lines.push("            ok, reason = run_" + id + "(ctx)");
+          lines.push("            if ok:", "                state = \"" + st.on_pass + "\"");
+          if (st.on_fail === "failed") lines.push("            else:", "                ctx[\"error\"], state = reason, \"failed\"");
+          else {
+            lines.push("            elif retries.get(\"" + id + "\", 0) < MAX_RETRIES[\"" + id + "\"]:");
+            lines.push("                retries[\"" + id + "\"] = retries.get(\"" + id + "\", 0) + 1");
+            lines.push("                ctx[\"feedback\"], state = reason, \"" + st.on_fail + "\"");
+            lines.push("            else:", "                ctx[\"error\"], state = reason, \"failed\"");
+          }
+        } else if (s.kind === "human") {
+          lines.push("            state = \"" + st.on_approve + "\" if run_" + id + "(ctx) else \"failed\"");
+        } else {
+          lines.push("            ctx[\"" + id + "\"] = run_" + id + "(ctx)", "            state = \"" + st.next + "\"");
+        }
+      });
+      lines.push("    return state, ctx");
+      return lines.join("\n");
+    }
+    function exportText() { return tab === "mermaid" ? mermaid() : tab === "python" ? python() : JSON.stringify(spec(), null, 2); }
+
+    function update() {
+      document.getElementById("export").textContent = exportText();
+      var ul = document.getElementById("issues"); ul.innerHTML = "";
+      issues().forEach(function (t) { var li = document.createElement("li"); li.textContent = t; ul.appendChild(li); });
+      save();
+    }
+
+    // ---------- Simulation ----------
+    var logEl = document.getElementById("log"), timer = null, script = [], cursor = 0;
+    function log(t) { var li = document.createElement("li"); li.textContent = t; logEl.appendChild(li); logEl.scrollTop = logEl.scrollHeight; }
+    function mark(i, cls) { var el = document.getElementById("st-" + i); if (el) el.className = "step" + (cls ? " " + cls : ""); }
+    function overall(t, k) { var b = document.getElementById("overall"); b.textContent = t; b.className = "badge badge-" + k; }
+    function build() {
+      var mode = document.getElementById("scenario").value, out = [], i = 0, fails = {}, guard = 0, names = steps.map(function (s) { return s.name; });
+      out.push(function () { logEl.innerHTML = ""; steps.forEach(function (_, k) { mark(k, ""); }); overall("Running", "info"); log("Start at “" + (steps[0] && steps[0].name) + "”."); });
+      while (i < steps.length && guard++ < 60) {
+        (function (idx) {
+          var s = steps[idx];
+          out.push(function () { mark(idx, "active"); log(s.name + " (" + KIND_LABEL[s.kind].toLowerCase() + "): " + (s.does || "runs")); });
+          if (s.kind === "check") {
+            var n = fails[idx] || 0;
+            var fail = mode === "always" || (mode === "once" && n === 0);
+            if (fail) {
+              fails[idx] = n + 1;
+              var canRetry = s.onFail !== "stop" && n < (s.retries || 0);
+              var target = canRetry ? names.indexOf(s.onFail) : -1;
+              out.push(function () {
+                mark(idx, "failed");
+                if (canRetry) log("✗ Failed. Retry " + (n + 1) + " of " + s.retries + ": back to “" + s.onFail + "” with the failure reason.");
+                else log("✗ Failed" + (s.onFail === "stop" ? "." : " and retries are used up.") + " The run stops and reports the reason. Nothing is shipped.");
+              });
+              if (!canRetry || target < 0) { i = steps.length + 1; return; }
+              i = target; return;
             }
-          });
-        })(a, failFirst && a === 1);
+            out.push(function () { mark(idx, "done"); log("✓ Passed."); });
+          } else if (s.kind === "human") {
+            out.push(function () { mark(idx, "done"); log("✓ Approved by a person."); });
+          } else {
+            out.push(function () { mark(idx, "done"); });
+          }
+          i = idx + 1;
+        })(i);
       }
-      s.push(function () {
-        setOverall("Finished", "ok");
-        log("Done. Total ≈ " + tokens.toLocaleString() + " tokens across " + (failFirst ? "two attempts" : "one attempt") + ". The path never changed: Planner → Worker → Checker.");
-        ToolKit.announce("Run finished.");
-        finish();
+      var failedRun = i > steps.length;
+      out.push(function () {
+        overall(failedRun ? "Stopped" : "Finished", failedRun ? "bad" : "ok");
+        log(failedRun ? "Run ended in the failed state." : "Run finished. Every check passed before the end.");
+        ToolKit.announce("Simulation finished."); stopTimer(); document.getElementById("run").disabled = false;
       });
-      return s;
+      return out;
     }
-
-    function reset() {
-      clearInterval(timer); timer = null;
-      script = []; cursor = 0; tokens = 0;
-      logEl.innerHTML = "";
-      ["planner", "worker", "checker"].forEach(function (id) { setStep(id, "Waiting", "idle", ""); });
-      setOverall("Idle", "idle");
-      document.getElementById("run").disabled = false;
-      document.getElementById("step-btn").disabled = false;
-      document.getElementById("fail-once").disabled = false;
-    }
-    function finish() {
-      clearInterval(timer); timer = null;
-      document.getElementById("run").disabled = true;
-      document.getElementById("step-btn").disabled = true;
-    }
-    function advance() {
-      if (!script.length) { script = buildScript(); document.getElementById("fail-once").disabled = true; }
-      if (cursor < script.length) script[cursor++]();
-    }
-
+    function stopTimer() { clearInterval(timer); timer = null; }
+    function advance() { if (!script.length || cursor >= script.length) { script = build(); cursor = 0; } script[cursor++](); if (cursor >= script.length) { script = []; } }
     document.getElementById("run").addEventListener("click", function () {
-      if (timer) return;
-      this.disabled = true;
-      var delay = ToolKit.prefersReducedMotion() ? 400 : 1100;
-      advance();
-      timer = setInterval(advance, delay);
+      if (timer) return; script = build(); cursor = 0; this.disabled = true; advance();
+      timer = setInterval(function () { if (!script.length) { stopTimer(); return; } advance(); }, ToolKit.prefersReducedMotion() ? 250 : 750);
     });
-    document.getElementById("step-btn").addEventListener("click", function () {
-      if (timer) { clearInterval(timer); timer = null; document.getElementById("run").disabled = false; }
-      advance();
+    document.getElementById("step-btn").addEventListener("click", function () { stopTimer(); document.getElementById("run").disabled = false; advance(); });
+    document.getElementById("reset").addEventListener("click", function () {
+      stopTimer(); script = []; cursor = 0; logEl.innerHTML = ""; steps.forEach(function (_, k) { mark(k, ""); }); overall("Idle", "idle");
+      document.getElementById("run").disabled = false; ToolKit.announce("Reset.");
     });
-    document.getElementById("reset").addEventListener("click", function () { reset(); ToolKit.announce("Reset."); });
-    reset();
+
+    document.getElementById("add").addEventListener("click", function () {
+      steps.push({ name: "Step " + (steps.length + 1), kind: "llm", does: "" });
+      renderSteps(); update();
+      var inputs = document.querySelectorAll(".step-head input"); inputs[inputs.length - 1].select();
+    });
+    document.getElementById("load").addEventListener("click", function () {
+      steps = JSON.parse(JSON.stringify(PRESETS[document.getElementById("preset").value]));
+      renderSteps(); update(); document.getElementById("reset").click(); ToolKit.announce("Preset loaded.");
+    });
+    document.querySelectorAll("[data-tab]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        tab = b.dataset.tab;
+        document.querySelectorAll("[data-tab]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+        update();
+      });
+    });
+    document.getElementById("copy").addEventListener("click", function () { ToolKit.copyText(exportText(), this); });
+    renderSteps(); update();
   </script>
 </body>
 </html>

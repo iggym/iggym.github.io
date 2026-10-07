@@ -209,13 +209,25 @@
   padding: 1rem 1.1rem 0.9rem;
 }
 .site-kind {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   margin: 0 0 0.3rem;
   font-family: var(--mono);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--card-accent);
+  color: var(--muted);
+}
+/* The accent colours are too light to read as text, so they mark the label with a dot instead. */
+.site-kind::before {
+  content: "";
+  flex: none;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--card-accent);
 }
 .site-name {
   font-family: var(--serif);
