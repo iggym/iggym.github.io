@@ -177,34 +177,102 @@
     });
   })();
 
-  /* ---------- Live prompt-tightening demo ---------- */
+  /* ---------- Live prompt demo: score, tighten, and restructure ---------- */
   (function () {
     var input = document.getElementById("demo-in");
-    if (!input || !window.PromptTightener) return;
-    var cutEl = document.getElementById("demo-cut");
-    var resultEl = document.getElementById("demo-result");
+    if (!input || !window.PromptTightener || !window.PromptLint) return;
+    var out = document.getElementById("demo-out");
+    var outLabel = document.getElementById("demo-out-label");
     var meta = document.getElementById("demo-meta");
     var before = document.getElementById("bar-before");
     var after = document.getElementById("bar-after");
     var section = document.getElementById("demo");
+    var ring = document.getElementById("demo-ring");
+    var openLink = document.getElementById("demo-open");
+    var view = "structured";
+    var EXAMPLES = window.PromptLint.examples;
+    var LABELS = { structured: "Structured rewrite", tight: "Tightened", cut: "What got cut" };
+    var result = { text: "" };
 
     function tokens(t) { return t ? Math.ceil(t.length / 4) : 0; }
+    function money(n) { return n < 1 ? "$" + n.toFixed(2) : "$" + Math.round(n).toLocaleString(); }
 
     function render() {
       var raw = input.value;
       var r = PromptTightener.tighten(raw);
-      cutEl.innerHTML = r.html || "&nbsp;";
-      resultEl.textContent = r.text || "Type a prompt to see it tightened.";
-      var b = tokens(raw), a = tokens(r.text);
-      var pct = b ? Math.round(((b - a) / b) * 100) : 0;
+      var checks = PromptLint.lint(raw), sc = PromptLint.score(checks);
+
+      // Score card
+      ring.style.setProperty("--pct", raw.trim() ? sc.score : 0);
+      ring.dataset.band = sc.score >= 80 ? "good" : sc.score >= 50 ? "ok" : "low";
+      document.getElementById("demo-score-num").textContent = raw.trim() ? sc.score : "–";
+      document.getElementById("demo-score-text").textContent = !raw.trim() ? "Paste a prompt to score it." :
+        sc.passed + " of " + sc.total + " checks passed" + (sc.score >= 80 ? ". In good shape." : sc.score >= 50 ? ". A few fixes will help." : ". Expect vague answers.");
+      var fixes = document.getElementById("demo-fixes"); fixes.innerHTML = "";
+      checks.filter(function (c) { return c.s !== "pass"; }).slice(0, 3).forEach(function (c) {
+        var li = document.createElement("li"); li.className = c.s;
+        var b = document.createElement("strong"); b.textContent = c.t;
+        li.appendChild(b); li.appendChild(document.createTextNode(c.q ? " · " + c.q : ""));
+        fixes.appendChild(li);
+      });
+
+      // Result view
+      outLabel.textContent = LABELS[view];
+      out.className = "demo-out view-" + view;
+      if (view === "cut") { out.innerHTML = r.html || "&nbsp;"; result.text = r.text; }
+      else if (view === "tight") { out.textContent = r.text || "Type a prompt to see it tightened."; result.text = r.text; }
+      else { var st = PromptLint.structure(raw); out.textContent = st || "Type a prompt to see it restructured."; result.text = st; }
+
+      // Size and savings
+      var b = tokens(raw), a = tokens(r.text), saved = b - a;
       before.style.width = b ? "100%" : "0%";
       after.style.width = b ? Math.max(2, (a / b) * 100) + "%" : "0%";
-      meta.textContent = !raw.trim() ? "" :
-        r.cuts.length === 0 ? "No filler found. That prompt is already tight." :
-        "About " + b + " tokens down to about " + a + ", roughly " + pct + "% fewer.";
+      meta.textContent = !raw.trim() ? "" : saved <= 0 ? "No filler found. That prompt is already tight." :
+        "About " + b + " tokens down to " + a + " (" + Math.round(saved / b * 100) + "% fewer). At 10,000 requests a day that’s roughly " +
+        (saved * 10000 * 30).toLocaleString() + " tokens and " + money(saved * 10000 * 30 * 3 / 1e6) + " a month at $3 per million input tokens.";
+      openLink.href = "tools/prompt-matrix-evaluator.html#p=" + encodeURIComponent(raw);
     }
+
     var t;
-    input.addEventListener("input", function () { clearTimeout(t); t = setTimeout(render, 120); });
+    input.addEventListener("input", function () {
+      clearTimeout(t); t = setTimeout(render, 120);
+      document.querySelectorAll("[data-ex]").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+    });
+
+    // Examples: type the prompt in quickly so the change is visible, then score it.
+    var typing = null;
+    function load(text) {
+      clearInterval(typing);
+      if (reduced) { input.value = text; render(); return; }
+      var i = 0, step = Math.max(3, Math.ceil(text.length / 40));
+      input.value = "";
+      typing = setInterval(function () {
+        i = Math.min(text.length, i + step);
+        input.value = text.slice(0, i);
+        if (i >= text.length) { clearInterval(typing); render(); }
+      }, 16);
+    }
+    document.querySelectorAll("[data-ex]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        document.querySelectorAll("[data-ex]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === btn)); });
+        load(EXAMPLES[btn.dataset.ex]);
+      });
+    });
+    document.querySelectorAll("[data-view]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        view = btn.dataset.view;
+        document.querySelectorAll("[data-view]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === btn)); });
+        render();
+      });
+    });
+    document.getElementById("demo-copy").addEventListener("click", function () {
+      var btn = this, text = result.text;
+      var done = function (ok) { btn.textContent = ok ? "Copied" : "Copy failed"; setTimeout(function () { btn.textContent = "Copy result"; }, 1500); };
+      if (navigator.clipboard && text) navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      else done(false);
+    });
+
+    ["demo-examples", "demo-score", "demo-tabs", "demo-actions"].forEach(function (id) { document.getElementById(id).hidden = false; });
     render();
 
     // Draw the strike-throughs when the demo scrolls into view.

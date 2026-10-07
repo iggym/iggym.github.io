@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261007a">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261008a">
   <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
 </head>
 <body>
@@ -164,23 +164,46 @@
     <section id="demo" class="section demo band-alt" aria-labelledby="demo-title">
       <div class="section-head">
         <h2 id="demo-title"><span class="sec-num" aria-hidden="true">01</span>Try one right here</h2>
-        <p>A live copy of <a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>. Edit the prompt and watch the filler disappear.</p>
+        <p>A live copy of <a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>. Pick an example or paste your own prompt. It scores the prompt, cuts the filler, and rebuilds it into a structure models follow reliably.</p>
+      </div>
+      <div class="demo-examples" id="demo-examples" role="group" aria-label="Example prompts" hidden>
+        <span class="demo-examples-label" aria-hidden="true">Examples:</span>
+        <button type="button" data-ex="email" aria-pressed="true">Welcome email</button>
+        <button type="button" data-ex="code">Code review</button>
+        <button type="button" data-ex="marketing">Launch copy</button>
+        <button type="button" data-ex="data">Data question</button>
+        <button type="button" data-ex="support">Support bot</button>
+        <button type="button" data-ex="meeting">Meeting summary</button>
       </div>
       <div class="demo-grid">
         <div class="demo-pane">
-          <label for="demo-in" class="demo-label">A wordy prompt</label>
-          <textarea id="demo-in" rows="5" spellcheck="false">Hi! I would like you to write a short welcome email for new customers. Make sure to mention the free trial, and it is important that you keep it friendly. Thanks in advance!</textarea>
+          <label for="demo-in" class="demo-label">Your prompt</label>
+          <textarea id="demo-in" rows="6" spellcheck="false">Hi! I would like you to write a welcome email for our new customers. Make sure to mention the free trial and stuff, and it is important that you keep it friendly and good. Thanks in advance!</textarea>
+          <div class="demo-score" id="demo-score" hidden>
+            <div class="demo-ring" id="demo-ring" aria-hidden="true"><span id="demo-score-num">–</span></div>
+            <div>
+              <p class="demo-score-text" id="demo-score-text" aria-live="polite"></p>
+              <ul class="demo-fixes" id="demo-fixes"></ul>
+            </div>
+          </div>
         </div>
-        <div class="demo-pane" aria-live="polite">
-          <p class="demo-label" id="demo-cut-label">What gets cut</p>
-          <p class="demo-cut" id="demo-cut" aria-labelledby="demo-cut-label">Hi! <mark class="cut">I would like you to </mark>write a short welcome email for new customers. <mark class="cut">Make sure to </mark>mention the free trial, and <mark class="cut">it is important that you </mark>keep it friendly. <mark class="cut">Thanks in advance!</mark></p>
-          <p class="demo-label">Tightened</p>
-          <p class="demo-result" id="demo-result">Hi! Write a short welcome email for new customers. Mention the free trial, and keep it friendly.</p>
+        <div class="demo-pane">
+          <div class="demo-tabs" id="demo-tabs" role="group" aria-label="Result view" hidden>
+            <button type="button" data-view="structured" aria-pressed="true">Structured rewrite</button>
+            <button type="button" data-view="tight" aria-pressed="false">Tightened</button>
+            <button type="button" data-view="cut" aria-pressed="false">What got cut</button>
+          </div>
+          <p class="demo-label" id="demo-out-label">Tightened</p>
+          <div class="demo-out" id="demo-out" tabindex="0" aria-labelledby="demo-out-label" aria-live="polite">Hi! Write a welcome email for our new customers. Mention the free trial and stuff, and keep it friendly and good.</div>
           <div class="demo-bars" aria-hidden="true">
             <span class="bar bar-before"><span id="bar-before" style="width:100%"></span></span>
-            <span class="bar bar-after"><span id="bar-after" style="width:55%"></span></span>
+            <span class="bar bar-after"><span id="bar-after" style="width:62%"></span></span>
           </div>
-          <p class="demo-meta" id="demo-meta">About 44 tokens down to about 24, roughly 45% fewer.</p>
+          <p class="demo-meta" id="demo-meta">About 47 tokens down to about 29, roughly 38% fewer.</p>
+          <div class="demo-actions" id="demo-actions" hidden>
+            <button type="button" class="button" id="demo-copy">Copy result</button>
+            <a class="button button-quiet" id="demo-open" href="tools/prompt-matrix-evaluator.html">Open in the full tool <span aria-hidden="true">→</span></a>
+          </div>
         </div>
       </div>
     </section>
@@ -570,10 +593,11 @@
       <a href="assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
     </nav>
   </footer>
-  <script defer src="assets/js/prompt-tightener.js?v=20261007a"></script>
+  <script defer src="assets/js/prompt-tightener.js?v=20261008a"></script>
+  <script defer src="assets/js/prompt-lint.js?v=20261008a"></script>
   <script defer src="assets/js/theme.js?v=20261007a"></script>
-  <script defer src="assets/js/site-map.js?v=20261007a"></script>
-  <script defer src="assets/js/home.js?v=20261007a"></script>
+  <script defer src="assets/js/site-map.js?v=20261008a"></script>
+  <script defer src="assets/js/home.js?v=20261008a"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
 </html>

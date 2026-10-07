@@ -6,7 +6,8 @@
   // Phrases that add words without changing what is being asked.
   // Each entry: [pattern, replacement]. Replacements keep the meaning intact.
   var FILLER = [
-    [/(?<=^|[.!?] )(?:could|can|would|will) you (?:please |kindly )?(?=\w)/gim, ""],
+    [/^(?:hi|hey|hello)(?: there)?[!,.]*\s+(?=\w)/gim, ""],
+    [/(?<=^|[.!?] |^(?:hi|hey|hello)(?: there)?[!,.]* )(?:could|can|would|will) you (?:please |kindly )?(?=\w)/gim, ""],
     [/\bi (?:would like|want|need) you to\s+/gi, ""],
     [/\bi(?:'d| would) like (?:for )?you to\s+/gi, ""],
     [/\b(?:please )?make sure (?:to|that you)\s+/gi, ""],
@@ -14,14 +15,15 @@
     [/\b(?:don'?t|do not) forget to\s+/gi, ""],
     [/\bfeel free to\s+/gi, ""],
     [/\bgo ahead and\s+/gi, ""],
+    [/\bit(?:'s| is) (?:very |really )?important that you(?:'re| are)\s+/gi, "be "],
     [/\bit(?:'s| is) (?:very |really )?important (?:that you|to)\s+/gi, ""],
     [/\bit(?:'s| is) (?:very |really )?important that\s+/gi, ""],
     [/\bin a (?:detailed|thorough) manner\b/gi, "in detail"],
     [/\bcompletely detailed\b/gi, "detailed"],
     [/\b(?:basically|essentially),?\s+(?=\w)/gi, ""],
     [/\bif possible,?\s*/gi, ""],
-    [/\bthank you(?: so much| in advance)?[.!]?\s*/gi, ""],
-    [/\bthanks(?: in advance)?[.!]?\s*/gi, ""],
+    [/\bthank you(?: so much| very much| in advance)?[.!]?\s*/gi, ""],
+    [/\bthanks(?: so much| a lot| in advance)?[.!]?\s*/gi, ""],
     [/\bplease,?\s+/gi, ""],
     [/\bkindly\s+/gi, ""]
   ];
@@ -83,8 +85,10 @@
       addKept(keptBefore);
       // A cut at the start of a sentence leaves the next word lowercase; fix that.
       var atSentenceStart = /(^|[.!?]\s*|\n\s*)$/.test(tight);
-      tight += c.replace;
-      capNext = atSentenceStart && !c.replace;
+      var rep = c.replace;
+      if (atSentenceStart && rep) rep = rep.charAt(0).toUpperCase() + rep.slice(1);
+      tight += rep;
+      capNext = atSentenceStart && !rep;
       pos = c.end;
     });
     html += escapeHtml(raw.slice(pos));
