@@ -847,3 +847,5 @@ html.js.motion .reveal.in { opacity: 1; transform: none; }
 .results > div { border-top: 1px solid var(--line); padding-top: 0.6rem; }
 .results dt { font-family: var(--mono); font-size: 1.6rem; font-weight: 600; color: var(--accent); line-height: 1.1; }
 .results dd { margin: 0.3rem 0 0; color: var(--muted); font-size: 0.93rem; }
+.res-by { display: block; margin-top: 0.2rem; font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); }
+.results-note { margin: -0.4rem 0 1.25rem; color: var(--muted); font-size: 0.9rem; }
