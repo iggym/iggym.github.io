@@ -422,27 +422,17 @@ html.js.loaded .swash { background-size: 100% 0.07em; }
   max-width: 21ch;
   transition: min-height 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
-.nw { white-space: nowrap; }
-.self-edit .f { display: none; }
-.swap { display: inline-grid; }
-.swap > span { grid-area: 1 / 1; transition: opacity 0.25s ease; }
-.swap .lo { opacity: 0; }
-/* Wordy state: the prompt as someone might first type it. */
-.self-edit.wordy .f, .self-edit.tight .f {
-  display: inline-block; vertical-align: bottom; white-space: nowrap; overflow: hidden;
-  padding: 0 0.08em 0.12em 0; margin-right: 0.16em; margin-bottom: -0.12em; color: var(--muted);
-  background-image: linear-gradient(var(--cut), var(--cut));
-  background-repeat: no-repeat; background-position: 0 58%; background-size: 0% 0.07em;
-  transition: background-size 0.35s ease calc(var(--i) * 70ms), max-width 0.7s cubic-bezier(0.6, 0, 0.2, 1), margin 0.7s cubic-bezier(0.6, 0, 0.2, 1), opacity 0.5s ease;
-}
-.self-edit.wordy .f-end, .self-edit.tight .f-end { margin-right: 0; margin-left: 0.24em; }
-.self-edit:not(.wordy):not(.tight) .swap .lo { display: none; }
-.self-edit.wordy .swap .lo { opacity: 1; }
-.self-edit.wordy .swap .up { opacity: 0; }
-.self-edit.strike .f { background-size: 100% 0.07em; color: var(--cut); }
-.self-edit.tight .f { opacity: 0; margin-right: 0; margin-left: 0; padding-right: 0; }
-.self-edit.tight .swap .lo { opacity: 0; }
-.self-edit.tight .swap .up { opacity: 1; }
+/* Both versions share one grid cell, so the box is as tall as the wordy version until it shrinks. */
+.h1-stack { display: grid; }
+.h1-stack > span { grid-area: 1 / 1; }
+.h1-wordy { display: none; color: var(--muted); }
+.self-edit.wordy .h1-wordy,
+.self-edit.tight .h1-wordy { display: block; }
+.self-edit.tight .h1-wordy { opacity: 0; transition: opacity 0.5s ease; }
+.self-edit.wordy .h1-tight { opacity: 0; transition: none; }
+.h1-tight { transition: opacity 0.5s ease 0.25s; }
+.h1-wordy .f { transition: background-size 0.35s ease calc(var(--i) * 70ms), color 0.35s ease; background-image: linear-gradient(var(--cut), var(--cut)); background-repeat: no-repeat; background-position: 0 58%; background-size: 0% 0.07em; }
+.self-edit.strike .h1-wordy .f { background-size: 100% 0.07em; color: var(--cut); }
 
 .edit-note {
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.75rem;
