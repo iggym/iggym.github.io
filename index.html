@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261009a">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261010a">
   <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
 </head>
 <body>
@@ -64,30 +64,36 @@
         </p>
         <script>
           // Self-editing headline: the wordy prompt, filler struck through, then a crossfade to the tight version.
-          // Only opacity and one min-height change, so nothing below the headline jumps.
+          // The timeline starts after fonts load and the first paint, so the wordy text is seen in full first.
           (function () {
             var h = document.getElementById("hero-title");
             var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             var btn = document.getElementById("replay");
             var timers = [];
             if (reduce) return;
+            h.classList.add("wordy");   // visible from the first paint; the timeline below moves it on
+            btn.hidden = false;
             function play() {
               timers.forEach(clearTimeout); timers = [];
               h.classList.remove("strike", "tight");
               h.style.minHeight = "";
               h.classList.add("wordy");
-              timers.push(setTimeout(function () { h.classList.add("strike"); }, 1100));
-              timers.push(setTimeout(function () { h.classList.remove("wordy"); h.classList.add("tight"); }, 2300));
+              timers.push(setTimeout(function () { h.classList.add("strike"); }, 2600));
+              timers.push(setTimeout(function () { h.classList.remove("wordy"); h.classList.add("tight"); }, 5000));
               timers.push(setTimeout(function () {
                 // Pin the current height, drop the wordy layer, then let the box shrink smoothly.
                 h.style.minHeight = h.offsetHeight + "px";
                 h.classList.remove("tight", "strike");
                 void h.offsetHeight;
                 h.style.minHeight = "0px";
-              }, 3000));
+              }, 6200));
             }
-            play();
-            btn.hidden = false;
+            var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+            var loaded = document.readyState === "complete" ? Promise.resolve() :
+              new Promise(function (ok) { window.addEventListener("load", ok, { once: true }); });
+            Promise.all([fontsReady, loaded]).then(function () {
+              requestAnimationFrame(function () { requestAnimationFrame(play); });
+            });
             btn.addEventListener("click", play);
           })();
         </script>
