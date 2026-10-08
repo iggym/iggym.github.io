@@ -51,7 +51,7 @@
       <div class="hero-text">
         <p class="availability"><span class="pulse" aria-hidden="true"></span> Open to consulting, collaboration, and roles</p>
         <h1 id="hero-title" class="self-edit">
-          <span class="sr-only">Practical tools and notes for building with AI.</span>
+          <span class="sr-only">Free tools and plain-English notes for people building with AI.</span>
           <span class="h1-visual" aria-hidden="true"><span class="f" style="--i:0">Could</span><span class="f" style="--i:1">you</span><span class="f" style="--i:2">please</span><span class="f" style="--i:3">make</span><span class="f" style="--i:4">sure</span><span class="f" style="--i:5">to</span><span class="f" style="--i:6">build</span><span class="nw"><span class="swap"><span class="lo">p</span><span class="up">P</span></span>ractical</span> tools and notes for building with <span class="nw"><span class="swash">AI</span><span class="swap"><span class="lo">?</span><span class="up">.</span></span></span><span class="f f-end" style="--i:7">Thanks!</span></span>
         </h1>
         <p class="edit-note">
@@ -91,7 +91,7 @@
             btn.addEventListener("click", play);
           })();
         </script>
-        <p class="lede">I’m Iggy Mwangi, an AI systems architect in Dallas–Fort Worth. This site has free tools that run in your browser, short essays on keeping AI systems working in production, and my open-source projects. Nothing here needs an account.</p>
+        <p class="lede">I’m Iggy Mwangi, an AI systems architect in Dallas–Fort Worth. Here you’ll find free tools that run in your browser, short essays on keeping AI systems working in production, and my open-source projects. You don’t need an account for any of it.</p>
         <div class="actions">
           <a class="button" href="#demo">Try a tool right here</a>
           <a class="button button-quiet" href="#contact">Work with me</a>
@@ -163,8 +163,8 @@
 
     <section id="demo" class="section demo band-alt" aria-labelledby="demo-title">
       <div class="section-head">
-        <h2 id="demo-title"><span class="sec-num" aria-hidden="true">01</span>Try one right here</h2>
-        <p>A live copy of <a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>. Pick an example or paste your own prompt. It scores the prompt, cuts the filler, and rebuilds it into a structure models follow reliably.</p>
+        <h2 id="demo-title"><span class="sec-num" aria-hidden="true">01</span>Try it: make a prompt clearer</h2>
+        <p>Paste a prompt, or pick an example. You’ll get a score, a list of what’s missing, a version with the filler words removed, and a rewrite with clear sections. It’s a small version of <a href="tools/prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a>, and everything happens in your browser.</p>
       </div>
       <div class="demo-examples" id="demo-examples" role="group" aria-label="Example prompts" hidden>
         <span class="demo-examples-label" aria-hidden="true">Examples:</span>
@@ -211,11 +211,11 @@
     <section id="tools" class="section" aria-labelledby="tools-title">
       <div class="section-head">
         <h2 id="tools-title"><span class="sec-num" aria-hidden="true">02</span>Tools</h2>
-        <p>Single pages you can open and use right away. Each one says where your text goes.</p>
+        <p>Each tool is a single page you can use right away. Every card says where your text goes, so you can choose the ones that fit your privacy needs.</p>
       </div>
 
       <details class="explainer">
-        <summary>New to this? Three words you’ll see a lot</summary>
+        <summary>New to this? Four words you’ll see a lot</summary>
         <dl>
           <dt>Prompt</dt>
           <dd>The instructions and text you give an AI model, like a message in a chat.</dd>
@@ -223,6 +223,8 @@
           <dd>The unit models read and bill by. A token is roughly three-quarters of an English word, so fewer tokens usually means faster and cheaper replies.</dd>
           <dt>Context window</dt>
           <dd>How much text a model can consider at once. When a conversation outgrows it, older parts get dropped or ignored.</dd>
+          <dt>Agent</dt>
+          <dd>An AI model that works in steps: it uses tools, checks the results, and tries again if something fails, instead of answering once.</dd>
         </dl>
       </details>
 
@@ -300,19 +302,19 @@
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-window-optimizer-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-window-optimizer-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-window-optimizer.html">Context Window Optimizer</a></h4>
-          <p>Plan a request’s context budget section by section, see whether the reply fits, what it costs per month, and what to trim first.</p>
+          <p>Plan how much text fits in one request. Budget each part of the prompt, check there’s room for the reply, see the monthly cost, and find what to cut first.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/deterministic-agent-stateboard-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/deterministic-agent-stateboard-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/deterministic-agent-stateboard.html">Agent Stateboard</a></h4>
-          <p>Design an agent as fixed steps with checks and retry limits, simulate failures, and export a state-machine spec, Mermaid diagram, or Python starter loop.</p>
+          <p>Sketch an AI agent as a fixed list of steps, each with a check and a limit on retries. Simulate failures, then export a spec, a diagram, or starter Python code.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/agentic-backpressure-throttle-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/agentic-backpressure-throttle-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/agentic-backpressure-throttle.html">Token Router</a></h4>
-          <p>Enter your rate limits and traffic to see if you’ll hit them, how priority routing protects urgent work, and how long a backlog takes to clear.</p>
+          <p>Enter your API rate limits and traffic to see whether you’ll hit them. Also see how urgent requests stay fast when things are busy, and how long a backlog takes to clear.</p>
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
       </ul>
@@ -356,7 +358,7 @@
           <a href="https://github.com/iggym/agentic-engineering" rel="noopener">
             <span class="meta">Guide · on GitHub</span>
             <span class="row-title">Agentic Engineering</span>
-            <span class="row-text">Orchestration, context, and tool use for agents built to do real work.</span>
+            <span class="row-text">How to build AI agents that do real work: planning their steps, giving them the right context, and letting them use tools.</span>
           </a>
         </li>
         <li>
@@ -387,7 +389,7 @@
             <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/surfacelock" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Python</span>
             <span class="row-title">SurfaceLock</span>
-            <span class="row-text">A lockfile for the AI surface of your codebase: the prompts, models, and settings it depends on.</span>
+            <span class="row-text">Records the prompts, models, and settings your code depends on, so changes to them show up in review.</span>
           </a>
         </li>
         <li>
@@ -411,7 +413,7 @@
             <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/deterministic-agent-supervisor" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Python · Rust</span>
             <span class="row-title">Deterministic Agent Supervisor</span>
-            <span class="row-text">Keeps model reasoning separate from a compiled state machine that blocks unauthorized actions.</span>
+            <span class="row-text">The model suggests actions, but a fixed set of rules decides what’s allowed. Anything not on the list is blocked.</span>
           </a>
         </li>
         <li>
@@ -419,7 +421,7 @@
             <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/factory-gate" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">JavaScript</span>
             <span class="row-title">Factory Gate</span>
-            <span class="row-text">Policy checks on an AI agent’s changes before they land on your main branch.</span>
+            <span class="row-text">Checks an AI agent’s code changes against your rules before they reach your main branch.</span>
           </a>
         </li>
         <li>
@@ -427,7 +429,7 @@
             <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/sliding-window-trim-engine" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">Go</span>
             <span class="row-title">Sliding Window Trim Engine</span>
-            <span class="row-text">Trims repeated chat history before it’s sent, cutting context size and cost.</span>
+            <span class="row-text">Removes repeated parts of a long chat before it’s sent to the model, so each request costs less.</span>
           </a>
         </li>
         <li>
@@ -435,7 +437,7 @@
             <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/circuit-x" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
             <span class="meta">HTML</span>
             <span class="row-title">CircuitX</span>
-            <span class="row-text">Explores which internal features a code model uses, for interpretability research.</span>
+            <span class="row-text">Research: finds which internal features a code model uses when it writes code.</span>
           </a>
         </li>
         <li>
@@ -461,7 +463,7 @@
             <span class="tile-body">
               <span class="tile-kind">Flagship · synthesis</span>
               <span class="tile-name">Applied AI Engineering</span>
-              <span class="tile-desc">The hub that ties the rest together: where the patterns surfacing across the other sites add up to a strategic argument, not another failure list.</span>
+              <span class="tile-desc">The hub. Start here for the big picture: it connects the ideas from the other sites into one argument about where AI systems are heading.</span>
             </span>
           </a>
         </li>
@@ -561,7 +563,7 @@
           <h3 class="group-title">What I help teams with</h3>
           <ul class="checks">
             <li><strong>Making AI agents dependable.</strong> Fixed workflows and structured outputs, so an agent follows a path you can audit instead of improvising.</li>
-            <li><strong>Keeping cost and latency in check.</strong> Tighter prompts and smarter context so the important instructions stay in view and bills stay predictable.</li>
+            <li><strong>Keeping costs and wait times down.</strong> Tighter prompts and smarter context so the important instructions stay in view and bills stay predictable.</li>
             <li><strong>Shipping safely.</strong> Checks on tool calls and code changes before they land, with isolated execution and clear policies.</li>
           </ul>
           <h3 class="group-title">Background</h3>
@@ -583,7 +585,7 @@
   <footer class="site-footer">
     <div>
       <h2 class="eyebrow">About this site</h2>
-      <p>Plain HTML, CSS, and a little JavaScript on GitHub Pages. The site works without JavaScript, offers light and dark themes (switch with the button at the top), and respects reduced-motion settings. Anonymous page counts come from Cloudflare Web Analytics, which doesn’t use cookies.</p>
+      <p>Built with plain HTML, CSS, and a little JavaScript, hosted free on GitHub Pages. It works without JavaScript, has light and dark themes (switch with the button at the top), and follows your reduced-motion setting. Anonymous page counts come from Cloudflare Web Analytics, which doesn’t use cookies.</p>
       <p>If something here is hard to read or use, please <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">open an issue on GitHub</a> or message me on LinkedIn and I’ll fix it.</p>
     </div>
     <nav aria-label="Elsewhere">
@@ -596,7 +598,7 @@
   <script defer src="assets/js/prompt-tightener.js?v=20261008a"></script>
   <script defer src="assets/js/prompt-lint.js?v=20261008a"></script>
   <script defer src="assets/js/theme.js?v=20261007a"></script>
-  <script defer src="assets/js/site-map.js?v=20261008a"></script>
+  <script defer src="assets/js/site-map.js?v=20261009a"></script>
   <script defer src="assets/js/home.js?v=20261008a"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
