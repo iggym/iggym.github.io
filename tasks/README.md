@@ -5,6 +5,61 @@ What to build next for this site and around it. These are working notes for me, 
 - **Toolsets** are single-page browser tools that live in `tools/`, like the Prompt Matrix Evaluator. They run locally, need no account, and should be useful the first time someone opens them.
 - **Projects** are larger open-source repos. Several build on what's already shipped (SurfaceLock, ModelBump, AIBoM, Factory Gate, Sliding Window Trim Engine) and on the tools here.
 
+_Updated 2026-10-08._
+
+## Needs you
+
+Decisions and actions only you can take. Tick them off here as you go.
+
+- [ ] **Review and merge** the branch `claude/website-redesign-accessibility-w6szl0`. Unmerged so far: `05d4f5e` (recent work and results), `f38788e` (Nubla results and NDA note), `f269543` (fonts, CSP, test suite, cleanup). Ask me to open the PR when you're ready.
+- [ ] **Check the NDA note** in the Work section against your agreements with VynixAI and Nubla AI. Reword it if the agreements say something narrower.
+- [ ] **Confirm the six results** can be published without a stated baseline or measurement method: 38%, 42%, 27%, 70% (VynixAI) and 22%, 35% (Nubla AI).
+- [ ] **Decide on "Project Titan"**. It's an internal codename, so it may fall under confidentiality terms. The audit's "30% YoY FinOps" figure doesn't match your résumé, which says about 30% lower compute cost from event-driven services. Pick wording or leave it out.
+- [ ] **Confirm Contran Corp** as the replacement for Verizon in the hero line and Background. The alternative is Ackerman McQueen (2 years 4 months).
+- [ ] **Check the Context Engine Worker.** The tool's "Sends text to a server" tag relies on `claude-context-orchestrator.iggy-mw.workers.dev`, whose source isn't in this repo. Confirm the data policy matches the tag.
+- [ ] **Choose four layer names** for grouping the 17 sites (Site work, item 4). Or approve the audit's names.
+- [ ] **Decide on the Token Router name.** "Token Router" is jargon for a rate-limit planner. Renaming it touches the page title, the Explore dialog, and `tools/index.json`.
+- [ ] **Choose the CSP level.** Inline scripts still need `'unsafe-inline'`. Accept that, or let me move them to hashes, which is stronger but needs updating on every edit.
+- [ ] **Supply a social share image** (1200 × 630 px) for `og:image` on the homepage and tool pages.
+- [ ] **Supply real project visuals** (screenshots or diagrams) to replace the grey placeholder panels on the project cards.
+- [ ] **Check GitHub Pages** in the repo's Settings → Pages and the Actions tab. Confirm the source is `main` and the last build succeeded. I can't see deploy status from here.
+- [ ] **Check the live site** after the next deploy, in Chrome and Edge: headline timing, Replay, fonts, and layout.
+- [ ] **Confirm the Cloudflare Web Analytics wording** in the footer is accurate.
+- [ ] **Run your audit** on the branch and send the findings back. I'll triage them against this list.
+
+## Site work
+
+Status of the audit items on the site. Shipped items are on the branch above until it's merged.
+
+| # | Item | Status |
+|---|------|--------|
+| 1 | Hero headline timing and crossfade (no stray fragments; starts after paint; slower; Replay) | Merged (PR #13, #14) |
+| 2 | Recent work: VynixAI and Nubla AI roles; six results; Contran replaces Verizon | Shipped on branch (`05d4f5e`, `f38788e`) |
+| 3 | Self-host fonts (DM Mono, Fraunces, Source Sans 3); remove Google Fonts | Shipped on branch (`f269543`) |
+| 4 | Content Security Policy on every page, with per-page host allowlists | Shipped on branch (`f269543`); inline scripts still need `'unsafe-inline'` |
+| 5 | Replace GitHub OpenGraph project images with CSS panels | Shipped on branch (`f269543`) |
+| 6 | Remove seven unused files (`tokens.css`, `main.css`, `animations.css`, four JS files) | Shipped on branch (`f269543`) |
+| 7 | `tests/check-site.mjs`: links, anchors, CSP, and allowlisted hosts (Node built-ins only) | Shipped on branch (`f269543`) |
+| 8 | Verify "Stays on your device" tools make no external requests | Verified: all 8 do not |
+| 9 | Add `og:image` and Twitter card to the homepage and tool pages | Open, needs an image from you |
+| 10 | Replace project placeholder panels with real visuals | Open, needs visuals from you |
+| 11 | Stricter CSP without `'unsafe-inline'` (hashes or nonces) | Open, depends on your choice above |
+| 12 | Measure Lighthouse performance, CLS, and FCP | Open, can't run Lighthouse here |
+| 13 | Add real heading structure to `articles/context-orchestration.html` (one heading tag in 657 lines) | Open |
+| 14 | Add visible focus styles to the sites page (`sites.css` has none) | Open |
+| 15 | Keep `?v=` cache-busting consistent across pages (versions have drifted) | Open |
+| 16 | Consolidate the 17 sites into four layers | Open, needs your layer names |
+
+**Deferred or rejected from the audit**
+
+- **Void-black design system and glassmorphism** (audit 2.1, 2.2): rejected. It's the unused design, and you chose the light editorial look.
+- **IBM Plex Mono and Bebas Neue** (audit 1.1): rejected. The site uses DM Mono, Fraunces and Source Sans 3.
+- **Tier-1 hero metrics as written** (audit 4.1): deferred. It has a misstated figure and an unclear codename (see Needs you).
+- **Exact token counts** (audit 3.1): deferred. Matching cl100k or o200k needs a tokenizer library, which conflicts with the zero-dependency rule.
+- **Shared ToolKit import/export bus** (audit 3.4): deferred. Sizeable, and not needed yet.
+- **Stateboard LangGraph and AutoGen snippets** (audit 3.3): deferred. The Python and Mermaid exports already exist.
+- **Context Extractor compaction** (audit 3.2): deferred. The extractor already produces handoff prompts and JSON.
+
 ## How to use this
 
 1. Pick the top item in **Now** that isn't started.
