@@ -425,7 +425,7 @@ html.js.loaded .swash { background-size: 100% 0.07em; }
 /* Both versions share one grid cell, so the box is as tall as the wordy version until it shrinks. */
 .h1-stack { display: grid; }
 .h1-stack > span { grid-area: 1 / 1; }
-.h1-wordy { display: none; color: var(--muted); }
+.h1-wordy { display: none; }
 .self-edit.wordy .h1-wordy,
 .self-edit.tight .h1-wordy { display: block; }
 .self-edit.tight .h1-wordy { opacity: 0; transition: opacity 0.5s ease; }
