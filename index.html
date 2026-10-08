@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261008a">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261009a">
   <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
 </head>
 <body>
@@ -52,7 +52,10 @@
         <p class="availability"><span class="pulse" aria-hidden="true"></span> Open to consulting, collaboration, and roles</p>
         <h1 id="hero-title" class="self-edit">
           <span class="sr-only">Free tools and plain-English notes for people building with AI.</span>
-          <span class="h1-visual" aria-hidden="true"><span class="f" style="--i:0">Could</span><span class="f" style="--i:1">you</span><span class="f" style="--i:2">please</span><span class="f" style="--i:3">make</span><span class="f" style="--i:4">sure</span><span class="f" style="--i:5">to</span><span class="f" style="--i:6">build</span><span class="nw"><span class="swap"><span class="lo">p</span><span class="up">P</span></span>ractical</span> tools and notes for building with <span class="nw"><span class="swash">AI</span><span class="swap"><span class="lo">?</span><span class="up">.</span></span></span><span class="f f-end" style="--i:7">Thanks!</span></span>
+          <span class="h1-stack" aria-hidden="true">
+            <span class="h1-tight">Practical tools and notes for building with <span class="swash">AI</span>.</span>
+            <span class="h1-wordy"><span class="f" style="--i:0">Could</span> <span class="f" style="--i:1">you</span> <span class="f" style="--i:2">please</span> <span class="f" style="--i:3">make</span> <span class="f" style="--i:4">sure</span> <span class="f" style="--i:5">to</span> <span class="f" style="--i:6">build</span> practical tools and notes for building with AI? <span class="f" style="--i:7">Thanks!</span></span>
+          </span>
         </h1>
         <p class="edit-note">
           <span class="tok" aria-hidden="true"><span class="tok-old">~23</span> → <span class="tok-new">~12</span> tokens</span>
@@ -60,31 +63,28 @@
           <button type="button" class="replay" id="replay" hidden>Replay</button>
         </p>
         <script>
-          // Self-editing headline: wordy prompt -> filler struck -> filler collapses.
-          // Runs inline so the wordy version is in place before the first paint.
+          // Self-editing headline: the wordy prompt, filler struck through, then a crossfade to the tight version.
+          // Only opacity and one min-height change, so nothing below the headline jumps.
           (function () {
             var h = document.getElementById("hero-title");
             var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
             var btn = document.getElementById("replay");
             var timers = [];
-            if (reduce || !h.animate) return;
+            if (reduce) return;
             function play() {
               timers.forEach(clearTimeout); timers = [];
-              var fills = h.querySelectorAll(".f");
-              h.classList.remove("strike", "tight", "done");
-              fills.forEach(function (f) { f.style.maxWidth = ""; });
-              h.classList.add("wordy");
+              h.classList.remove("strike", "tight");
               h.style.minHeight = "";
+              h.classList.add("wordy");
               timers.push(setTimeout(function () { h.classList.add("strike"); }, 1100));
+              timers.push(setTimeout(function () { h.classList.remove("wordy"); h.classList.add("tight"); }, 2300));
               timers.push(setTimeout(function () {
+                // Pin the current height, drop the wordy layer, then let the box shrink smoothly.
                 h.style.minHeight = h.offsetHeight + "px";
-                fills.forEach(function (f) { f.style.maxWidth = f.scrollWidth + "px"; });
-                void h.offsetWidth;
-                h.classList.add("tight");
-                fills.forEach(function (f) { f.style.maxWidth = "0px"; });
+                h.classList.remove("tight", "strike");
+                void h.offsetHeight;
                 h.style.minHeight = "0px";
-              }, 2300));
-              timers.push(setTimeout(function () { h.classList.remove("wordy", "strike", "tight"); h.classList.add("done"); }, 3300));
+              }, 3000));
             }
             play();
             btn.hidden = false;
