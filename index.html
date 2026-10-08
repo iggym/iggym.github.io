@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iggy Mwangi — Practical AI tools and notes</title>
   <meta name="description" content="Free browser tools for working with prompts, short essays on running AI systems in production, and open-source projects by Iggy Mwangi, AI systems architect.">
@@ -15,11 +16,9 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Iggy Mwangi — Practical AI tools and notes">
   <meta name="twitter:description" content="Free browser tools for prompts, notes on production AI, and open-source projects.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261012a">
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261013a">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261013a">
   <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
 </head>
 <body>
@@ -392,7 +391,7 @@
       <ul class="rows rows-2 proj-grid">
         <li>
           <a href="https://github.com/iggym/surfacelock" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/surfacelock" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python</span>
             <span class="row-title">SurfaceLock</span>
             <span class="row-text">Records the prompts, models, and settings your code depends on, so changes to them show up in review.</span>
@@ -400,7 +399,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/modelbump" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/modelbump" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python</span>
             <span class="row-title">ModelBump</span>
             <span class="row-text">A behavioral diff for model upgrades and deprecations.</span>
@@ -408,7 +407,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/aiboom" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/aiboom" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python</span>
             <span class="row-title">AIBoM</span>
             <span class="row-text">Generates an audit-ready AI Bill of Materials from your repo in one command.</span>
@@ -416,7 +415,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/deterministic-agent-supervisor" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python · Rust</span>
             <span class="row-title">Deterministic Agent Supervisor</span>
             <span class="row-text">The model suggests actions, but a fixed set of rules decides what’s allowed. Anything not on the list is blocked.</span>
@@ -424,7 +423,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/factory-gate" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/factory-gate" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">JavaScript</span>
             <span class="row-title">Factory Gate</span>
             <span class="row-text">Checks an AI agent’s code changes against your rules before they reach your main branch.</span>
@@ -432,7 +431,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/sliding-window-trim-engine" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/sliding-window-trim-engine" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Go</span>
             <span class="row-title">Sliding Window Trim Engine</span>
             <span class="row-text">Removes repeated parts of a long chat before it’s sent to the model, so each request costs less.</span>
@@ -440,7 +439,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/circuit-x" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/circuit-x" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">HTML</span>
             <span class="row-title">CircuitX</span>
             <span class="row-text">Research: finds which internal features a code model uses when it writes code.</span>
@@ -448,7 +447,7 @@
         </li>
         <li>
           <a href="https://iggym.github.io/utility-belt/">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/utility-belt" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Live site</span>
             <span class="row-title">Utility Belt</span>
             <span class="row-text">Small everyday browser utilities. No AI required.</span>
