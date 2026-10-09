@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Eval Set Builder — Iggy Mwangi</title>
   <meta property="og:type" content="website">
@@ -162,6 +162,7 @@
   <footer class="tool-foot">
     <p>Your prompt, cases and outputs never leave this browser tab. Saved sets are stored in this browser only, and nothing here calls a model.</p>
     <p>Found a problem? <a href="https://github.com/iggym/iggym.github.io/issues" rel="noopener">Open an issue on GitHub</a>.</p>
+    <p>Page views are counted by Cloudflare Web Analytics. It never receives what you type.</p>
   </footer>
 
   <script src="../assets/js/theme.js?v=20261015a"></script>
@@ -169,5 +170,6 @@
   <script src="../assets/js/tool-kit.js?v=20261015a"></script>
   <script src="../assets/js/eval-checks.js?v=20261015a"></script>
   <script src="../assets/js/eval-set-builder.js?v=20261015a"></script>
+  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "90c83e9b603641beac9bf45d47ce886d"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
