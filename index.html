@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iggy Mwangi — Practical AI tools and notes</title>
   <meta name="description" content="Free browser tools for working with prompts, short essays on running AI systems in production, and open-source projects by Iggy Mwangi, AI systems architect.">
@@ -15,11 +16,9 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Iggy Mwangi — Practical AI tools and notes">
   <meta name="twitter:description" content="Free browser tools for prompts, notes on production AI, and open-source projects.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,460;9..144,560&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261010a">
+  <link rel="stylesheet" href="assets/css/fonts.css?v=20261013a">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261013a">
   <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
 </head>
 <body>
@@ -33,7 +32,7 @@
       <a href="#projects">Projects</a>
       <a href="sites/">Sites</a>
       <a href="#contact">Work with me</a>
-      <a href="assets/resume/iggy-resume.pdf">Resume <span class="hint">(PDF)</span></a>
+      <a href="assets/resume/iggy-resume.pdf">Résumé</a>
       <button type="button" class="site-map-btn" data-site-map hidden>
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
         <span class="sm-btn-label">Explore</span>
@@ -107,7 +106,7 @@
             <span class="sim-caret" aria-hidden="true">▸</span> <span class="sim-toggle-label">Hide the agent simulator</span>
           </button>
         </p>
-        <p class="previously"><span>Experience includes</span> Apple · AT&amp;T · Verizon · Sam’s Club</p>
+        <p class="previously"><span>Now</span> VynixAI · Nubla AI <span>Earlier</span> Apple · Contran · AT&amp;T · Sam’s Club</p>
       </div>
 
       <figure class="console-figure" id="simulator" aria-labelledby="console-cap">
@@ -392,7 +391,7 @@
       <ul class="rows rows-2 proj-grid">
         <li>
           <a href="https://github.com/iggym/surfacelock" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/surfacelock" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python</span>
             <span class="row-title">SurfaceLock</span>
             <span class="row-text">Records the prompts, models, and settings your code depends on, so changes to them show up in review.</span>
@@ -400,7 +399,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/modelbump" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/modelbump" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python</span>
             <span class="row-title">ModelBump</span>
             <span class="row-text">A behavioral diff for model upgrades and deprecations.</span>
@@ -408,7 +407,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/aiboom" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/aiboom" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python</span>
             <span class="row-title">AIBoM</span>
             <span class="row-text">Generates an audit-ready AI Bill of Materials from your repo in one command.</span>
@@ -416,7 +415,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/deterministic-agent-supervisor" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Python · Rust</span>
             <span class="row-title">Deterministic Agent Supervisor</span>
             <span class="row-text">The model suggests actions, but a fixed set of rules decides what’s allowed. Anything not on the list is blocked.</span>
@@ -424,7 +423,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/factory-gate" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/factory-gate" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">JavaScript</span>
             <span class="row-title">Factory Gate</span>
             <span class="row-text">Checks an AI agent’s code changes against your rules before they reach your main branch.</span>
@@ -432,7 +431,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/sliding-window-trim-engine" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/sliding-window-trim-engine" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Go</span>
             <span class="row-title">Sliding Window Trim Engine</span>
             <span class="row-text">Removes repeated parts of a long chat before it’s sent to the model, so each request costs less.</span>
@@ -440,7 +439,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/circuit-x" rel="noopener">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/circuit-x" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">HTML</span>
             <span class="row-title">CircuitX</span>
             <span class="row-text">Research: finds which internal features a code model uses when it writes code.</span>
@@ -448,7 +447,7 @@
         </li>
         <li>
           <a href="https://iggym.github.io/utility-belt/">
-            <img class="proj-shot" src="https://opengraph.githubassets.com/1/iggym/utility-belt" alt="" width="1200" height="600" loading="lazy" decoding="async" onerror="this.remove()">
+            <span class="proj-art" aria-hidden="true"></span>
             <span class="meta">Live site</span>
             <span class="row-title">Utility Belt</span>
             <span class="row-text">Small everyday browser utilities. No AI required.</span>
@@ -572,8 +571,31 @@
             <li><strong>Keeping costs and wait times down.</strong> Tighter prompts and smarter context so the important instructions stay in view and bills stay predictable.</li>
             <li><strong>Shipping safely.</strong> Checks on tool calls and code changes before they land, with isolated execution and clear policies.</li>
           </ul>
+          <h3 class="group-title">Recent work</h3>
+          <div class="roles">
+            <article class="role">
+              <p class="role-when">2025 – present</p>
+              <h4>VynixAI · Senior Solutions Architect, AI &amp; Cloud Infrastructure</h4>
+              <p>Building AI-driven, cloud-native platforms for real-time retail and enterprise workloads: RAG pipelines, scalable inference, and agent automation.</p>
+            </article>
+            <article class="role">
+              <p class="role-when">2024 – present</p>
+              <h4>Nubla AI · Cloud Architect and Machine Learning Engineer</h4>
+              <p>ML systems and cloud architectures across AWS, Azure, and GCP, focused on LLM integration, retrieval, and dependable ML pipelines.</p>
+            </article>
+          </div>
+          <h3 class="group-title">Results</h3>
+          <dl class="results">
+            <div><dt>38%</dt><dd>fewer hallucinations after re-architecting our RAG pipeline <span class="res-by">VynixAI</span></dd></div>
+            <div><dt>42%</dt><dd>more reliable multi-tool routing, by treating tools as state transitions <span class="res-by">VynixAI</span></dd></div>
+            <div><dt>27%</dt><dd>lower spend from cost-aware LLM routing, with no drop in quality <span class="res-by">VynixAI</span></dd></div>
+            <div><dt>70%</dt><dd>less debugging time with OpenTelemetry reasoning-trace observability <span class="res-by">VynixAI</span></dd></div>
+            <div><dt>22%</dt><dd>lower LLM latency by reworking tokenization paths <span class="res-by">Nubla AI</span></dd></div>
+            <div><dt>35%</dt><dd>shorter training time by reorganizing data across S3, BigQuery, and ADLS <span class="res-by">Nubla AI</span></dd></div>
+          </dl>
+          <p class="results-note">Baselines and methods aren’t published here. The work falls under confidentiality agreements with my employers. I’m glad to discuss the details under NDA.</p>
           <h3 class="group-title">Background</h3>
-          <p>Software engineer who has worked up the stack from embedded firmware to mobile, cloud, machine learning, and now agent systems, at companies including Apple, AT&amp;T, Verizon, and Sam’s Club.</p>
+          <p>Software engineer who has worked up the stack from embedded firmware to mobile, cloud, machine learning, and now agent systems, at companies including Apple, Contran, AT&amp;T, and Sam’s Club.</p>
         </div>
         <div class="contact-card">
           <h3 class="group-title">Get in touch</h3>
@@ -581,7 +603,12 @@
             <li><a href="https://www.linkedin.com/in/iggym" rel="noopener">Message me on LinkedIn</a></li>
             <li><a href="https://x.com/iggym" rel="noopener">Follow or DM on X <span class="hint">@iggym</span></a></li>
             <li><a href="https://github.com/iggym" rel="noopener">See all code on GitHub</a></li>
-            <li><a href="assets/resume/iggy-resume.pdf">Download résumé <span class="hint">(PDF, 122 KB)</span></a></li>
+          </ul>
+          <p class="eyebrow">Get the résumé</p>
+          <ul class="contact-links">
+            <li><a href="assets/resume/iggy-resume.pdf">Full (PDF) <span class="hint">8 pages</span></a></li>
+            <li><a href="assets/resume/iggy-resume-2page.pdf">Quick read (PDF) <span class="hint">2 pages</span></a></li>
+            <li><a href="assets/resume/iggy-resume.docx">Editable (Word) <span class="hint">for tailoring</span></a></li>
           </ul>
         </div>
       </div>
@@ -598,13 +625,13 @@
       <a href="https://github.com/iggym" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/iggym" rel="noopener">LinkedIn</a>
       <a href="https://x.com/iggym" rel="noopener">X</a>
-      <a href="assets/resume/iggy-resume.pdf">Résumé (PDF)</a>
+      <a href="assets/resume/iggy-resume.pdf">Résumé</a>
     </nav>
   </footer>
   <script defer src="assets/js/prompt-tightener.js?v=20261008a"></script>
   <script defer src="assets/js/prompt-lint.js?v=20261008a"></script>
   <script defer src="assets/js/theme.js?v=20261007a"></script>
-  <script defer src="assets/js/site-map.js?v=20261009a"></script>
+  <script defer src="assets/js/site-map.js?v=20261015a"></script>
   <script defer src="assets/js/home.js?v=20261008a"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>

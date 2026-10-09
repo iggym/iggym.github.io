@@ -19,7 +19,7 @@ not by working harder, but by engineering the infrastructure that works without 
 ```python
 iggy = {
     "role":       "AI Agent Architect & Systems Engineer",
-    "background": ["Apple", "AT&T", "Verizon", "Sam's Club"],
+    "background": ["VynixAI", "Nubla AI", "Apple", "Contran", "AT&T", "Sam's Club"],
     "journey":    "Embedded → Mobile → Cloud → ML → Agent Systems",
     "focus":      "Multi-agent orchestration & software factory systems",
     "superpower": "Turning frontier AI capabilities into reliable, production-grade tools",
