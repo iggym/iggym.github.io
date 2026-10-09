@@ -1,6 +1,7 @@
 // Static checks for the whole site. Node built-ins only, no dependencies.
 // Run from the repo root: node tests/check-site.mjs
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { join, dirname, relative, resolve, extname } from 'node:path';
 
 const ROOT = resolve(new URL('..', import.meta.url).pathname);
@@ -91,6 +92,20 @@ for (const page of pages) {
       try { JSON.parse(m[1]); } catch { fail(page, 'JSON-LD does not parse'); }
     }
   }
+}
+
+// Offline app: manifest, icons, registration on every page, and an up-to-date service worker.
+{
+  for (const asset of ['manifest.webmanifest', 'sw.js', 'assets/img/icon-192.png', 'assets/img/icon-512.png']) {
+    if (!existsSync(join(ROOT, asset))) fail(join(ROOT, asset), 'missing offline asset');
+  }
+  for (const page of pages) {
+    const html = readFileSync(page, 'utf8');
+    if (!/<link rel="manifest" href="\/manifest\.webmanifest">/.test(html)) fail(page, 'missing web app manifest link');
+    if (!/<script defer src="[^"]*assets\/js\/sw-register\.js"><\/script>/.test(html)) fail(page, 'missing service worker registration');
+  }
+  const check = spawnSync(process.execPath, [join(ROOT, 'scripts', 'build-sw.mjs'), '--check'], { encoding: 'utf8' });
+  if (check.status !== 0) fail(join(ROOT, 'sw.js'), 'sw.js is stale; run node scripts/build-sw.mjs');
 }
 
 // Tool pages must share one header, generated from scripts/tool-shell.html.

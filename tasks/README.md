@@ -38,6 +38,7 @@ Run these whenever a change touches the site. Tick them off in the pull request.
 
 - [ ] **Run the site checks:** `node tests/check-site.mjs`. It checks links, anchors, the CSP, allowed hosts, and that tool headers match `scripts/tool-shell.html`.
 - [ ] **Keep tool headers in sync:** after editing `scripts/tool-shell.html`, run `node scripts/sync-tool-shell.mjs`.
+- [ ] **Rebuild the offline cache:** after any change to a site file, run `node scripts/build-sw.mjs`. The site test fails if `sw.js` is stale.
 - [ ] **Bump the cache versions** on every page that loads a changed file (`?v=`). `site-map.js` is loaded on every page, so it bumps everywhere.
 - [ ] **Rebuild the feed** after adding or editing an essay in `articles/index.json`: `node scripts/build-feed.mjs`.
 - [ ] **Rebuild the résumés** after editing `resume/resume.json`. Regenerate the short version with `python3 resume/make_short.py`, then build the PDF and Word files (see `resume/README.md`). Update the sizes quoted on the homepage and in the Explore dialog.
@@ -99,6 +100,14 @@ Status of the audit items on the site. Shipped items are on the branch above unt
 | 25 | JSON-LD: Person and WebSite on the homepage, Article on essays, WebApplication on tools | Shipped. Lives in each page's head: `_config.yml` isn't used for this site's HTML |
 | 26 | Image compression for `assets/img/sites/` | Declined. The pages load the `thumbs/` files (412 KB total, lazy). WebP re-encoding saved 1 KB across them, and some files grew. Only the homepage image would gain (148 KB → 122 KB) |
 | 27 | Client-side search over `articles/index.json` | Declined for now. Explore already filters every page, and the index has two essays. Revisit at about ten essays |
+| 28 | Offline app: service worker, web app manifest, 192 and 512 px icons; tools work with the network off | Shipped. Tested offline: pages, tools, the eval builder, and the prompt evaluator |
+| 29 | Slow large prompts: tightening a 1 MB prompt took about 16 s because of a per-cut check on the whole output | Fixed. Now about 70 ms. Output matches the old version, except that text starting with whitespace now gets a capital letter |
+| 30 | Web workers for prompt tools | Declined. The measured problem was the bug in row 29; with it fixed, a 1 MB prompt takes well under a second |
+| 31 | Misspelled author name ("Ignatius") in the token-economics essay | Fixed (title, Open Graph title, footer) |
+| 32 | Void-black theme and a high-contrast reading mode | Void black declined: the light and dark design is the one you chose. A high-contrast reading mode is possible as a third option. Needs your go-ahead |
+| 33 | Cloudflare Worker that builds the feed from repository metadata | Deferred. It needs your Cloudflare account. The static feed is rebuilt on every change |
+| 34 | IndexedDB for large tool states | Deferred. The tools' saved state is small. Revisit when a tool hits the browser storage limit |
+| 35 | Automated schema checks in publishing | Covered by `tests/check-site.mjs`. Running it in CI needs your go-ahead (see the checklist) |
 
 **Deferred or rejected from the audit**
 
