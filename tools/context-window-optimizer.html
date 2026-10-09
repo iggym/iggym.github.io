@@ -9,16 +9,18 @@
   <meta property="og:url" content="https://iggym.github.io/tools/context-window-optimizer.html">
   <meta property="og:title" content="Context Window Optimizer — Iggy Mwangi">
   <meta property="og:description" content="Plan a model&#x27;s context budget: see how much the system prompt, tools, documents, chat history and question use, whether the reply still fits, what each request costs, and what to trim first. Runs in your browser.">
-  <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
+  <meta property="og:image" content="https://iggym.github.io/assets/img/tools/context-window-optimizer-light.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
+  <meta name="twitter:image" content="https://iggym.github.io/assets/img/tools/context-window-optimizer-light.jpg">
   <meta name="description" content="Plan a model's context budget: see how much the system prompt, tools, documents, chat history and question use, whether the reply still fits, what each request costs, and what to trim first. Runs in your browser.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261017a">
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=20261017a">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261017a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261017a">
   <style>
     .layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 1rem; align-items: start; }
     @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
@@ -150,9 +152,9 @@
     <p>Page views are counted by Cloudflare Web Analytics. It never receives what you type.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script src="../assets/js/theme.js?v=20261017a"></script>
   <script defer src="../assets/js/site-map.js?v=20261017a"></script>
-  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261017a"></script>
   <script>
     var COLORS = ["#4338ca", "#0f766e", "#b45309", "#be185d", "#2563eb", "#7c3aed", "#15803d", "#c2410c"];
     var KINDS = { system: "System prompt", tools: "Tool definitions", docs: "Retrieved documents", history: "Chat history", question: "User question" };
@@ -244,10 +246,12 @@
         ? "About " + fmt(input) + " input tokens plus " + fmt(reply) + " reserved for the reply, out of " + fmt(win) + ". " + fmt(free) + " to spare. (Cost assumes the full reply is used.)"
         : "Over by about " + fmt(-free) + " tokens once the reply is included.";
 
+      // Section names are typed by the user, so escape them before they go into innerHTML.
+      function escapeHtml(v) { return String(v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
       // Advice
       var adv = [], sorted = parts.slice().sort(function (a, b) { return b.t - a.t; });
       var biggest = sorted[0];
-      if (free < 0) adv.push(["bad", "This request doesn’t fit. Cut at least " + fmt(-free) + " tokens, starting with “" + biggest.name + "” (" + fmt(biggest.t) + "). Otherwise the provider will reject it or truncate it."]);
+      if (free < 0) adv.push(["bad", "This request doesn’t fit. Cut at least " + fmt(-free) + " tokens, starting with “" + escapeHtml(biggest.name) + "” (" + fmt(biggest.t) + "). Otherwise the provider will reject it or truncate it."]);
       else if (win && total / win > 0.75) adv.push(["warn", "Over 75% full. Models tend to miss details buried in the middle of very long contexts, and long contexts are slower. Trim before you add more."]);
       parts.forEach(function (p) {
         var share = input ? p.t / input : 0;

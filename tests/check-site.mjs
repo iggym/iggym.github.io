@@ -117,6 +117,76 @@ for (const page of pages) {
   }
 }
 
+// Cache-busting: every shared asset must use one ?v= stamp on every page, so browsers fetch it once.
+{
+  const stamps = new Map(); // asset path -> Set of stamps
+  for (const page of pages) {
+    for (const m of readFileSync(page, 'utf8').matchAll(/(?:href|src)="([^"]+?\.(?:css|js))\?v=([0-9a-z]+)"/g)) {
+      const asset = m[1].replace(/^(\.\.\/|\.\/|\/)+/, '');
+      if (!stamps.has(asset)) stamps.set(asset, new Set());
+      stamps.get(asset).add(m[2]);
+    }
+  }
+  for (const [asset, values] of stamps) {
+    if (values.size > 1) failures.push(`${asset}: several ?v= stamps in use (${[...values].join(', ')})`);
+  }
+}
+
+// Every page needs a <main> landmark and a favicon. The 404 page is included.
+for (const page of pages) {
+  const html = readFileSync(page, 'utf8');
+  const rel = relative(ROOT, page);
+  if (!/<main[\s>]/i.test(html)) fail(page, 'missing <main> landmark');
+  if (!/<link rel="icon"/i.test(html)) fail(page, 'missing <link rel="icon">');
+  if (/<main[\s>]/i.test(html) && rel !== '404.html' && !/<main[^>]*\sid="main"/i.test(html) && !/<main[^>]*\sid='main'/i.test(html)) {
+    fail(page, '<main> should have id="main" so the skip link works');
+  }
+}
+
+// Heading structure: one <h1>, and no skipped levels (for example an <h2> followed by an <h4>).
+for (const page of pages) {
+  const html = readFileSync(page, 'utf8');
+  const levels = [...html.matchAll(/<h([1-6])[\s>]/gi)].map((m) => Number(m[1]));
+  const h1s = levels.filter((l) => l === 1).length;
+  if (h1s !== 1) fail(page, `expected exactly one <h1>, found ${h1s}`);
+  let prev = 0;
+  for (const level of levels) {
+    if (prev && level > prev + 1) { fail(page, `heading level skips from h${prev} to h${level}`); break; }
+    prev = level;
+  }
+}
+
+// Parity: the tool and essay lists, the Explore menu, and the Atom feed all have to name the same pages.
+{
+  const toolFiles = pages.map((p) => relative(ROOT, p)).filter((r) => r.startsWith('tools/') && r !== 'tools/index.json');
+  const toolIndex = JSON.parse(readFileSync(join(ROOT, 'tools', 'index.json'), 'utf8')).map((t) => t.url);
+  const toolPages = toolFiles.filter((f) => f !== 'tools/index.html');
+  const siteMap = readFileSync(join(ROOT, 'assets', 'js', 'site-map.js'), 'utf8');
+  const menuTools = [...siteMap.matchAll(/href: "(tools\/[^"]+\.html)"/g)].map((m) => m[1]);
+  const compare = (label, a, b) => {
+    const sa = new Set(a), sb = new Set(b);
+    for (const x of sa) if (!sb.has(x)) failures.push(`${label}: ${x} is missing from the other list`);
+    for (const x of sb) if (!sa.has(x)) failures.push(`${label}: ${x} is not a page in the repo`);
+  };
+  compare('tools/index.json vs tools/*.html', toolIndex, toolPages);
+  compare('assets/js/site-map.js vs tools/*.html', menuTools, toolPages);
+
+  const articlePages = pages.map((p) => relative(ROOT, p)).filter((r) => r.startsWith('articles/'));
+  const articleIndex = JSON.parse(readFileSync(join(ROOT, 'articles', 'index.json'), 'utf8')).map((a) => a.url);
+  compare('articles/index.json vs articles/*.html', articleIndex, articlePages);
+
+  const feed = readFileSync(join(ROOT, 'feed.xml'), 'utf8');
+  for (const url of articleIndex) {
+    if (!feed.includes(`https://iggym.github.io/${url}`)) failures.push(`feed.xml: missing entry for ${url}`);
+  }
+}
+
+// Sitemap and robots.txt must match the pages. Regenerate with node scripts/build-sitemap.mjs.
+{
+  const check = spawnSync(process.execPath, [join(ROOT, 'scripts', 'build-sitemap.mjs'), '--check'], { encoding: 'utf8' });
+  if (check.status !== 0) fail(join(ROOT, 'sitemap.xml'), 'sitemap.xml or robots.txt is stale; run node scripts/build-sitemap.mjs');
+}
+
 if (failures.length) {
   console.log(failures.join('\n'));
   console.log(`\n${failures.length} problem(s) across ${pages.length} pages.`);

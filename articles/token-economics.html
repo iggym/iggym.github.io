@@ -13,7 +13,7 @@
   <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261013a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261017a">
 <style>
 
   :root {
@@ -23,7 +23,7 @@
     --border: #252525;
     --text: #e8e8e8;
     --text-dim: #888;
-    --text-faint: #444;
+    --text-faint: #7f7f7f; /* was #444 (2.1:1); now 5.0:1 on --void */
     --orange: #FF4D00;
     --orange-dim: rgba(255,77,0,0.15);
     --orange-faint: rgba(255,77,0,0.05);
@@ -33,7 +33,7 @@
     --red: #ff3333;
     --blue: #4488ff;
     --mono: 'DM Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
+    --sans: 'Source Sans 3', sans-serif;
     --display: 'Fraunces', serif;
   }
 
@@ -476,6 +476,13 @@
   }
   .agent-total .val { color: var(--orange); }
 
+  .nojs-note { font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.6; margin: 0.5rem 0; }
+  .nojs-list { font-family: var(--mono); font-size: 12px; color: var(--text-dim); line-height: 1.8; padding-left: 1.2rem; }
+  /* Keyboard support: skip link, visible focus, and JSON tree rows. */
+  .essay-skip { position: absolute; left: 1rem; top: -4rem; z-index: 1000; padding: 0.5rem 0.9rem; background: var(--orange); color: #000; border-radius: 4px; text-decoration: none; font-family: var(--mono); font-size: 12px; }
+  .essay-skip:focus { top: 0.5rem; }
+  a:focus-visible, button:focus-visible, [role="button"]:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; border-radius: 3px; }
+  .json-row { cursor: pointer; }
   /* JSON TREE (Animation 5) */
   .json-tree {
     font-family: var(--mono);
@@ -604,6 +611,7 @@
   }
 </style>
     <meta name="description" content="An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="canonical" href="https://iggym.github.io/articles/token-economics.html">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Token Window Economics: Managing System Context Headers", "description": "An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.", "datePublished": "2026-05-01", "author": {"@type": "Person", "name": "Iggy Mwangi", "url": "https://iggym.github.io/"}, "mainEntityOfPage": "https://iggym.github.io/articles/token-economics.html", "timeRequired": "PT4M"}</script>
   <link rel="manifest" href="/manifest.webmanifest">
@@ -612,11 +620,15 @@
 </head>
 <body>
 
+<a class="essay-skip" href="#main">Skip to essay</a>
+
 <!-- NAV -->
 <nav>
   <span class="nav-brand">Token Window Economics</span>
   <a href="https://iggym.github.io/#articles" class="nav-home">← Home</a>
 </nav>
+
+<main id="main">
 
 <!-- HERO -->
 <div class="hero">
@@ -745,7 +757,23 @@
     <!-- ANIMATION 2 -->
     <div class="interactive">
       <div class="interactive-label">Interactive · Context Layer Builder · Click layers to add/remove</div>
-      <div class="stack-bar-container" id="stackContainer"></div>
+      <div class="stack-bar-container" id="stackContainer">
+        <noscript>
+          <p class="nojs-note">Static version. Turn on JavaScript to switch layers on and off. Tokens per layer, with the user question always included:</p>
+          <ul class="nojs-list">
+            <li>User question: 30 tokens (always on)</li>
+            <li>System prompt (base): 1,200 tokens</li>
+            <li>Brand and persona rules: 800 tokens</li>
+            <li>Compliance and legal header: 1,400 tokens</li>
+            <li>Security and data handling: 900 tokens</li>
+            <li>Output JSON schema: 2,200 tokens</li>
+            <li>Conversation history (50 turns): 18,000 tokens</li>
+            <li>Retrieved documents (10): 12,000 tokens</li>
+            <li>Agent routing manifest: 600 tokens</li>
+            <li>Environment context: 400 tokens</li>
+          </ul>
+        </noscript>
+      </div>
       <div style="margin-top:1rem; font-family:var(--mono); font-size:11px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border); padding-top:1rem;">
         <span style="color:var(--text-faint)">TOTAL CONTEXT</span>
         <span style="color:var(--orange); font-size:1.2rem;" id="stackTotal">30 tokens</span>
@@ -793,7 +821,11 @@
         <input type="range" id="memSlider" min="0" max="100" step="5" value="0">
         <span class="slider-val" id="memVal">0% compressed</span>
       </div>
-      <div class="timeline-container" id="timelineContainer"></div>
+      <div class="timeline-container" id="timelineContainer">
+        <noscript>
+          <p class="nojs-note">Static version. The example chat has 14 turns that add up to about 2,463 tokens. With JavaScript, a slider removes older turns and shows how many tokens that frees.</p>
+        </noscript>
+      </div>
       <div style="margin-top:1rem; font-family:var(--mono); font-size:11px; display:flex; justify-content:space-between; border-top:1px solid var(--border); padding-top:1rem;">
         <span style="color:var(--text-faint)">TOKENS FREED</span>
         <span style="color:var(--green);" id="tokensFreed">0 tokens freed</span>
@@ -837,7 +869,11 @@
         </div>
         <div class="agent-panel" id="multiAgentPanel">
           <div class="agent-panel-title"><span>5-Agent System</span><span style="color:var(--red)" id="multiAgentLabel">Inflated</span></div>
-          <div id="multiAgentNodes"></div>
+          <div id="multiAgentNodes">
+            <noscript>
+              <p class="nojs-note">Static version. Five agents, each with its own system prompt, a 1,800-token task context, tools, state and schema. Totals: Orchestrator 6,100 tokens; Retrieval 4,900; Analysis 6,400; Formatting 5,400; Validation 5,000. Together about 27,800 tokens.</p>
+            </noscript>
+          </div>
           <div class="agent-total">
             <span style="color:var(--text-faint)">TOTAL</span>
             <span class="val" id="multiAgentTotal">0 tok</span>
@@ -875,7 +911,11 @@
     <!-- ANIMATION 5 -->
     <div class="interactive">
       <div class="interactive-label">Interactive · JSON Schema Token Explorer · Click to expand nodes</div>
-      <div class="json-tree" id="jsonTree"></div>
+      <div class="json-tree" id="jsonTree">
+          <noscript>
+            <p class="nojs-note">Static version. The example response schema has four top-level fields, each with a token cost. Turn on JavaScript to expand them: responseMetadata 35 tokens; intent 28; responseContent 22; complianceFlags 32; schema overhead 25.</p>
+          </noscript>
+        </div>
       <div class="token-counter">
         <span class="label">Schema Token Estimate</span>
         <span class="count" id="jsonTokenCount">~180 tok</span>
@@ -934,7 +974,11 @@
       In production enterprise systems, model inference typically represents <strong>less than 50% of total request latency</strong>. The remainder is distributed across a pipeline that most system architects have never profiled as a unit.
     </p>
 
-    <div class="latency-breakdown" id="latencyBreakdown"></div>
+    <div class="latency-breakdown" id="latencyBreakdown">
+      <noscript>
+        <p class="nojs-note">Static version. Ten steps add up to 995 ms, and model inference is 420 ms of that (42%): prompt assembly 85 ms; memory retrieval 110 ms; RAG document fetch 140 ms; agent routing 45 ms; policy injection 65 ms; schema validation 30 ms; tool selection 40 ms; model inference 420 ms; output parsing 35 ms; logging and tracing 25 ms.</p>
+      </noscript>
+    </div>
 
     <p>
       The implication is that optimizing model inference — switching to a faster model, increasing GPU throughput — delivers at most a 2× improvement in end-to-end latency, assuming the model is the bottleneck. It often is not. Teams that have profiled the full pipeline consistently find that prompt assembly, memory retrieval, and policy injection together account for more latency than the model.
@@ -1031,6 +1075,7 @@
   </div>
 
 </article>
+</main>
 
 <footer>
   <div>
@@ -1364,34 +1409,52 @@ function totalVisibleTokens() {
   return countTokens(schema) + 25;
 }
 
-function renderJsonNode(node, depth = 0) {
+function renderJsonNode(node, depth = 0, path = '') {
   const div = document.createElement('div');
   div.className = 'json-node';
   const hasChildren = node.children && node.children.length > 0;
   const indent = '  '.repeat(depth);
-  const toggle = hasChildren ? `<span class="json-toggle">${node._open ? '▼' : '▶'}</span>` : '<span style="display:inline-block;width:14px"></span>';
-  div.innerHTML = `${indent}${toggle}<span class="key">"${node.name}"</span>: <span class="val">${hasChildren ? '{…}' : node.type}</span><span class="json-token-badge">${node.tokens} tok</span>`;
+  const toggle = hasChildren ? `<span class="json-toggle" aria-hidden="true">${node._open ? '▼' : '▶'}</span>` : '<span style="display:inline-block;width:14px"></span>';
+  const row = document.createElement('div');
+  row.className = 'json-row';
+  row.dataset.path = path + '/' + node.name;
+  row.innerHTML = `${indent}${toggle}<span class="key">"${node.name}"</span>: <span class="val">${hasChildren ? '{…}' : node.type}</span><span class="json-token-badge">${node.tokens} tok</span>`;
+  div.appendChild(row);
 
   if (hasChildren) {
-    div.style.cursor = 'pointer';
-    div.addEventListener('click', (e) => {
+    // Rows are focusable buttons: Enter or Space toggles, and aria-expanded reports the state.
+    row.setAttribute('role', 'button');
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('aria-expanded', String(!!node._open));
+    row.setAttribute('aria-label', `${node.name}, ${node.children.length} fields, ${node._open ? 'expanded' : 'collapsed'}`);
+    const toggleNode = (e) => {
       e.stopPropagation();
+      if (e.type === 'keydown') e.preventDefault();
       node._open = !node._open;
-      renderJsonTree();
+      renderJsonTree(row.dataset.path);
+    };
+    row.addEventListener('click', toggleNode);
+    row.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') toggleNode(e);
     });
     if (node._open) {
       const children = document.createElement('div');
       children.className = 'json-children';
-      node.children.forEach(c => children.appendChild(renderJsonNode(c, depth + 1)));
+      node.children.forEach(c => children.appendChild(renderJsonNode(c, depth + 1, row.dataset.path)));
       div.appendChild(children);
     }
   }
   return div;
 }
 
-function renderJsonTree() {
+function renderJsonTree(focusPath) {
   jsonTree.innerHTML = '';
   jsonTree.appendChild(renderJsonNode(schema));
+  // Re-rendering replaces the buttons, so put keyboard focus back on the row that was toggled.
+  if (focusPath) {
+    const again = [...jsonTree.querySelectorAll('.json-row')].find(r => r.dataset.path === focusPath);
+    if (again) again.focus();
+  }
   const total = totalVisibleTokens();
   jsonTokenCount.textContent = '~' + total.toLocaleString() + ' tok';
   jsonTokenCount.style.color = total > 400 ? 'var(--red)' : total > 250 ? 'var(--yellow)' : 'var(--green)';

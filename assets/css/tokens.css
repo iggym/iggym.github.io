@@ -1,0 +1,73 @@
+/* Design tokens shared by the homepage, /sites/, the tools and the 404 page.
+   Page-specific values (for example --swash, --band, --measure) stay in home.css or tool.css. */
+:root {
+  --bg: #f8f7f4;
+  --bg-raise: #ffffff;
+  --bg-sunk: #f0eee9;
+  --ink: #16171b;
+  --muted: #5a5d66;
+  --line: #e4e2dc;
+  --line-strong: #8f8c84;
+  --accent: #4338ca;
+  --accent-soft: #eceafd;
+  --accent-ink: #ffffff;
+  --focus: #1d4ed8;
+  --ok: #17734a;
+  --ok-bg: #e6f4ec;
+  --warn: #8a5300;
+  --warn-bg: #fbf0dc;
+  --bad: #b42318;
+  --bad-bg: #fdeceb;
+  --info: #2f5c8f;
+  --info-bg: #e8f0f9;
+  --tag-local: #17734a;
+  --tag-saved: #2f5c8f;
+  --tag-key: #8a5300;
+  --tag-server: #b4381f;
+  --tag-demo: #6b45b8;
+  --glow: rgba(67, 56, 202, 0.07);
+  --glow-2: rgba(23, 115, 74, 0.05);
+  --cut: #b42318;
+  --cut-bg: #fdeceb;
+  --shadow-sm: 0 1px 2px rgba(22, 23, 27, 0.04), 0 1px 1px rgba(22, 23, 27, 0.03);
+  --shadow-md: 0 1px 2px rgba(22, 23, 27, 0.04), 0 8px 24px -12px rgba(22, 23, 27, 0.14);
+  --shadow-lg: 0 2px 4px rgba(22, 23, 27, 0.04), 0 24px 48px -20px rgba(22, 23, 27, 0.22);
+  --serif: "Fraunces", "Iowan Old Style", Palatino, Georgia, serif;
+  --sans: "Source Sans 3", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* Dark theme: chosen with the toggle (stored), never forced by default. */
+:root[data-theme="dark"] {
+  --bg: #141518;
+  --bg-raise: #1c1d21;
+  --bg-sunk: #101114;
+  --ink: #edece9;
+  --muted: #a7a8ae;
+  --line: #2c2d33;
+  --line-strong: #6a6c75;
+  --accent: #a5b4fc;
+  --accent-soft: #23264a;
+  --accent-ink: #14151a;
+  --focus: #93c5fd;
+  --ok: #6fd4a0;
+  --ok-bg: #15291f;
+  --warn: #f0c06a;
+  --warn-bg: #2e2412;
+  --bad: #ff9b8f;
+  --bad-bg: #35191a;
+  --info: #9cc0ec;
+  --info-bg: #172234;
+  --tag-local: #6fd4a0;
+  --tag-saved: #9cc0ec;
+  --tag-key: #f0c06a;
+  --tag-server: #ff9f80;
+  --tag-demo: #c9b8f5;
+  --glow: rgba(165, 180, 252, 0.07);
+  --glow-2: rgba(111, 212, 160, 0.04);
+  --cut: #ff9b8f;
+  --cut-bg: #35191a;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 2px 4px rgba(0, 0, 0, 0.3), 0 24px 48px -20px rgba(0, 0, 0, 0.7);
+}

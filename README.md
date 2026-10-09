@@ -37,7 +37,7 @@ I've spent my career moving up the stack — from embedded firmware to mobile ap
 | 🛡️ [**factory-gate**](https://github.com/iggym/factory-gate) | Autonomous structural policy guardrails — verifies safe agent state transitions before target branch ingestion | `JavaScript` |
 | 🔬 [**circuit-x**](https://github.com/iggym/circuit-x) | Exposes internal feature circuit paths inside deep neural weights and code LLMs for interpretability-driven alignment | `HTML` · `Interpretability` |
 | 🪟 [**sliding-window-trim-engine**](https://github.com/iggym/sliding-window-trim-engine) | Efficient sliding window context trimming for LLM token management | `Go` |
-| 🤖 [**deterministic-agent-supervisor**](https://github.com/iggym/deterministic-agent-upervisor) | Deterministic orchestration layer for supervising autonomous agent workflows | `Python` |
+| 🤖 [**deterministic-agent-supervisor**](https://github.com/iggym/deterministic-agent-supervisor) | Deterministic orchestration layer for supervising autonomous agent workflows | `Python` |
 | 🔥 [**context-forge**](https://github.com/iggym/context-forge) | Context engineering toolkit for building structured knowledge systems | — |
 | 📐 [**spec-driven-development**](https://github.com/iggym/spec-driven-development) | A more accessible set of artifacts for Spec Driven Development | ⭐ 1 · `MIT` |
 

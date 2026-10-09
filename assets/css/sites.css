@@ -93,7 +93,8 @@
   text-decoration: none;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
-.jump a:hover { border-color: var(--ink); transform: translateY(-1px); }
+.jump a:hover, .jump a:focus-visible { border-color: var(--ink); transform: translateY(-1px); }
+.jump a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .swatch {
   width: 0.7rem;
   height: 0.7rem;
@@ -238,7 +239,10 @@
   margin: 0 0 0.4rem;
 }
 .site-name a { text-decoration: none; }
-.site-card:hover .site-name a { color: var(--card-accent); text-decoration: underline; text-underline-offset: 0.18em; }
+.site-card:hover .site-name a, .site-card:has(a:focus-visible) .site-name a { color: var(--card-accent); text-decoration: underline; text-underline-offset: 0.18em; }
+/* A focus ring on the whole card, in the focus colour, so it stays visible on every card accent. */
+.site-card:has(a:focus-visible) { outline: 3px solid var(--focus); outline-offset: 4px; }
+.site-card:has(a:focus-visible) .site-go span { transform: translateX(4px); }
 .site-desc { margin: 0; color: var(--muted); font-size: 0.99rem; }
 
 .site-links {
@@ -258,7 +262,7 @@
   text-decoration: none;
 }
 .site-go span { transition: transform 0.2s ease; }
-.site-card:hover .site-go { color: var(--card-accent); }
+.site-card:hover .site-go, .site-card:has(a:focus-visible) .site-go { color: var(--card-accent); }
 .site-card:hover .site-go span { transform: translateX(4px); }
 .site-repo, .site-repo-none {
   display: inline-flex;
@@ -268,7 +272,8 @@
   color: var(--muted);
 }
 .site-repo { text-decoration: none; }
-.site-repo:hover { color: var(--ink); text-decoration: underline; }
+.site-repo:hover, .site-repo:focus-visible { color: var(--ink); text-decoration: underline; }
+.site-repo:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 3px; }
 .site-repo-none { font-style: italic; }
 
 /* ---------- Closing note ---------- */

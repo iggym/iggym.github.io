@@ -9,16 +9,18 @@
   <meta property="og:url" content="https://iggym.github.io/tools/claude_context_engine_premium.html">
   <meta property="og:title" content="Claude Context Engine — Iggy Mwangi">
   <meta property="og:description" content="Paste messy context such as logs, code, or notes, and get back a tighter prompt to give Claude. Uses a hosted AI model, so your text is sent to a server.">
-  <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
+  <meta property="og:image" content="https://iggym.github.io/assets/img/tools/claude_context_engine_premium-light.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
+  <meta name="twitter:image" content="https://iggym.github.io/assets/img/tools/claude_context_engine_premium-light.jpg">
   <meta name="description" content="Paste messy context such as logs, code, or notes, and get back a tighter prompt to give Claude. Uses a hosted AI model, so your text is sent to a server.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261017a">
+  <link rel="stylesheet" href="../assets/css/tokens.css?v=20261017a">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=20261017a">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261017a">
   <style>
     #raw, #result { min-height: 18rem; }
     .modes { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -97,6 +99,7 @@
           <span class="meta" id="out-stats"></span>
         </div>
         <pre class="output empty" id="result" tabindex="0" aria-live="polite" aria-busy="false" aria-label="Rewritten prompt">The rewritten prompt will appear here.</pre>
+        <p class="hint" id="worker-fallback" hidden>The rewrite service is slow or unreachable. You can still work on this text on your device: <a href="context-extractor.html">Context Extractor</a> trims and summarizes it locally, and <a href="prompt-matrix-evaluator.html">Prompt Matrix Evaluator</a> tightens the wording without a server.</p>
         <div class="row" style="margin-top:0.75rem">
           <button type="button" class="btn" id="copy">Copy</button>
           <button type="button" class="btn btn-quiet" id="again">Rewrite this result again</button>
@@ -119,12 +122,13 @@
     <p>Page views are counted by Cloudflare Web Analytics. It never receives what you type.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261007a"></script>
+  <script src="../assets/js/theme.js?v=20261017a"></script>
   <script defer src="../assets/js/site-map.js?v=20261017a"></script>
-  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
+  <script src="../assets/js/tool-kit.js?v=20261017a"></script>
   <script>
     var WORKER_URL = "https://claude-context-orchestrator.iggy-mw.workers.dev/api/orchestrate";
     var KEY = "cce_raw_input";
+    var WORKER_TIMEOUT_MS = 20000;
     var mode = "extract";
     var lastOutput = "";
     var els = {
@@ -227,13 +231,18 @@
       if (!input.trim()) { els.raw.focus(); ToolKit.announce("Paste some text first."); return; }
       els.run.disabled = true;
       lastOutput = "";
+      document.getElementById("worker-fallback").hidden = true;
       setResult("Rewriting…", "loading");
+      // Give up after 20 seconds so the button never stays stuck on "Rewriting…".
+      var controller = typeof AbortController === "function" ? new AbortController() : null;
+      var timer = setTimeout(function () { if (controller) controller.abort(); }, WORKER_TIMEOUT_MS);
       ToolKit.announce("Rewriting. This can take a few seconds.");
       try {
         var res = await fetch(WORKER_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ payload: input, workflow: mode, invertAttention: document.getElementById("anchor").checked })
+          body: JSON.stringify({ payload: input, workflow: mode, invertAttention: document.getElementById("anchor").checked }),
+          signal: controller ? controller.signal : undefined
         });
         var data = await res.json().catch(function () { return {}; });
         if (res.ok && data.success && data.result) {
@@ -249,8 +258,15 @@
           ToolKit.announce("Rewrite failed.");
         }
       } catch (err) {
-        setResult(friendlyError(err.message), "error");
+        if (err && err.name === "AbortError") {
+          setResult("The rewrite service didn't answer within 20 seconds. Try again in a moment.", "error");
+        } else {
+          setResult(friendlyError(err.message), "error");
+        }
+        document.getElementById("worker-fallback").hidden = false;
         ToolKit.announce("Rewrite failed.");
+      } finally {
+        clearTimeout(timer);
       }
       els.run.disabled = false;
     });

@@ -13,7 +13,7 @@
   <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261013a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261017a">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,7 +26,7 @@
       --accent-glow: rgba(124, 106, 247, 0.35);
       --headline: #f0eff8;
       --body: #a8a7be;
-      --muted: #5a5970;
+      --muted: #8080a0; /* was #5a5970 (2.9:1); now 5.2:1 on --bg */
       --amber: #f5a623;
       --teal: #38d9c0;
       --red: #f76a6a;
@@ -37,7 +37,7 @@
     body {
       background: var(--bg);
       color: var(--body);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Source Sans 3', sans-serif;
       font-size: 1rem;
       line-height: 1.75;
       overflow-x: hidden;
@@ -130,12 +130,13 @@
     }
 
     /* ── SCROLL REVEAL ── */
-    .reveal {
+    /* Hide reveal content only when JS is running; without JS everything stays visible. */
+    html.js .reveal {
       opacity: 0;
       transform: translateY(24px);
       transition: opacity 0.65s ease, transform 0.65s ease;
     }
-    .reveal.visible {
+    html.js .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -352,7 +353,7 @@
       font-size: 1.15rem;
       color: var(--headline);
       font-weight: 400;
-      margin-bottom: 0.75rem;
+      margin: 0 0 0.75rem;
     }
     .pillar-body {
       font-size: 0.93rem;
@@ -423,20 +424,28 @@
       footer { flex-direction: column; gap: 0.5rem; text-align: center; }
     }
 
+    /* Keyboard users: skip link and visible focus rings. */
+    .essay-skip { position: absolute; left: 1rem; top: -4rem; z-index: 1000; padding: 0.5rem 0.9rem; background: var(--accent); color: #fff; border-radius: 4px; text-decoration: none; font-family: 'DM Mono', monospace; font-size: 0.8rem; }
+    .essay-skip:focus { top: 0.5rem; }
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
       * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
   </style>
     <meta name="description" content="For over a quarter of a century, software engineering treated code syntax as its primary unit of leverage. As production systems transition to generative runtime engines, the high-leverage skill moves entirely into structural prompt composition, token safety boundaries, and validation pipeline tooling.">
+  <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="canonical" href="https://iggym.github.io/articles/context-orchestration.html">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "The Shift From Coding to Context Orchestration", "description": "For over a quarter of a century, software engineering treated code syntax as its primary unit of leverage. As production systems transition to generative runtime engines, the high-leverage skill moves entirely into structural prompt composition, token safety boundaries, and validation pipeline tooling.", "datePublished": "2026-06-01", "author": {"@type": "Person", "name": "Iggy Mwangi", "url": "https://iggym.github.io/"}, "mainEntityOfPage": "https://iggym.github.io/articles/context-orchestration.html", "timeRequired": "PT6M"}</script>
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/assets/img/icon-192.png">
-  <script defer src="../assets/js/sw-register.js"></script>
+  <script>document.documentElement.classList.add('js');</script>
+<script defer src="../assets/js/sw-register.js"></script>
 </head>
 <body>
 
+<a class="essay-skip" href="#main">Skip to essay</a>
 <div id="progress-bar"></div>
 <div id="cursor-glow"></div>
 
@@ -444,6 +453,7 @@
 
   <a href="../index.html" class="back-link">← BACK TO ARCHITECT</a>
 
+  <main id="main">
   <header class="essay-header">
     <div class="eyebrow">// SYSTEMIC ARCHITECTURE</div>
     <h1 class="essay-title">The Shift From Coding<br>to Context Orchestration</h1>
@@ -541,7 +551,7 @@
 
     <div class="pillar-card reveal">
       <div class="pillar-num">PILLAR 01</div>
-      <div class="pillar-title">Structural Framing</div>
+      <h3 class="pillar-title">Structural Framing</h3>
       <div class="pillar-body">
         Designing deterministic scaffolding — strict JSON schemas, system role definitions, multi-agent topologies — that forces stochastic (probabilistic) models to behave reliably and predictably. Without structure, AI output is creative but chaotic. With it, you get creative output inside reliable guardrails.
       </div>
@@ -552,7 +562,7 @@
 
     <div class="pillar-card reveal">
       <div class="pillar-num">PILLAR 02</div>
-      <div class="pillar-title">Token Window Economics</div>
+      <h3 class="pillar-title">Token Window Economics</h3>
       <div class="pillar-body">
         Treating the context window as a finite, precious resource — like RAM in a computer. Every instruction, every piece of history, every example you include competes for the same limited space. Engineers must actively prune stale context, compress conversation history, and prioritize what information earns its place in the window.
       </div>
@@ -563,7 +573,7 @@
 
     <div class="pillar-card reveal">
       <div class="pillar-num">PILLAR 03</div>
-      <div class="pillar-title">Runtime Verification Loops</div>
+      <h3 class="pillar-title">Runtime Verification Loops</h3>
       <div class="pillar-body">
         Replacing manual code review with autonomous sandboxes where AI-generated code branches are automatically tested in isolated environments before they're accepted. The engineer designs the verification system; the system does the reviewing. This closes the loop between generation and validation without human bottlenecks.
       </div>
@@ -594,6 +604,8 @@
       </p>
     </div>
   </div>
+
+  </main>
 
   <footer>
     <span>// SYSTEMIC ARCHITECTURE</span>

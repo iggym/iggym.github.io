@@ -65,9 +65,6 @@ def main(out, src=SRC):
     for para in d['summary']:
         p = doc.add_paragraph(para); spacing(p, after=4)
 
-    p = doc.add_paragraph(); spacing(p, after=2)
-    for label, items in [('Focus areas', d['focus'])]:
-        pass
     for label, text in d['focus']:
         p = doc.add_paragraph(style='List Bullet'); spacing(p, after=0)
         r = p.add_run(label + ': '); r.bold = True

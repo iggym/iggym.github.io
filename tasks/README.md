@@ -11,7 +11,7 @@ _Updated 2026-10-08._
 
 Decisions and actions only you can take. Tick them off here as you go.
 
-- [ ] **Review and merge** the branch `claude/website-redesign-accessibility-w6szl0`. Unmerged so far: `05d4f5e` (recent work and results), `f38788e` (Nubla results and NDA note), `f269543` (fonts, CSP, test suite, cleanup). Ask me to open the PR when you're ready.
+- [x] **Review and merge** the branch `claude/website-redesign-accessibility-w6szl0`. Merged as PR #16 (2026-10-09), with follow-ups in PRs #18 to #23.
 - [ ] **Check the NDA note** in the Work section against your agreements with VynixAI and Nubla AI. Reword it if the agreements say something narrower.
 - [ ] **Confirm the six results** can be published without a stated baseline or measurement method: 38%, 42%, 27%, 70% (VynixAI) and 22%, 35% (Nubla AI).
 - [ ] **Decide on "Project Titan"**. It's an internal Apple codename, so it may fall under confidentiality terms. Your résumé does say "reducing spend by more than 30% YoY" under Apple, so the audit's FinOps figure is accurate. Pick wording or leave it out.
