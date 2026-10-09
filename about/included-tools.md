@@ -4,7 +4,7 @@ There are **11 tools** in the `tools/` directory. All of them are registered in 
 
 | # | Tool | File | Featured |
 |---|------|------|----------|
-| 1 | Agentic Backpressure Throttle | `tools/agentic-backpressure-throttle.html` | No |
+| 1 | Agentic Backpressure Throttle | `tools/agentic-backpressure-throttle.html` | Yes |
 | 2 | Multi-Model Workspace | `tools/ai-aggregator.html` | Yes |
 | 3 | Claude Context Engine Premium | `tools/claude_context_engine_premium.html` | Yes |
 | 4 | Portable Context Engine | `tools/context-engine.html` | Yes |
