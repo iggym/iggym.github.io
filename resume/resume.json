@@ -1,0 +1,698 @@
+{
+ "name": "Iggy Mwangi",
+ "headline": "AI Systems Architect | Building Reliable, Scalable, Production-Grade AI Platforms",
+ "location": "Dallas-Fort Worth Metroplex",
+ "contact": {
+  "phone": "469-936-0164",
+  "email": "jobsiggy@gmail.com",
+  "linkedin": "linkedin.com/in/iggym",
+  "web": "iggym.github.io"
+ },
+ "summary": [
+  "I build AI systems that hold up under real-world pressure: platforms that stay predictable when traffic spikes, data shifts, or models drift. My work sits at the intersection of cloud architecture, modern LLMs, retrieval systems, and agent-driven automation.",
+  "I care about reliability, clarity, and making complex systems easier to reason about. I like problems that don’t have clean edges, where the fix isn’t a bigger model but a better system. If you’re working on AI platforms, LLM infrastructure, or agent-driven automation, I’m always open to a conversation."
+ ],
+ "focus": [
+  [
+   "LLM infrastructure",
+   "vLLM, Ray Serve, KServe, Triton, TensorRT-LLM"
+  ],
+  [
+   "Retrieval systems",
+   "Weaviate, Milvus, pgvector, FAISS"
+  ],
+  [
+   "Agent frameworks",
+   "LangGraph, CrewAI, AutoGen 2.0, OpenAI Swarm"
+  ],
+  [
+   "Edge and local AI",
+   "Jetson Orin, ONNX Runtime Mobile, Ollama, ANE-optimized models"
+  ],
+  [
+   "Evaluation and safety",
+   "Ragas, DeepEval, DSPy, structured test harnesses"
+  ],
+  [
+   "Cloud architecture",
+   "AWS, Azure, GCP, Kubernetes, Terraform, Pulumi"
+  ],
+  [
+   "MLOps",
+   "Kubeflow, MLflow, SageMaker Pipelines, Argo Workflows"
+  ]
+ ],
+ "top_skills": [
+  "Python",
+  "LLM systems and RAG",
+  "Agent frameworks",
+  "Cloud architecture (AWS, Azure, GCP)",
+  "Kubernetes and Terraform",
+  "ML evaluation and monitoring"
+ ],
+ "languages": [
+  "English",
+  "French"
+ ],
+ "roles": [
+  {
+   "company": "VynixAI",
+   "title": "Senior Solutions Architect – AI & Cloud Infrastructure",
+   "date": "January 2025 - Present",
+   "location": "Dallas, TX",
+   "items": [
+    {
+     "type": "p",
+     "text": "I design and build AI-driven, cloud-native, and edge-optimized platforms for real-time retail and enterprise workloads. Most of my work centers on modern LLM systems, scalable inference, and agent-driven automation."
+    },
+    {
+     "type": "b",
+     "text": "Re-architected our RAG pipeline using Weaviate, Milvus, and pgvector, and tightening vector hygiene turned out to be more impactful than model upgrades — hallucinations dropped by 38%."
+    },
+    {
+     "type": "b",
+     "text": "Built an evaluation harness with Ragas, DeepEval, and structured test sets, which surfaced prompt-format drift long before it reached production and cut iteration cycles in half."
+    },
+    {
+     "type": "b",
+     "text": "Upgraded our fine-tuning stack to Llama 3.3 with LoRA/QLoRA and Flash-Attention 3, and the real payoff came from stable inference once deployed on EKS with GPU autoscaling."
+    },
+    {
+     "type": "b",
+     "text": "Added edge inference using TensorRT-LLM on Jetson Orin, Ollama 0.5+, and ONNX Runtime Mobile; predictable latency mattered more than raw speed in retail environments."
+    },
+    {
+     "type": "b",
+     "text": "Built agent workflows with LangGraph, CrewAI, AutoGen 2.0, and OpenAI Swarm, and treating tools as state transitions made multi-tool routing 42% more reliable."
+    },
+    {
+     "type": "b",
+     "text": "Implemented hybrid LLM routing across GPT-4.1 Turbo, Claude 3.5 Sonnet, Gemini 2.0 Flash, and Mistral Large 2, and cost-aware routing reduced spend by 27% without hurting quality."
+    },
+    {
+     "type": "b",
+     "text": "Added reasoning-trace observability using OpenTelemetry with model-level spans, which exposed bottlenecks traditional logs never surfaced and cut debugging time by 70%."
+    },
+    {
+     "type": "b",
+     "text": "Built internal evaluation and dataset-curation tools using DSPy, Ragas, and Python, catching subtle regressions that typical metrics missed."
+    }
+   ]
+  },
+  {
+   "company": "Nubla AI",
+   "title": "Cloud Architect and Machine Learning Engineer",
+   "date": "January 2024 - Present",
+   "location": "Austin, TX",
+   "items": [
+    {
+     "type": "p",
+     "text": "I design ML systems and cloud architectures across AWS, Azure, and GCP, with a focus on LLM integration, retrieval systems, and dependable ML pipelines."
+    },
+    {
+     "type": "b",
+     "text": "Reduced LLM latency by 22% by reworking tokenization paths — preprocessing, not inference, was the hidden bottleneck."
+    },
+    {
+     "type": "b",
+     "text": "Tuned Gemma 3.1 for production workloads and saw it outperform larger models once retrieval was aligned; architecture beat parameter count."
+    },
+    {
+     "type": "b",
+     "text": "Built a synchronized RAG evaluation loop using Ragas and DeepEval, keeping retrieval and generation in lockstep and preventing silent regressions."
+    },
+    {
+     "type": "b",
+     "text": "Reorganized data around S3, BigQuery, and ADLS, and reducing data gravity cut training time by 35%."
+    },
+    {
+     "type": "b",
+     "text": "Refactored agent tools into deterministic, idempotent functions for AutoGen 2.0 and CrewAI, and reliability jumped more than any model upgrade."
+    },
+    {
+     "type": "b",
+     "text": "Standardized multimodal preprocessing using OpenCV and CLIP embeddings, and accuracy improved simply because inputs became consistent."
+    },
+    {
+     "type": "b",
+     "text": "Added model lineage, feature drift dashboards, and structured monitoring, preventing two production incidents that would’ve been invisible otherwise."
+    }
+   ]
+  },
+  {
+   "company": "Apple",
+   "title": "Cloud Architect and Engineer",
+   "date": "January 2022 - December 2023",
+   "location": "Cupertino, CA",
+   "items": [
+    {
+     "type": "p",
+     "text": "I supported cloud modernization for Project Titan, working across AWS, internal Apple cloud platforms, Kubernetes, and distributed systems. The work centered on stabilizing infrastructure, reducing operational load, and re-architecting services that had outgrown their original designs."
+    },
+    {
+     "type": "b",
+     "text": "Migrated on-prem systems to AWS and internal Apple platforms, and the biggest gains came from replacing lift-and-shift workloads with serverless and containerized designs that removed brittle long-running services."
+    },
+    {
+     "type": "b",
+     "text": "Re-architected multi-tier systems across serverless, containers, microservices, databases, networking, caching, and storage, and reliability improved once architectures favored consistency over feature-driven sprawl."
+    },
+    {
+     "type": "b",
+     "text": "Rebuilt Terraform and Pulumi modules as versioned, testable components, and drift disappeared once infrastructure was treated like software instead of static templates."
+    },
+    {
+     "type": "b",
+     "text": "Benchmarked serverless functions, container services, RDS, load balancers, and messaging systems, and performance-to-cost tradeoffs became clear once workloads were tested under realistic traffic patterns."
+    },
+    {
+     "type": "b",
+     "text": "Deployed and managed Kubernetes clusters and Docker workloads, and most “cluster issues” traced back to networking, IAM boundaries, and service-mesh routing rather than Kubernetes itself."
+    },
+    {
+     "type": "b",
+     "text": "Hardened container images and tightened DevSecOps pipelines using Sysdig and Tenable, and vulnerability counts dropped sharply once minimal-base-image patterns were adopted."
+    },
+    {
+     "type": "b",
+     "text": "Shifted pipelines to event-driven architectures using Lambda, SQS, SNS, and Step Functions, reducing compute costs by about 30% because workloads no longer ran idle waiting for upstream systems."
+    },
+    {
+     "type": "b",
+     "text": "Introduced OpenTelemetry-based tracing across services, making retries, backoff loops, and noisy neighbors immediately visible."
+    },
+    {
+     "type": "b",
+     "text": "Led cloud cost optimization through right-sizing, auto-scaling, reserved capacity, and FinOps practices, reducing spend by more than 30% YoY."
+    }
+   ]
+  },
+  {
+   "company": "Sam's Club",
+   "title": "Principal Software Engineer - Cloud and Machine Learning",
+   "date": "October 2017 - December 2021",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I worked across retail, supply chain, forecasting, and merchandising systems, building cloud-based ML solutions and multi-platform applications. The work centered on designing reliable ML pipelines, improving data quality, and deploying models that could operate at retail scale."
+    },
+    {
+     "type": "b",
+     "text": "Designed and developed retail line-of-business applications in the cloud, and reliability improved once services were built around consistent patterns instead of one-off implementations."
+    },
+    {
+     "type": "b",
+     "text": "Built mobile applications across iOS, Android, and hybrid stacks (React Native, Xamarin), and cross-platform reuse became the main driver of delivery speed."
+    },
+    {
+     "type": "b",
+     "text": "Developed backend services on Azure, and the most impactful gains came from simplifying service boundaries rather than adding more components."
+    },
+    {
+     "type": "b",
+     "text": "Applied ML across forecasting, computer vision, and real-time analytics using Python and PyTorch, and model accuracy improved once data quality workflows were automated instead of manually patched."
+    },
+    {
+     "type": "b",
+     "text": "Built ML-driven data integrity pipelines with data engineers and analysts, and several recurring issues disappeared once monitoring focused on upstream drift rather than downstream symptoms."
+    },
+    {
+     "type": "b",
+     "text": "Implemented statistical models and ML algorithms on large datasets, and decision-making improved when models were paired with clear operational guardrails rather than raw predictions."
+    },
+    {
+     "type": "b",
+     "text": "Owned the MLOps lifecycle — data checks, model deployment, monitoring, and lifecycle management — and reliability increased once pipelines were treated as products instead of experiments."
+    },
+    {
+     "type": "b",
+     "text": "Prototyped and scaled ML solutions with product and business teams, and the most successful initiatives were the ones where constraints were defined early rather than discovered late."
+    },
+    {
+     "type": "b",
+     "text": "Guided teams through MLOps practices and managed multiple initiatives, ensuring models moved from notebooks to production with predictable behavior."
+    }
+   ]
+  },
+  {
+   "company": "FL Global",
+   "title": "Hybrid Cloud Architect and Developer",
+   "date": "January 2018 - April 2019",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I designed and built large-scale media enrichment, streaming, and analytics systems across AWS and Azure. The work centered on creating reliable data pipelines, simplifying distributed architectures, and making telemetry and media workloads observable and scalable."
+    },
+    {
+     "type": "b",
+     "text": "Built media enrichment and streaming systems on AWS using EC2, VPC, S3, SQS, Glacier, EFS, Kinesis, Lambda, Directory Services, and API Gateway, and stability improved once ingestion paths were standardized instead of individually tuned."
+    },
+    {
+     "type": "b",
+     "text": "Designed media analytics pipelines on Azure using Event Hub, Kafka on HDInsight, Azure Data Explorer, and Synapse, and query performance improved when hot and cold paths were separated rather than blended."
+    },
+    {
+     "type": "b",
+     "text": "Developed a serverless telemetry pipeline using CloudFormation, Lambda, API Gateway, Kinesis, and DynamoDB, and throughput increased once partitioning aligned with real usage patterns instead of static assumptions."
+    },
+    {
+     "type": "b",
+     "text": "Orchestrated Azure components with Event Grid, Azure Functions, Logic Apps, Monitor, and Azure DevOps, and operational noise dropped once event routing replaced cron-style polling."
+    },
+    {
+     "type": "b",
+     "text": "Created Terraform modules for infrastructure deployment, and drift disappeared once modules were versioned and treated like software rather than templates."
+    },
+    {
+     "type": "b",
+     "text": "Used Azure ARM templates, AWS CDK, and CloudFormation to manage multi-cloud infrastructure, and cross-cloud parity became manageable once shared patterns replaced provider-specific designs."
+    },
+    {
+     "type": "b",
+     "text": "Leveraged AWS services including CodePipeline, CodeBuild, CodeDeploy, Elastic Beanstalk, RDS, Data Pipeline, and Redshift, and deployment reliability improved when CI/CD pipelines enforced consistent build artifacts."
+    },
+    {
+     "type": "b",
+     "text": "Improved observability across streaming systems by tightening metrics, logs, and traces, which exposed bottlenecks around retries, backpressure, and shard imbalance that had been hidden for months."
+    }
+   ]
+  },
+  {
+   "company": "Contran Corp",
+   "title": "Mobile, Web, Infrastructure and System Architect, Designer and Developer",
+   "date": "June 2011 - October 2017",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I built mobile, web, backend, and integration systems across iOS, Android, web, and multiple cloud platforms. The work centered on unifying fragmented applications, improving data flows, and building infrastructure that could support long-running operational systems."
+    },
+    {
+     "type": "b",
+     "text": "Built native iOS apps in Swift/Objective-C and Android apps for employee portals and waste-tracking workflows, and stability improved once on-device storage moved from Core Data to SQLite/FMDB."
+    },
+    {
+     "type": "b",
+     "text": "Delivered native and hybrid inventory apps (iOS/Android) backed by AWS (DynamoDB, Lambda) and GCP (Firebase, Compute), and cross-platform reuse became the main driver of delivery speed."
+    },
+    {
+     "type": "b",
+     "text": "Created hybrid reporting apps in Xamarin.iOS/Xamarin.Android, and delivery became predictable once UI patterns were unified instead of maintained separately."
+    },
+    {
+     "type": "b",
+     "text": "Built portal and inventory companion sites using ASP.NET MVC, AngularJS, and React, and front-end performance improved when API boundaries were simplified."
+    },
+    {
+     "type": "b",
+     "text": "Developed inventory services using Hibernate/Spring, Struts, and jQuery, and recurring issues disappeared once schema inconsistencies were fixed rather than patched."
+    },
+    {
+     "type": "b",
+     "text": "Implemented Oracle ATG catalog, profile, and order-management components, and reliability increased when workflows aligned with real merchandising rules."
+    },
+    {
+     "type": "b",
+     "text": "Designed TIBCO EMS/BW integrations with Dynamics CRM, SSRS, and SharePoint, and data quality improved once transformations were centralized."
+    },
+    {
+     "type": "b",
+     "text": "Built Splunk monitoring/reporting infrastructure, and operational noise dropped once logs were normalized across services."
+    },
+    {
+     "type": "b",
+     "text": "Delivered cloud services for monitoring and disaster recovery using Node.js, Go, and MongoDB, and recovery time improved when workflows became event-driven."
+    },
+    {
+     "type": "b",
+     "text": "Used Go, gRPC, Kubernetes, Docker, and Swagger to build API components and integration infrastructure, and deployment reliability increased with consistent container patterns."
+    }
+   ]
+  },
+  {
+   "company": "Ackerman McQueen",
+   "title": "Mobile and Web Applications Team Architect and Developer",
+   "date": "March 2009 - June 2011",
+   "location": "Irving, TX",
+   "items": [
+    {
+     "type": "p",
+     "text": "I designed and delivered mobile and web applications for clients across government, tourism, media, and insurance. The work centered on shaping requirements, building cross-platform apps, and creating backend systems that could run reliably across client datacenters and cloud environments."
+    },
+    {
+     "type": "b",
+     "text": "Built iOS and Android apps for NRA, Oklahoma Tourism, Chickasaw Nation, AFA, and Branded News, and delivery became predictable once UI and backend responsibilities were separated cleanly."
+    },
+    {
+     "type": "b",
+     "text": "Developed three iPhone apps, two Android apps, and an iPad app, and cross-platform consistency improved when shared service contracts replaced per-app variations."
+    },
+    {
+     "type": "b",
+     "text": "Designed and built backends on IIS 7.0 running on Amazon EC2 or client datacenters, and uptime improved once deployments followed the same artifact pipeline across environments."
+    },
+    {
+     "type": "b",
+     "text": "Prototyped Azure-based services for AFA, and latency dropped when workloads were shifted closer to data sources rather than kept on-prem."
+    },
+    {
+     "type": "b",
+     "text": "Led five-person project teams using MS Project, Basecamp, and Unfuddle, and coordination stabilized once roles were aligned around UI, backend, and design boundaries."
+    },
+    {
+     "type": "b",
+     "text": "Owned all database work — modeling, design, development, and administration — and query performance improved when indexing strategies were unified across SQL Server 2000/2005/2008."
+    },
+    {
+     "type": "b",
+     "text": "Built web applications using ASP.NET 2.0/3.5/4.0, WCF, WPF, Silverlight, jQuery, and Umbraco CMS, and reliability increased when server-side rendering replaced heavy client logic."
+    },
+    {
+     "type": "b",
+     "text": "Delivered Windows Phone 7 and .NET CF 4 apps, and device performance improved once caching replaced repeated network calls."
+    },
+    {
+     "type": "b",
+     "text": "Developed across C#, Objective-C, Java, VB.NET, and WinForms using Visual Studio 2008/2010 and Xcode, supported by Subversion for source control."
+    }
+   ]
+  },
+  {
+   "company": "AT&T",
+   "title": "Mobile and Web Applications Architect Lead",
+   "date": "August 2007 - February 2009",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I designed and delivered mobile apps, intranet systems, and service infrastructure supporting the iPhone 3G launch. The work centered on building reliable customer-support tools, coordinating with AT&T teams under tight deadlines, and creating service-oriented systems that could scale with new device adoption."
+    },
+    {
+     "type": "b",
+     "text": "Built iPhone and Android apps for customer-service managers and executives, and usability improved once workflows were simplified around the metrics they actually used."
+    },
+    {
+     "type": "b",
+     "text": "Delivered KPI dashboards, weekly performance tools, and Windows Mobile utilities, and cross-platform consistency became the main driver of predictable releases."
+    },
+    {
+     "type": "b",
+     "text": "Scoped the corporate vision for support-services tooling and built a new five-person engineering team, and delivery accelerated once roles were aligned around clear ownership."
+    },
+    {
+     "type": "b",
+     "text": "Worked directly with AT&T engineering groups to meet the iPhone 3G launch deadline, and coordination became manageable once service contracts were defined early."
+    },
+    {
+     "type": "b",
+     "text": "Designed and implemented SOA components using SOAP, WSDL, and Web Services, and reliability increased when message schemas were stabilized instead of evolving mid-project."
+    },
+    {
+     "type": "b",
+     "text": "Built the AT&T Developer Resource Toolkit (iPhone app + libraries), and integration friction dropped once common client libraries replaced ad-hoc API calls."
+    },
+    {
+     "type": "b",
+     "text": "Developed intranet and companion web apps using ASP.NET, C#, XHTML, JavaScript, and SQL Server, and performance improved when server-side rendering replaced heavy client logic."
+    },
+    {
+     "type": "b",
+     "text": "Delivered backend services using WebLogic, JBoss, WCF, and .NET CF, and recurring issues disappeared once service boundaries were tightened."
+    },
+    {
+     "type": "b",
+     "text": "Created prototypes in Appcelerator and supported development across Xcode, Eclipse ADT, and Visual Studio, ensuring teams could ship across iOS, Android, and Windows Mobile."
+    },
+    {
+     "type": "b",
+     "text": "Used Scrum with monthly sprints, supported by Jenkins-style CI and Git/SVN/VSTS for source control."
+    }
+   ]
+  },
+  {
+   "company": "Verizon",
+   "title": "SOA Designer and Architect (Part-time Contractor)",
+   "date": "February 2008 - July 2008",
+   "location": "Irving, TX",
+   "items": [
+    {
+     "type": "p",
+     "text": "As a part-time contractor, I designed and implemented an Enterprise Service Bus with a workflow engine running on top of it. The solution used JBoss jBPM and integrated with Tibco RVD and Tibco BW."
+    }
+   ]
+  },
+  {
+   "company": "ACS",
+   "title": "Web and Mobile Applications Team Lead and CRM Consultant",
+   "date": "July 2007 - April 2008",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I led a team delivering intranet, internet, and early mobile applications for internal and external clients. The work centered on clarifying requirements, shaping solution architecture, and guiding teams through full-lifecycle delivery across diverse enterprise environments."
+    },
+    {
+     "type": "b",
+     "text": "Led an 11-person team across design, development, and testing, and delivery became predictable once ownership aligned around clear service boundaries."
+    },
+    {
+     "type": "b",
+     "text": "Scoped requirements and prototyped intranet, internet, and early mobile applications, and clarity improved when workflows reflected real user behavior rather than legacy forms."
+    },
+    {
+     "type": "b",
+     "text": "Delivered internal apps, infrastructure solutions, and B2C systems for clients including 7-Eleven, McDonald’s, City of Dallas, NTTA, and ACS, and reuse emerged once shared components replaced one-off builds."
+    },
+    {
+     "type": "b",
+     "text": "Participated in full SDLC for every project, and cycle time shortened once prototypes replaced document-heavy design cycles."
+    },
+    {
+     "type": "b",
+     "text": "Designed CRM-related intranet and internet applications for Microsoft Dynamics, and data consistency improved when integrations were centralized instead of embedded in UI code."
+    },
+    {
+     "type": "b",
+     "text": "Performed needs analysis and infrastructure design for SharePoint sites, and reliability increased when capacity planning accounted for content-growth patterns rather than static estimates."
+    },
+    {
+     "type": "b",
+     "text": "Evaluated integration patterns for Tibco BW and AX with SharePoint portals, and stability improved when cross-system assumptions were minimized."
+    },
+    {
+     "type": "b",
+     "text": "Trained clients in AX development and mentored employees to ensure long-term maintainability."
+    },
+    {
+     "type": "b",
+     "text": "Built Windows Mobile 6.1 apps for 7-Eleven store analysis, and performance improved when device-side caching replaced repeated network calls."
+    },
+    {
+     "type": "b",
+     "text": "Delivered solutions using WebLogic, JEE, Java, C#, VB.NET, ASP.NET 2.0/3.5, Windows Mobile 6.x, .NET CF 3.5, WPF, WCF, Silverlight, SQL Server 2000/2005, and Subversion."
+    }
+   ]
+  },
+  {
+   "company": "GuideStone Financial Resources",
+   "title": "Web Applications",
+   "date": "February 2007 - July 2007",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "I designed prototyped and developed Online Insurance application with ASP.NET 2.0, SQL Server 2000 and Flash. We implemented Single Sign on (SSO) with Membership API. I modeled the database and administered SQL Server for the project. I also doubled as the inhouse Axapta Developer, customizing Microsoft Axapta to fit GuideStone’s needs using Morphx and X++. I Co-designed the Axapta back office including clustered sql servers, multiple AOS server and multiple terminal servers. I also led the Microsoft Business Solutions-Axapta Human Resource Management I implementation.Created Microsoft SharePoint sites in order to provide the organization with tools to improve business processes, develop forms and workflows, manage document versions, and improve communications. Created Custom Site Definitions and features for new MOSS 2007 Portal Sites. Technologies used: C#, ASP.NET 2.0, WinForms, WPF, Silverlight, XAML, SQL Server 2005, Web Services, and Telerik controls, SharePoint, Flash-Flex. Also used ASP.NET master pages, validators, and user controls."
+    }
+   ]
+  },
+  {
+   "company": "Trillium Industries Inc",
+   "title": "Web Applications Architect and Developer",
+   "date": "August 2006 - February 2007",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "I designed and developed a Multi-Program Remanufacturing Enterprise Information Solution. ADP Enterprise, Using Microsoft Dynamics AX 4.0 as Backend ERP, the solution is a flexible, high performance manufacturing platform supporting 3 remanufacturing Programs (for Dell, Hollywood and BoardCrazy) in 3 locations. We also developed a custom identity management component to synchronize Active Directory and Novell LDAP systems using the .Net framework libraries as well as a custom web based self-service identity management website .I was directly involved in all phases of the project as Project Lead and Architect. Developed a Data warehouse/BI solution using SQL Server 2005 using the tight integration of the Microsoft SQL Server 2005, Microsoft Office SharePoint Server 2007, and Microsoft Office Business Scorecard Manager Technologies used: ASP.NET 2.0, C#, SQL Server 2005, SharePoint, Microsoft Dynamics AX 4.0, DotNetNuke. I was involved in the full software development life cycle (SLDC)."
+    }
+   ]
+  },
+  {
+   "company": "EDS",
+   "title": "Integration Architect and Developer",
+   "date": "February 2005 - July 2006",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Designed and developed a Service Oriented Architecture based global enterprise service bus with Tibco EMS 4.X. The service bus is part of a larger global enterprise SOA MDB based framework. Developed on-boarding and configuration web application for the bus. Additionally Built an ASP.NET application used to generate and format quarterly reports for sending over tens thousands employee tax records to ADP"
+    },
+    {
+     "type": "p",
+     "text": "I also designed and developed a service-oriented, model-driven beans (MDB) based architecture for managing diverse computing corporate resources that used Weblogic Server"
+    }
+   ]
+  },
+  {
+   "company": "Automatic Data Processing Inc",
+   "title": "Architect and Developer",
+   "date": "August 2004 - January 2005",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Technologies used: ASP.NET, J2EE, JBoss, C++, GCC, C#, SQL Server, Web Services and ADO.NET."
+    },
+    {
+     "type": "p",
+     "text": "Designed and implemented a business workflow web application using C#, ASP.NET, ADO.NET, SQL Server, Analysis Services, and Office Web Components. Redesigned and optimized existing data extraction and load process from 100+ GB warehouses using DTS, C#, and stored procedures. Implemented utility to save and restore OLAP cube structures as XML using C# and DSO through COM interop. I led team of four developers through three successful product launches (in 12 months). I implemented configuration management processes and tools. Used custom Windows service in C# to label code in Visual SourceSafe, build solution, publish build notes, and package software for release. Built web service interface to start and track builds and to integrate with issue tracking software. I was involved in the full software development life cycle (SLDC). Designed and implemented a JBoss based service middle-tier for application to application integration. I worked with clients, potential customers, and strategic partners. I provided technical answers to assist with pre and post sales support. I provided documentation for due diligence and strategic planning. Gathered, organized, and analyzed in-house and customer requirements. I reviewed product licensing contracts and time and material contracts for custom work. Visited clients on-site to gather requirements, provide support, and provide training. Created and tracked schedules for project milestones. Prioritized feature development and maintenance tasks. I interviewed potential new developers. Trained and mentored development staff on unit testing and refactoring techniques."
+    }
+   ]
+  },
+  {
+   "company": "IBM Innovation Center",
+   "title": "NET Developer",
+   "date": "March 2003 - August 2004",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Designed and developed Intranet based Help Desk and Project tracking system using ASP.NET, C#, Oracle. Designed and developed a Reporting"
+    },
+    {
+     "type": "p",
+     "text": "Services Portal for IBM’s client (Commerzbank) customer service data analysts who need to design, query, and manipulate data and report models using Reporting Services. Additionally Developed an internal ASP.NET / C# / SQL Server / Excel spreadsheet web application to sort, categorize and analyze customer support records analysis. Implemented Active Directorybased User Authentication I developed a Business Help desk solution with websphere, Tibco BW 5.1.3 and BWWF. We completed the solution 3 months ahead of schedule and under budget. We used the solution was to evolve an enterprise workflow framework that is still in development at IBM Innovation Center, Dallas."
+    }
+   ]
+  },
+  {
+   "company": "Cingular",
+   "title": "NET Architect and Developer",
+   "date": "January 2003 - March 2003",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Architected and developed a new web based Marketing Portal. We used C#, ASP.NET, Win Forms, SQL Server, and Web Services. We designed and developed custom .NET components and user controls using ASP.NET and C#. I implemented extensive data caching in middle tier components using Microsoft Application blocks for data caching and exception management. I designed and developed SQL Server database. We deployed a DotNetNuke Portal and I was also involved in designing, creating, publishing, and accessing promotional marketing reports in Reporting Services (SQL Server) and performed many SQL Server administrative tasks like installing and administering and creating reports with Reporting Services."
+    }
+   ]
+  },
+  {
+   "company": "Independence Community Bank",
+   "title": "NET Developer",
+   "date": "February 2002 - February 2003",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "I designed a single sign on service for authenticating to the Employee benefits system. I ported Open Source project TimeTracker from MS SQL Server 2000 to Oracle. Upgraded and maintained numerous other workflow and asset management software applications. I successfully engaged external clients in proposal and requirements gathering meetings. I used Oasis and Rosettanet to design a customer common object model. Designed and developed integration Infrastructure. I developed 3 out of 5 interfaces. Win Forms application is used for the admin console using Tibco’s JMS .NET libraries, Visual C++, VB, VB.NET. Used Mercator Type Designer, Mercator Map Designer, Contivo and BW’s mapper to develop the end-to-end solution"
+    }
+   ]
+  },
+  {
+   "company": "Tufts Health Plan",
+   "title": "Contract Developer",
+   "date": "June 2001 - January 2002",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Hired to get a Weblogic, Tibco, ASP.NET project back on track and completely overhaul their user interface. This patient healthcare management system was done in ASP.NET / C#. All data access was done through web services calls to a Cache database on the back end. Created a proof of concept Doc management application. Re-architected and re-built the clients problem document management application. The previous version only achieved five percent of the maximum expected load. New version achieved expected load at only twenty-five percent CPU usage. Successfully integrated data from multiple data sources including Oracle 10g, SQL Server 2000, DB2, XML, and legacy data delivered via Tibco message queues using ADO.Net and Remoting. Using CLR profiling, implemented various performance improvements including reducing garbage collection processor time from 45% to 3%, reducing the amount of large objects created on the heap and reworked code bottlenecks."
+    }
+   ]
+  },
+  {
+   "company": "BP-Amoco",
+   "title": "Integration Developer",
+   "date": "April 2001 - September 2001",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Design and Development of a Trader Fax Confirmation Automation system. Integrated Epsilon Power Trading system with Risk Trading System and Natural Gas trading System using Weblogic, Java middle-tier code, web service calls and multiple databases (Oracle, Sybase, and MSSQL). Used websphere for authentication."
+    }
+   ]
+  },
+  {
+   "company": "Transplace.com",
+   "title": "Designer and Developer",
+   "date": "January 2001 - March 2001",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I designed and built database-driven web applications, intranet systems, and integration infrastructure for a transportation-management startup funded by J.B. Hunt. The work centered on connecting mainframe data to modern web services, creating a service bus, and delivering customer-facing and internal tools that supported large-scale logistics operations."
+    },
+    {
+     "type": "b",
+     "text": "Built a database-driven website and intranet publishing system using WebLogic, IIS, ASP, Oracle, VB, and COM, and reliability improved once legacy data flows were standardized instead of individually scripted."
+    },
+    {
+     "type": "b",
+     "text": "Designed the integration bus using Tibco Messaging and WebLogic, and message stability increased when schemas were fixed early rather than adjusted mid-stream."
+    },
+    {
+     "type": "b",
+     "text": "Scoped and developed interfaces to mainframe and existing data sources, and several recurring issues disappeared once data contracts were enforced at the boundary instead of downstream."
+    },
+    {
+     "type": "b",
+     "text": "Delivered a self-service web application for customers and support staff, and usability improved when workflows were aligned with the actual support process rather than the original system layout."
+    },
+    {
+     "type": "b",
+     "text": "Implemented CRM and intranet-based sales and customer-management systems, and campaign accuracy improved once customer-activity data was centralized instead of scattered across tools."
+    },
+    {
+     "type": "b",
+     "text": "Built client-registration and activity-management systems used for mass-email campaigns, and throughput increased when batching replaced one-off transactional updates."
+    },
+    {
+     "type": "b",
+     "text": "Supported Transplace’s startup vision to modernize transportation-management services, and integration became manageable once mainframe data was exposed through consistent service endpoints."
+    },
+    {
+     "type": "b",
+     "text": "Worked across multiple databases — SQL Server 7.0/2000, Oracle 8i, Sybase ASE 11.x/12.5 — and query performance improved when indexing strategies were unified across platforms."
+    },
+    {
+     "type": "b",
+     "text": "Delivered backend components using WebLogic, ASP, COM, and VB, and operational issues dropped once deployment pipelines were standardized."
+    }
+   ]
+  },
+  {
+   "company": "Williams Communications",
+   "title": "Web Applications Developer",
+   "date": "December 1999 - December 2000",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Design and Development of a Workflow and trouble ticket management system for managing William's fiber optic network using Weblogic and MS IIS ASP. The solution included Work flow, accounting, archiving and auto emails etc. The technologies used included Weblogic, ASP, ADO, Oracle, VB ActiveX, NT-service, C++, DHTML, JavaScript."
+    }
+   ]
+  },
+  {
+   "company": "Video Update Inc",
+   "title": "Developer",
+   "date": "1998 - 1999",
+   "location": "",
+   "items": [
+    {
+     "type": "p",
+     "text": "Designed and developed video rental software using Java Swing and Oracle database."
+    }
+   ]
+  }
+ ],
+ "education": [
+  {
+   "school": "University of Minnesota",
+   "degree": "B.Sc., Computer Science",
+   "dates": "1996–2001"
+  }
+ ]
+}

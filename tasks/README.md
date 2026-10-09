@@ -14,7 +14,7 @@ Decisions and actions only you can take. Tick them off here as you go.
 - [ ] **Review and merge** the branch `claude/website-redesign-accessibility-w6szl0`. Unmerged so far: `05d4f5e` (recent work and results), `f38788e` (Nubla results and NDA note), `f269543` (fonts, CSP, test suite, cleanup). Ask me to open the PR when you're ready.
 - [ ] **Check the NDA note** in the Work section against your agreements with VynixAI and Nubla AI. Reword it if the agreements say something narrower.
 - [ ] **Confirm the six results** can be published without a stated baseline or measurement method: 38%, 42%, 27%, 70% (VynixAI) and 22%, 35% (Nubla AI).
-- [ ] **Decide on "Project Titan"**. It's an internal codename, so it may fall under confidentiality terms. The audit's "30% YoY FinOps" figure doesn't match your résumé, which says about 30% lower compute cost from event-driven services. Pick wording or leave it out.
+- [ ] **Decide on "Project Titan"**. It's an internal Apple codename, so it may fall under confidentiality terms. Your résumé does say "reducing spend by more than 30% YoY" under Apple, so the audit's FinOps figure is accurate. Pick wording or leave it out.
 - [ ] **Confirm Contran Corp** as the replacement for Verizon in the hero line and Background. The alternative is Ackerman McQueen (2 years 4 months).
 - [ ] **Check the Context Engine Worker.** The tool's "Sends text to a server" tag relies on `claude-context-orchestrator.iggy-mw.workers.dev`, whose source isn't in this repo. Confirm the data policy matches the tag.
 - [ ] **Choose four layer names** for grouping the 17 sites (Site work, item 4). Or approve the audit's names.
@@ -25,6 +25,11 @@ Decisions and actions only you can take. Tick them off here as you go.
 - [ ] **Check GitHub Pages** in the repo's Settings → Pages and the Actions tab. Confirm the source is `main` and the last build succeeded. I can't see deploy status from here.
 - [ ] **Check the live site** after the next deploy, in Chrome and Edge: headline timing, Replay, fonts, and layout.
 - [ ] **Confirm the Cloudflare Web Analytics wording** in the footer is accurate.
+- [ ] **Review the new résumé** (`assets/resume/iggy-resume.pdf` and `.docx`, built from `resume/resume.json`). Decide on these:
+  - Top skills: I replaced "Google Gemini, gemma, GPT-4" with skills drawn from the résumé. Keep, or restore the originals.
+  - Older roles (1998 to 2009) are kept in full, making eight pages. Condense them to a short list for a shorter résumé?
+  - The résumé still lists Verizon, while the website shows Contran in its place. Decide which should appear.
+  - The Word file could not be rendered in this environment (LibreOffice doesn't run here). Open it in Word and check the layout.
 - [ ] **Run your audit** on the branch and send the findings back. I'll triage them against this list.
 
 ## Site work
@@ -49,6 +54,7 @@ Status of the audit items on the site. Shipped items are on the branch above unt
 | 14 | Add visible focus styles to the sites page (`sites.css` has none) | Open |
 | 15 | Keep `?v=` cache-busting consistent across pages (versions have drifted) | Open |
 | 16 | Consolidate the 17 sites into four layers | Open, needs your layer names |
+| 17 | Résumé rebuilt from one source; PDF and Word versions; site links updated | Shipped on branch (this commit) |
 
 **Deferred or rejected from the audit**
 

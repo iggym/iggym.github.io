@@ -46,7 +46,8 @@
     { title: "Projects & contact", items: [
       { name: "Open-source projects", href: "#projects", desc: "Guardrails, audit tools, and context utilities." },
       { name: "Work with me", href: "#contact", desc: "What I help with and how to get in touch." },
-      { name: "Résumé", href: "assets/resume/iggy-resume.pdf", desc: "PDF, 122 KB" },
+      { name: "Résumé (PDF)", href: "assets/resume/iggy-resume.pdf", desc: "One page per role, 8 pages, 280 KB." },
+      { name: "Résumé (Word)", href: "assets/resume/iggy-resume.docx", desc: "Editable .docx version, 48 KB." },
       { name: "GitHub", href: "https://github.com/iggym", desc: "All code." },
       { name: "LinkedIn", href: "https://www.linkedin.com/in/iggym", desc: "Message me." }
     ] }

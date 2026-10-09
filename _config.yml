@@ -1,3 +1,4 @@
 # GitHub Pages build settings. The backlog in tasks/ stays in the repo but is not published.
 exclude:
   - tasks
+  - resume
