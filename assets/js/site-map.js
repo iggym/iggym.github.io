@@ -25,7 +25,7 @@
       { name: "Multi-Model Workspace", href: "tools/ai-aggregator.html", desc: "Ask OpenAI and Anthropic the same question side by side.", tag: "key" },
       { name: "Context Window Optimizer", href: "tools/context-window-optimizer.html", desc: "Plan how much text fits in one request, and what it costs.", tag: "local" },
       { name: "Agent Stateboard", href: "tools/deterministic-agent-stateboard.html", desc: "Sketch an AI agent as steps with checks; export a spec or starter code.", tag: "local" },
-      { name: "Token Router", href: "tools/agentic-backpressure-throttle.html", desc: "Check whether your traffic hits API rate limits, and how long a backlog takes to clear.", tag: "local" }
+      { name: "Rate Limit Planner", href: "tools/agentic-backpressure-throttle.html", desc: "Check whether your traffic hits API rate limits, and how long a backlog takes to clear.", tag: "local" }
     ] },
     { title: "Writing", items: [
       { name: "The shift from coding to context orchestration", href: "articles/context-orchestration.html", desc: "Essay · 6 min read" },

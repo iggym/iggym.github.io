@@ -18,7 +18,7 @@ Decisions and actions only you can take. Tick them off here as you go.
 - [ ] **Confirm Contran Corp** as the replacement for Verizon in the hero line and Background. The alternative is Ackerman McQueen (2 years 4 months).
 - [ ] **Check the Context Engine Worker.** The tool's "Sends text to a server" tag relies on `claude-context-orchestrator.iggy-mw.workers.dev`, whose source isn't in this repo. Confirm the data policy matches the tag.
 - [ ] **Choose four layer names** for grouping the 17 sites (Site work, item 4). Or approve the audit's names.
-- [ ] **Decide on the Token Router name.** "Token Router" is jargon for a rate-limit planner. Renaming it touches the page title, the Explore dialog, and `tools/index.json`.
+- [x] **Renamed "Token Router" to "Rate Limit Planner"** (display name only; the URL stays `tools/agentic-backpressure-throttle.html` so existing links keep working).
 - [ ] **Choose the CSP level.** Inline scripts still need `'unsafe-inline'`. Accept that, or let me move them to hashes, which is stronger but needs updating on every edit.
 - [ ] **Supply a social share image** (1200 × 630 px) for `og:image` on the homepage and tool pages.
 - [ ] **Supply real project visuals.** Project cards now show each repo's path. For screenshots, either add the project repos to this session or send me images.

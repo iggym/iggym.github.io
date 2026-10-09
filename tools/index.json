@@ -102,7 +102,7 @@
   },
   {
     "id": "agentic-backpressure-throttle",
-    "title": "Token Router",
+    "title": "Rate Limit Planner",
     "description": "Rate-limit planner: limits vs traffic, priority routing, backlog growth and clear time.",
     "tags": [
       "Context Engineering",

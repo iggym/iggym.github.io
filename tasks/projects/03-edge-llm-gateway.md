@@ -8,7 +8,7 @@ Small teams that want the core of an AI gateway without running infrastructure.
 
 ## MVP scope
 - A Cloudflare Worker that speaks the Anthropic and OpenAI APIs, so clients only change their base URL.
-- Priority lanes (interactive, background, batch) with per-lane token budgets, matching the Token Router tool's model.
+- Priority lanes (interactive, background, batch) with per-lane token budgets, matching the Rate Limit Planner tool's model.
 - Retries with backoff on 429 and 5xx; fallback to a second model or provider when configured.
 - Daily and monthly spend caps per key, with a clear error when hit.
 - Exact-match response cache for deterministic requests (temperature 0).
@@ -27,7 +27,7 @@ Small teams that want the core of an AI gateway without running infrastructure.
 L
 
 ## Builds on
-Token Router tool (backpressure model), CircuitX-style circuit breaking, Production AI Patterns.
+Rate Limit Planner tool (backpressure model), CircuitX-style circuit breaking, Production AI Patterns.
 
 ## Status
 Not started
