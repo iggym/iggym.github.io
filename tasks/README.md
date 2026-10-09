@@ -30,7 +30,6 @@ Decisions and actions only you can take. Tick them off here as you go.
   - Older roles (1998 to 2009) are kept in full, making eight pages. Condense them to a short list for a shorter résumé?
   - The résumé still lists Verizon, while the website shows Contran in its place. Decide which should appear.
   - The Word file could not be rendered in this environment (LibreOffice doesn't run here). Open it in Word and check the layout.
-- [ ] **Approve the résumé link layout** on the homepage (recommended: one "Get the résumé" group in Work with me, with full PDF, two-page PDF, and Word; one nav link and one footer link). Then I'll implement it.
 - [ ] **Run your audit** on the branch and send the findings back. I'll triage them against this list.
 
 ## Site work
