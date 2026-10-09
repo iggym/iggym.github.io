@@ -67,27 +67,48 @@
       .trim();
   }
 
+  // True when the text so far ends a sentence: it's empty, the trailing
+  // whitespace contains a newline, or the last non-space character is . ! or ?
+  // Checks only the last WINDOW characters, so cost doesn't grow with input size.
+  var WINDOW = 64;
+  function endsAtSentenceStart(tail, full) {
+    var i = tail.length, newline = false;
+    while (i > 0 && /\s/.test(tail.charAt(i - 1))) {
+      if (tail.charAt(i - 1) === "\n") newline = true;
+      i--;
+    }
+    // The whitespace reaches past the window: look at the whole text instead.
+    if (i === 0 && tail.length === WINDOW) return endsAtSentenceStart(full(), function () { return ""; });
+    if (i === 0 || newline) return true;
+    return /[.!?]/.test(tail.charAt(i - 1));
+  }
+
   // Returns { cuts, html, text }: html marks each cut with <mark class="cut">.
   // `extra` is an optional list of the visitor's own phrases to remove.
   function tighten(raw, extra) {
     var cuts = findCuts(raw, extra);
-    var html = "", pos = 0, tight = "", capNext = false;
+    var html = "", pos = 0, tight = "", tail = "", capNext = false;
+    // Appends to the output and keeps the last WINDOW characters in `tail`.
+    function append(text) {
+      tight += text;
+      tail = (tail + text).slice(-WINDOW);
+    }
     function addKept(segment) {
       if (capNext && /\S/.test(segment)) {
         segment = segment.replace(/^(\s*)([a-z])/, function (_, sp, ch) { return sp + ch.toUpperCase(); });
         capNext = false;
       }
-      tight += segment;
+      append(segment);
     }
     cuts.forEach(function (c) {
       var keptBefore = raw.slice(pos, c.start);
       html += escapeHtml(keptBefore) + '<mark class="cut">' + escapeHtml(c.text) + "</mark>";
       addKept(keptBefore);
       // A cut at the start of a sentence leaves the next word lowercase; fix that.
-      var atSentenceStart = /(^|[.!?]\s*|\n\s*)$/.test(tight);
+      var atSentenceStart = endsAtSentenceStart(tail, function () { return tight; });
       var rep = c.replace;
       if (atSentenceStart && rep) rep = rep.charAt(0).toUpperCase() + rep.slice(1);
-      tight += rep;
+      append(rep);
       capNext = atSentenceStart && !rep;
       pos = c.end;
     });

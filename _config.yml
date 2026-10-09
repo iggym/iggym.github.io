@@ -2,3 +2,5 @@
 exclude:
   - tasks
   - resume
+  - scripts
+  - tests
