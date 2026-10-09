@@ -89,8 +89,20 @@
     "date": "2026-01-15"
   },
   {
+    "id": "eval-set-builder",
+    "title": "Eval Set Builder",
+    "description": "Turn a prompt into a test set: add cases with variables and checks, paste model outputs, and export to JSON Lines, promptfoo, or pytest.",
+    "tags": [
+      "Prompting",
+      "Evaluation"
+    ],
+    "url": "tools/eval-set-builder.html",
+    "featured": false,
+    "date": "2026-10-09"
+  },
+  {
     "id": "agentic-backpressure-throttle",
-    "title": "Token Router",
+    "title": "Rate Limit Planner",
     "description": "Rate-limit planner: limits vs traffic, priority routing, backlog growth and clear time.",
     "tags": [
       "Context Engineering",

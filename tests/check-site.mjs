@@ -5,7 +5,7 @@ import { join, dirname, relative, resolve, extname } from 'node:path';
 
 const ROOT = resolve(new URL('..', import.meta.url).pathname);
 const EXTERNAL_SCRIPT_HOSTS = new Set(['static.cloudflareinsights.com']); // disclosed on the homepage
-const SKIP_DIRS = new Set(['.git', 'node_modules', 'tests', 'tasks']);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'tests', 'tasks', 'scripts', 'resume']);
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -59,6 +59,46 @@ for (const page of pages) {
       const targetHtml = resolved.endsWith('.html') ? readFileSync(resolved, 'utf8') : '';
       if (targetHtml && fragment && !ids(targetHtml).has(fragment)) fail(page, `broken anchor ${value}`);
     }
+  }
+}
+
+// Every page needs a title, description, canonical link, share tags, and valid JSON-LD.
+// 404 is deliberately noindex, so it only needs a title and description.
+{
+  const meta = (html, name, attr = 'name') => {
+    const m = html.match(new RegExp(`<meta ${attr}="${name}" content="([^"]*)"`, 'i'));
+    return m ? m[1] : null;
+  };
+  for (const page of pages) {
+    const html = readFileSync(page, 'utf8');
+    const rel = relative(ROOT, page);
+    const title = html.match(/<title>([\s\S]*?)<\/title>/i);
+    if (!title || !title[1].trim()) fail(page, 'missing <title>');
+    if (!meta(html, 'description')) fail(page, 'missing meta description');
+    if (rel === '404.html') {
+      if (meta(html, 'robots') !== 'noindex') fail(page, '404 should be noindex');
+      continue;
+    }
+    const canonical = html.match(/<link rel="canonical" href="([^"]+)"/i);
+    if (!canonical || !/^https:\/\//.test(canonical[1])) fail(page, 'missing absolute canonical link');
+    for (const key of ['og:title', 'og:description', 'og:image']) {
+      const v = meta(html, key, 'property');
+      if (!v) fail(page, `missing ${key}`);
+      else if (key === 'og:image' && !/^https:\/\//.test(v)) fail(page, 'og:image must be an absolute URL');
+    }
+    if (!meta(html, 'twitter:card')) fail(page, 'missing twitter:card');
+    for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try { JSON.parse(m[1]); } catch { fail(page, 'JSON-LD does not parse'); }
+    }
+  }
+}
+
+// Tool pages must share one header, generated from scripts/tool-shell.html.
+{
+  const shell = readFileSync(join(ROOT, 'scripts', 'tool-shell.html'), 'utf8').trimEnd();
+  for (const page of pages.filter((p) => relative(ROOT, p).startsWith('tools' + '/'))) {
+    const m = readFileSync(page, 'utf8').match(/  <header class="tool-top">[\s\S]*?<\/header>/);
+    if (!m || m[0] !== shell) fail(page, 'tool header differs from scripts/tool-shell.html');
   }
 }
 

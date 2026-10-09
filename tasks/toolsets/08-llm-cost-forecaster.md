@@ -24,7 +24,7 @@ Engineering leads and PMs pricing a feature, and founders modeling margins.
 S
 
 ## Builds on
-Context Window Optimizer and Token Router cost math.
+Context Window Optimizer and Rate Limit Planner cost math.
 
 ## Status
 Not started
