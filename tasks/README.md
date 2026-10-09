@@ -95,6 +95,10 @@ Status of the audit items on the site. Shipped items are on the branch above unt
 | 21 | One shared tool header (`scripts/tool-shell.html`) with a drift check in the site test | Shipped |
 | 22 | Merged the external audit list into this README (original archived in `tasks/archive/`) | Shipped |
 | 23 | Share-card tags on every page; homepage share image | Shipped |
+| 24 | Metadata on every page (title, description, canonical, share tags), enforced by `tests/check-site.mjs` | Shipped. The test found two essays with no description, now fixed |
+| 25 | JSON-LD: Person and WebSite on the homepage, Article on essays, WebApplication on tools | Shipped. Lives in each page's head: `_config.yml` isn't used for this site's HTML |
+| 26 | Image compression for `assets/img/sites/` | Declined. The pages load the `thumbs/` files (412 KB total, lazy). WebP re-encoding saved 1 KB across them, and some files grew. Only the homepage image would gain (148 KB → 122 KB) |
+| 27 | Client-side search over `articles/index.json` | Declined for now. Explore already filters every page, and the index has two essays. Revisit at about ten essays |
 
 **Deferred or rejected from the audit**
 
