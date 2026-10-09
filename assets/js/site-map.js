@@ -16,6 +16,7 @@
     ] },
     { title: "Tools", note: "Free, single-page tools", items: [
       { name: "Prompt Matrix Evaluator", href: "tools/prompt-matrix-evaluator.html", desc: "Score a prompt, fix gaps in one click, get a structured rewrite.", tag: "local" },
+      { name: "Eval Set Builder", href: "tools/eval-set-builder.html", desc: "Turn a prompt into a test set; export to JSON Lines, promptfoo, or pytest.", tag: "local" },
       { name: "Context Extractor", href: "tools/context-extractor.html", desc: "Turn a long chat into a summary you can paste into a new chat.", tag: "local" },
       { name: "Claude Context Engine", href: "tools/claude_context_engine_premium.html", desc: "Tidy messy logs, code, or notes into a clearer prompt. Secrets are masked first.", tag: "server" },
       { name: "Portable Context Engine", href: "tools/context-engine.html", desc: "Save reusable instructions and templates for any AI chat.", tag: "local" },

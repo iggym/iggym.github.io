@@ -5,7 +5,7 @@ import { join, dirname, relative, resolve, extname } from 'node:path';
 
 const ROOT = resolve(new URL('..', import.meta.url).pathname);
 const EXTERNAL_SCRIPT_HOSTS = new Set(['static.cloudflareinsights.com']); // disclosed on the homepage
-const SKIP_DIRS = new Set(['.git', 'node_modules', 'tests', 'tasks']);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'tests', 'tasks', 'scripts', 'resume']);
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {
@@ -59,6 +59,15 @@ for (const page of pages) {
       const targetHtml = resolved.endsWith('.html') ? readFileSync(resolved, 'utf8') : '';
       if (targetHtml && fragment && !ids(targetHtml).has(fragment)) fail(page, `broken anchor ${value}`);
     }
+  }
+}
+
+// Tool pages must share one header, generated from scripts/tool-shell.html.
+{
+  const shell = readFileSync(join(ROOT, 'scripts', 'tool-shell.html'), 'utf8').trimEnd();
+  for (const page of pages.filter((p) => relative(ROOT, p).startsWith('tools' + '/'))) {
+    const m = readFileSync(page, 'utf8').match(/  <header class="tool-top">[\s\S]*?<\/header>/);
+    if (!m || m[0] !== shell) fail(page, 'tool header differs from scripts/tool-shell.html');
   }
 }
 

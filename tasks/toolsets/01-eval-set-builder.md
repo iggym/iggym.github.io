@@ -34,4 +34,4 @@ M
 Prompt Matrix Evaluator (`assets/js/prompt-lint.js`), `tool-kit.js`. The export format feeds [Prompt Regression CI](../projects/01-prompt-regression-ci.md).
 
 ## Status
-Not started
+Shipped: tools/eval-set-builder.html, with checks in assets/js/eval-checks.js. Exports are JSON Lines, promptfoo YAML, and pytest. The promptfoo export has not been run through promptfoo, because it isn't installed here.

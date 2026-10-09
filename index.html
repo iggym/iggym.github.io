@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="alternate" type="application/atom+xml" title="Iggy Mwangi: writing" href="feed.xml">
   <title>Iggy Mwangi — Practical AI tools and notes</title>
   <meta name="description" content="Free browser tools for working with prompts, short essays on running AI systems in production, and open-source projects by Iggy Mwangi, AI systems architect.">
   <meta name="color-scheme" content="light dark">
@@ -13,12 +14,14 @@
   <meta property="og:url" content="https://iggym.github.io/">
   <meta property="og:title" content="Iggy Mwangi — Practical AI tools and notes">
   <meta property="og:description" content="Free browser tools for prompts, notes on production AI, and open-source projects.">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
+  <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
   <meta name="twitter:title" content="Iggy Mwangi — Practical AI tools and notes">
   <meta name="twitter:description" content="Free browser tools for prompts, notes on production AI, and open-source projects.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/css/fonts.css?v=20261013a">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261013a">
+  <link rel="stylesheet" href="assets/css/home.css?v=20261016a">
   <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
 </head>
 <body>
@@ -261,6 +264,12 @@
           <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
         </li>
         <li class="card">
+          <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/eval-set-builder-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/eval-set-builder-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
+          <h4><a href="tools/eval-set-builder.html">Eval Set Builder</a></h4>
+          <p>Turn a prompt into a test set. Add cases with real inputs, write the checks each answer must pass, paste the model’s outputs, and export the set to JSON Lines, promptfoo, or pytest.</p>
+          <p class="tags"><span class="tag tag-local">Stays on your device</span> <span class="tag tag-saved">Remembers your work</span></p>
+        </li>
+        <li class="card">
           <div class="shot" aria-hidden="true"><img class="shot-light" src="assets/img/tools/context-extractor-light.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"><img class="shot-dark" src="assets/img/tools/context-extractor-dark.jpg" alt="" width="600" height="375" loading="lazy" decoding="async"></div>
           <h4><a href="tools/context-extractor.html">Context Extractor</a></h4>
           <p>Paste a long chat or notes and get the goals, rules, decisions, open questions, and key facts. Untick or re-sort any item, then copy a ready-made handoff prompt for a fresh chat.</p>
@@ -328,7 +337,7 @@
     <section id="writing" class="section band-alt" aria-labelledby="writing-title">
       <div class="section-head">
         <h2 id="writing-title"><span class="sec-num" aria-hidden="true">03</span>Writing</h2>
-        <p>Two essays on this site, plus longer guides kept on GitHub.</p>
+        <p>Two essays on this site, plus longer guides kept on GitHub. <a href="feed.xml" type="application/atom+xml">Subscribe to new essays (Atom feed)</a>.</p>
       </div>
       <ul class="rows">
         <li>
@@ -391,7 +400,7 @@
       <ul class="rows rows-2 proj-grid">
         <li>
           <a href="https://github.com/iggym/surfacelock" rel="noopener">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>github.com/iggym/surfacelock</code></span>
             <span class="meta">Python</span>
             <span class="row-title">SurfaceLock</span>
             <span class="row-text">Records the prompts, models, and settings your code depends on, so changes to them show up in review.</span>
@@ -399,7 +408,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/modelbump" rel="noopener">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>github.com/iggym/modelbump</code></span>
             <span class="meta">Python</span>
             <span class="row-title">ModelBump</span>
             <span class="row-text">A behavioral diff for model upgrades and deprecations.</span>
@@ -407,7 +416,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/aiboom" rel="noopener">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>github.com/iggym/aiboom</code></span>
             <span class="meta">Python</span>
             <span class="row-title">AIBoM</span>
             <span class="row-text">Generates an audit-ready AI Bill of Materials from your repo in one command.</span>
@@ -415,7 +424,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/deterministic-agent-supervisor" rel="noopener">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>github.com/iggym/deterministic-agent-supervisor</code></span>
             <span class="meta">Python · Rust</span>
             <span class="row-title">Deterministic Agent Supervisor</span>
             <span class="row-text">The model suggests actions, but a fixed set of rules decides what’s allowed. Anything not on the list is blocked.</span>
@@ -423,7 +432,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/factory-gate" rel="noopener">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>github.com/iggym/factory-gate</code></span>
             <span class="meta">JavaScript</span>
             <span class="row-title">Factory Gate</span>
             <span class="row-text">Checks an AI agent’s code changes against your rules before they reach your main branch.</span>
@@ -431,7 +440,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/sliding-window-trim-engine" rel="noopener">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>github.com/iggym/sliding-window-trim-engine</code></span>
             <span class="meta">Go</span>
             <span class="row-title">Sliding Window Trim Engine</span>
             <span class="row-text">Removes repeated parts of a long chat before it’s sent to the model, so each request costs less.</span>
@@ -439,7 +448,7 @@
         </li>
         <li>
           <a href="https://github.com/iggym/circuit-x" rel="noopener">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>github.com/iggym/circuit-x</code></span>
             <span class="meta">HTML</span>
             <span class="row-title">CircuitX</span>
             <span class="row-text">Research: finds which internal features a code model uses when it writes code.</span>
@@ -447,7 +456,7 @@
         </li>
         <li>
           <a href="https://iggym.github.io/utility-belt/">
-            <span class="proj-art" aria-hidden="true"></span>
+            <span class="proj-art" aria-hidden="true"><code>iggym.github.io/utility-belt</code></span>
             <span class="meta">Live site</span>
             <span class="row-title">Utility Belt</span>
             <span class="row-text">Small everyday browser utilities. No AI required.</span>
@@ -631,7 +640,7 @@
   <script defer src="assets/js/prompt-tightener.js?v=20261008a"></script>
   <script defer src="assets/js/prompt-lint.js?v=20261008a"></script>
   <script defer src="assets/js/theme.js?v=20261007a"></script>
-  <script defer src="assets/js/site-map.js?v=20261015a"></script>
+  <script defer src="assets/js/site-map.js?v=20261016a"></script>
   <script defer src="assets/js/home.js?v=20261008a"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
