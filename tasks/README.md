@@ -54,7 +54,8 @@ Status of the audit items on the site. Shipped items are on the branch above unt
 | 14 | Add visible focus styles to the sites page (`sites.css` has none) | Open |
 | 15 | Keep `?v=` cache-busting consistent across pages (versions have drifted) | Open |
 | 16 | Consolidate the 17 sites into four layers | Open, needs your layer names |
-| 17 | Résumé rebuilt from one source; PDF and Word versions; site links updated | Shipped on branch (this commit) |
+| 17 | Résumé rebuilt from one source; PDF and Word versions; site links updated | Shipped (PR #16) |
+| 18 | Two-page résumé (PDF and Word); one "Get the résumé" group; one nav and one footer link | Shipped (PR #16) |
 
 **Deferred or rejected from the audit**
 
