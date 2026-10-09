@@ -39,16 +39,17 @@ def heading(doc, text):
     p.paragraph_format.keep_with_next = True
     return p
 
-def main(out):
-    d = json.load(open(SRC, encoding='utf-8'))
+def main(out, src=SRC):
+    d = json.load(open(src, encoding='utf-8'))
+    compact = bool(d.get('compact'))
     doc = Document()
     sec = doc.sections[0]
     sec.page_width, sec.page_height = Inches(8.5), Inches(11)
-    sec.left_margin = sec.right_margin = Inches(0.75)
-    sec.top_margin = sec.bottom_margin = Inches(0.6)
+    sec.left_margin = sec.right_margin = Inches(0.6 if compact else 0.75)
+    sec.top_margin = sec.bottom_margin = Inches(0.5 if compact else 0.6)
 
     normal = doc.styles['Normal']
-    normal.font.name = 'Calibri'; normal.font.size = Pt(10)
+    normal.font.name = 'Calibri'; normal.font.size = Pt(9.5 if compact else 10)
     normal.element.rPr.rFonts.set(qn('w:eastAsia'), 'Calibri')
     normal.paragraph_format.line_spacing = 1.08
 
@@ -91,6 +92,13 @@ def main(out):
                 p = doc.add_paragraph(); spacing(p, after=3)
             p.add_run(item['text'])
 
+    if d.get('earlier'):
+        heading(doc, 'Earlier experience')
+        for e in d['earlier']:
+            p = doc.add_paragraph(style='List Bullet'); spacing(p, after=0)
+            p.add_run(e['company']).bold = True
+            p.add_run((f" · {e['title']}" if e['title'] else '') + f" · {e['date']}")
+
     heading(doc, 'Education')
     for e in d['education']:
         p = doc.add_paragraph(); spacing(p, after=0)
@@ -112,4 +120,6 @@ def main(out):
     print('wrote', out)
 
 if __name__ == '__main__':
-    main(sys.argv[1] if len(sys.argv) > 1 else 'iggy-resume.docx')
+    # usage: build_docx.py OUT.docx [SOURCE.json]
+    main(sys.argv[1] if len(sys.argv) > 1 else 'iggy-resume.docx',
+         sys.argv[2] if len(sys.argv) > 2 else SRC)

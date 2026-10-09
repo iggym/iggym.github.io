@@ -1,6 +1,6 @@
 // Build the PDF résumé from resume.json with headless Chromium.
 // Needs Playwright (dev tool only; the site itself has no dependencies).
-// Usage: node build_pdf.mjs ../assets/resume/iggy-resume.pdf
+// Usage: node build_pdf.mjs OUT.pdf [SOURCE.json]
 import { chromium } from 'playwright';
 import { readFileSync, writeFileSync, unlinkSync } from 'node:fs';
 import { resolve, dirname, join } from 'node:path';
@@ -8,7 +8,8 @@ import { fileURLToPath } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const out = resolve(process.argv[2] || 'iggy-resume.pdf');
-const d = JSON.parse(readFileSync(join(here, 'resume.json'), 'utf8'));
+const src = resolve(process.argv[3] || join(here, 'resume.json'));
+const d = JSON.parse(readFileSync(src, 'utf8'));
 const fonts = resolve(here, '..', 'assets', 'fonts');
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -34,9 +35,9 @@ const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>
 @font-face { font-family: 'Source Sans 3'; src: url('file://${fonts}/source-sans-3-italic-400.woff2') format('woff2'); font-style: italic; }
 @font-face { font-family: 'Fraunces'; src: url('file://${fonts}/fraunces-normal-300-700.woff2') format('woff2'); font-weight: 300 700; }
 @font-face { font-family: 'DM Mono'; src: url('file://${fonts}/dm-mono-normal-500.woff2') format('woff2'); font-weight: 500; }
-@page { size: Letter; margin: 0.55in 0.6in 0.6in; }
+@page { size: Letter; margin: ${d.compact ? '0.45in 0.55in 0.5in' : '0.55in 0.6in 0.6in'}; }
 * { box-sizing: border-box; }
-html, body { margin: 0; color: #1a1a1f; font-family: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif; font-size: 10pt; line-height: 1.38; }
+html, body { margin: 0; color: #1a1a1f; font-family: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif; font-size: ${d.compact ? '9.4pt' : '10pt'}; line-height: ${d.compact ? '1.28' : '1.38'}; }
 h1 { font-family: 'Fraunces', Georgia, serif; font-weight: 500; font-size: 26pt; margin: 0; letter-spacing: -0.01em; }
 .headline { margin: 2px 0 4px; color: #4338ca; font-size: 11pt; font-weight: 600; }
 .contact { margin: 0 0 6px; color: #5a5d66; font-size: 9.5pt; }
@@ -56,6 +57,7 @@ li::marker { color: #4338ca; }
 .note { margin: 0 0 3px; }
 .edu b { font-weight: 600; }
 .skills p { margin: 0 0 2px; }
+.earlier { margin: 0 0 4px; padding-left: 16px; columns: 2; column-gap: 22px; } .earlier li { break-inside: avoid; margin: 0 0 1px; font-size: 9.5pt; }
 </style></head><body>
 <h1>${esc(d.name)}</h1>
 <p class="headline">${esc(d.headline)}</p>
@@ -65,6 +67,7 @@ ${d.summary.map((p) => `<p>${esc(p)}</p>`).join('')}
 <ul class="focus">${d.focus.map(([k, v]) => `<li><b>${esc(k)}:</b> ${esc(v)}</li>`).join('')}</ul>
 <h2>Experience</h2>
 ${roles}
+${d.earlier ? `<h2>Earlier experience</h2><ul class="earlier">${d.earlier.map((e) => `<li><b>${esc(e.company)}</b>${e.title ? ' · ' + esc(e.title) : ''} · ${esc(e.date)}</li>`).join('')}</ul>` : ''}
 <h2>Education</h2>
 ${d.education.map((e) => `<p class="edu"><b>${esc(e.school)}</b><br>${esc(e.degree)} · ${esc(e.dates)}</p>`).join('')}
 <h2>Skills and languages</h2>

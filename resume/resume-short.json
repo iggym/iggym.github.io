@@ -1,0 +1,294 @@
+{
+ "name": "Iggy Mwangi",
+ "headline": "AI Systems Architect | Building Reliable, Scalable, Production-Grade AI Platforms",
+ "location": "Dallas-Fort Worth Metroplex",
+ "contact": {
+  "phone": "469-936-0164",
+  "email": "jobsiggy@gmail.com",
+  "linkedin": "linkedin.com/in/iggym",
+  "web": "iggym.github.io"
+ },
+ "summary": [
+  "I build AI systems that hold up under real-world pressure: platforms that stay predictable when traffic spikes, data shifts, or models drift. My work sits at the intersection of cloud architecture, modern LLMs, retrieval systems, and agent-driven automation.",
+  "I care about reliability, clarity, and making complex systems easier to reason about. I like problems that don’t have clean edges, where the fix isn’t a bigger model but a better system. If you’re working on AI platforms, LLM infrastructure, or agent-driven automation, I’m always open to a conversation."
+ ],
+ "focus": [
+  [
+   "LLM infrastructure",
+   "vLLM, Ray Serve, KServe, Triton, TensorRT-LLM"
+  ],
+  [
+   "Retrieval systems",
+   "Weaviate, Milvus, pgvector, FAISS"
+  ],
+  [
+   "Agent frameworks",
+   "LangGraph, CrewAI, AutoGen 2.0, OpenAI Swarm"
+  ],
+  [
+   "Edge and local AI",
+   "Jetson Orin, ONNX Runtime Mobile, Ollama, ANE-optimized models"
+  ],
+  [
+   "Evaluation and safety",
+   "Ragas, DeepEval, DSPy, structured test harnesses"
+  ],
+  [
+   "Cloud architecture",
+   "AWS, Azure, GCP, Kubernetes, Terraform, Pulumi"
+  ],
+  [
+   "MLOps",
+   "Kubeflow, MLflow, SageMaker Pipelines, Argo Workflows"
+  ]
+ ],
+ "top_skills": [
+  "Python",
+  "LLM systems and RAG",
+  "Agent frameworks",
+  "Cloud architecture (AWS, Azure, GCP)",
+  "Kubernetes and Terraform",
+  "ML evaluation and monitoring"
+ ],
+ "languages": [
+  "English",
+  "French"
+ ],
+ "roles": [
+  {
+   "company": "VynixAI",
+   "title": "Senior Solutions Architect – AI & Cloud Infrastructure",
+   "date": "January 2025 - Present",
+   "location": "Dallas, TX",
+   "items": [
+    {
+     "type": "p",
+     "text": "I design and build AI-driven, cloud-native, and edge-optimized platforms for real-time retail and enterprise workloads. Most of my work centers on modern LLM systems, scalable inference, and agent-driven automation."
+    },
+    {
+     "type": "b",
+     "text": "Re-architected our RAG pipeline using Weaviate, Milvus, and pgvector, and tightening vector hygiene turned out to be more impactful than model upgrades — hallucinations dropped by 38%."
+    },
+    {
+     "type": "b",
+     "text": "Upgraded our fine-tuning stack to Llama 3.3 with LoRA/QLoRA and Flash-Attention 3, and the real payoff came from stable inference once deployed on EKS with GPU autoscaling."
+    },
+    {
+     "type": "b",
+     "text": "Added edge inference using TensorRT-LLM on Jetson Orin, Ollama 0.5+, and ONNX Runtime Mobile; predictable latency mattered more than raw speed in retail environments."
+    },
+    {
+     "type": "b",
+     "text": "Built agent workflows with LangGraph, CrewAI, AutoGen 2.0, and OpenAI Swarm, and treating tools as state transitions made multi-tool routing 42% more reliable."
+    }
+   ]
+  },
+  {
+   "company": "Nubla AI",
+   "title": "Cloud Architect and Machine Learning Engineer",
+   "date": "January 2024 - Present",
+   "location": "Austin, TX",
+   "items": [
+    {
+     "type": "p",
+     "text": "I design ML systems and cloud architectures across AWS, Azure, and GCP, with a focus on LLM integration, retrieval systems, and dependable ML pipelines."
+    },
+    {
+     "type": "b",
+     "text": "Reduced LLM latency by 22% by reworking tokenization paths — preprocessing, not inference, was the hidden bottleneck."
+    },
+    {
+     "type": "b",
+     "text": "Tuned Gemma 3.1 for production workloads and saw it outperform larger models once retrieval was aligned; architecture beat parameter count."
+    },
+    {
+     "type": "b",
+     "text": "Reorganized data around S3, BigQuery, and ADLS, and reducing data gravity cut training time by 35%."
+    },
+    {
+     "type": "b",
+     "text": "Refactored agent tools into deterministic, idempotent functions for AutoGen 2.0 and CrewAI, and reliability jumped more than any model upgrade."
+    }
+   ]
+  },
+  {
+   "company": "Apple",
+   "title": "Cloud Architect and Engineer",
+   "date": "January 2022 - December 2023",
+   "location": "Cupertino, CA",
+   "items": [
+    {
+     "type": "p",
+     "text": "I supported cloud modernization for Project Titan, working across AWS, internal Apple cloud platforms, Kubernetes, and distributed systems. The work centered on stabilizing infrastructure, reducing operational load, and re-architecting services that had outgrown their original designs."
+    },
+    {
+     "type": "b",
+     "text": "Migrated on-prem systems to AWS and internal Apple platforms, and the biggest gains came from replacing lift-and-shift workloads with serverless and containerized designs that removed brittle long-running services."
+    },
+    {
+     "type": "b",
+     "text": "Re-architected multi-tier systems across serverless, containers, microservices, databases, networking, caching, and storage, and reliability improved once architectures favored consistency over feature-driven sprawl."
+    },
+    {
+     "type": "b",
+     "text": "Shifted pipelines to event-driven architectures using Lambda, SQS, SNS, and Step Functions, reducing compute costs by about 30% because workloads no longer ran idle waiting for upstream systems."
+    },
+    {
+     "type": "b",
+     "text": "Led cloud cost optimization through right-sizing, auto-scaling, reserved capacity, and FinOps practices, reducing spend by more than 30% YoY."
+    }
+   ]
+  },
+  {
+   "company": "Sam's Club",
+   "title": "Principal Software Engineer - Cloud and Machine Learning",
+   "date": "October 2017 - December 2021",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I worked across retail, supply chain, forecasting, and merchandising systems, building cloud-based ML solutions and multi-platform applications. The work centered on designing reliable ML pipelines, improving data quality, and deploying models that could operate at retail scale."
+    },
+    {
+     "type": "b",
+     "text": "Designed and developed retail line-of-business applications in the cloud, and reliability improved once services were built around consistent patterns instead of one-off implementations."
+    },
+    {
+     "type": "b",
+     "text": "Built mobile applications across iOS, Android, and hybrid stacks (React Native, Xamarin), and cross-platform reuse became the main driver of delivery speed."
+    },
+    {
+     "type": "b",
+     "text": "Developed backend services on Azure, and the most impactful gains came from simplifying service boundaries rather than adding more components."
+    },
+    {
+     "type": "b",
+     "text": "Applied ML across forecasting, computer vision, and real-time analytics using Python and PyTorch, and model accuracy improved once data quality workflows were automated instead of manually patched."
+    }
+   ]
+  },
+  {
+   "company": "Contran Corp",
+   "title": "Mobile, Web, Infrastructure and System Architect, Designer and Developer",
+   "date": "June 2011 - October 2017",
+   "location": "Dallas-Fort Worth Metroplex",
+   "items": [
+    {
+     "type": "p",
+     "text": "I built mobile, web, backend, and integration systems across iOS, Android, web, and multiple cloud platforms. The work centered on unifying fragmented applications, improving data flows, and building infrastructure that could support long-running operational systems."
+    },
+    {
+     "type": "b",
+     "text": "Built native iOS apps in Swift/Objective-C and Android apps for employee portals and waste-tracking workflows, and stability improved once on-device storage moved from Core Data to SQLite/FMDB."
+    },
+    {
+     "type": "b",
+     "text": "Delivered native and hybrid inventory apps (iOS/Android) backed by AWS (DynamoDB, Lambda) and GCP (Firebase, Compute), and cross-platform reuse became the main driver of delivery speed."
+    },
+    {
+     "type": "b",
+     "text": "Created hybrid reporting apps in Xamarin.iOS/Xamarin.Android, and delivery became predictable once UI patterns were unified instead of maintained separately."
+    },
+    {
+     "type": "b",
+     "text": "Built portal and inventory companion sites using ASP.NET MVC, AngularJS, and React, and front-end performance improved when API boundaries were simplified."
+    }
+   ]
+  }
+ ],
+ "education": [
+  {
+   "school": "University of Minnesota",
+   "degree": "B.Sc., Computer Science",
+   "dates": "1996–2001"
+  }
+ ],
+ "earlier": [
+  {
+   "company": "FL Global",
+   "title": "",
+   "date": "2018–19"
+  },
+  {
+   "company": "Ackerman McQueen",
+   "title": "",
+   "date": "2009–11"
+  },
+  {
+   "company": "AT&T",
+   "title": "",
+   "date": "2007–09"
+  },
+  {
+   "company": "Verizon",
+   "title": "",
+   "date": "2008"
+  },
+  {
+   "company": "ACS",
+   "title": "",
+   "date": "2007–08"
+  },
+  {
+   "company": "GuideStone Financial Resources",
+   "title": "",
+   "date": "2007"
+  },
+  {
+   "company": "Trillium Industries Inc",
+   "title": "",
+   "date": "2006–07"
+  },
+  {
+   "company": "EDS",
+   "title": "",
+   "date": "2005–06"
+  },
+  {
+   "company": "Automatic Data Processing Inc",
+   "title": "",
+   "date": "2004–05"
+  },
+  {
+   "company": "IBM Innovation Center",
+   "title": "",
+   "date": "2003–04"
+  },
+  {
+   "company": "Cingular",
+   "title": "",
+   "date": "2003"
+  },
+  {
+   "company": "Independence Community Bank",
+   "title": "",
+   "date": "2002–03"
+  },
+  {
+   "company": "Tufts Health Plan",
+   "title": "",
+   "date": "2001–02"
+  },
+  {
+   "company": "BP-Amoco",
+   "title": "",
+   "date": "2001"
+  },
+  {
+   "company": "Transplace.com",
+   "title": "",
+   "date": "2001"
+  },
+  {
+   "company": "Williams Communications",
+   "title": "",
+   "date": "1999–00"
+  },
+  {
+   "company": "Video Update Inc",
+   "title": "",
+   "date": "1998–99"
+  }
+ ],
+ "compact": true
+}
