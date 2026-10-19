@@ -36,11 +36,11 @@
     ] },
     { title: "Content sites", note: "17 standalone sites, one per subject", items: [
       { name: "All content sites", href: "sites/", desc: "Every site I keep, grouped by subject." },
-      { name: "Applied AI Engineering", href: "https://iggym.github.io/applied-ai-engineering/", desc: "Where the patterns add up to an argument." },
-      { name: "Production AI Patterns", href: "https://iggym.github.io/production-ai-patterns/", desc: "A pattern language for AI under real traffic." },
-      { name: "The AI Runbook", href: "https://iggym.github.io/the-ai-runbook/", desc: "Incident procedures to read at 3am." },
-      { name: "Agentic Infra Weekly", href: "https://iggym.github.io/agentic-infra-weekly/", desc: "A weekly briefing on agent infrastructure." },
-      { name: "Systems Bench", href: "https://iggym.github.io/systems-bench/", desc: "24 small tools for AI systems work." },
+      { name: "Applied AI Engineering", href: "https://iggym-applied-ai-engineering.pages.dev/", desc: "Where the patterns add up to an argument." },
+      { name: "Production AI Patterns", href: "https://iggym-production-ai-patterns.pages.dev/", desc: "A pattern language for AI under real traffic." },
+      { name: "The AI Runbook", href: "https://iggym-the-ai-runbook.pages.dev/", desc: "Incident procedures to read at 3am." },
+      { name: "Agentic Infra Weekly", href: "https://iggym-agentic-infra-weekly.pages.dev/", desc: "A weekly briefing on agent infrastructure." },
+      { name: "Systems Bench", href: "https://iggym-systems-bench.pages.dev/", desc: "24 small tools for AI systems work." },
       { name: "One Origin", href: "https://one-origin.pages.dev/", desc: "The true size of Africa, and where every line begins." },
       { name: "Beyond AI", href: "sites/#reading", desc: "Essays on reading, attention, and history." }
     ] },
