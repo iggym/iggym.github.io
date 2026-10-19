@@ -1,0 +1,62 @@
+/* Seasonal adornments (assets/js/seasons.js). The canvas never takes clicks; the script
+   hit-tests taps itself and ignores anything aimed at links, buttons, or fields. */
+.season-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.9;
+}
+html.season-off .season-layer { display: none; }
+
+.sim-row { display: flex; flex-wrap: wrap; align-items: center; column-gap: 1.25rem; }
+.season-toggle[hidden], .season-tally[hidden] { display: none; }
+.season-icon { display: inline-block; width: 1.05em; height: 1.05em; background: currentColor; border-radius: 1px; }
+.season-icon {
+  -webkit-mask: var(--season-mask) center / contain no-repeat;
+          mask: var(--season-mask) center / contain no-repeat;
+  transition: transform 0.4s ease;
+}
+.season-toggle:hover .season-icon { transform: rotate(-18deg) scale(1.1); }
+html.season-off .season-icon { opacity: 0.55; }
+
+/* Icons as masks so they take the accent colour in both themes. */
+html[data-season="autumn"]  { --season-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2c4 3 7 6 7 10a7 7 0 0 1-6 6.9V22h-2v-3.1A7 7 0 0 1 5 12c0-4 3-7 7-10z'/%3E%3C/svg%3E"); }
+html[data-season="winter"]  { --season-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' stroke='black' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 4l3 2 3-2M9 20l3-2 3 2'/%3E%3C/svg%3E"); }
+html[data-season="spring"]  { --season-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='6' r='4'/%3E%3Ccircle cx='18' cy='11' r='4'/%3E%3Ccircle cx='15.5' cy='18' r='4'/%3E%3Ccircle cx='8.5' cy='18' r='4'/%3E%3Ccircle cx='6' cy='11' r='4'/%3E%3C/svg%3E"); }
+html[data-season="summer"]  { --season-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Ccircle cx='12' cy='12' r='9' opacity='.35'/%3E%3C/svg%3E"); }
+
+.season-tally {
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  color: var(--muted);
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  animation: season-pop 0.35s ease;
+}
+@keyframes season-pop { from { transform: scale(0.85); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Holiday lights along the header, Dec 10 – Jan 1. Purely decorative, CSS only. */
+html[data-season-extra="holiday"]:not(.season-off) .site-header { position: relative; }
+html[data-season-extra="holiday"]:not(.season-off) .site-header::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: -7px; height: 10px;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 10px 6px, #ef4444 3px, transparent 4px) 0 0 / 80px 10px repeat-x,
+    radial-gradient(circle at 30px 6px, #22c55e 3px, transparent 4px) 0 0 / 80px 10px repeat-x,
+    radial-gradient(circle at 50px 6px, #f59e0b 3px, transparent 4px) 0 0 / 80px 10px repeat-x,
+    radial-gradient(circle at 70px 6px, #3b82f6 3px, transparent 4px) 0 0 / 80px 10px repeat-x;
+  animation: season-twinkle 2.4s steps(2) infinite;
+}
+@keyframes season-twinkle { 50% { filter: brightness(1.5) saturate(1.3); opacity: 0.75; } }
+
+/* Halloween: a little warmth on the headline swash. */
+html[data-season-extra="halloween"]:not(.season-off) .swash { --swash: #f59e0b; }
+
+@media (prefers-reduced-motion: reduce) {
+  .season-layer, .season-toggle, .season-tally { display: none !important; }
+  html[data-season-extra="holiday"] .site-header::after { animation: none; }
+}
+@media print { .season-layer, .season-toggle, .season-tally, .site-header::after { display: none !important; } }
