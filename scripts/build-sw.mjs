@@ -33,7 +33,12 @@ const CACHE = "iggym-${version}";
 const PRECACHE = ${JSON.stringify(urls, null, 2)};
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  // cache: "reload" skips the browser's HTTP cache so a new version never precaches stale files.
+  event.waitUntil(
+    caches.open(CACHE)
+      .then((cache) => cache.addAll(PRECACHE.map((u) => new Request(u, { cache: "reload" }))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", (event) => {
@@ -44,21 +49,37 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+// Pages, styles, scripts and data: network first, so a deploy shows up on the next load.
+// The cached copy is the offline fallback. Fonts and images: cache first, they rarely change.
+const FRESH = /\.(html|css|js|json|xml|webmanifest)$/;
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   // Only same-origin requests. Outside services (AI providers, the Worker, analytics) always go to the network.
   if (url.origin !== self.location.origin) return;
+  const isPage = req.mode === "navigate";
+  if (isPage || url.pathname.endsWith("/") || FRESH.test(url.pathname)) {
+    event.respondWith(
+      fetch(isPage ? new Request(req, { cache: "no-cache" }) : req)
+        .then((res) => {
+          if (res.ok && res.type === "basic") {
+            const copy = res.clone();
+            caches.open(CACHE).then((cache) => cache.put(url.pathname, copy)).catch(() => {});
+          }
+          return res;
+        })
+        .catch(() =>
+          caches.match(url.pathname, { ignoreSearch: true }).then((hit) =>
+            hit || (isPage ? caches.match("/404.html") : Response.error())
+          )
+        )
+    );
+    return;
+  }
   event.respondWith(
-    caches.match(req, { ignoreSearch: true }).then((hit) => {
-      if (hit) return hit;
-      return fetch(req).catch(() => {
-        // Offline and not cached: show the 404 page for navigations, otherwise fail.
-        if (req.mode === "navigate") return caches.match("/404.html", { ignoreSearch: true });
-        return Response.error();
-      });
-    })
+    caches.match(req, { ignoreSearch: true }).then((hit) => hit || fetch(req))
   );
 });
 `;
