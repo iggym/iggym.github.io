@@ -117,6 +117,16 @@ for (const page of pages) {
   }
 }
 
+// The home page header shows the version in VERSION (bumped on every deploy by scripts/bump-version.mjs).
+{
+  const version = readFileSync(join(ROOT, 'VERSION'), 'utf8').trim();
+  const home = join(ROOT, 'index.html');
+  if (!/^\d+(\.\d+){3}$/.test(version)) fail(join(ROOT, 'VERSION'), `bad version "${version}"`);
+  const m = readFileSync(home, 'utf8').match(/data-site-version[^>]*>v([^<]+)</);
+  if (!m) fail(home, 'header is missing the site version');
+  else if (m[1] !== version) fail(home, `header shows v${m[1]} but VERSION is ${version}; run node scripts/bump-version.mjs --sync`);
+}
+
 if (failures.length) {
   console.log(failures.join('\n'));
   console.log(`\n${failures.length} problem(s) across ${pages.length} pages.`);

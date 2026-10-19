@@ -1,0 +1,40 @@
+# Bumps the site version (VERSION + home page header) on every push to main, i.e. every deployment.
+# Skipped when the push already changed VERSION, so a manual --set isn't overwritten.
+# The bump commit is pushed with GITHUB_TOKEN, which doesn't start workflows, so there's no loop.
+name: Bump site version
+on:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+concurrency:
+  group: bump-version
+  cancel-in-progress: false
+jobs:
+  bump:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Skip if this push already set the version
+        id: changed
+        run: |
+          if git diff --name-only "${{ github.event.before }}" "${{ github.sha }}" 2>/dev/null | grep -qx VERSION; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Bump, rebuild sw.js, commit
+        if: steps.changed.outputs.skip != 'true'
+        run: |
+          git pull --ff-only origin main
+          v=$(node scripts/bump-version.mjs | tail -1)
+          node tests/check-site.mjs
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add VERSION index.html sw.js
+          git commit -m "Release $v"
+          git push origin HEAD:main
