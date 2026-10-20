@@ -15,10 +15,14 @@
   <meta name="description" content="Paste messy context such as logs, code, or notes, and get back a tighter prompt to give Claude. Uses a hosted AI model, so your text is sent to a server.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
-  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
+  <link rel="preload" href="../assets/fonts/source-sans-3-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/fraunces-normal-300-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/dm-mono-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=4.0.5.4">
   <style>
     #raw, #result { min-height: 18rem; }
     .modes { display: flex; flex-wrap: wrap; gap: 0.4rem; }
@@ -119,9 +123,9 @@
     <p>Page views are counted by Cloudflare Web Analytics. It never receives what you type.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261007a"></script>
-  <script defer src="../assets/js/site-map.js?v=20261017a"></script>
-  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
+  <script src="../assets/js/theme.js?v=4.0.5.4"></script>
+  <script defer src="../assets/js/site-map.js?v=4.0.5.4"></script>
+  <script src="../assets/js/tool-kit.js?v=4.0.5.4"></script>
   <script>
     var WORKER_URL = "https://claude-context-orchestrator.iggy-mw.workers.dev/api/orchestrate";
     var KEY = "cce_raw_input";
@@ -229,8 +233,12 @@
       lastOutput = "";
       setResult("Rewriting…", "loading");
       ToolKit.announce("Rewriting. This can take a few seconds.");
+      // Give up after 45 seconds so a stalled server never leaves the button stuck on "Rewriting…".
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 45000) : 0;
       try {
         var res = await fetch(WORKER_URL, {
+          signal: ctrl ? ctrl.signal : undefined,
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ payload: input, workflow: mode, invertAttention: document.getElementById("anchor").checked })
@@ -249,9 +257,11 @@
           ToolKit.announce("Rewrite failed.");
         }
       } catch (err) {
-        setResult(friendlyError(err.message), "error");
-        ToolKit.announce("Rewrite failed.");
+        var timedOut = err && err.name === "AbortError";
+        setResult(timedOut ? "The server took too long to answer (over 45 seconds). Try again, or try a shorter input." : friendlyError(err.message), "error");
+        ToolKit.announce(timedOut ? "Rewrite timed out." : "Rewrite failed.");
       }
+      clearTimeout(timer);
       els.run.disabled = false;
     });
 

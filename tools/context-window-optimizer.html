@@ -15,10 +15,14 @@
   <meta name="description" content="Plan a model's context budget: see how much the system prompt, tools, documents, chat history and question use, whether the reply still fits, what each request costs, and what to trim first. Runs in your browser.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
-  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
+  <link rel="preload" href="../assets/fonts/source-sans-3-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/fraunces-normal-300-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/dm-mono-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=4.0.5.4">
   <style>
     .layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 1rem; align-items: start; }
     @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
@@ -49,6 +53,11 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/assets/img/icon-192.png">
   <script defer src="../assets/js/sw-register.js"></script>
+  <style>
+    /* Hold the space the starting example will fill, so the page doesn't jump when the script renders it. */
+    @media (scripting: enabled) { #sections:empty { min-height: 1117px; } }
+    @media (scripting: enabled) and (max-width: 700px) { #sections:empty { min-height: 1117px; } }
+  </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to main content</a>
@@ -150,9 +159,9 @@
     <p>Page views are counted by Cloudflare Web Analytics. It never receives what you type.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261007a"></script>
-  <script defer src="../assets/js/site-map.js?v=20261017a"></script>
-  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
+  <script src="../assets/js/theme.js?v=4.0.5.4"></script>
+  <script defer src="../assets/js/site-map.js?v=4.0.5.4"></script>
+  <script src="../assets/js/tool-kit.js?v=4.0.5.4"></script>
   <script>
     var COLORS = ["#4338ca", "#0f766e", "#b45309", "#be185d", "#2563eb", "#7c3aed", "#15803d", "#c2410c"];
     var KINDS = { system: "System prompt", tools: "Tool definitions", docs: "Retrieved documents", history: "Chat history", question: "User question" };
@@ -179,6 +188,8 @@
 
     function num(id) { var n = parseFloat(String(document.getElementById(id).value).replace(/[^0-9.]/g, "")); return isFinite(n) ? n : 0; }
     function fmt(n) { return Math.round(n).toLocaleString(); }
+    // Section names are typed by the visitor (or loaded from storage); never insert them as HTML.
+    function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
     function money(n) { return n === 0 ? "$0" : n < 0.01 ? "<$0.01" : n < 100 ? "$" + n.toFixed(2) : "$" + Math.round(n).toLocaleString(); }
     function tokensOf(s) { return s.text.trim() ? ToolKit.estimateTokens(s.text) : (parseInt(String(s.count).replace(/[^0-9]/g, ""), 10) || 0); }
 
@@ -247,7 +258,7 @@
       // Advice
       var adv = [], sorted = parts.slice().sort(function (a, b) { return b.t - a.t; });
       var biggest = sorted[0];
-      if (free < 0) adv.push(["bad", "This request doesn’t fit. Cut at least " + fmt(-free) + " tokens, starting with “" + biggest.name + "” (" + fmt(biggest.t) + "). Otherwise the provider will reject it or truncate it."]);
+      if (free < 0) adv.push(["bad", "This request doesn’t fit. Cut at least " + fmt(-free) + " tokens, starting with “" + esc(biggest.name) + "” (" + fmt(biggest.t) + "). Otherwise the provider will reject it or truncate it."]);
       else if (win && total / win > 0.75) adv.push(["warn", "Over 75% full. Models tend to miss details buried in the middle of very long contexts, and long contexts are slower. Trim before you add more."]);
       parts.forEach(function (p) {
         var share = input ? p.t / input : 0;

@@ -7,3 +7,11 @@
 @font-face { font-family: 'Source Sans 3'; font-style: normal; font-weight: 400; font-display: swap; src: url('../fonts/source-sans-3-normal-400.woff2') format('woff2'); }
 @font-face { font-family: 'Source Sans 3'; font-style: normal; font-weight: 600; font-display: swap; src: url('../fonts/source-sans-3-normal-600.woff2') format('woff2'); }
 @font-face { font-family: 'Source Sans 3'; font-style: italic; font-weight: 400; font-display: swap; src: url('../fonts/source-sans-3-italic-400.woff2') format('woff2'); }
+
+/* Metric-matched fallbacks (computed with Capsize from each font's real metrics). While the web
+   fonts load, text is set in Georgia/Times or Arial/Helvetica sized to take the same space,
+   so nothing jumps when the real fonts swap in. */
+@font-face { font-family: "Fraunces Fallback G"; src: local('Georgia'); ascent-override: 92.9623%; descent-override: 24.2386%; line-gap-override: 0%; size-adjust: 105.2039%; }
+@font-face { font-family: "Fraunces Fallback T"; src: local('Times New Roman'), local('TimesNewRomanPSMT'); ascent-override: 84.7148%; descent-override: 22.0882%; line-gap-override: 0%; size-adjust: 115.4462%; }
+@font-face { font-family: "Source Sans Fallback A"; src: local('Arial'), local('ArialMT'); ascent-override: 109.2105%; descent-override: 42.6604%; line-gap-override: 0%; size-adjust: 93.7639%; }
+@font-face { font-family: "Source Sans Fallback H"; src: local('Helvetica'); ascent-override: 109.2105%; descent-override: 42.6604%; line-gap-override: 0%; size-adjust: 93.7639%; }

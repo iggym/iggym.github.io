@@ -13,7 +13,7 @@
   <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261013a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,7 +26,7 @@
       --accent-glow: rgba(124, 106, 247, 0.35);
       --headline: #f0eff8;
       --body: #a8a7be;
-      --muted: #5a5970;
+      --muted: #8a89a0; /* 5.8:1 on the background (was 3.0:1) */
       --amber: #f5a623;
       --teal: #38d9c0;
       --red: #f76a6a;
@@ -37,7 +37,7 @@
     body {
       background: var(--bg);
       color: var(--body);
-      font-family: 'Inter', sans-serif;
+      font-family: 'Source Sans 3', 'Source Sans Fallback A', 'Source Sans Fallback H', system-ui, sans-serif;
       font-size: 1rem;
       line-height: 1.75;
       overflow-x: hidden;
@@ -130,12 +130,13 @@
     }
 
     /* ── SCROLL REVEAL ── */
-    .reveal {
+    /* Hidden only when JavaScript can reveal it again; without JS the essay is fully visible. */
+    html.js .reveal {
       opacity: 0;
       transform: translateY(24px);
       transition: opacity 0.65s ease, transform 0.65s ease;
     }
-    .reveal.visible {
+    html.js .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -427,7 +428,11 @@
       .reveal { opacity: 1; transform: none; transition: none; }
       * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
+    .skip { position: absolute; left: -9999px; top: 0; }
+    .skip:focus { left: 1rem; top: 1rem; z-index: 10000; background: #fff; color: #111; padding: 0.6rem 1rem; border-radius: 0.4rem; outline: 2px solid #4f46e5; }
+    :focus-visible { outline: 2px solid #8b85ff; outline-offset: 3px; }
   </style>
+  <script>document.documentElement.classList.add("js")</script>
     <meta name="description" content="For over a quarter of a century, software engineering treated code syntax as its primary unit of leverage. As production systems transition to generative runtime engines, the high-leverage skill moves entirely into structural prompt composition, token safety boundaries, and validation pipeline tooling.">
   <link rel="canonical" href="https://iggym.github.io/articles/context-orchestration.html">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "The Shift From Coding to Context Orchestration", "description": "For over a quarter of a century, software engineering treated code syntax as its primary unit of leverage. As production systems transition to generative runtime engines, the high-leverage skill moves entirely into structural prompt composition, token safety boundaries, and validation pipeline tooling.", "datePublished": "2026-06-01", "author": {"@type": "Person", "name": "Iggy Mwangi", "url": "https://iggym.github.io/"}, "mainEntityOfPage": "https://iggym.github.io/articles/context-orchestration.html", "timeRequired": "PT6M"}</script>
@@ -436,6 +441,7 @@
   <script defer src="../assets/js/sw-register.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to the essay</a>
 
 <div id="progress-bar"></div>
 <div id="cursor-glow"></div>
@@ -444,6 +450,7 @@
 
   <a href="../index.html" class="back-link">← BACK TO ARCHITECT</a>
 
+  <main id="main">
   <header class="essay-header">
     <div class="eyebrow">// SYSTEMIC ARCHITECTURE</div>
     <h1 class="essay-title">The Shift From Coding<br>to Context Orchestration</h1>
@@ -594,6 +601,8 @@
       </p>
     </div>
   </div>
+
+  </main>
 
   <footer>
     <span>// SYSTEMIC ARCHITECTURE</span>
