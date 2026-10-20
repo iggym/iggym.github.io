@@ -9,7 +9,7 @@
   <meta name="description" content="Iggy Mwangi, AI systems architect with 25+ years at Apple, Sam’s Club, AT&amp;T and Contran. Compound Engineering: dependable AI built on the harness, not the model. Free tools, field guides, and open-source code.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
-  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark");if(localStorage.getItem("sim")==="hidden")document.documentElement.classList.add("sim-off");if(localStorage.getItem("season")==="off")document.documentElement.classList.add("season-off")}catch(e){}</script>
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.setAttribute("data-theme","dark");if(localStorage.getItem("sim")==="hidden")document.documentElement.classList.add("sim-off");if(localStorage.getItem("season")==="off")document.documentElement.classList.add("season-off")}catch(e){}</script>
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iggym.github.io/">
   <meta property="og:title" content="Iggy Mwangi — AI systems architect · Compound Engineering">
@@ -20,10 +20,12 @@
   <meta name="twitter:title" content="Iggy Mwangi — AI systems architect · Compound Engineering">
   <meta name="twitter:description" content="Dependable AI systems, built on the harness, not the model. Free tools, field guides, and open-source code.">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="assets/css/fonts.css?v=20261013a">
-  <link rel="stylesheet" href="assets/css/home.css?v=20261016a">
-  <link rel="stylesheet" href="assets/css/site-map.css?v=20261007a">
-  <link rel="stylesheet" href="assets/css/seasons.css?v=20261019a">
+  <link rel="preload" href="assets/fonts/fraunces-normal-300-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/source-sans-3-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/fonts.css?v=4.0.5.4">
+  <link rel="stylesheet" href="assets/css/home.css?v=4.0.5.4">
+  <link rel="stylesheet" href="assets/css/site-map.css?v=4.0.5.4">
+  <link rel="stylesheet" href="assets/css/seasons.css?v=4.0.5.4">
   <link rel="canonical" href="https://iggym.github.io/">
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "name": "Iggy Mwangi", "jobTitle": "AI Systems Architect", "url": "https://iggym.github.io/", "sameAs": ["https://www.linkedin.com/in/iggym", "https://github.com/iggym", "https://x.com/iggym"], "description": "AI systems architect with 25+ years of enterprise engineering. Compound Engineering: dependable AI systems built on the harness, not the model."}</script>
   <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Iggy Mwangi", "url": "https://iggym.github.io/"}</script>
@@ -37,15 +39,17 @@
   <header class="site-header">
     <div class="brand">
       <a class="wordmark" href="#main">Iggy Mwangi</a>
-      <span class="site-version" data-site-version title="Site version, bumped on every deployment">v4.0.5.3</span>
+      <span class="site-version" data-site-version title="Site version, bumped on every deployment">v4.0.5.4</span>
     </div>
     <nav class="nav" aria-label="Primary">
-      <a href="#tools">Tools</a>
-      <a href="#writing">Writing</a>
-      <a href="#projects">Projects</a>
-      <a href="sites/">Sites</a>
-      <a href="#contact">Work with me</a>
-      <a href="assets/resume/iggy-resume.pdf">Résumé</a>
+      <div class="nav-links">
+        <a href="#tools">Tools</a>
+        <a href="#writing">Writing</a>
+        <a href="#projects">Projects</a>
+        <a href="sites/">Sites</a>
+        <a href="#contact">Work with me</a>
+        <a href="assets/resume/iggy-resume.pdf">Résumé</a>
+      </div>
       <button type="button" class="site-map-btn" data-site-map hidden>
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
         <span class="sm-btn-label">Explore</span>
@@ -124,6 +128,11 @@
           </button>
           <span class="season-tally" id="season-tally" role="status" hidden></span>
         </p>
+        <ul class="proof" aria-label="Selected results">
+          <li><a href="#results"><b>38%</b> fewer hallucinations <span>RAG re-architecture · VynixAI</span></a></li>
+          <li><a href="#results"><b>27%</b> lower LLM spend <span>cost-aware routing · VynixAI</span></a></li>
+          <li><a href="#results"><b>30%+</b> lower cloud spend <span>FinOps · Apple</span></a></li>
+        </ul>
         <p class="previously"><span>Now</span> VynixAI · Nubla AI <span>Earlier</span> Apple · Sam’s Club · Contran · AT&amp;T <span>Since</span> 1998</p>
       </div>
 
@@ -559,7 +568,7 @@
             </article>
             <p class="role-earlier"><strong>Earlier, 1998 – 2011:</strong> AT&amp;T, Verizon, Cingular, EDS, ADP, IBM Innovation Center, BP-Amoco, Williams Communications, and others. B.Sc. Computer Science, University of Minnesota.</p>
           </div>
-          <h3 class="group-title">Results</h3>
+          <h3 class="group-title" id="results">Results</h3>
           <dl class="results">
             <div><dt>38%</dt><dd>fewer hallucinations after re-architecting our RAG pipeline <span class="res-by">VynixAI</span></dd></div>
             <div><dt>42%</dt><dd>more reliable multi-tool routing, by treating tools as state transitions <span class="res-by">VynixAI</span></dd></div>
@@ -603,12 +612,12 @@
       <a href="assets/resume/iggy-resume.pdf">Résumé</a>
     </nav>
   </footer>
-  <script defer src="assets/js/prompt-tightener.js?v=20261008a"></script>
-  <script defer src="assets/js/prompt-lint.js?v=20261008a"></script>
-  <script defer src="assets/js/theme.js?v=20261007a"></script>
-  <script defer src="assets/js/site-map.js?v=20261017a"></script>
-  <script defer src="assets/js/home.js?v=20261008a"></script>
-  <script defer src="assets/js/seasons.js?v=20261019a"></script>
+  <script defer src="assets/js/prompt-tightener.js?v=4.0.5.4"></script>
+  <script defer src="assets/js/prompt-lint.js?v=4.0.5.4"></script>
+  <script defer src="assets/js/theme.js?v=4.0.5.4"></script>
+  <script defer src="assets/js/site-map.js?v=4.0.5.4"></script>
+  <script defer src="assets/js/home.js?v=4.0.5.4"></script>
+  <script defer src="assets/js/seasons.js?v=4.0.5.4"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
 </html>

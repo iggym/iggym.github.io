@@ -1,5 +1,5 @@
-/* Light/dark theme toggle. Light is the default; a visitor's choice is
-   remembered in this browser. A tiny inline script in each page's <head>
+/* Light/dark theme toggle. Follows the device's light/dark setting until the visitor picks one;
+   that choice is remembered in this browser. A tiny inline script in each page's <head>
    applies a saved choice before the page paints, so there's no flash. */
 (function () {
   "use strict";
@@ -27,4 +27,14 @@
     btn.addEventListener("click", function () { apply(current() === "dark" ? "light" : "dark", true); });
   });
   apply(current(), false);
+
+  // With no saved choice, keep following the device setting if it changes (e.g. at sunset).
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  if (mq && mq.addEventListener) {
+    mq.addEventListener("change", function (e) {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (err) { /* storage blocked */ }
+      if (!saved) apply(e.matches ? "dark" : "light", false);
+    });
+  }
 })();

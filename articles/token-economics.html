@@ -13,7 +13,7 @@
   <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=20261013a">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
 <style>
 
   :root {
@@ -23,7 +23,7 @@
     --border: #252525;
     --text: #e8e8e8;
     --text-dim: #888;
-    --text-faint: #444;
+    --text-faint: #8a8a8a; /* 5.8:1 on the background (was 2.1:1) */
     --orange: #FF4D00;
     --orange-dim: rgba(255,77,0,0.15);
     --orange-faint: rgba(255,77,0,0.05);
@@ -33,7 +33,7 @@
     --red: #ff3333;
     --blue: #4488ff;
     --mono: 'DM Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
+    --sans: 'Source Sans 3', 'Source Sans Fallback A', 'Source Sans Fallback H', system-ui, sans-serif;
     --display: 'Fraunces', serif;
   }
 
@@ -602,6 +602,16 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
   }
+    /* Phones: sliders wrap under their labels, and the table scrolls inside its box instead of widening the page. */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    @media (max-width: 600px) {
+      .slider-row { flex-wrap: wrap; gap: 0.35rem 0.75rem; }
+      .slider-row label { min-width: 0; flex: 1 1 100%; }
+      .slider-row input[type=range] { min-width: 0; }
+    }
+    .skip { position: absolute; left: -9999px; top: 0; }
+    .skip:focus { left: 1rem; top: 1rem; z-index: 10000; background: #fff; color: #111; padding: 0.6rem 1rem; border-radius: 0.4rem; outline: 2px solid #4f46e5; }
+    :focus-visible { outline: 2px solid #8b85ff; outline-offset: 3px; }
 </style>
     <meta name="description" content="An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.">
   <link rel="canonical" href="https://iggym.github.io/articles/token-economics.html">
@@ -611,13 +621,15 @@
   <script defer src="../assets/js/sw-register.js"></script>
 </head>
 <body>
+<a class="skip" href="#main">Skip to the essay</a>
 
 <!-- NAV -->
 <nav>
   <span class="nav-brand">Token Window Economics</span>
-  <a href="https://iggym.github.io/#articles" class="nav-home">← Home</a>
+  <a href="../#writing" class="nav-home">← Home</a>
 </nav>
 
+<main id="main">
 <!-- HERO -->
 <div class="hero">
   <div class="hero-eyebrow">Architectural Review · Enterprise AI Systems · 2025</div>
@@ -1032,12 +1044,14 @@
 
 </article>
 
+</main>
+
 <footer>
   <div>
     <div class="footer-credit">Written by Iggy Mwangi · AI Systems Architect</div>
     <div class="footer-credit" style="margin-top:0.25rem;">Token Window Economics · Architectural Review · 2025</div>
   </div>
-  <a href="https://iggym.github.io/#articles" class="footer-link">← Back to Articles</a>
+  <a href="../#writing" class="footer-link">← Back to Articles</a>
 </footer>
 
 <script>

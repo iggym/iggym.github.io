@@ -15,10 +15,14 @@
   <meta name="description" content="Design an AI agent as a fixed sequence of steps with checks and retry limits, simulate what happens when a check fails, and export it as a state-machine spec, a Mermaid diagram, or a Python starter loop.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
-  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
+  <link rel="preload" href="../assets/fonts/source-sans-3-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/fraunces-normal-300-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/dm-mono-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=4.0.5.4">
   <style>
     .layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; align-items: start; }
     @media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } }
@@ -49,6 +53,11 @@
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/assets/img/icon-192.png">
   <script defer src="../assets/js/sw-register.js"></script>
+  <style>
+    /* Hold the space the starting example will fill, so the page doesn't jump when the script renders it. */
+    @media (scripting: enabled) { #steps:empty { min-height: 502px; } }
+    @media (scripting: enabled) and (max-width: 700px) { #steps:empty { min-height: 901px; } }
+  </style>
 </head>
 <body>
   <a class="skip" href="#main">Skip to main content</a>
@@ -145,9 +154,9 @@
     <p>Page views are counted by Cloudflare Web Analytics. It never receives what you type.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261007a"></script>
-  <script defer src="../assets/js/site-map.js?v=20261017a"></script>
-  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
+  <script src="../assets/js/theme.js?v=4.0.5.4"></script>
+  <script defer src="../assets/js/site-map.js?v=4.0.5.4"></script>
+  <script src="../assets/js/tool-kit.js?v=4.0.5.4"></script>
   <script>
     var KIND_LABEL = { llm: "Model call", tool: "Tool / code", check: "Check", human: "Human approval" };
     var PRESETS = {

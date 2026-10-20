@@ -15,10 +15,14 @@
   <meta name="description" content="Ask an OpenAI model and an Anthropic model the same question side by side, using your own API keys. Works in a demo mode without keys.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
-  <script>try{if(localStorage.getItem("theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <script>try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="../assets/css/tool.css?v=20261007a">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=20261007a">
+  <link rel="preload" href="../assets/fonts/source-sans-3-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/fraunces-normal-300-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../assets/fonts/dm-mono-normal-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/tool.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=4.0.5.4">
   <style>
     .answer { min-height: 14rem; max-height: 36rem; font-family: var(--sans); font-size: 1rem; }
     .turn { border-top: 1px solid var(--line); padding: 0.75rem 0; }
@@ -65,7 +69,7 @@
         <ul>
           <li>Your question goes straight from this browser to OpenAI and Anthropic, and is billed to your own accounts. It never passes through my server.</li>
           <li>Keys stay in this tab’s memory unless you tick “Remember keys on this device”. Only do that on a computer you trust, and use <strong>Forget keys</strong> to remove them.</li>
-          <li>For safety, use a key with a low spending limit. Anyone with access to this browser profile could read a remembered key.</li>
+          <li>For safety, use a key with a low spending limit. Anyone with access to this browser profile could read a remembered key, and so could any page on <code>iggym.github.io</code>, since all my GitHub Pages sites share one browser origin. Leave the box unticked unless you need it.</li>
         </ul>
       </details>
     </div>
@@ -181,9 +185,9 @@
     <p>Page views are counted by Cloudflare Web Analytics. It never receives what you type.</p>
   </footer>
 
-  <script src="../assets/js/theme.js?v=20261007a"></script>
-  <script defer src="../assets/js/site-map.js?v=20261017a"></script>
-  <script src="../assets/js/tool-kit.js?v=20261007a"></script>
+  <script src="../assets/js/theme.js?v=4.0.5.4"></script>
+  <script defer src="../assets/js/site-map.js?v=4.0.5.4"></script>
+  <script src="../assets/js/tool-kit.js?v=4.0.5.4"></script>
   <script>
     var els = {
       oaKey: document.getElementById("openai-key"),
