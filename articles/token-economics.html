@@ -2,18 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://tally.so; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com https://tally.so; frame-src https://tally.so; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="alternate" type="application/atom+xml" title="Iggy Mwangi: writing" href="../feed.xml">
 <title>Token Window Economics — Iggy Mwangi</title>
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iggym.github.io/articles/token-economics.html">
   <meta property="og:title" content="Token Window Economics — Iggy Mwangi">
-  <meta property="og:description" content="Free browser tools, essays, and open-source projects by Iggy Mwangi.">
+  <meta property="og:description" content="An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.">
+  <meta property="og:image:alt" content="Social card for Iggy Mwangi">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:site" content="@iggym">
+  <meta name="twitter:description" content="How long chat histories, multi-agent overhead, and strict output formats eat into inference latency.">
   <meta property="og:image" content="https://iggym.github.io/assets/img/social-card.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://iggym.github.io/assets/img/social-card.png">
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.5">
 <style>
 
   :root {
@@ -615,7 +620,7 @@
 </style>
     <meta name="description" content="An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.">
   <link rel="canonical" href="https://iggym.github.io/articles/token-economics.html">
-  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Token Window Economics: Managing System Context Headers", "description": "An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.", "datePublished": "2026-05-01", "author": {"@type": "Person", "name": "Iggy Mwangi", "url": "https://iggym.github.io/"}, "mainEntityOfPage": "https://iggym.github.io/articles/token-economics.html", "timeRequired": "PT4M"}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Token Window Economics: Managing System Context Headers", "description": "An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.", "datePublished": "2026-05-01", "author": {"@type": "Person", "name": "Iggy Mwangi", "url": "https://iggym.github.io/"}, "mainEntityOfPage": "https://iggym.github.io/articles/token-economics.html", "timeRequired": "PT16M"}</script>
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/assets/img/icon-192.png">
   <script defer src="../assets/js/sw-register.js"></script>
@@ -1212,8 +1217,8 @@ const conversationTurns = [
   { turn: 'T06', text: 'Asst: Exchange is also possible within 30 days...', tokens: 280, age: 8 },
   { turn: 'T07', text: 'User: Do I need the original receipt?', tokens: 145, age: 6 },
   { turn: 'T08', text: 'Asst: Receipt or order confirmation required...', tokens: 210, age: 6 },
-  { turn: 'T09', text: 'User: I can email it. My email is j@example.com', tokens: 155, age: 3 },
-  { turn: 'T10', text: 'Asst: Perfect. I\'ve noted your email...', tokens: 190, age: 3 },
+  { turn: 'T09', text: 'User: I can send the receipt from the order page.', tokens: 155, age: 3 },
+  { turn: 'T10', text: 'Asst: Perfect. I have noted the order page...', tokens: 190, age: 3 },
   { turn: 'T11', text: 'User: And the shoes were black Nike runners...', tokens: 168, age: 2 },
   { turn: 'T12', text: 'Asst: Got it — black Nike runners, size 10M...', tokens: 200, age: 2 },
   { turn: 'T13', text: 'User: Can I exchange for size 11?', tokens: 120, age: 0 },

@@ -1,6 +1,17 @@
-# GitHub Pages build settings. The backlog in tasks/ stays in the repo but is not published.
+# GitHub Pages build settings.
+# tasks/, scripts/, and tests/ stay in the repo but are not published.
+# about/ planning notes are not published.
+# Résumé generators and JSON stay out of the site. resume/index.html is the public /resume/ page.
 exclude:
   - tasks
-  - resume
   - scripts
   - tests
+  - about
+  - resume/resume.json
+  - resume/resume-short.json
+  - resume/build_docx.py
+  - resume/build_pdf.mjs
+  - resume/build_2page.py
+  - resume/build_2page_pdf.py
+  - resume/make_short.py
+  - resume/README.md

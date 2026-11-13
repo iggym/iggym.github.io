@@ -3,9 +3,9 @@
  "headline": "AI Systems Architect | Building Reliable, Scalable, Production-Grade AI Platforms",
  "location": "Dallas-Fort Worth Metroplex",
  "contact": {
-  "phone": "469-936-0164",
-  "email": "jobsiggy@gmail.com",
   "linkedin": "linkedin.com/in/iggym",
+  "x": "x.com/iggym",
+  "github": "github.com/iggym",
   "web": "iggym.github.io"
  },
  "summary": [
@@ -86,7 +86,7 @@
   {
    "company": "Nubla AI",
    "title": "Cloud Architect and Machine Learning Engineer",
-   "date": "January 2024 - Present",
+   "date": "January 2024 - December 2024",
    "location": "Austin, TX",
    "items": [
     {
@@ -199,14 +199,14 @@
  "education": [
   {
    "school": "University of Minnesota",
-   "degree": "B.Sc., Computer Science",
+   "degree": "B.Sc. Computer Science",
    "dates": "1996–2001"
   }
  ],
  "earlier": [
   {
    "company": "FL Global",
-   "title": "",
+   "title": "Hybrid Cloud Architect and Developer (side project alongside Sam's Club)",
    "date": "2018–19"
   },
   {

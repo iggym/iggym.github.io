@@ -330,6 +330,12 @@ html.js.motion .site-card.reveal, html.js.motion .sites-note.reveal {
 html.js.motion .site-card.reveal.in, html.js.motion .sites-note.reveal.in { opacity: 1; transform: none; }
 html.js.motion .site-card.reveal.in:hover, html.js.motion .site-card.reveal.in:focus-within { transform: translateY(-4px); }
 
+/* Off-axis writing stays on the page, with less visual weight than the field guides. */
+.site-group-quiet .site-shot { max-height: 8.5rem; }
+.site-group-quiet .site-card { box-shadow: none; }
+.site-group-quiet .site-group-head h2 { font-size: 1.45rem; }
+.sites-extra { margin: 1.25rem 0 0; color: var(--muted); max-width: 62ch; }
+
 /* ---------- Small screens ---------- */
 @media (max-width: 640px) {
   .sites-hero { padding-top: 2rem; }

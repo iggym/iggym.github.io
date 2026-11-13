@@ -11,6 +11,27 @@
   "use strict";
   var root = document.documentElement;
   var toggle = document.getElementById("season-toggle");
+  function seasonCssHref() {
+    var styled = document.querySelector('link[href*="assets/css/"]');
+    var prefix = "";
+    var v = "";
+    if (styled) {
+      var href = styled.getAttribute("href") || "";
+      var at = href.indexOf("assets/");
+      if (at >= 0) prefix = href.slice(0, at);
+      var q = href.split("?v=")[1];
+      if (q) v = "?v=" + q;
+    }
+    return prefix + "assets/css/seasons.css" + v;
+  }
+  function ensureSeasonCss() {
+    if (document.querySelector("link[data-seasons]")) return;
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = seasonCssHref();
+    link.setAttribute("data-seasons", "");
+    document.head.appendChild(link);
+  }
   var label = toggle && toggle.querySelector(".season-label");
   var tally = document.getElementById("season-tally");
   if (!toggle || !window.requestAnimationFrame) return;
@@ -47,9 +68,21 @@
   if (season.extra) root.setAttribute("data-season-extra", season.extra);
 
   // ---- Canvas ----
+  var savedEarly = null;
+  var forcedEarly = null;
+  try { savedEarly = localStorage.getItem("season"); } catch (e) { /* storage blocked */ }
+  try { forcedEarly = new URLSearchParams(location.search).get("season"); } catch (e) { /* old browser */ }
+  var seasonsOn = forcedEarly !== "off" && savedEarly !== "off";
+  if (seasonsOn) ensureSeasonCss();
   var canvas = document.createElement("canvas");
   canvas.className = "season-layer";
   canvas.setAttribute("aria-hidden", "true");
+  // Fixed and non-interactive even before seasons.css arrives, and hidden when the effect is off.
+  canvas.style.position = "fixed";
+  canvas.style.inset = "0";
+  canvas.style.pointerEvents = "none";
+  canvas.style.zIndex = "40";
+  if (!seasonsOn) canvas.style.display = "none";
   document.body.appendChild(canvas);
   var ctx = canvas.getContext("2d");
   var W = 0, H = 0, dpr = 1;
@@ -335,6 +368,8 @@
 
   // ---- On/off switch, remembered ----
   function set(on, save) {
+    if (on) ensureSeasonCss();
+    canvas.style.display = on ? "" : "none";
     root.classList.toggle("season-off", !on);
     toggle.setAttribute("aria-pressed", on ? "false" : "true");
     label.textContent = on ? names.off : names.on;

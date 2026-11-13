@@ -2,28 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://static.cloudflareinsights.com https://tally.so; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://cloudflareinsights.com https://tally.so; frame-src https://tally.so; object-src 'none'; base-uri 'self'; form-action 'self' https://tally.so">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="alternate" type="application/atom+xml" title="Iggy Mwangi: writing" href="../feed.xml">
-  <title>Content sites — Iggy Mwangi</title>
-  <meta name="description" content="Seventeen standalone sites by Iggy Mwangi: AI production patterns, an incident runbook, ops and field notes, a weekly briefing, a tool bench, plus essays on maps, minds, and reading.">
+  <title>Field guides and other writing — Iggy Mwangi</title>
+  <meta name="description" content="Field guides for production AI and forward-deployed work by Iggy Mwangi, including FDE Field Notes, plus other writing that is not part of that hiring path.">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f8f7f4">
   <script>try{var t=localStorage.getItem("theme");if(t==="dark"||(!t&&matchMedia("(prefers-color-scheme: dark)").matches))document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://iggym.github.io/sites/">
-  <meta property="og:title" content="Content sites — Iggy Mwangi">
-  <meta property="og:description" content="Seventeen standalone sites on building AI that survives production — plus a few about maps, minds, and reading.">
+  <meta property="og:title" content="Field guides and other writing — Iggy Mwangi">
+  <meta property="og:description" content="Field guides for production AI and forward-deployed work, including FDE Field Notes. Other writing is grouped separately.">
   <meta property="og:image" content="https://iggym.github.io/assets/img/sites/applied-ai-engineering.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Content sites — Iggy Mwangi">
-  <meta name="twitter:description" content="Seventeen standalone sites on building AI that survives production — plus a few about maps, minds, and reading.">
+  <meta name="twitter:title" content="Field guides and other writing — Iggy Mwangi">
+  <meta name="twitter:description" content="Field guides for production AI and forward-deployed work, including FDE Field Notes. Other writing is grouped separately.">
   <link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
   <link rel="canonical" href="https://iggym.github.io/sites/">
-  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.4">
-  <link rel="stylesheet" href="../assets/css/home.css?v=4.0.5.4">
-  <link rel="stylesheet" href="../assets/css/sites.css?v=4.0.5.4">
-  <link rel="stylesheet" href="../assets/css/site-map.css?v=4.0.5.4">
+  <link rel="stylesheet" href="../assets/css/fonts.css?v=4.0.5.5">
+  <link rel="stylesheet" href="../assets/css/home.css?v=4.0.5.5">
+  <link rel="stylesheet" href="../assets/css/sites.css?v=4.0.5.5">
+  <link rel="stylesheet" href="../assets/css/site-map.css?v=4.0.5.5" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="../assets/css/site-map.css?v=4.0.5.5"></noscript>
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="apple-touch-icon" href="/assets/img/icon-192.png">
   <script defer src="../assets/js/sw-register.js"></script>
@@ -35,12 +36,14 @@
     <a class="wordmark" href="../">Iggy Mwangi</a>
     <nav class="nav" aria-label="Primary">
       <div class="nav-links">
-        <a href="../#tools">Tools</a>
-        <a href="../#writing">Writing</a>
-        <a href="../#projects">Projects</a>
-        <a href="./" aria-current="page">Sites</a>
         <a href="../#contact">Work with me</a>
-        <a href="../assets/resume/iggy-resume.pdf">Résumé</a>
+        <a href="../now/">Now</a>
+        <a href="../#experience">Experience</a>
+        <a href="../#projects">Projects</a>
+        <a href="../#writing">Writing</a>
+        <a href="../#tools">Tools</a>
+        <a href="./" aria-current="page">Sites</a>
+        <a href="../assets/resume/iggy-resume-2page.pdf">Résumé</a>
       </div>
       <button type="button" class="site-map-btn" data-site-map hidden>
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
@@ -56,12 +59,12 @@
 
   <main id="main" tabindex="-1">
     <section class="sites-hero" aria-labelledby="sites-title">
-      <p class="availability"><span class="pulse" aria-hidden="true"></span> 17 sites · 5 subjects · nothing to sign up for</p>
-      <h1 id="sites-title">Seventeen sites, one subject each.</h1>
-      <p class="lede">Every subject gets its own place to live: a pattern library, an incident runbook, field notes from the pager, a weekly briefing, a bench of small tools — plus a few essays about maps, minds, and reading that have nothing to do with AI. Free to read, nothing to install, and each one keeps its own hours.</p>
+      <p class="availability"><span class="pulse" aria-hidden="true"></span> Field guides first · other writing after</p>
+      <h1 id="sites-title">Field guides for the work. Other writing, further down.</h1>
+      <p class="lede">Start with Applied AI Engineering, Production AI Patterns, Agentic Engineering, The AI Runbook, FDE Field Notes, Systems Bench, and Agentic Infra Weekly. The rest of the seventeen sites, including essays on reading, maps, and minds, are in <a href="#other">Other writing</a>.</p>
       <div class="actions">
-        <a class="button" href="#patterns">Start with the patterns</a>
-        <a class="button button-quiet" href="../">Back to the tools</a>
+        <a class="button" href="#for-hiring">Start with the field guides</a>
+        <a class="button button-quiet" href="../#experience">Back to experience</a>
       </div>
     </section>
 
@@ -150,19 +153,17 @@
 
     <nav class="jump" aria-label="Jump to a subject">
       <ul>
-        <li><a href="#patterns"><span class="swatch" aria-hidden="true" style="--c: #7c3aed"></span>Design and patterns <span class="jump-count">4</span></a></li>
-        <li><a href="#operations"><span class="swatch" aria-hidden="true" style="--c: #e11d48"></span>Production and operations <span class="jump-count">4</span></a></li>
-        <li><a href="#keeping-up"><span class="swatch" aria-hidden="true" style="--c: #f97316"></span>Keeping up <span class="jump-count">3</span></a></li>
-        <li><a href="#reading"><span class="swatch" aria-hidden="true" style="--c: #c026d3"></span>Reading and attention <span class="jump-count">2</span></a></li>
-        <li><a href="#wider"><span class="swatch" aria-hidden="true" style="--c: #0d9488"></span>Minds, maps, and the wider argument <span class="jump-count">4</span></a></li>
+        <li><a href="#for-hiring"><span class="swatch" aria-hidden="true" style="--c: #e11d48"></span>For this kind of work <span class="jump-count">7</span></a></li>
+        <li><a href="#more-ai"><span class="swatch" aria-hidden="true" style="--c: #7c3aed"></span>More on AI systems <span class="jump-count">4</span></a></li>
+        <li><a href="#other"><span class="swatch" aria-hidden="true" style="--c: #0d9488"></span>Other writing <span class="jump-count">6</span></a></li>
       </ul>
     </nav>
 
     <div class="sites-list">
-      <section class="site-group" id="patterns" aria-labelledby="patterns-title" style="--group-accent: #7c3aed">
+      <section class="site-group" id="for-hiring" aria-labelledby="for-hiring-title" style="--group-accent: #e11d48">
         <header class="site-group-head">
-          <h2 id="patterns-title"><span class="group-num" aria-hidden="true">01</span>Design and patterns</h2>
-          <p class="group-blurb">How the systems get put together, named, and argued for. <span class="group-count">4 sites</span></p>
+          <h2 id="for-hiring-title"><span class="group-num" aria-hidden="true">01</span>For this kind of work</h2>
+          <p class="group-blurb">The set to open for AI platform, agent infrastructure, and forward-deployed roles. <span class="group-count">7 sites</span></p>
         </header>
         <ul class="site-grid">
         <li class="site-card" style="--card-accent: #ff5a36">
@@ -210,45 +211,6 @@
             </p>
           </div>
         </li>
-        <li class="site-card" style="--card-accent: #84cc16">
-          <a class="site-shot" href="https://iggym-awesome-ai-architecture.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
-            <img src="../assets/img/sites/awesome-ai-architecture.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
-            <span class="site-shot-edge" aria-hidden="true"></span>
-          </a>
-          <div class="site-body">
-            <p class="site-kind">Reading list · curated</p>
-            <h3 class="site-name"><a href="https://iggym-awesome-ai-architecture.pages.dev/" rel="noopener">Awesome AI Architecture</a></h3>
-            <p class="site-desc">A map of AI infrastructure tooling, organised by the failure mode each tool addresses, with explicit exclusion criteria instead of a link dump.</p>
-            <p class="site-links">
-              <a class="site-go" href="https://iggym-awesome-ai-architecture.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
-              <a class="site-repo" href="https://github.com/iggym/awesome-ai-architecture" rel="noopener">Source on GitHub</a>
-            </p>
-          </div>
-        </li>
-        </ul>
-      </section>
-
-      <section class="site-group" id="operations" aria-labelledby="operations-title" style="--group-accent: #e11d48">
-        <header class="site-group-head">
-          <h2 id="operations-title"><span class="group-num" aria-hidden="true">02</span>Production and operations</h2>
-          <p class="group-blurb">What the pager, the customer site, and the ten-thousandth user teach you. <span class="group-count">4 sites</span></p>
-        </header>
-        <ul class="site-grid">
-        <li class="site-card" style="--card-accent: #06b6d4">
-          <a class="site-shot" href="https://iggym-scaling-ai-systems.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
-            <img src="../assets/img/sites/scaling-ai-systems.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
-            <span class="site-shot-edge" aria-hidden="true"></span>
-          </a>
-          <div class="site-body">
-            <p class="site-kind">Case studies · cost anatomy</p>
-            <h3 class="site-name"><a href="https://iggym-scaling-ai-systems.pages.dev/" rel="noopener">Scaling AI Systems</a></h3>
-            <p class="site-desc">What breaks between the pilot and the ten-thousandth user — boundary problems, spend curves, and the failures that only turn up at real scale.</p>
-            <p class="site-links">
-              <a class="site-go" href="https://iggym-scaling-ai-systems.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
-              <a class="site-repo" href="https://github.com/iggym/scaling-ai-systems" rel="noopener">Source on GitHub</a>
-            </p>
-          </div>
-        </li>
         <li class="site-card" style="--card-accent: #dc2626">
           <a class="site-shot" href="https://iggym-the-ai-runbook.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
             <img src="../assets/img/sites/the-ai-runbook.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
@@ -261,21 +223,6 @@
             <p class="site-links">
               <a class="site-go" href="https://iggym-the-ai-runbook.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
               <a class="site-repo" href="https://github.com/iggym/the-ai-runbook" rel="noopener">Source on GitHub</a>
-            </p>
-          </div>
-        </li>
-        <li class="site-card" style="--card-accent: #10b981">
-          <a class="site-shot" href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener" tabindex="-1" aria-hidden="true">
-            <img src="../assets/img/sites/ai-ops-field-notes.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
-            <span class="site-shot-edge" aria-hidden="true"></span>
-          </a>
-          <div class="site-body">
-            <p class="site-kind">Dispatches · on call</p>
-            <h3 class="site-name"><a href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener">AI Ops Field Notes</a></h3>
-            <p class="site-desc">Short, sharp incident dispatches from AI systems in production — war-story shaped, with no lessons-learned headers.</p>
-            <p class="site-links">
-              <a class="site-go" href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
-              <a class="site-repo" href="https://github.com/iggym/ai-ops-field-notes" rel="noopener">Source on GitHub</a>
             </p>
           </div>
         </li>
@@ -294,15 +241,21 @@
             </p>
           </div>
         </li>
-        </ul>
-      </section>
-
-      <section class="site-group" id="keeping-up" aria-labelledby="keeping-up-title" style="--group-accent: #f97316">
-        <header class="site-group-head">
-          <h2 id="keeping-up-title"><span class="group-num" aria-hidden="true">03</span>Keeping up</h2>
-          <p class="group-blurb">Briefings, benches, and a library you can come back to. <span class="group-count">3 sites</span></p>
-        </header>
-        <ul class="site-grid">
+        <li class="site-card" style="--card-accent: #34d399">
+          <a class="site-shot" href="https://iggym-systems-bench.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/systems-bench.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Workbench · 24 tools</p>
+            <h3 class="site-name"><a href="https://iggym-systems-bench.pages.dev/" rel="noopener">Systems Bench</a></h3>
+            <p class="site-desc">Single-purpose, client-side tools for agent harnesses, loops, workflows, evals, cost, safety, and observability. No accounts, no telemetry.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym-systems-bench.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/systems-bench" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
         <li class="site-card" style="--card-accent: #ff6b00">
           <a class="site-shot" href="https://iggym-agentic-infra-weekly.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
             <img src="../assets/img/sites/agentic-infra-weekly.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
@@ -318,18 +271,57 @@
             </p>
           </div>
         </li>
-        <li class="site-card" style="--card-accent: #34d399">
-          <a class="site-shot" href="https://iggym-systems-bench.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
-            <img src="../assets/img/sites/systems-bench.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+        </ul>
+      </section>
+
+      <section class="site-group" id="more-ai" aria-labelledby="more-ai-title" style="--group-accent: #7c3aed">
+        <header class="site-group-head">
+          <h2 id="more-ai-title"><span class="group-num" aria-hidden="true">02</span>More on AI systems</h2>
+          <p class="group-blurb">Still about production AI. Not the first seven. <span class="group-count">4 sites</span></p>
+        </header>
+        <ul class="site-grid">
+        <li class="site-card" style="--card-accent: #84cc16">
+          <a class="site-shot" href="https://iggym-awesome-ai-architecture.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/awesome-ai-architecture.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
             <span class="site-shot-edge" aria-hidden="true"></span>
           </a>
           <div class="site-body">
-            <p class="site-kind">Workbench · 24 tools</p>
-            <h3 class="site-name"><a href="https://iggym-systems-bench.pages.dev/" rel="noopener">Systems Bench</a></h3>
-            <p class="site-desc">Single-purpose, client-side tools for agent harnesses, loops, workflows, evals, cost, safety, and observability. No accounts, no telemetry.</p>
+            <p class="site-kind">Reading list · curated</p>
+            <h3 class="site-name"><a href="https://iggym-awesome-ai-architecture.pages.dev/" rel="noopener">Awesome AI Architecture</a></h3>
+            <p class="site-desc">A map of AI infrastructure tooling, organised by the failure mode each tool addresses, with explicit exclusion criteria instead of a link dump.</p>
             <p class="site-links">
-              <a class="site-go" href="https://iggym-systems-bench.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
-              <a class="site-repo" href="https://github.com/iggym/systems-bench" rel="noopener">Source on GitHub</a>
+              <a class="site-go" href="https://iggym-awesome-ai-architecture.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/awesome-ai-architecture" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #06b6d4">
+          <a class="site-shot" href="https://iggym-scaling-ai-systems.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/scaling-ai-systems.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Case studies · cost anatomy</p>
+            <h3 class="site-name"><a href="https://iggym-scaling-ai-systems.pages.dev/" rel="noopener">Scaling AI Systems</a></h3>
+            <p class="site-desc">What breaks between the pilot and the ten-thousandth user — boundary problems, spend curves, and the failures that only turn up at real scale.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym-scaling-ai-systems.pages.dev/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/scaling-ai-systems" rel="noopener">Source on GitHub</a>
+            </p>
+          </div>
+        </li>
+        <li class="site-card" style="--card-accent: #10b981">
+          <a class="site-shot" href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener" tabindex="-1" aria-hidden="true">
+            <img src="../assets/img/sites/ai-ops-field-notes.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
+            <span class="site-shot-edge" aria-hidden="true"></span>
+          </a>
+          <div class="site-body">
+            <p class="site-kind">Dispatches · on call</p>
+            <h3 class="site-name"><a href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener">AI Ops Field Notes</a></h3>
+            <p class="site-desc">Short, sharp incident dispatches from AI systems in production — war-story shaped, with no lessons-learned headers.</p>
+            <p class="site-links">
+              <a class="site-go" href="https://iggym.github.io/ai-ops-field-notes/" rel="noopener">Visit site <span aria-hidden="true">→</span></a>
+              <a class="site-repo" href="https://github.com/iggym/ai-ops-field-notes" rel="noopener">Source on GitHub</a>
             </p>
           </div>
         </li>
@@ -351,10 +343,10 @@
         </ul>
       </section>
 
-      <section class="site-group" id="reading" aria-labelledby="reading-title" style="--group-accent: #c026d3">
+      <section class="site-group site-group-quiet" id="other" aria-labelledby="other-title" style="--group-accent: #0d9488">
         <header class="site-group-head">
-          <h2 id="reading-title"><span class="group-num" aria-hidden="true">04</span>Reading and attention</h2>
-          <p class="group-blurb">How we take things in, when everything is designed to interrupt. <span class="group-count">2 sites</span></p>
+          <h2 id="other-title"><span class="group-num" aria-hidden="true">03</span>Other writing</h2>
+          <p class="group-blurb">Not the hiring path. Maps, minds, reading, and a consumer-market essay. <span class="group-count">6 sites</span></p>
         </header>
         <ul class="site-grid">
         <li class="site-card" style="--card-accent: #d97706">
@@ -387,15 +379,6 @@
             </p>
           </div>
         </li>
-        </ul>
-      </section>
-
-      <section class="site-group" id="wider" aria-labelledby="wider-title" style="--group-accent: #0d9488">
-        <header class="site-group-head">
-          <h2 id="wider-title"><span class="group-num" aria-hidden="true">05</span>Minds, maps, and the wider argument</h2>
-          <p class="group-blurb">Where the AI work meets history, attention, and where we all come from. <span class="group-count">4 sites</span></p>
-        </header>
-        <ul class="site-grid">
         <li class="site-card" style="--card-accent: #059669">
           <a class="site-shot" href="https://iggym-cognitio-viva.pages.dev/" rel="noopener" tabindex="-1" aria-hidden="true">
             <img src="../assets/img/sites/cognitio-viva.jpg" alt="" width="1000" height="625" loading="lazy" decoding="async">
@@ -458,11 +441,12 @@
         </li>
         </ul>
       </section>
+      <p class="sites-extra">Also, not one of the seventeen: <a href="https://iggym-everyday-ai-done-right.pages.dev/" rel="noopener">Everyday AI, done right</a>, a companion site on using AI well in everyday work.</p>
     </div>
 
     <section class="sites-note" aria-labelledby="note-title">
       <h2 id="note-title">How these are made</h2>
-      <p>Same rules as the rest of this site: hand-written HTML, CSS, and a little JavaScript, no build step and no framework. They work without JavaScript, follow your light or dark setting, keep no accounts, and don’t track you. Each one lives in its own repository, so the source link on any card takes you straight to the code.</p>
+      <p>Same rules as the homepage: hand-written HTML, CSS, and a little JavaScript, no build step and no framework. They work without JavaScript and follow your light or dark setting. This index counts anonymous page views with Cloudflare Web Analytics, which doesn’t use cookies. Each subject site lives in its own repository, so the source link on a card takes you to that code. This page doesn’t describe analytics on those other sites.</p>
       <p>If one of them is useful — or hard to read on your device — I’d like to hear about it. The contact links are on <a href="../#contact">the homepage</a>.</p>
       <div class="actions">
         <a class="button button-quiet" href="../#tools">Try the browser tools</a>
@@ -480,13 +464,13 @@
       <a href="https://github.com/iggym" rel="noopener">GitHub</a>
       <a href="https://www.linkedin.com/in/iggym" rel="noopener">LinkedIn</a>
       <a href="https://x.com/iggym" rel="noopener">X</a>
-      <a href="../assets/resume/iggy-resume.pdf">Résumé</a>
+      <a href="../assets/resume/iggy-resume-2page.pdf">Résumé</a>
     </nav>
   </footer>
 
-  <script defer src="../assets/js/theme.js?v=4.0.5.4"></script>
-  <script defer src="../assets/js/site-map.js?v=4.0.5.4"></script>
-  <script defer src="../assets/js/sites.js?v=4.0.5.4"></script>
+  <script defer src="../assets/js/theme.js?v=4.0.5.5"></script>
+  <script defer src="../assets/js/site-map.js?v=4.0.5.5"></script>
+  <script defer src="../assets/js/sites.js?v=4.0.5.5"></script>
   <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "bc1c0bc20ae642aaaed526b3de055796"}'></script>
 </body>
 </html>

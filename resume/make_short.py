@@ -29,7 +29,9 @@ for r in d['roles']:
     else:
         years = re.findall(r'\d{4}', r['date'])
         span = years[0] if len(years) == 1 or years[0] == years[-1] else f"{years[0]}–{years[-1][2:]}"
-        earlier.append({'company': r['company'], 'title': '', 'date': span})
+        # Keep a side-project label so FL Global is not flattened into a job title.
+        title = r['title'] if 'side project' in r.get('title', '').lower() else ''
+        earlier.append({'company': r['company'], 'title': title, 'date': span})
 
 short = {**d, 'roles': short_roles, 'earlier': earlier, 'compact': True}
 json.dump(short, open(os.path.join(HERE, 'resume-short.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

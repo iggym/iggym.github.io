@@ -11,8 +11,11 @@
 
   var SECTIONS = [
     { title: "Start here", items: [
-      { name: "Try it: make a prompt clearer", href: "#demo", desc: "Paste a prompt and get a score, a fix list, and a clearer rewrite." },
-      { name: "What brings you here?", href: "#start", desc: "Four starting points depending on what you need." }
+      { name: "For hiring managers", href: "#experience", desc: "Experience, public proof, and results under NDA." },
+      { name: "Work with me", href: "#contact", desc: "Staff and Principal AI Platform, agent infrastructure, applied AI, and forward-deployed roles." },
+      { name: "Now", href: "now/", desc: "A short hiring page: roles, résumé, and how to reach me." },
+      { name: "What brings you here?", href: "#start", desc: "Hire, use a tool, or read." },
+      { name: "Try it: make a prompt clearer", href: "#demo", desc: "Paste a prompt and get a score, a fix list, and a clearer rewrite." }
     ] },
     { title: "Tools", note: "Free, single-page tools", items: [
       { name: "Prompt Matrix Evaluator", href: "tools/prompt-matrix-evaluator.html", desc: "Score a prompt, fix gaps in one click, get a structured rewrite.", tag: "local" },
@@ -29,26 +32,30 @@
     ] },
     { title: "Writing", items: [
       { name: "The shift from coding to context orchestration", href: "articles/context-orchestration.html", desc: "Essay · 6 min read" },
-      { name: "Token window economics", href: "articles/token-economics.html", desc: "Essay · 4 min read" },
-      { name: "The AI Runbook", href: "https://github.com/iggym/the-ai-runbook", desc: "What to do when an AI feature breaks." },
-      { name: "Production AI Patterns", href: "https://github.com/iggym/production-ai-patterns", desc: "Patterns for AI systems under real traffic." },
-      { name: "All writing", href: "#writing", desc: "Essays, guides, and reading lists." }
+      { name: "Token window economics", href: "articles/token-economics.html", desc: "Essay · 16 min read" },
+      { name: "FDE Field Notes", href: "https://iggym-fde-field-notes.pages.dev/", desc: "Forward-deployed field notes." },
+      { name: "The AI Runbook", href: "https://iggym-the-ai-runbook.pages.dev/", desc: "What to do when an AI feature breaks." },
+      { name: "Production AI Patterns", href: "https://iggym-production-ai-patterns.pages.dev/", desc: "Patterns for AI systems under real traffic." },
+      { name: "All writing", href: "#writing", desc: "Field guides and two essays." }
     ] },
-    { title: "Content sites", note: "17 standalone sites, one per subject", items: [
-      { name: "All content sites", href: "sites/", desc: "Every site I keep, grouped by subject." },
+    { title: "Content sites", note: "Hiring-relevant guides first", items: [
+      { name: "All content sites", href: "sites/", desc: "Field guides first. Other writing is grouped at the bottom." },
+      { name: "FDE Field Notes", href: "https://iggym-fde-field-notes.pages.dev/", desc: "Forward-deployed discovery and customer judgment." },
       { name: "Applied AI Engineering", href: "https://iggym-applied-ai-engineering.pages.dev/", desc: "Where the patterns add up to an argument." },
       { name: "Production AI Patterns", href: "https://iggym-production-ai-patterns.pages.dev/", desc: "A pattern language for AI under real traffic." },
       { name: "The AI Runbook", href: "https://iggym-the-ai-runbook.pages.dev/", desc: "Incident procedures to read at 3am." },
       { name: "Agentic Infra Weekly", href: "https://iggym-agentic-infra-weekly.pages.dev/", desc: "A weekly briefing on agent infrastructure." },
       { name: "Systems Bench", href: "https://iggym-systems-bench.pages.dev/", desc: "24 small tools for AI systems work." },
-      { name: "One Origin", href: "https://one-origin.pages.dev/", desc: "The true size of Africa, and where every line begins." },
-      { name: "Beyond AI", href: "sites/#reading", desc: "Essays on reading, attention, and history." }
+      { name: "Other writing", href: "sites/#other", desc: "Reading, maps, and essays that are not the hiring path." }
     ] },
     { title: "Projects & contact", items: [
-      { name: "Open-source projects", href: "#projects", desc: "Guardrails, audit tools, and context utilities." },
-      { name: "Work with me", href: "#contact", desc: "What I help with and how to get in touch." },
-      { name: "Résumé", href: "#contact", desc: "Full PDF, two-page PDF, or editable Word, under Work with me." },
+      { name: "Compound Engineering projects", href: "#projects", desc: "Agent supervisor, policy gate, evals, and model-change control. Not a job." },
+      { name: "Where Is The Compute", href: "https://where-is-the-compute.pages.dev/", desc: "Sourced tracker of AI compute by lab." },
+      { name: "Which Agent", href: "https://which-agent.pages.dev/", desc: "Independent guide comparing 10 AI agents." },
+      { name: "Work with me", href: "#contact", desc: "X, GitHub, and LinkedIn. Résumé downloads." },
+      { name: "2-page résumé", href: "assets/resume/iggy-resume-2page.pdf", desc: "The résumé to start with." },
       { name: "GitHub", href: "https://github.com/iggym", desc: "All code." },
+      { name: "X", href: "https://x.com/iggym", desc: "Message me." },
       { name: "LinkedIn", href: "https://www.linkedin.com/in/iggym", desc: "Message me." }
     ] }
   ];

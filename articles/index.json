@@ -10,7 +10,7 @@
     "title": "Token Window Economics: Managing System Context Headers",
     "excerpt": "An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems.",
     "date": "MAY 2026",
-    "readTime": "4 min",
+    "readTime": "16 min",
     "url": "articles/token-economics.html"
   }
 ]

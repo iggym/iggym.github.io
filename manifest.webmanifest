@@ -1,7 +1,7 @@
 {
-  "name": "Iggy Mwangi: tools and notes for building with AI",
+  "name": "Iggy Mwangi — AI systems architect",
   "short_name": "Iggy Mwangi",
-  "description": "Free browser tools for prompts, context, and agent workflows. Essays and open-source projects.",
+  "description": "Agent infrastructure and AI platform work. Field guides, browser tools, and open-source projects.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
