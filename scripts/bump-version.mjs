@@ -40,7 +40,7 @@ writeFileSync(home, updated);
 // Stamp ?v= on local asset links in every page (and the tool header template).
 function pages(dir, out = []) {
   for (const name of readdirSync(dir)) {
-    if (name.startsWith('.') || ['node_modules', 'tasks', 'resume', 'tests'].includes(name)) continue;
+    if (name.startsWith('.') || ['node_modules', 'tasks', 'tests'].includes(name)) continue;
     const p = join(dir, name);
     if (statSync(p).isDirectory()) pages(p, out);
     else if (name.endsWith('.html')) out.push(p);

@@ -1,8 +1,8 @@
-// Build the PDF résumé from resume.json with headless Chromium.
-// Needs Playwright (dev tool only; the site itself has no dependencies).
+// Build the PDF résumé from resume.json with headless Chrome.
 // Usage: node build_pdf.mjs OUT.pdf [SOURCE.json]
-import { chromium } from 'playwright';
+// Public copies never print a phone number or an email address.
 import { readFileSync, writeFileSync, unlinkSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -61,7 +61,7 @@ li::marker { color: #4338ca; }
 </style></head><body>
 <h1>${esc(d.name)}</h1>
 <p class="headline">${esc(d.headline)}</p>
-<p class="contact">${esc(d.location)} · ${esc(d.contact.phone)} · ${esc(d.contact.email)} · ${esc(d.contact.linkedin)} · ${esc(d.contact.web)}</p>
+<p class="contact">${esc([d.location, d.contact.linkedin, d.contact.x, d.contact.github, d.contact.web].filter(Boolean).join(' · '))}</p>
 <h2>Summary</h2>
 ${d.summary.map((p) => `<p>${esc(p)}</p>`).join('')}
 <ul class="focus">${d.focus.map(([k, v]) => `<li><b>${esc(k)}:</b> ${esc(v)}</li>`).join('')}</ul>
@@ -76,18 +76,18 @@ ${d.education.map((e) => `<p class="edu"><b>${esc(e.school)}</b><br>${esc(e.degr
 
 const tmp = join(here, '.resume-render.html');
 writeFileSync(tmp, html, 'utf8');
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
-try {
-  const page = await browser.newPage();
-  await page.goto('file://' + tmp, { waitUntil: 'load' });
-  await page.evaluate(() => document.fonts.ready);
-  await page.pdf({
-    path: out, format: 'Letter', printBackground: true, preferCSSPageSize: true,
-    displayHeaderFooter: true, headerTemplate: '<span></span>',
-    footerTemplate: `<div style="width:100%;font-size:7.5pt;font-family:'DM Mono',monospace;color:#8a8c94;padding:0 0.6in;display:flex;justify-content:space-between"><span>${esc(d.name)} · résumé</span><span>Page <span class="pageNumber"></span> of <span class="totalPages"></span></span></div>`,
-  });
-  console.log('wrote', out);
-} finally {
-  await browser.close();
-  unlinkSync(tmp);
+const chrome = process.env.CHROME_PATH || '/usr/bin/google-chrome';
+const printed = spawnSync(chrome, [
+  '--headless=new',
+  '--disable-gpu',
+  '--no-sandbox',
+  '--no-pdf-header-footer',
+  `--print-to-pdf=${out}`,
+  `file://${tmp}`,
+], { encoding: 'utf8' });
+unlinkSync(tmp);
+if (printed.status !== 0) {
+  console.error(printed.stderr || printed.stdout);
+  process.exit(printed.status || 1);
 }
+console.log('wrote', out);

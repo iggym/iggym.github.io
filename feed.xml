@@ -21,6 +21,6 @@
     <id>https://iggym.github.io/articles/token-economics.html</id>
     <published>2026-05-01T00:00:00Z</published>
     <updated>2026-05-01T00:00:00Z</updated>
-    <summary>An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems. (4 min read)</summary>
+    <summary>An architectural review analyzing how long-tail conversation data, multi-agent overhead parameters, and strict JSON output schema rules quickly impact inference latency budgets inside production enterprise ecosystems. (16 min read)</summary>
   </entry>
 </feed>

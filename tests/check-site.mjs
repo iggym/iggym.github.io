@@ -6,7 +6,7 @@ import { join, dirname, relative, resolve, extname } from 'node:path';
 
 const ROOT = resolve(new URL('..', import.meta.url).pathname);
 const EXTERNAL_SCRIPT_HOSTS = new Set(['static.cloudflareinsights.com']); // disclosed on the homepage
-const SKIP_DIRS = new Set(['.git', 'node_modules', 'tests', 'tasks', 'scripts', 'resume']);
+const SKIP_DIRS = new Set(['.git', 'node_modules', 'tests', 'tasks', 'scripts']);
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir)) {

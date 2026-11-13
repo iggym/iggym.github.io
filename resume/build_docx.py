@@ -59,7 +59,12 @@ def main(out, src=SRC):
     r = h.add_run(d['headline']); r.font.size = Pt(11); r.font.color.rgb = ACCENT
     c = d['contact']
     contact = doc.add_paragraph(); spacing(contact, after=2)
-    contact.add_run(f"{d['location']}  ·  {c['phone']}  ·  {c['email']}  ·  {c['linkedin']}  ·  {c['web']}").font.size = Pt(9)
+    # Public copies never include a phone number or email address.
+    bits = [d['location']]
+    for key in ('linkedin', 'x', 'github', 'web'):
+        if c.get(key):
+            bits.append(c[key])
+    contact.add_run('  ·  '.join(bits)).font.size = Pt(9)
 
     heading(doc, 'Summary')
     for para in d['summary']:

@@ -1,121 +1,42 @@
-<div align="center">
+# iggym.github.io
 
-### AI Agent Architect · Software Factory Creator · Systems Engineer
+Personal site for Iggy Mwangi, AI systems architect. The live site is [https://iggym.github.io](https://iggym.github.io).
 
-I build autonomous systems that compress months of engineering into days —
-not by working harder, but by engineering the infrastructure that works without me.
+He is open to Staff and Principal AI Platform, agent-infrastructure, applied AI architect, and forward-deployed AI roles. Consulting is welcome too. Current role: Senior Solutions Architect, AI & Cloud Infrastructure, at VynixAI (January 2025 – present). Nubla AI was January–December 2024.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-iggym-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://linkedin.com/in/iggym)
-[![Website](https://img.shields.io/badge/Site-iggym.github.io-181717?style=flat&logo=github&logoColor=white)](https://iggym.github.io)
-[![X](https://img.shields.io/badge/X-@iggym-000000?style=flat&logo=x&logoColor=white)](https://x.com/iggym)
-![Profile Views](https://komarev.com/ghpvc/?username=iggym&style=flat&color=blue)
+Compound Engineering is his name for a method, and for the public projects on the site. It is not a company and not a job.
 
-</div>
+The site is static HTML, CSS, and JavaScript on GitHub Pages. There is no framework and no package install for the site itself. `_config.yml` tells Jekyll what to leave unpublished (`tasks/`, `scripts/`, `tests/`, planning notes, and the résumé generators).
 
----
+## Contact form
 
-## 👋 About Me
+The public contact path is X ([https://x.com/iggym](https://x.com/iggym)) and GitHub ([https://github.com/iggym](https://github.com/iggym)) until a Tally form exists.
 
-```python
-iggy = {
-    "role":       "AI Agent Architect & Systems Engineer",
-    "background": ["VynixAI", "Nubla AI", "Apple", "Contran", "AT&T", "Sam's Club"],
-    "journey":    "Embedded → Mobile → Cloud → ML → Agent Systems",
-    "focus":      "Multi-agent orchestration & software factory systems",
-    "superpower": "Turning frontier AI capabilities into reliable, production-grade tools",
-}
+Paste the form URL in one place: `window.IGGY_TALLY_URL` in `assets/js/tally-config.js`. The contact section, `/contact/`, and `/now/` read that value. The content security policy already allows `https://tally.so` for the embed and form action. Do not add an email address or a phone number.
+
+## Résumés
+
+Public files are in `assets/resume/`. The site links the 2-page PDF first.
+
+- 2-page Word: `python3 resume/build_2page.py assets/resume/iggy-resume-2page.docx`
+- 2-page PDF: `python3 resume/build_2page_pdf.py` (needs `python-docx` and Chrome)
+- Long Word: `python3 resume/build_docx.py assets/resume/iggy-resume.docx`
+- Long PDF: `node resume/build_pdf.mjs assets/resume/iggy-resume.pdf`
+
+Details are in `resume/README.md`. Do not put a phone number or email address in those files.
+
+## Version
+
+The header version lives in `VERSION` (four numbers). Before a push to `main`:
+
+```sh
+node scripts/bump-version.mjs
 ```
 
-I've spent my career moving up the stack — from embedded firmware to mobile apps to cloud platforms — and now I'm focused on the next layer: **AI systems that build software autonomously**. I love the intersection of systems engineering and LLM capabilities, where careful architecture turns unreliable AI into dependable infrastructure.
+That stamps `?v=` on asset links, rebuilds `sitemap.xml` and `robots.txt`, and rebuilds `sw.js`.
 
----
+## Checks
 
-## 🔭 Featured Projects
-
-| Project | What It Does | Tech |
-|---------|-------------|------|
-| 🛡️ [**factory-gate**](https://github.com/iggym/factory-gate) | Autonomous structural policy guardrails — verifies safe agent state transitions before target branch ingestion | `JavaScript` |
-| 🔬 [**circuit-x**](https://github.com/iggym/circuit-x) | Exposes internal feature circuit paths inside deep neural weights and code LLMs for interpretability-driven alignment | `HTML` · `Interpretability` |
-| 🪟 [**sliding-window-trim-engine**](https://github.com/iggym/sliding-window-trim-engine) | Efficient sliding window context trimming for LLM token management | `Go` |
-| 🤖 [**deterministic-agent-supervisor**](https://github.com/iggym/deterministic-agent-supervisor) | Deterministic orchestration layer for supervising autonomous agent workflows | `Python` |
-| 🔥 [**context-forge**](https://github.com/iggym/context-forge) | Context engineering toolkit for building structured knowledge systems | — |
-| 📐 [**spec-driven-development**](https://github.com/iggym/spec-driven-development) | A more accessible set of artifacts for Spec Driven Development | ⭐ 1 · `MIT` |
-
-> 💡 *Every repo here is either a **live tool**, a **proof-of-concept**, or a **blueprint** — designed to compound.*
-
----
-
-## 🧠 What I Work On
-
-**🤖 Multi-Agent Orchestration** — Autonomous pipelines where specialized agents plan → execute → verify → iterate across complex workflows without human bottlenecks.
-
-**🧩 AI Harness Engineering** — Production-grade integration layers connecting LLMs, tools, memory, APIs, and evaluation systems into reliable intelligence.
-
-**🏗️ Context Engineering** — Structured knowledge systems that make every AI call smarter, more accurate, and more useful than raw prompting.
-
-**🏭 Software Factory Systems** — AI-accelerated development pipelines enabling a single engineer to ship what once required a team.
-
-**🏢 Enterprise AI Deployment** — Translating frontier model capabilities into auditable, integrated, durable business value.
-
----
-
-## 🛠️ Tech Stack
-
-<div align="center">
-
-<img height="32" src="https://skillicons.dev/icons?i=python,typescript,go,swift,java,rust,nodejs,react,svelte,solidjs,alpinejs" />
-<br/>
-<img height="32" src="https://skillicons.dev/icons?i=aws,gcp,azure,kubernetes,cloudflare,githubactions,docker,apple,vite" />
-
-<br/><br/>
-
-| Category | Technologies |
-|----------|-------------|
-| **AI/ML** | Claude · OpenAI GPT · Gemini · Llama · Qwen · GLM · Kimi/MiniMax · Multi-Agent Systems · RAG · LoRA · CLIP · Whisper |
-| **Languages** | Python · TypeScript · Go · Swift · Java · Rust · Node · C# · Objective-C |
-| **Cloud & Infra** | AWS · GCP · Azure · Kubernetes · Cloudflare · GitHub Actions · Docker |
-| **Frontend** | React · Svelte · SolidJS · Alpine.js · Vite · Remix |
-
-</div>
-
----
-
-## 📊 GitHub Stats
-
-<div align="center">
-
-<img height="170" src="https://github-readme-stats.vercel.app/api?username=iggym&show_icons=true&theme=github_dark&hide_border=true&count_private=true&include_all_commits=true" alt="Iggy's GitHub Stats" />
-&nbsp;&nbsp;
-<img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=iggym&layout=compact&theme=github_dark&hide_border=true&langs_count=8" alt="Top Languages" />
-
-<br/>
-
-<img width="600" src="https://github-readme-streak-stats.herokuapp.com/?user=iggym&theme=github-dark-blue&hide_border=true" alt="GitHub Streak" />
-
-</div>
-
----
-
-## 🤝 Let's Connect
-
-<div align="center">
-
-I'm always happy to chat about agent architectures, context engineering, or how to turn AI research into production systems.
-
-**Open to:** Collaboration · Consulting · Technical Conversations
-
-<a href="https://iggym.github.io"><img height="32" src="https://skillicons.dev/icons?i=github" alt="Website" /></a>
-&nbsp;&nbsp;
-<a href="https://linkedin.com/in/iggym"><img height="32" src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn" /></a>
-&nbsp;&nbsp;
-<a href="https://x.com/iggym"><img height="32" src="https://skillicons.dev/icons?i=twitter" alt="X/Twitter" /></a>
-
-</div>
-
----
-
-<div align="center">
-
-*The future belongs to builders who engineer their own leverage.* ✨
-
-</div>
+```sh
+node tests/check-site.mjs
+```

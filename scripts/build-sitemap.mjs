@@ -8,11 +8,18 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = 'https://iggym.github.io/';
+function entry(file) {
+  const path = file === 'index.html' ? '' : file.endsWith('/index.html') ? file.slice(0, -'index.html'.length) : file;
+  return [file, path];
+}
 const pages = [
-  ['index.html', ''],
-  ['sites/index.html', 'sites/'],
-  ...readdirSync(join(root, 'tools')).filter((f) => f.endsWith('.html')).sort().map((f) => ['tools/' + f, 'tools/' + f]),
-  ...readdirSync(join(root, 'articles')).filter((f) => f.endsWith('.html')).sort().map((f) => ['articles/' + f, 'articles/' + f]),
+  entry('index.html'),
+  entry('sites/index.html'),
+  entry('now/index.html'),
+  entry('contact/index.html'),
+  entry('resume/index.html'),
+  ...readdirSync(join(root, 'tools')).filter((f) => f.endsWith('.html')).sort().map((f) => entry('tools/' + f)),
+  ...readdirSync(join(root, 'articles')).filter((f) => f.endsWith('.html')).sort().map((f) => entry('articles/' + f)),
 ];
 const today = new Date().toISOString().slice(0, 10);
 function lastmod(file) {
