@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A $60 million sale. $0 for common stockholders.</title>
+<meta name="description" content="Trados sold for $60 million. Per the court, common stockholders got nothing: management's plan took $7.8M first, preferred got $52.2M. Step through the payout order.">
+<link rel="canonical" href="https://iggym.github.io/p/trados-payout/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Iggy Mwangi">
+<meta property="og:title" content="A $60 million sale. $0 for common stockholders.">
+<meta property="og:description" content="Per the Delaware Court of Chancery in In re Trados: management plan $7.8M, preferred $52.2M, common $0. Step through the payout order.">
+<meta property="og:url" content="https://iggym.github.io/p/trados-payout/">
+<meta property="og:image" content="https://iggym.github.io/p/trados-payout/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iggym">
+<meta name="twitter:title" content="A $60 million sale. $0 for common stockholders.">
+<meta name="twitter:description" content="Per the Delaware Court of Chancery in In re Trados: management plan $7.8M, preferred $52.2M, common $0. Step through the payout order.">
+<meta name="twitter:image" content="https://iggym.github.io/p/trados-payout/og.jpg">
+<script>
+  var Q = new URLSearchParams(location.search);
+  if (Q.get('render') === '1') document.documentElement.classList.add('render');
+  if (Q.get('og') === '1') document.documentElement.classList.add('og');
+</script>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+  :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+  .wrap{max-width:36rem;margin:0 auto;padding:1.5rem 1rem 2.5rem}
+  .by{font-size:.875rem;color:#475569;margin:0}
+  h1{font-size:1.9rem;line-height:1.15;margin:.25rem 0 .5rem;font-weight:800}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 1rem}
+  #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:0 auto;overflow:hidden;border-radius:16px;background:#0b1530}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:28px}
+  .kick{font-size:44px;font-weight:600;color:#fdba74}
+  .hook{font-size:84px;line-height:1.06;font-weight:800;letter-spacing:-1px}
+  .bar{position:relative;width:920px;height:140px;background:#1e2a4a;border-radius:20px;overflow:hidden;margin-top:10px}
+  .seg{position:absolute;top:0;height:100%;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;color:#0b1020;overflow:hidden;white-space:nowrap}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:#fff;color:#0b1020;border-radius:24px;padding:22px 40px;border-left:20px solid #cbd5e1}
+  .row.hi{border-left-color:#f97316}
+  .rl{font-size:34px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1;font-weight:900;margin:4px 0 0;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.22;font-weight:500}
+  .foot{margin-top:auto}
+  .cue{font-size:46px;font-weight:800}
+  .src{font-size:34px;line-height:1.25;color:#cbd5e1;margin-top:12px}
+  .btns{display:flex;gap:.5rem;margin:1rem 0 .5rem}
+  button{font:inherit;min-height:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #94a3b8;background:#fff;font-weight:700;cursor:pointer}
+  button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
+  button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a;text-decoration:underline}
+  .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
+  .step{border:2px solid #94a3b8;background:#fff;border-radius:.8rem;margin-top:.6rem}
+  .step h3{margin:0;padding:.7rem 1rem;font-size:1.05rem}
+  .step p{margin:0;padding:0 1rem .8rem;font-size:1.05rem}
+  .step .n{font-size:2.4rem;font-weight:900;line-height:1}
+  .small{font-size:.875rem;color:#475569}
+  a{color:#0f172a;font-weight:600;word-break:break-all}
+  .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .wrap{max-width:none;padding:0;margin:0}
+  .render .wrap>:not(#stage){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto}
+  .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
+  .og .wrap{display:none}
+  .og #stage{display:none}
+  #ogcard{display:none}
+  .og #ogcard{display:flex;width:1200px;height:630px;padding:56px 64px;background:#0b1530;color:#fff;flex-direction:column;gap:22px}
+  #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
+  #ogcard .h{font-size:78px;line-height:1.05;font-weight:800;letter-spacing:-1px}
+  #ogcard .bar{width:1072px;height:84px;margin-top:0}
+  #ogcard .s{font-size:28px;color:#cbd5e1;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="by" id="byline"></p>
+  <h1 id="title"></h1>
+  <p class="intro" id="intro"></p>
+  <div id="stage" role="img"><div id="card"></div></div>
+  <div style="text-align:center;margin-top:.75rem"><button id="replay" type="button">Replay the film</button></div>
+
+  <section class="panel" aria-labelledby="sl">
+    <h2 id="sl" style="margin:0;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569">Step through the payout</h2>
+    <div class="btns">
+      <button id="prev" type="button">Back</button>
+      <button id="next" type="button" class="pri">Next step</button>
+      <button id="all" type="button" aria-pressed="false">Show all</button>
+    </div>
+    <div id="steps" aria-live="polite"></div>
+    <div class="step" style="margin-top:1rem">
+      <h3>Compare: without the management plan</h3>
+      <p id="cmp"></p>
+      <p style="padding-top:0"><button id="cmpbtn" type="button" aria-pressed="false">Show the comparison</button></p>
+    </div>
+    <p class="small" id="note" style="margin-top:1rem"></p>
+  </section>
+
+  <section style="margin-top:1.5rem">
+    <button id="share" type="button" class="pri" style="width:100%;min-height:52px">Share this view</button>
+    <p class="small" id="sstatus" aria-live="polite"></p>
+  </section>
+  <footer style="margin-top:1.5rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+    <h2 style="font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0">Source</h2>
+    <p class="small"><span id="srcl"></span><br><a id="srca" rel="noopener"></a></p>
+  </footer>
+</div>
+<div id="ogcard"></div>
+
+<script>
+const DATA = {
+  PAGE_URL: "https://iggym.github.io/p/trados-payout/",
+  byline: "By Iggy Mwangi (@iggym)",
+  title: "A $60 million sale. $0 for common stockholders.",
+  hook: "$60M sale. $0 for common.",
+  intro: "The Delaware Court of Chancery wrote down the payout order in In re Trados. Step through it.",
+  // All figures below are from the opinion's text (see source). Units: $ millions. Nothing is computed beyond the opinion's own figures.
+  price: 60, mip: 7.8, preference: 57.9, preferred: 52.2, common: 0, commonWithoutMip: 2.1,
+  steps: [
+    { h: "1. The sale", n: "$60M", t: "SDL plc acquired Trados for $60 million in cash and stock in July 2005." },
+    { h: "2. Management's plan, first", n: "$7.8M", t: "The management incentive plan (MIP) took the first $7.8 million of the merger consideration." },
+    { h: "3. Preferred stockholders", n: "$52.2M", t: "The preferred stockholders received $52.2 million. Their liquidation preference was $57.9 million." },
+    { h: "4. Common stockholders", n: "$0", t: "The common stockholders received nothing." }
+  ],
+  comparison: "Per the opinion: without the MIP, the common stockholders would have received $2.1 million.",
+  note: "The figures are the court's, from its opinion. This page does not say whether the outcome was fair; the case is about directors' fiduciary duties. Not legal or investment advice.",
+  source: { label: "In re Trados Inc. Shareholder Litigation, Delaware Court of Chancery (2013), opinion text, read 2026-11-16:", url: "https://courts.delaware.gov/opinions/download.aspx?ID=193520" },
+  shareText: "A $60M sale, $0 for common stockholders. Per the Delaware Court of Chancery in In re Trados: management plan $7.8M first, preferred $52.2M, common $0.",
+  film: { kicker: "Per the Delaware Court of Chancery", cue: "Step through the payout", srcLine: "Source: In re Trados (Del. Ch. 2013). $ millions.",
+          alt: "Short film: a $60 million sale, split $7.8 million to the management plan, $52.2 million to preferred, $0 to common.",
+          hookEnd: 1.5, stepStarts: [1.5, 3.8, 6.1, 8.4], dur: 0.8, posterStart: 10, posterFade: .5, holdEnd: 11.5, loopAt: 12 }
+};
+const F = DATA.film, $ = id => document.getElementById(id);
+const RENDER = document.documentElement.classList.contains('render');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro;
+$('cmp').textContent=DATA.comparison; $('note').textContent=DATA.note; $('srcl').textContent=DATA.source.label;
+$('srca').href=DATA.source.url; $('srca').textContent=DATA.source.url;
+
+// bar geometry: widths proportional to $ over the sale price
+const BW = 920, COL = {mip:'#fdba74', pref:'#93c5fd', common:'#86efac'};
+function mkBar(cls){
+  const w=el('div'); const bar=el('div','bar '+(cls||'')); const segs={};
+  [['mip','MIP',0,DATA.mip,COL.mip],['pref','Preferred',DATA.mip,DATA.preferred,COL.pref]].forEach(([k,l,start,amt,c])=>{
+    const s=el('div','seg',l); s.style.background=c; bar.append(s); segs[k]={s,start,amt}; });
+  const z=el('div',null,'Common stockholders: $0'); z.style.cssText='opacity:0;margin-top:14px;text-align:right;font-size:'+(cls==='og'?'30px':'46px')+';font-weight:800;color:#86efac'; w.append(bar,z); segs.common={s:z};
+  return {bar:w,segs};
+}
+function layout(b,W,vis){ // vis = [mip,pref,common] 0..1
+  const k=W/DATA.price;
+  const m=b.segs.mip, p=b.segs.pref, c=b.segs.common;
+  m.s.style.left='0px'; m.s.style.width=(DATA.mip*k*vis[0])+'px';
+  p.s.style.left=(DATA.mip*k*vis[0])+'px'; p.s.style.width=(DATA.preferred*k*vis[1])+'px';
+  c.s.style.opacity=vis[2];
+}
+const card=$('card'), stage=$('stage'); stage.setAttribute('aria-label',F.alt);
+const topEl=el('div'); topEl.append(el('div','kick',F.kicker), el('div','hook',DATA.hook));
+const cb=mkBar(); const rows=el('div','rows');
+const crow=DATA.steps.map((s,i)=>{ const r=el('div','row'+(i==3?' hi':'')); const n=el('div','rn',s.n); r.append(el('div','rl',s.h),n,el('div','rt',s.t)); rows.append(r); return {r,n}; });
+const foot=el('div','foot'); foot.append(el('div','cue',F.cue),el('div','src',F.srcLine));
+card.append(topEl,cb.bar,rows,foot);
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x);
+function setTime(t){
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); topEl.style.transform='translateY('+((1-m)*420)+'px)';
+  crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  layout(cb,BW,[ease(seg(t,F.stepStarts[1],F.dur)),ease(seg(t,F.stepStarts[2],F.dur)),ease(seg(t,F.stepStarts[3],F.dur))]);
+  foot.style.opacity=seg(t,F.posterStart,F.posterFade);
+}
+let raf=0;
+function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return;} const t0=performance.now();
+  (function tick(now){const t=(now-t0)/1000; if(t>=F.holdEnd){setTime(F.holdEnd);return;} setTime(t); raf=requestAnimationFrame(tick);})(t0); }
+window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
+function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
+addEventListener('resize',fit); fit();
+
+// og card (1200x630), shown only with ?og=1
+(function(){ const o=$('ogcard'); const b=mkBar('og'); const W=1072; layout(b,W,[1,1,1]);
+  o.append(el('div','k','Per the Delaware Court of Chancery, In re Trados'),el('div','h','A $60M sale. $0 for common stockholders.'),b.bar,el('div','s','Management plan $7.8M first, preferred $52.2M, common $0. Step through the payout order.'));
+})();
+
+if(!RENDER && !document.documentElement.classList.contains('og')){
+  let k=-1, all=false, cmp=false;
+  const host=$('steps');
+  const items=DATA.steps.map((s,i)=>{const d=el('div','step'); d.append(el('h3',null,s.h),el('p','n',s.n),el('p',null,s.t)); host.append(d); return d;});
+  function sync(){ items.forEach((d,i)=>{d.hidden=!(all||i<=k);}); $('prev').disabled=all||k<=0; $('next').disabled=all||k>=items.length-1;
+    $('all').setAttribute('aria-pressed',String(all)); $('all').textContent=all?'Step mode':'Show all';
+    $('cmp').hidden=!cmp; $('cmpbtn').setAttribute('aria-pressed',String(cmp)); $('cmpbtn').textContent=cmp?'Hide the comparison':'Show the comparison'; }
+  $('next').onclick=()=>{k=Math.min(items.length-1,k+1);sync();};
+  $('prev').onclick=()=>{k=Math.max(0,k-1);sync();};
+  $('all').onclick=()=>{all=!all;if(!all&&k<0)k=0;sync();};
+  $('cmpbtn').onclick=()=>{cmp=!cmp;sync();};
+  $('replay').onclick=play; k=0; sync();
+  $('share').onclick=async()=>{const t=DATA.shareText+' '+DATA.PAGE_URL; try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Could not copy. Select: '+t;}};
+}
+setTime(0);
+Promise.race([(document.fonts&&document.fonts.ready)||Promise.resolve(),new Promise(r=>setTimeout(r,800))]).then(()=>{fit();window.__ready=true;if(!RENDER)play();});
+</script>
+</body>
+</html>
