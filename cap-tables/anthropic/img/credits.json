@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Dario Amodei",
+    "slug": "dario-amodei",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File:Dario_Amodei_at_TechCrunch_Disrupt_2023_02_(close_up_cropped).jpg",
+    "license": "CC BY 2.0",
+    "author": "TechCrunch"
+  },
+  {
+    "name": "Jared Kaplan",
+    "slug": "jared-kaplan",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File:Jared_Kaplan_2025.jpg",
+    "license": "CC BY 2.0",
+    "author": "TechCrunch"
+  },
+  {
+    "name": "Richard Fontaine",
+    "slug": "richard-fontaine",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File:Richard-Fontaine-CEO-hero.jpg",
+    "license": "CC BY 4.0",
+    "author": "CNAS"
+  },
+  {
+    "name": "Ben Bernanke",
+    "slug": "ben-bernanke",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File:Ben_Bernanke_official_portrait.jpg",
+    "license": "Public domain",
+    "author": "United States Federal Reserve"
+  }
+]
