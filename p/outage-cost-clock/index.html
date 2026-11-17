@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is it them or you? What did that outage cost?</title>
+<meta name="description" content="A small-business outage toolkit: a triage checklist for it-is-them-or-me, a cost clock for lost sales and idle labor, an evidence log, and a service-credit request template.">
+<link rel="canonical" href="https://iggym.github.io/p/outage-cost-clock/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Iggy Mwangi">
+<meta property="og:title" content="Is it them or you? What did that outage cost?">
+<meta property="og:description" content="A small-business outage toolkit: a triage checklist for it-is-them-or-me, a cost clock for lost sales and idle labor, an evidence log, and a service-credit request template.">
+<meta property="og:url" content="https://iggym.github.io/p/outage-cost-clock/">
+<meta property="og:image" content="https://iggym.github.io/p/outage-cost-clock/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustrative AI-generated photo: a small coffee shop counter with a black payment tablet and a blurred queue of customers behind a worried barista.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iggym">
+<meta name="twitter:title" content="Is it them or you? What did that outage cost?">
+<meta name="twitter:description" content="A small-business outage toolkit: a triage checklist for it-is-them-or-me, a cost clock for lost sales and idle labor, an evidence log, and a service-credit request template.">
+<meta name="twitter:image" content="https://iggym.github.io/p/outage-cost-clock/og.jpg">
+<link rel="preload" as="image" href="hero.jpg">
+<script>
+  var Q0 = new URLSearchParams(location.search);
+  if (Q0.get('render') === '1') document.documentElement.classList.add('render');
+  if (Q0.get('og') === '1') document.documentElement.classList.add('og');
+</script>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+  :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero{position:relative;color:#fff;background:#0b1530;overflow:hidden;min-height:22rem;display:flex;align-items:flex-end}
+  .hero img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,48,.15) 0,rgba(11,21,48,.55) 45%,rgba(11,21,48,.92) 100%)}
+  .hero .in{position:relative;z-index:1;max-width:40rem;margin:0 auto;padding:6rem 1rem 1.2rem;width:100%}
+  .hero .by{color:#fdba74;font-weight:600}
+  .hero h1{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero .intro{color:#e2e8f0}
+  .cap{font-size:.75rem;color:#cbd5e1;margin:.4rem 0 0}
+  .wrap{max-width:40rem;margin:0 auto;padding:1rem 1rem 2.5rem}
+  .by{font-size:.875rem;color:#475569;margin:0}
+  h1{font-size:2rem;line-height:1.12;margin:.25rem 0 .5rem;font-weight:800}
+  h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 .6rem}
+  .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
+  label{display:block;font-weight:700;margin:.6rem 0 .2rem}
+  input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
+  textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  input[type=range]{width:100%;min-height:48px;accent-color:#c2410c}
+  button{font:inherit;min-height:48px;min-width:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a;transition:transform .12s,background .2s}
+  button:active{transform:scale(.96)}
+  button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
+  button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
+  .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}h1{font-size:1.65rem}}
+  .out{display:grid;gap:.6rem;margin-top:1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem;animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+  .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+  .card .d{font-size:.95rem;color:#334155}
+  .card.hi{border-color:#c2410c;background:#fff7ed}
+  .card.bad{border-color:#b91c1c;background:#fef2f2}
+  .card.good{border-color:#15803d;background:#f0fdf4}
+  .small{font-size:.875rem;color:#475569}
+  .vizbox{margin-top:1rem;border-radius:1rem;overflow:hidden;background:#0b1530;border:2px solid #0b1530}
+  .vizbox svg{display:block;width:100%;height:auto}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
+  th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
+  a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
+  li,.card .d,p{overflow-wrap:anywhere}
+  pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  html.rv-on .rv.in{opacity:1;transform:none}
+  #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530 center/cover;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:24px}
+  #card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,34,.55),rgba(8,14,34,.35) 40%,rgba(8,14,34,.8))}
+  #card>*{position:relative}
+  .kick{font-size:44px;font-weight:600;color:#fdba74}
+  .hook{font-size:80px;line-height:1.05;font-weight:800;letter-spacing:-1px;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+  #fviz{background:rgba(8,14,34,.72);border-radius:28px;width:920px;display:block}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:rgba(255,255,255,.96);color:#0b1020;border-radius:24px;padding:20px 40px;border-left:20px solid #cbd5e1}
+  .row.hi{border-left-color:#f97316}
+  .rl{font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1.05;font-weight:900;margin:2px 0 8px;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.2;font-weight:500}
+  .foot{margin-top:auto}
+  .cue{font-size:46px;font-weight:800}
+  .src{font-size:30px;line-height:1.25;color:#e2e8f0;margin-top:10px}
+  .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .hero{display:none}
+  .render .wrap{max-width:none;padding:0;margin:0}
+  .render .wrap>:not(.stagewrap){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0;display:block}
+  .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
+  .og .wrap,.og .hero{display:none}
+  #ogcard{display:none}
+  .og #ogcard{display:flex;position:relative;width:1200px;height:630px;padding:56px 64px;background:#0b1530 center/cover;color:#fff;flex-direction:column;gap:22px}
+  #ogcard::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,34,.86) 0,rgba(8,14,34,.55) 58%,rgba(8,14,34,.12))}
+  #ogcard>*{position:relative}
+  #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
+  #ogcard .h{font-size:76px;line-height:1.05;font-weight:800;letter-spacing:-1px;max-width:900px}
+  #ogcard .b{display:flex;gap:24px}
+  #ogcard .b div{background:rgba(255,255,255,.96);color:#0b1020;border-radius:18px;padding:14px 26px;font-size:28px;font-weight:600}
+  #ogcard .b b{display:block;font-size:58px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:24px;color:#e2e8f0;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <img src="hero.jpg" width="1280" height="720" alt="Illustrative AI-generated photo: a small coffee shop counter with a black payment tablet and a blurred queue of customers behind a worried barista." fetchpriority="high">
+  <div class="in">
+    <p class="by" id="byline"></p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <p class="cap">Illustrative AI-generated image, not a photograph of real events or places.</p>
+  </div>
+</header>
+<div class="wrap">
+  <p class="sr" id="live" aria-live="polite"></p>
+
+  <style>@media(max-width:34rem){.evrow{grid-template-columns:1fr!important}} fieldset{min-width:0}</style>
+  <section class="panel rv" aria-labelledby="t0">
+    <h2 id="t0">The cost clock</h2>
+    <div class="vizbox"><svg id="viz" role="presentation"></svg></div>
+    <p class="small">Illustrative shop until you change the numbers. The clock replays the outage minutes; the lines add lost sales and idle labor as it runs.</p>
+  </section>
+  <section class="panel rv" aria-labelledby="t1">
+    <h2 id="t1">Step 1: is it them or you?</h2>
+    <p class="small">Tick everything that is true. A rule of thumb, not a diagnosis.</p>
+    <fieldset style="border:2px solid #cbd5e1;border-radius:.6rem;margin:.4rem 0;padding:.5rem .9rem"><legend><strong>What you see</strong></legend>
+      <label style="font-weight:600"><input type="checkbox" id="c1"> The provider's status page shows an incident</label>
+      <label style="font-weight:600"><input type="checkbox" id="c2"> Other people report the same problem (outage trackers, social posts)</label>
+      <label style="font-weight:600"><input type="checkbox" id="c3"> Other websites and apps work fine on your internet</label>
+      <label style="font-weight:600"><input type="checkbox" id="c4"> It fails the same way on another device or another network</label>
+      <label style="font-weight:600"><input type="checkbox" id="c5"> Restarting your device and router changed nothing</label>
+      <label style="font-weight:600"><input type="checkbox" id="c6"> Every staff member or location was hit at the same moment</label>
+      <label style="font-weight:600"><input type="checkbox" id="c7"> The error mentions a server, timeout or gateway</label>
+    </fieldset>
+    <div class="out" id="tri"></div>
+  </section>
+  <section class="panel rv" aria-labelledby="t2">
+    <h2 id="t2">Step 2: price the minutes</h2>
+    <div class="btns" role="group" aria-label="Minutes presets">
+      <button id="m1" type="button">Square, Nov 4: 85 min</button>
+      <button id="m2" type="button">Cloudflare, Oct 23: 176 min</button>
+      <button id="m3" type="button">Azure networking: 345 min</button>
+      <button id="m4" type="button">Chase, Nov 16: about 420 min</button>
+      <button id="m5" type="button">Microsoft 365: about 24 h</button>
+    </div>
+    <p class="small" id="mnote">Presets set only the minutes. Square: status-page window. Cloudflare: status-page window. Azure: its post-incident review window. Chase: first reports to reported restoration, ET. Microsoft: the Guardian's 24-hour description.</p>
+    <div class="grid2">
+      <div><label for="mn">Minutes down</label><input id="mn" type="number" inputmode="decimal" min="1" max="20000" step="any" value="85"></div>
+      <div><label for="sph">Sales per hour, $</label><input id="sph" type="number" inputmode="decimal" min="0" step="any" value="400"></div>
+      <div><label for="dep">Share of sales that need the service: <span id="depV"></span></label><input id="dep" type="range" min="0" max="100" step="5" value="70"></div>
+      <div><label for="rec">Share recovered later (customers come back): <span id="recV"></span></label><input id="rec" type="range" min="0" max="100" step="5" value="30"></div>
+      <div><label for="st">Staff affected</label><input id="st" type="number" inputmode="numeric" min="0" max="10000" step="1" value="3"></div>
+      <div><label for="wg">Loaded cost per staff hour, $</label><input id="wg" type="number" inputmode="decimal" min="0" step="any" value="25"></div>
+      <div><label for="idl">Share of their work blocked: <span id="idlV"></span></label><input id="idl" type="range" min="0" max="100" step="5" value="50"></div>
+      <div><label for="cr">Service credit offered or in your contract, $ (optional)</label><input id="cr" type="number" inputmode="decimal" min="0" step="any" value="0"></div>
+    </div>
+    <div class="out" id="out"></div>
+  </section>
+  <section class="panel rv" aria-labelledby="t3">
+    <h2 id="t3">Step 3: keep the evidence, ask for the credit</h2>
+    <p class="small">Log what you saw and when. Entries go into the letter. Use your own clock and time zone.</p>
+    <div id="ev"></div>
+    <div class="btns"><button id="adde" type="button">Add an entry</button></div>
+    <div class="grid2">
+      <div><label for="nm">Your name or business</label><input id="nm" type="text" autocomplete="organization" placeholder="Business name"></div>
+      <div><label for="pv">Provider</label><input id="pv" type="text" placeholder="e.g. my payments provider"></div>
+      <div><label for="ac">Account or ticket number</label><input id="ac" type="text" placeholder="optional"></div>
+      <div><label for="od">Outage date</label><input id="od" type="date" value="2026-11-04"></div>
+    </div>
+    <p class="small"><strong>Template, not legal advice.</strong> Check your own contract for the credit terms and the deadline to claim.</p>
+    <label for="letter">Letter (editable)</label>
+    <textarea id="letter" rows="14"></textarea>
+    <div class="btns"><button id="copyl" type="button" class="pri">Copy the letter</button><button id="dll" type="button">Download as .txt</button></div>
+    <p class="small" id="lstatus" aria-live="polite"></p>
+  </section>
+  <section class="panel rv" aria-labelledby="t4">
+    <h2 id="t4">Recent outages, in the providers' words</h2>
+    <div class="out">
+      <div class="card"><div class="l">Square, Nov 4</div><div class="d">Payment Acceptance and Point of Sale listed 2:27 PM to 3:52 PM. Square said the disruption was resolved and it had implemented measures to strengthen its systems. No cause stated.</div></div>
+      <div class="card"><div class="l">Microsoft 365, Nov 12 to 14</div><div class="d">A latent bug from July plus gateway load and over 14% of server capacity unavailable, per Microsoft's Charles Lamanna as reported. Restored by Saturday; a final report was promised.</div></div>
+      <div class="card"><div class="l">Cloudflare, Oct 23</div><div class="d">A connectivity-provider outage caused congestion and packet loss in North America. Resolved 18:43 UTC.</div></div>
+      <div class="card"><div class="l">Azure networking, Sep 30 to Oct 1</div><div class="d">Gateway updates resumed after a deployment restriction expired and overwhelmed a regional control plane, per Azure's review. About 5 hours 45 minutes.</div></div>
+    </div>
+  </section>
+  <section class="panel rv" aria-labelledby="t5">
+    <h2 id="t5">Coming soon</h2>
+    <p class="small">Everything above is free. These are planned and not available yet:</p>
+    <ul>
+      <li>Saved outage history for your business <span class="small">(coming soon)</span></li>
+      <li>Status-page watch for the providers you use <span class="small">(coming soon)</span></li>
+      <li>One-page evidence packet as a PDF <span class="small">(coming soon)</span></li>
+      <li>Contract credit-terms reader <span class="small">(coming soon)</span></li>
+      <li>Team version with several locations <span class="small">(coming soon)</span></li>
+    </ul>
+  </section>
+  <section aria-label="Share" class="rv">
+    <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
+    <p class="small" id="sstatus" aria-live="polite"></p>
+  </section>
+  <div class="stagewrap rv"><div id="stage"><div id="card"></div></div></div>
+  <p class="small rv" id="note" style="margin-top:1.5rem"></p>
+  <footer class="rv" style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+    <h2>Sources</h2>
+    <ul class="small" id="sources"></ul>
+    <p class="small">Images: AI-generated illustrations made for this page (no real people, logos or official surfaces), compressed for the web.</p>
+  </footer>
+</div>
+<div id="ogcard"></div>
+<script>
+const DATA = {
+ "PAGE_URL": "https://iggym.github.io/p/outage-cost-clock/",
+ "byline": "By Iggy Mwangi (@iggym)",
+ "title": "Is it them or you? What did that outage cost?",
+ "intro": "A status page says 'resolved'. Your till says something else. Run the triage, price the minutes, keep the evidence, and get a credit request ready to edit.",
+ "note": "Information, not legal advice. This is a calculator, a checklist and a letter template; nothing is sent from this page and nothing you type leaves your browser. The formula is ours, not an industry standard: lost sales = sales per hour x hours down x share of sales needing the service x (1 - share recovered later); idle labor = staff x loaded cost per hour x hours down x share of their work blocked. The default numbers describe an illustrative shop and the 85-minute Square status-page window; they are not a measurement of anyone's loss. The triage score is a rule of thumb, not a diagnosis. Whether you are owed a service credit depends on your own contract or SLA, which this page cannot see. Presets set only the minutes, taken from the sources below; durations from third-party trackers are marked.",
+ "sources": [
+  {
+   "label": "Square status, Nov 4 2026 (Payment Acceptance and Point of Sale, 2:27 PM to 3:52 PM as listed, no time zone or cause stated):",
+   "url": "https://www.issquareup.com/united-states/incidents/01M6M0FDVW2CYP6309QYE7JR7R"
+  },
+  {
+   "label": "The Guardian, Microsoft root-cause report, Nov 16 2026 (Outlook and Office 365 outage from Thursday Nov 12, restored by Saturday):",
+   "url": "https://www.theguardian.com/technology/2026/nov/16/microsoft-global-outage-cause"
+  },
+  {
+   "label": "Cloudflare status, Oct 23 2026 connectivity-provider incident (resolved 18:43 UTC):",
+   "url": "https://www.cloudflarestatus.com/incidents/sufgcbe8rrwt"
+  },
+  {
+   "label": "StatusStack October 2026 outage report (third-party; its Cloudflare Oct 23 duration matches the status page):",
+   "url": "https://www.statusstack.com/blog/october-2026-outage-report"
+  },
+  {
+   "label": "Azure status history, Sep 30 to Oct 1 2026 networking incident and its stated cause:",
+   "url": "https://azure.status.microsoft/en-us/status/history/"
+  },
+  {
+   "label": "CNBC, Chase technical issue, Nov 16 2026 (errors from about 11:30 a.m. ET):",
+   "url": "https://www.cnbc.com/2026/11/16/jpmorgan-chase-technical-issue.html"
+  }
+ ],
+ "shareText": "Outages are one line on a status page and a hole in your till. Price the minutes for your business:",
+ "film": {
+  "alt": "Short film: an illustrative shop with card payments down for 85 minutes, the Square status-page window, loses about $278 in sales and $53 in idle labor, about $331 or $3.89 a minute.",
+  "hookEnd": 1.5,
+  "stepStarts": [
+   1.6,
+   3.7,
+   5.8
+  ],
+  "dur": 0.8,
+  "posterStart": 8,
+  "posterFade": 0.5,
+  "holdEnd": 9.5,
+  "loopAt": 10
+ }
+};
+
+const APP=(function(){
+  let s={mn:85,sph:400,dep:70,rec:30,st:3,wg:25,idl:50,cr:0,od:'2026-11-04',c:[0,0,0,0,0,0,0]};
+  let ev=[{t:'',n:'Card payments stopped working'}];
+  const $$=x=>'$'+Math.round(x).toLocaleString('en-US');
+  function calc(){ const h=s.mn/60; const rs=s.sph*(s.dep/100)*(1-s.rec/100); const rl=s.st*s.wg*(s.idl/100); const lost=rs*h, idle=rl*h, tot=lost+idle, pm=s.mn>0?tot/s.mn:0;
+    return {h,rs,rl,lost,idle,tot,pm,gap:tot-s.cr}; }
+  function tri(){ const n=s.c.reduce((a,b)=>a+b,0); return {n, v:n>=5?'Looks like them':n>=3?'Unclear: keep testing':'Looks like your side'}; }
+  function drawEv(){ const h=$('ev'); h.textContent='';
+    ev.forEach((e,i)=>{ const row=el('div'); row.className='evrow'; row.style.cssText='display:grid;grid-template-columns:1fr 2fr auto;gap:.4rem;align-items:end;margin-bottom:.5rem';
+      const mk=(lbl,val,ph,cb)=>{ const d=el('div'); const l=el('label',null,lbl); l.style.cssText='font-size:.8rem;margin:.1rem 0'; const inp=el('input'); inp.type='text'; inp.value=val; inp.placeholder=ph; inp.setAttribute('aria-label',lbl+' entry '+(i+1)); inp.oninput=()=>{cb(inp.value); $('letter').dataset.edited=''; buildLetter();}; d.append(l,inp); return d; };
+      row.append(mk('Time you saw it',e.t,'e.g. 2:30 PM CT',v=>e.t=v),mk('What you saw',e.n,'e.g. card reader says offline',v=>e.n=v));
+      const rm=el('button',null,'x'); rm.type='button'; rm.setAttribute('aria-label','Remove entry '+(i+1)); rm.onclick=()=>{ev.splice(i,1); drawEv(); $('letter').dataset.edited=''; buildLetter();}; row.append(rm); h.append(row); }); }
+  function paint(){ const c=calc(), t=tri(); $('depV').textContent=s.dep+'%'; $('recV').textContent=s.rec+'%'; $('idlV').textContent=s.idl+'%';
+    const o=$('out'); o.textContent='';
+    const add=(p,cls,l,num,f,d,key)=>{const x=el('div','card '+cls); const v=el('div','v'); x.append(el('div','l',l),v,el('div','d',d)); p.append(x); tween(v,key,num,f);};
+    add(o,'bad','Total cost of the outage',c.tot,$$,'About '+$$(c.pm*60)+' per hour, '+('$'+c.pm.toFixed(2))+' per minute, over '+s.mn+' minutes.','tot');
+    add(o,'hi','Lost sales',c.lost,$$,$$(s.sph)+' an hour x '+s.dep+'% that needed the service x '+(100-s.rec)+'% not recovered.','lost');
+    add(o,'','Idle labor',c.idle,$$,s.st+' staff x '+$$(s.wg)+' an hour x '+s.idl+'% of their work blocked.','idle');
+    if(s.cr>0) add(o,c.gap>0?'bad':'good','Gap after the credit',Math.abs(c.gap),$$,c.gap>0?'The credit you entered covers '+Math.round(s.cr/c.tot*100)+'% of the estimate.':'The credit you entered is at least the estimate.','gap');
+    const tr=$('tri'); tr.textContent=''; add(tr,t.n>=5?'hi':t.n>=3?'':'good','Triage',t.n,x=>t.v,(t.n+' of 7 checks point upstream. ')+(t.n>=5?'Check the provider\'s status page and start your evidence log now.':t.n>=3?'Test from another network and device, then check the status page.':'Check your own router, device and cables first, then the provider.'),'tri');
+    announce(t.v+'. Total cost '+$$(c.tot)+' over '+s.mn+' minutes.');
+    buildLetter(); api.onChange&&api.onChange(); api.redraw&&api.redraw(); }
+  function buildLetter(){ const ta=$('letter'); if(ta.dataset.edited) return; const c=calc(); const nm=$('nm').value||'[Your business]', pv=$('pv').value||'[Provider]', ac=$('ac').value||'[account or ticket number]';
+    const d=new Date(s.od+'T12:00:00'); const dt=isNaN(d)?s.od:d.toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'});
+    const lines=ev.filter(e=>e.t||e.n).map(e=>'- '+(e.t||'[time]')+': '+(e.n||'[what I saw]')).join('\n')||'- [time]: [what I saw]';
+    ta.value='Subject: Service credit request for the '+dt+' outage, account '+ac+'\n\nTo '+pv+' support,\n\nOn '+dt+' your service was unavailable or degraded for my business for about '+s.mn+' minutes. I am asking for the service credit available to me under my agreement for that period.\n\nWhat I recorded:\n'+lines+'\n\nImpact on my business (my own estimate): about '+$$(c.tot)+', made up of about '+$$(c.lost)+' in lost sales and about '+$$(c.idle)+' in idle staff time. I am not claiming this amount as the credit; it shows why the outage mattered.\n\nPlease tell me the credit amount and the clause you applied, confirm it in writing, and tell me how to claim anything further to which I may be entitled. I would also like the cause and the incident report when available.\n\nAccount: '+ac+'\nBusiness: '+nm+'\n\nThank you,\n'+nm+'\n\n---\nThis is a template from an information tool. It is not legal advice. Check your own contract.'; }
+  function read(){ s.mn=Math.max(1,Math.min(20000,parseFloat($('mn').value)||s.mn)); s.sph=Math.max(0,parseFloat($('sph').value)||0); s.dep=parseInt($('dep').value,10); s.rec=parseInt($('rec').value,10); s.st=Math.max(0,Math.round(parseFloat($('st').value)||0)); s.wg=Math.max(0,parseFloat($('wg').value)||0); s.idl=parseInt($('idl').value,10); s.cr=Math.max(0,parseFloat($('cr').value)||0); if(/^\d{4}-\d{2}-\d{2}$/.test($('od').value)) s.od=$('od').value; s.c=[1,2,3,4,5,6,7].map(i=>$('c'+i).checked?1:0); }
+  function draw(svg,ctx){ svg.textContent=''; const c=calc(); const T=ctx.t||0;
+    let p; if(ctx.film) p=ease(seg(ctx.t,.6,F.stepStarts[2]+1.4)); else if(ctx.reduce) p=1; else p=ease(seg(T%10,.4,6.2));
+    const m=s.mn*p, cum=c.pm*m, cx=130, cy=170, R=86;
+    S('text',{x:20,y:30,'font-size':19,'font-weight':800,fill:'#fdba74'},svg,ctx.film?'The cost clock':'Live: replaying the outage');
+    S('circle',{cx,cy,r:R,fill:'none',stroke:'#1e293b','stroke-width':16},svg);
+    const a=Math.max(.001,p)*Math.PI*2-Math.PI/2; const large=p>.5?1:0; const x2=cx+R*Math.cos(a), y2=cy+R*Math.sin(a);
+    if(p>=.999) S('circle',{cx,cy,r:R,fill:'none',stroke:'#fb923c','stroke-width':16},svg); else S('path',{d:'M'+cx+' '+(cy-R)+' A'+R+' '+R+' 0 '+large+' 1 '+x2+' '+y2,fill:'none',stroke:'#fb923c','stroke-width':16,'stroke-linecap':'round'},svg);
+    S('text',{x:cx,y:cy-6,'text-anchor':'middle','font-size':36,'font-weight':900,fill:'#fff'},svg,Math.round(m)+'');
+    S('text',{x:cx,y:cy+20,'text-anchor':'middle','font-size':16,'font-weight':700,fill:'#94a3b8'},svg,'of '+Math.round(s.mn)+' minutes');
+    S('text',{x:cx,y:cy+R+40,'text-anchor':'middle','font-size':16,'font-weight':800,fill:'#cbd5e1'},svg,'Running cost');
+    S('text',{x:cx,y:cy+R+78,'text-anchor':'middle','font-size':40,'font-weight':900,fill:'#fca5a5'},svg,$$(cum));
+    // bars
+    const bx=290, bw=290, mx=Math.max(c.tot,s.cr,1);
+    const bar=(y,lbl,val,col,pp)=>{ S('text',{x:bx,y:y-8,'font-size':16,'font-weight':800,fill:'#e2e8f0'},svg,lbl+'  '+$$(val*pp)); S('rect',{x:bx,y:y,width:bw,height:20,rx:10,fill:'#1e293b'},svg); S('rect',{x:bx,y:y,width:Math.max(0,bw*(val*pp)/mx),height:20,rx:10,fill:col},svg); };
+    bar(80,'Lost sales',c.lost,'#fb923c',p); bar(140,'Idle labor',c.idle,'#38bdf8',p); bar(200,'Total',c.tot,'#f87171',p);
+    if(s.cr>0) bar(260,'Credit entered',s.cr,'#4ade80',ctx.film?ease(seg(ctx.t,F.stepStarts[2],.9)):1);
+    // sparkline
+    const sx=290, sy=400, sw=290, sh=90; S('line',{x1:sx,y1:sy,x2:sx+sw,y2:sy,stroke:'#475569','stroke-width':2},svg);
+    const pts=[]; for(let i=0;i<=40;i++){ const q=i/40; if(q>p+1e-9) break; pts.push((sx+sw*q)+','+(sy-sh*q*Math.max(.15,Math.min(1,c.tot>0?1:0))*(0.6+0.4*Math.sin(q*3.14)*0+0.4))); }
+    if(pts.length>1) S('polyline',{points:pts.join(' '),fill:'none',stroke:'#fb923c','stroke-width':4,'stroke-linejoin':'round'},svg);
+    S('text',{x:sx,y:sy+22,'font-size':14,fill:'#94a3b8'},svg,'0 min'); S('text',{x:sx+sw,y:sy+22,'text-anchor':'end','font-size':14,fill:'#94a3b8'},svg,Math.round(s.mn)+' min'); }
+  const api={ vb:'0 0 600 440', fvh:500, draw,
+    init(){ const g=(k,lo,hi)=>{ const v=parseFloat(Q.get(k)); return isFinite(v)&&v>=lo&&v<=hi?v:null; };
+      for(const [k,lo,hi] of [['mn',1,20000],['sph',0,1e7],['dep',0,100],['rec',0,100],['st',0,10000],['wg',0,1e5],['idl',0,100],['cr',0,1e8]]){ const v=g(k,lo,hi); if(v!=null)s[k]=v; }
+      const od=Q.get('od'); if(od&&/^\d{4}-\d{2}-\d{2}$/.test(od)) s.od=od; const cq=Q.get('c'); if(cq&&/^[01]{7}$/.test(cq)) s.c=cq.split('').map(Number);
+      ['mn','sph','dep','rec','st','wg','idl','cr','od'].forEach(id=>$(id).value=s[id]); s.c.forEach((v,i)=>$('c'+(i+1)).checked=!!v);
+      drawEv(); if(RENDER||OG){ paint(); return; }
+      ['mn','sph','dep','rec','st','wg','idl','cr','od','c1','c2','c3','c4','c5','c6','c7'].forEach(id=>{ $(id).oninput=()=>{read();$('letter').dataset.edited='';paint();}; $(id).onchange=$(id).oninput; });
+      ['nm','pv','ac'].forEach(id=>$(id).oninput=()=>{ $('letter').dataset.edited=''; buildLetter(); });
+      $('letter').oninput=()=>{ $('letter').dataset.edited='1'; };
+      [['m1',85],['m2',176],['m3',345],['m4',420],['m5',1440]].forEach(([id,v])=>$(id).onclick=()=>{ s.mn=v; $('mn').value=v; $('letter').dataset.edited=''; paint(); });
+      $('adde').onclick=()=>{ if(ev.length<8){ ev.push({t:'',n:''}); drawEv(); } };
+      $('copyl').onclick=async()=>{ const t=$('letter').value; try{await navigator.clipboard.writeText(t);$('lstatus').textContent='Letter copied to the clipboard.';}catch(e){$('letter').select();$('lstatus').textContent='Select all and copy.';} };
+      $('dll').onclick=()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([$('letter').value],{type:'text/plain'})); a.download='service-credit-letter.txt'; a.click(); $('lstatus').textContent='Downloaded.'; };
+      paint(); },
+    film(){ const c=calc(); return {kick:'Illustrative shop, Square status-page window',hook:Math.round(s.mn)+' minutes on a status page. '+$$(c.tot)+' on your till.',rows:[
+        {l:'Minutes down',n:Math.round(s.mn)+' min',t:'Square listed 2:27 PM to 3:52 PM on Nov 4'},
+        {l:'Lost sales',n:$$(c.lost),t:s.dep+'% needed the service, '+s.rec+'% recovered later'},
+        {l:'Plus idle labor: total',n:$$(c.tot),t:'About $'+c.pm.toFixed(2)+' a minute. Change the numbers for your shop.',hi:true}],
+        cue:'Price your own outage',src:'Illustrative numbers and our formula, not a measured loss. Image: AI-generated, illustrative.'}; },
+    og(){ const c=calc(); return {k:'Illustrative shop, 85-minute Square status-page window',h:'What did that outage cost you?',boxes:[[$$(c.tot),'total, illustrative'],[$$(c.lost),'lost sales'],[$$(c.idle),'idle labor']],s:'iggym.github.io/p/outage-cost-clock - illustrative numbers, our formula. Illustrative image.'}; },
+    shareUrl(){ const u=new URL(DATA.PAGE_URL); for(const k of ['mn','sph','dep','rec','st','wg','idl','cr']) u.searchParams.set(k,s[k]); return u.toString(); }
+  }; return api; })();
+
+
+const $ = id => document.getElementById(id);
+const RENDER = document.documentElement.classList.contains('render');
+const OG = document.documentElement.classList.contains('og');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q = new URLSearchParams(location.search);
+const NS='http://www.w3.org/2000/svg';
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+function S(tag,attrs,parent,text){ const e=document.createElementNS(NS,tag); for(const k in (attrs||{}))e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; if(parent)parent.appendChild(e); return e; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x), lerp=(a,b,k)=>a+(b-a)*k;
+const prevVals={};
+function tween(node,key,to,fmt){ const from=prevVals[key]; prevVals[key]=to; if(REDUCE||RENDER||OG||from==null||from===to){node.textContent=fmt(to);return;}
+  const t0=performance.now(), d=550; (function f(now){ const k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3); node.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f); })(t0); }
+let liveTimer=0; function announce(txt){ clearTimeout(liveTimer); liveTimer=setTimeout(()=>{$('live').textContent=txt;},400); }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro; $('note').textContent=DATA.note;
+(function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
+const F = DATA.film;
+const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+card.style.backgroundImage='url(scene.jpg)';
+const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const fviz=S('svg',{id:'fviz',viewBox:APP.vb,'aria-hidden':'true'}); fviz.style.height=APP.fvh+'px'; fviz.setAttribute('preserveAspectRatio','xMidYMid meet');
+const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
+const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
+card.append(top0,fviz,rowsEl,foot);
+function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'72px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+let curT=0;
+function setTime(t){
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0; curT=t;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*60)+'px)'; top0.style.opacity=.2+.8*seg(t,0,.5);
+  crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  APP.draw(fviz,{t,p:ease(seg(t,.6,F.stepStarts[2]+1-.6)),film:true,reduce:false});
+  foot.style.opacity=seg(t,F.posterStart,F.posterFade);
+}
+let raf=0;
+function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return;} const t0=performance.now();
+  (function tick(now){const t=(now-t0)/1000; if(t>=F.holdEnd){setTime(F.holdEnd);return;} setTime(t); raf=requestAnimationFrame(tick);})(t0); }
+window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
+function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
+addEventListener('resize',fit); fit();
+(function(){ const o=$('ogcard'), g=APP.og(); o.style.backgroundImage='url(hero.jpg)'; o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(RENDER) setTime(0); else if(REDUCE) setTime(F.holdEnd); };
+// live viz loop, runs only while the diagram is on screen
+const lv=$('viz'); let vis=false, vStart=0, vLast=0, vraf=0;
+function vloop(now){ if(!vis)return; const t=(now-vStart)/1000, dt=Math.min(.05,(now-vLast)/1000); vLast=now; APP.draw(lv,{t,dt,p:ease(seg(t,.2,1.8)),film:false,reduce:false}); vraf=requestAnimationFrame(vloop); }
+if(lv && !RENDER && !OG){
+  lv.setAttribute('viewBox',APP.vb); lv.setAttribute('aria-hidden','true');
+  if(REDUCE){ APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); APP.redraw=()=>APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); }
+  else if('IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting&&!vis){vis=true;vStart=vLast=performance.now();vraf=requestAnimationFrame(vloop);} else if(!e.isIntersecting){vis=false;cancelAnimationFrame(vraf);} }); },{threshold:.15}).observe(lv); }
+  else { vis=true; vStart=vLast=performance.now(); vraf=requestAnimationFrame(vloop); }
+}
+// scroll reveals + hero parallax
+if(!RENDER && !OG){
+  if(!REDUCE && 'IntersectionObserver' in window){ document.documentElement.classList.add('rv-on'); const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12}); document.querySelectorAll('.rv').forEach(x=>io.observe(x)); }
+  const him=document.querySelector('.hero img'); if(him&&!REDUCE){ let tick=false; addEventListener('scroll',()=>{ if(tick)return; tick=true; requestAnimationFrame(()=>{ const y=Math.min(scrollY,700); him.style.transform='translateY('+(y*.18)+'px) scale('+(1+y*.0002)+')'; tick=false; }); },{passive:true}); }
+  $('replay').onclick=play;
+  $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
+}
+APP.init(); renderFilm(); setTime(0);
+const preload=src=>new Promise(r=>{const i=new Image(); i.onload=i.onerror=()=>r(); i.src=src;});
+Promise.race([Promise.all([preload('scene.jpg'),preload('hero.jpg'),(document.fonts&&document.fonts.ready)||Promise.resolve()]),new Promise(r=>setTimeout(r,2500))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+
+</script>
+</body>
+</html>

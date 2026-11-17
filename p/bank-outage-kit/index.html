@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The bank had a bad day. Your due dates didn't.</title>
+<meta name="description" content="A bank-outage survival kit: see which bills fall in the outage window, how many days of cash you can reach, and generate fee-reversal, late-fee and Regulation E letter templates.">
+<link rel="canonical" href="https://iggym.github.io/p/bank-outage-kit/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Iggy Mwangi">
+<meta property="og:title" content="The bank had a bad day. Your due dates didn't.">
+<meta property="og:description" content="A bank-outage survival kit: see which bills fall in the outage window, how many days of cash you can reach, and generate fee-reversal, late-fee and Regulation E letter templates.">
+<meta property="og:url" content="https://iggym.github.io/p/bank-outage-kit/">
+<meta property="og:image" content="https://iggym.github.io/p/bank-outage-kit/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustrative AI-generated photo: a smartphone with a grey warning screen on a kitchen table at night beside a blank card, folded cash and closed envelopes.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iggym">
+<meta name="twitter:title" content="The bank had a bad day. Your due dates didn't.">
+<meta name="twitter:description" content="A bank-outage survival kit: see which bills fall in the outage window, how many days of cash you can reach, and generate fee-reversal, late-fee and Regulation E letter templates.">
+<meta name="twitter:image" content="https://iggym.github.io/p/bank-outage-kit/og.jpg">
+<link rel="preload" as="image" href="hero.jpg">
+<script>
+  var Q0 = new URLSearchParams(location.search);
+  if (Q0.get('render') === '1') document.documentElement.classList.add('render');
+  if (Q0.get('og') === '1') document.documentElement.classList.add('og');
+</script>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+  :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero{position:relative;color:#fff;background:#0b1530;overflow:hidden;min-height:22rem;display:flex;align-items:flex-end}
+  .hero img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,48,.15) 0,rgba(11,21,48,.55) 45%,rgba(11,21,48,.92) 100%)}
+  .hero .in{position:relative;z-index:1;max-width:40rem;margin:0 auto;padding:6rem 1rem 1.2rem;width:100%}
+  .hero .by{color:#fdba74;font-weight:600}
+  .hero h1{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero .intro{color:#e2e8f0}
+  .cap{font-size:.75rem;color:#cbd5e1;margin:.4rem 0 0}
+  .wrap{max-width:40rem;margin:0 auto;padding:1rem 1rem 2.5rem}
+  .by{font-size:.875rem;color:#475569;margin:0}
+  h1{font-size:2rem;line-height:1.12;margin:.25rem 0 .5rem;font-weight:800}
+  h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 .6rem}
+  .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
+  label{display:block;font-weight:700;margin:.6rem 0 .2rem}
+  input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
+  textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  input[type=range]{width:100%;min-height:48px;accent-color:#c2410c}
+  button{font:inherit;min-height:48px;min-width:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a;transition:transform .12s,background .2s}
+  button:active{transform:scale(.96)}
+  button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
+  button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
+  .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}h1{font-size:1.65rem}}
+  .out{display:grid;gap:.6rem;margin-top:1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem;animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+  .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+  .card .d{font-size:.95rem;color:#334155}
+  .card.hi{border-color:#c2410c;background:#fff7ed}
+  .card.bad{border-color:#b91c1c;background:#fef2f2}
+  .card.good{border-color:#15803d;background:#f0fdf4}
+  .small{font-size:.875rem;color:#475569}
+  .vizbox{margin-top:1rem;border-radius:1rem;overflow:hidden;background:#0b1530;border:2px solid #0b1530}
+  .vizbox svg{display:block;width:100%;height:auto}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
+  th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
+  a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
+  li,.card .d,p{overflow-wrap:anywhere}
+  pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  html.rv-on .rv.in{opacity:1;transform:none}
+  #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530 center/cover;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:24px}
+  #card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,34,.55),rgba(8,14,34,.35) 40%,rgba(8,14,34,.8))}
+  #card>*{position:relative}
+  .kick{font-size:44px;font-weight:600;color:#fdba74}
+  .hook{font-size:80px;line-height:1.05;font-weight:800;letter-spacing:-1px;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+  #fviz{background:rgba(8,14,34,.72);border-radius:28px;width:920px;display:block}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:rgba(255,255,255,.96);color:#0b1020;border-radius:24px;padding:20px 40px;border-left:20px solid #cbd5e1}
+  .row.hi{border-left-color:#f97316}
+  .rl{font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1.05;font-weight:900;margin:2px 0 8px;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.2;font-weight:500}
+  .foot{margin-top:auto}
+  .cue{font-size:46px;font-weight:800}
+  .src{font-size:30px;line-height:1.25;color:#e2e8f0;margin-top:10px}
+  .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .hero{display:none}
+  .render .wrap{max-width:none;padding:0;margin:0}
+  .render .wrap>:not(.stagewrap){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0;display:block}
+  .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
+  .og .wrap,.og .hero{display:none}
+  #ogcard{display:none}
+  .og #ogcard{display:flex;position:relative;width:1200px;height:630px;padding:56px 64px;background:#0b1530 center/cover;color:#fff;flex-direction:column;gap:22px}
+  #ogcard::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,34,.86) 0,rgba(8,14,34,.55) 58%,rgba(8,14,34,.12))}
+  #ogcard>*{position:relative}
+  #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
+  #ogcard .h{font-size:76px;line-height:1.05;font-weight:800;letter-spacing:-1px;max-width:900px}
+  #ogcard .b{display:flex;gap:24px}
+  #ogcard .b div{background:rgba(255,255,255,.96);color:#0b1020;border-radius:18px;padding:14px 26px;font-size:28px;font-weight:600}
+  #ogcard .b b{display:block;font-size:58px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:24px;color:#e2e8f0;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <img src="hero.jpg" width="1280" height="720" alt="Illustrative AI-generated photo: a smartphone with a grey warning screen on a kitchen table at night beside a blank card, folded cash and closed envelopes." fetchpriority="high">
+  <div class="in">
+    <p class="by" id="byline"></p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <p class="cap">Illustrative AI-generated image, not a photograph of real events or places.</p>
+  </div>
+</header>
+<div class="wrap">
+  <p class="sr" id="live" aria-live="polite"></p>
+
+  <style>@media(max-width:34rem){.billrow{grid-template-columns:1fr 1fr!important}} fieldset{min-width:0}</style>
+  <section class="panel rv" aria-labelledby="t0">
+    <h2 id="t0">Your money rails during the outage</h2>
+    <div class="vizbox"><svg id="viz" role="presentation"></svg></div>
+    <p class="small">Red dots stall: a bill due in the window with no backup. Green dots arrive: a bill your backup money can cover. Sample bills until you change them. Illustrative model, not a statement about your bank.</p>
+  </section>
+  <section class="panel rv" aria-labelledby="t1">
+    <h2 id="t1">What was due, and what can you reach?</h2>
+    <div class="grid2">
+      <div><label for="bk">Your bank</label><input id="bk" type="text" value="Chase" autocomplete="off"></div>
+      <div><label for="od">Outage date</label><input id="od" type="date" value="2026-11-16"></div>
+      <div><label for="oh">Hours it affected you</label><input id="oh" type="number" inputmode="decimal" min="0.5" max="240" step="0.5" value="7"></div>
+      <div><label for="rm">Money you can reach outside this bank, $</label><input id="rm" type="number" inputmode="decimal" min="0" step="any" value="150"></div>
+      <div><label for="ds">Spend on essentials per day, $</label><input id="ds" type="number" inputmode="decimal" min="1" step="any" value="45"></div>
+    </div>
+    <fieldset style="border:2px solid #cbd5e1;border-radius:.6rem;margin:.8rem 0;padding:.5rem .9rem"><legend><strong>Backup rails you actually have</strong></legend>
+      <label style="font-weight:600"><input type="checkbox" id="k1"> A second account at a different bank</label>
+      <label style="font-weight:600"><input type="checkbox" id="k2"> A credit card from a different bank</label>
+      <label style="font-weight:600"><input type="checkbox" id="k3" checked> Cash at home</label>
+      <label style="font-weight:600"><input type="checkbox" id="k4"> A payment app linked to a different bank</label>
+      <label style="font-weight:600"><input type="checkbox" id="k5"> Paper checks</label>
+    </fieldset>
+    <h3>Bills due this week</h3>
+    <div id="bills"></div>
+    <div class="btns"><button id="addb" type="button">Add a bill</button><button id="clrb" type="button">Clear the sample bills</button></div>
+    <h3>Fees you were charged because of it</h3>
+    <div class="grid2">
+      <div><label for="f1">Overdraft or returned-item fees, $</label><input id="f1" type="number" inputmode="decimal" min="0" step="any" value="35"></div>
+      <div><label for="f2">Late fees from billers, $</label><input id="f2" type="number" inputmode="decimal" min="0" step="any" value="25"></div>
+      <div><label for="f3">Other fees (ATM, wire, cash advance), $</label><input id="f3" type="number" inputmode="decimal" min="0" step="any" value="0"></div>
+    </div>
+    <div class="out" id="out"></div>
+  </section>
+  <section class="panel rv" aria-labelledby="t2">
+    <h2 id="t2">Your letters</h2>
+    <p class="small"><strong>Templates, not legal advice.</strong> Edit before sending. Use the phone number on the back of your card or the bank's official secure message center, never a number from a text or email.</p>
+    <label for="lt">Which letter?</label>
+    <select id="lt"><option value="fee">Ask my bank to credit outage fees</option><option value="bill">Ask a biller to waive a late fee</option><option value="rege">Report a transfer error (Regulation E notice)</option></select>
+    <div class="grid2">
+      <div><label for="nm">Your name</label><input id="nm" type="text" autocomplete="name" placeholder="Full name"></div>
+      <div><label for="ac">Last 4 digits of the account</label><input id="ac" type="text" inputmode="numeric" maxlength="4" placeholder="1234"></div>
+      <div id="ebox"><label for="et">Transfer error type</label><select id="et"><option value="a duplicate transfer">A duplicate transfer</option><option value="a transfer for the wrong amount">Wrong amount</option><option value="a transfer that never posted">Never posted</option><option value="an unauthorized transfer">Unauthorized transfer</option></select></div>
+      <div id="ebox2"><label for="ea">Error amount, $</label><input id="ea" type="number" inputmode="decimal" min="0" step="any" value="0"></div>
+      <div id="bbox"><label for="bn">Biller name</label><input id="bn" type="text" placeholder="e.g. my phone company"></div>
+      <div id="bbox2"><label for="bf">Late fee charged by the biller, $</label><input id="bf" type="number" inputmode="decimal" min="0" step="any" value="25"></div>
+    </div>
+    <label for="letter">Letter (editable)</label>
+    <textarea id="letter" rows="14"></textarea>
+    <div class="btns"><button id="copyl" type="button" class="pri">Copy the letter</button><button id="dll" type="button">Download as .txt</button></div>
+    <p class="small" id="lstatus" aria-live="polite"></p>
+  </section>
+  <section class="panel rv" aria-labelledby="t3">
+    <h2 id="t3">What was reported</h2>
+    <div class="out">
+      <div class="card hi"><div class="l">Chase, Nov 16 2026 (reported)</div><div class="d" style="font-size:1rem">Errors reported from about 11:30 a.m. ET. Chase said a temporary issue related to a software bug in on-premise hardware systems, with no evidence it was cyber-related and not systemic, and that customers still had access to accounts and funds while some transactions were slow. A Chase spokesperson described restoration at about 6:30 p.m. ET. The restoration statement, as reported, did not detail compensation.</div></div>
+      <div class="card"><div class="l">Revolut, Oct 20 2026 (company postmortem)</div><div class="d" style="font-size:1rem">A power failure in one Google Cloud London zone at about 06:00 UTC. Card authorisations were back by 12:40 UTC, app access from 15:45 UTC, everything by 17:15 UTC. Revolut said funds and data stayed safe and that it deployed changes to process card reversals immediately after a payments backlog clears.</div></div>
+    </div>
+  </section>
+  <section class="panel rv" aria-labelledby="t4">
+    <h2 id="t4">Coming soon</h2>
+    <p class="small">Everything above is free. These are planned and not available yet:</p>
+    <ul>
+      <li>Due-date reminders as a calendar file <span class="small">(coming soon)</span></li>
+      <li>Saved outage plan for your accounts <span class="small">(coming soon)</span></li>
+      <li>One-page evidence packet as a PDF <span class="small">(coming soon)</span></li>
+      <li>Complaint-draft helper for the CFPB form <span class="small">(coming soon)</span></li>
+      <li>Household version with several accounts <span class="small">(coming soon)</span></li>
+    </ul>
+  </section>
+  <section aria-label="Share" class="rv">
+    <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
+    <p class="small" id="sstatus" aria-live="polite"></p>
+  </section>
+  <div class="stagewrap rv"><div id="stage"><div id="card"></div></div></div>
+  <p class="small rv" id="note" style="margin-top:1.5rem"></p>
+  <footer class="rv" style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+    <h2>Sources</h2>
+    <ul class="small" id="sources"></ul>
+    <p class="small">Images: AI-generated illustrations made for this page (no real people, logos or official surfaces), compressed for the web.</p>
+  </footer>
+</div>
+<div id="ogcard"></div>
+<script>
+const DATA = {
+ "PAGE_URL": "https://iggym.github.io/p/bank-outage-kit/",
+ "byline": "By Iggy Mwangi (@iggym)",
+ "title": "The bank had a bad day. Your due dates didn't.",
+ "intro": "On Nov 16 a software bug at Chase slowed payments across banks for most of a day, per Chase's statement. Rent, card and phone due dates did not move. List what is due, see which money rails you still have, and get three letters ready to edit.",
+ "note": "Information, not legal advice. Letters are templates for you to edit and send yourself; nothing is sent from this page and nothing you type leaves your browser. This page is not affiliated with any bank. Sample numbers are examples; replace them with yours. The CFPB outage guidance is marked last reviewed Dec 21 2023. Regulation E covers certain electronic fund transfer errors (for example a duplicate or wrong-amount transfer) on consumer accounts; our reading is that it is not a general right to outage fees, so the fee letter relies on asking, as the CFPB suggests. Your account agreement and the law where you live govern. The window logic counts from the outage date plus the hours you enter, plus two days for lag.",
+ "sources": [
+  {
+   "label": "CNBC, JPMorgan Chase technical issue, Nov 16 2026 (Chase statement; errors from about 11:30 a.m. ET):",
+   "url": "https://www.cnbc.com/2026/11/16/jpmorgan-chase-technical-issue.html"
+  },
+  {
+   "label": "CBS News, outages at major US banks (about 4,800 Chase reports at 2 p.m. ET; Dallas branch customer; back to normal early Tuesday):",
+   "url": "https://www.cbsnews.com/news/banks-online-service-outages-jpmorgan-chase-bank-of-america-wells-fargo/"
+  },
+  {
+   "label": "BBC live page on the Nov 16 bank and Zelle problems (Chase and U.S. Bank statements):",
+   "url": "https://www.bbc.com/news/live/c893rpk23g56t"
+  },
+  {
+   "label": "FINCHANNEL, Chase restoration at about 6:30 p.m. ET and what the statement did not detail:",
+   "url": "https://finchannel.com/chase-bank-outage-transactions-resume-rules-cover-disputed-payments-and-fees/141927/american-business-trends/banks/2026/11/"
+  },
+  {
+   "label": "CFPB, what happens if my bank has an outage and I can't access my account (contact the bank, other access, check autopay, ask for fee credits, complain):",
+   "url": "https://www.consumerfinance.gov/ask-cfpb/what-happens-if-my-bank-or-credit-union-has-an-outage-and-i-cant-access-my-account-en-2143/"
+  },
+  {
+   "label": "12 CFR 1005.11, Regulation E error resolution (eCFR):",
+   "url": "https://www.ecfr.gov/current/title-12/chapter-X/part-1005/subpart-A/section-1005.11"
+  },
+  {
+   "label": "Revolut, technical overview of its Oct 20 2026 outage (card payments back by 12:40 UTC, all services by 17:15 UTC):",
+   "url": "https://www.revolut.com/blog/post/20octoutagetechnicaloverview/"
+  }
+ ],
+ "shareText": "The bank's trouble ended. Your due dates did not move. See what falls in the window and get the fee-reversal letter:",
+ "film": {
+  "alt": "Short film: the Nov 16 Chase disruption ran from about 11:30 a.m. to about 6:30 p.m. ET as reported; three bills worth $1,605 fall in the outage window; fees can be put to the bank with a letter.",
+  "hookEnd": 1.5,
+  "stepStarts": [
+   1.6,
+   3.7,
+   5.8
+  ],
+  "dur": 0.8,
+  "posterStart": 8,
+  "posterFade": 0.5,
+  "holdEnd": 9.5,
+  "loopAt": 10
+ }
+};
+
+const APP=(function(){
+  let s={bk:'Chase',od:'2026-11-16',oh:7,rm:150,ds:45,k:[0,0,1,0,0],f1:35,f2:25,f3:0,lt:'fee'};
+  let bills=[{n:'Phone',a:70,d:'2026-11-16',ap:1},{n:'Rent',a:1450,d:'2026-11-17',ap:0},{n:'Card minimum',a:85,d:'2026-11-18',ap:1},{n:'Car insurance',a:140,d:'2026-11-25',ap:0}];
+  const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  function parse(x){ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(x); return m?new Date(+m[1],+m[2]-1,+m[3]):new Date(2026,10,16); }
+  const $$=x=>'$'+Math.round(x).toLocaleString('en-US');
+  const short=d=>parse(d).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+  function calc(){ const st=parse(s.od); const end=new Date(st); end.setDate(end.getDate()+Math.ceil(s.oh/24)+2);
+    const rails=s.k.reduce((a,b)=>a+b,0); let pool=rails>0?s.rm:0; const list=bills.map((b,i)=>({...b,i,dd:parse(b.d)})).sort((a,b)=>a.dd-b.dd||a.i-b.i);
+    const res=bills.map(()=>null); let risk=0, cov=0, exp=0, nrisk=0;
+    list.forEach(b=>{ const inw=b.dd>=st&&b.dd<=end; let state='out'; if(inw){ nrisk++; risk+=b.a; if(pool>=b.a&&b.a>0){ pool-=b.a; cov+=b.a; state='cov'; } else { exp+=b.a; state='exp'; } } res[b.i]=state; });
+    const days=s.ds>0?(rails>0?s.rm/s.ds:0):0; const fees=s.f1+s.f2+s.f3;
+    return {st,end,rails,res,risk,cov,exp,nrisk,days,fees}; }
+  function drawBills(){ const h=$('bills'); h.textContent='';
+    bills.forEach((b,i)=>{ const row=el('div'); row.style.cssText='display:grid;grid-template-columns:1.4fr 1fr 1.2fr auto auto;gap:.4rem;align-items:end;margin-bottom:.5rem'; row.className='billrow';
+      const mk=(lbl,type,val,w,cb,extra)=>{ const d=el('div'); const l=el('label',null,lbl); l.style.cssText='font-size:.8rem;margin:.1rem 0'; const inp=el('input'); inp.type=type; inp.value=val; if(extra)Object.assign(inp,extra); inp.setAttribute('aria-label',lbl+' for bill '+(i+1)); inp.oninput=()=>cb(inp.value); d.append(l,inp); return d; };
+      row.append(mk('Bill','text',b.n,0,v=>{b.n=v;paint(true);}),mk('Amount $','number',b.a,0,v=>{b.a=Math.max(0,parseFloat(v)||0);paint(true);},{min:0,step:'any',inputMode:'decimal'}),mk('Due','date',b.d,0,v=>{ if(/^\d{4}-\d{2}-\d{2}$/.test(v)){b.d=v;paint(true);} }));
+      const ap=el('label',null,''); ap.style.cssText='display:flex;gap:.3rem;align-items:center;font-weight:600;margin:0;min-height:48px'; const cbx=el('input'); cbx.type='checkbox'; cbx.checked=!!b.ap; cbx.setAttribute('aria-label','Bill '+(i+1)+' is on autopay'); cbx.onchange=()=>{b.ap=cbx.checked?1:0;paint(true);}; ap.append(cbx,document.createTextNode('Autopay')); row.append(ap);
+      const rm=el('button',null,'x'); rm.type='button'; rm.setAttribute('aria-label','Remove bill '+(i+1)); rm.onclick=()=>{bills.splice(i,1);drawBills();paint();}; row.append(rm); h.append(row); }); }
+  function paint(keepRows){ const c=calc(); const o=$('out'); o.textContent='';
+    const add=(cls,l,num,f,d,key)=>{const x=el('div','card '+cls); const v=el('div','v'); x.append(el('div','l',l),v,el('div','d',d)); o.append(x); if(num==null)v.textContent=f; else tween(v,key,num,f);};
+    add('hi','Due inside the outage window',c.risk,$$,c.nrisk+' bill'+(c.nrisk===1?'':'s')+' from '+short(s.od)+' to '+short(iso(c.end))+' ('+s.oh+' hours plus 2 days of lag).','risk');
+    add(c.exp>0?'bad':'good','Not covered by money you can reach',c.exp,$$,c.exp>0?(c.rails>0?'Your reachable money covers '+$$(c.cov)+' of it, earliest due date first. Pay the rest another way or ask the biller for time.':'You ticked no backup rail, so none of it counts as covered.'):'Everything due in the window is covered by backup money.','exp');
+    add(c.days>=3?'good':'hi','Days of cash outside the bank',c.days,x=>x.toFixed(1)+' days','At '+$$(s.ds)+' a day on essentials, using '+$$(c.rails>0?s.rm:0)+' of reachable money.','days');
+    add('hi','Fees you can ask to have reversed',c.fees,$$,'The CFPB says you can ask your bank to credit late, overdraft and insufficient funds fees an outage caused. It is a request, not an automatic right.','fees');
+    const ap=bills.filter((b,i)=>c.res[i]!=='out'&&b.ap).length; if(ap) add('','Autopay to check',ap,x=>Math.round(x)+' bill'+(Math.round(x)===1?'':'s'),'Confirm each posted once, and none posted twice. The CFPB says to double-check automatic payments during an outage.','ap');
+    announce($$(c.risk)+' due inside the window, '+$$(c.exp)+' not covered by backup money, '+$$(c.fees)+' in fees to ask back.');
+    buildLetter(); api.onChange&&api.onChange(); api.redraw&&api.redraw(); }
+  function buildLetter(){ const bank=s.bk||'[Bank]', nm=$('nm').value||'[Your name]', ac=$('ac').value?('ending '+$('ac').value):'[last 4 digits]'; const dt=short(s.od)+', '+parse(s.od).getFullYear(); const c=calc(); const ta=$('letter'); if(ta.dataset.edited) return;
+    const kind=s.lt; $('ebox').style.display=$('ebox2').style.display=kind==='rege'?'':'none'; $('bbox').style.display=$('bbox2').style.display=kind==='bill'?'':'none';
+    let t='';
+    if(kind==='fee'){ const parts=[]; if(s.f1>0)parts.push('overdraft or returned-item fees of '+$$(s.f1)); if(s.f2>0)parts.push('late fees charged by billers of '+$$(s.f2)); if(s.f3>0)parts.push('other fees of '+$$(s.f3));
+      t='Subject: Request to credit fees caused by the '+dt+' outage, account '+ac+'\n\nTo '+bank+' customer service,\n\nOn '+dt+' I could not use my account normally because of a technical problem on your side ('+(s.oh)+' hours affected me). [Add what you could not do, for example: view balances, transfer money, pay a bill, deposit a check.]\n\nBecause of that I was charged '+(parts.length?parts.join(', '):'[describe the fees]')+', a total of '+$$(c.fees)+'. These fees would not have happened if the outage had not occurred.\n\nI am asking you to credit '+$$(c.fees)+' to my account. The CFPB\'s guidance on bank outages says customers can ask their bank to credit fees, including late, overdraft and insufficient funds fees, that an outage caused (consumerfinance.gov, "What happens if my bank or credit union has an outage").\n\nPlease confirm the credit in writing, or tell me the specific reason if you decline.\n\nAccount: '+ac+'\nName: '+nm+'\n\nSincerely,\n'+nm;
+    } else if(kind==='bill'){ const bn=$('bn').value||'[Biller]'; const bf=parseFloat($('bf').value)||0;
+      t='Subject: Request to waive late fee, account with '+bn+'\n\nTo '+bn+' customer service,\n\nMy payment due around '+dt+' was delayed because my bank, '+bank+', had a technical outage that day and I could not move money normally. I paid as soon as I could. [Add the date you paid.]\n\nYou charged a late fee of '+$$(bf)+'. I am asking you to waive it as a one-time courtesy and confirm in writing that my account is in good standing.\n\nThank you,\n'+nm;
+    } else { const et=$('et').value, ea=parseFloat($('ea').value)||0;
+      t='Subject: Notice of error, account '+ac+'\n\nTo '+bank+' error resolution department,\n\nI am giving you notice of an error on my account '+ac+': '+et+' of '+$$(ea)+' on or around '+dt+'. [Describe what happened and when it first appeared on your statement.]\n\nUnder Regulation E, 12 CFR 1005.11, please investigate and determine whether an error occurred within 10 business days of receiving this notice, or, if you need up to 45 days, provisionally credit the amount within 10 business days. Please report the results to me in writing.\n\nName: '+nm+'\nAccount: '+ac+'\nType of error: '+et+'\nAmount: '+$$(ea)+'\nDate: '+dt+'\n\nSincerely,\n'+nm;
+    }
+    ta.value=t+'\n\n---\nThis is a template from an information tool. It is not legal advice.'; }
+  function readAll(){ s.bk=$('bk').value; if(/^\d{4}-\d{2}-\d{2}$/.test($('od').value)) s.od=$('od').value; s.oh=Math.max(.5,Math.min(240,parseFloat($('oh').value)||s.oh)); s.rm=Math.max(0,parseFloat($('rm').value)||0); s.ds=Math.max(1,parseFloat($('ds').value)||45); s.k=[1,2,3,4,5].map(i=>$('k'+i).checked?1:0); s.f1=Math.max(0,parseFloat($('f1').value)||0); s.f2=Math.max(0,parseFloat($('f2').value)||0); s.f3=Math.max(0,parseFloat($('f3').value)||0); s.lt=$('lt').value; }
+  const hash=i=>{ const x=Math.sin(i*91.7+13.3)*43758.5453; return x-Math.floor(x); };
+  function draw(svg,ctx){ svg.textContent=''; const c=calc(); const T=ctx.t||0; const rvv=i=>ctx.film?ease(seg(ctx.t,[0.7,F.stepStarts[0],F.stepStarts[1],F.stepStarts[2]][i],.9)):ease(seg(ctx.p,i*.2,.5));
+    const hub={x:90,y:215}, bk={x:250,y:372}; const shown=bills.slice(0,6); const n=shown.length||1; const yy=i=>n===1?215:(78+i*(270/(n-1)));
+    S('text',{x:20,y:30,'font-size':19,'font-weight':800,fill:'#fdba74'},svg,ctx.film?'Where the money gets stuck':'Live: your due dates');
+    const pulse=ctx.reduce||ctx.film?1:.75+.25*Math.sin(T*5);
+    S('circle',{cx:hub.x,cy:hub.y,r:60+(ctx.reduce?0:Math.sin(T*3)*3),fill:'rgba(239,68,68,.13)'},svg);
+    S('circle',{cx:hub.x,cy:hub.y,r:46,fill:'#7f1d1d',stroke:'#f87171','stroke-width':4,opacity:pulse},svg);
+    S('text',{x:hub.x,y:hub.y-4,'text-anchor':'middle','font-size':17,'font-weight':900,fill:'#fff'},svg,(s.bk||'Bank').slice(0,10));
+    S('text',{x:hub.x,y:hub.y+16,'text-anchor':'middle','font-size':14,'font-weight':700,fill:'#fecaca'},svg,'errors reported');
+    S('rect',{x:bk.x-70,y:bk.y-24,width:140,height:46,rx:12,fill:c.rails>0?'#14532d':'#334155',stroke:c.rails>0?'#4ade80':'#64748b','stroke-width':3},svg);
+    S('text',{x:bk.x,y:bk.y-3,'text-anchor':'middle','font-size':16,'font-weight':900,fill:'#fff'},svg,'Backup rails');
+    S('text',{x:bk.x,y:bk.y+15,'text-anchor':'middle','font-size':14,'font-weight':700,fill:c.rails>0?'#bbf7d0':'#cbd5e1'},svg,c.rails>0?(c.rails+' ticked, '+$$(s.rm)):'none ticked');
+    shown.forEach((b,i)=>{ const st=c.res[i], y=yy(i), x=420; const r0=rvv(Math.min(3,i%4)); const col=st==='cov'?'#4ade80':st==='exp'?'#f87171':'#64748b';
+      S('line',{x1:hub.x+46,y1:hub.y,x2:x-12,y2:y,stroke:st==='out'?'#334155':'#7f1d1d','stroke-width':2.5,'stroke-dasharray':st==='out'?'0':'6 6',opacity:r0},svg);
+      if(st==='cov') S('line',{x1:bk.x+70,y1:bk.y-8,x2:x-12,y2:y,stroke:'#166534','stroke-width':2.5,opacity:r0},svg);
+      S('circle',{cx:x,cy:y,r:12*r0+2,fill:col,stroke:'#fff','stroke-width':2},svg);
+      const nm=(b.n||'Bill'); S('text',{x:x+22,y:y-3,'font-size':16,'font-weight':800,fill:'#fff',opacity:r0},svg,nm.length>13?nm.slice(0,12)+'.':nm);
+      S('text',{x:x+22,y:y+15,'font-size':14,fill:col,'font-weight':700,opacity:r0},svg,$$(b.a)+' - '+short(b.d)+(st==='cov'?' ok':st==='exp'?' risk':''));
+      if(!ctx.reduce&&!ctx.film&&r0>.9&&st!=='out'){ for(let k=0;k<3;k++){ const ph=((T*.45)+k/3+hash(i)*.3)%1; if(st==='exp'){ const q=Math.min(ph,.55)/.55*0.55; const px=lerp(hub.x+46,x-12,Math.min(ph,.55)), py=lerp(hub.y,y,Math.min(ph,.55)); S('circle',{cx:px,cy:py,r:5,fill:ph>.5?'#ef4444':'#fca5a5',opacity:ph>.55?.5+.5*Math.sin(T*12):1},svg); } else { S('circle',{cx:lerp(bk.x+70,x-12,ph),cy:lerp(bk.y-8,y,ph),r:5,fill:'#4ade80'},svg); } } } });
+    // days of cash strip
+    const days=Math.min(14,Math.floor(c.days)); const sx=20, sy=432; for(let i=0;i<14;i++) S('rect',{x:sx+i*16,y:sy-16,width:12,height:12,rx:3,fill:i<days?'#4ade80':'#1e293b',stroke:'#475569'},svg);
+    S('text',{x:sx+14*16+8,y:sy-5,'font-size':14,'font-weight':800,fill:'#cbd5e1'},svg,c.days.toFixed(1)+' days of cash');
+    S('text',{x:580,y:30,'text-anchor':'end','font-size':15,'font-weight':800,fill:'#fca5a5'},svg,'At risk '+$$(c.risk)+'  |  Fees '+$$(c.fees)); }
+  const api={ vb:'0 0 600 440', fvh:500, draw,
+    init(){ const g=(k,lo,hi)=>{ const v=parseFloat(Q.get(k)); return isFinite(v)&&v>=lo&&v<=hi?v:null; };
+      const b=Q.get('bk'); if(b&&b.length<30) s.bk=b; const d=Q.get('od'); if(d&&/^\d{4}-\d{2}-\d{2}$/.test(d)) s.od=d; for(const [k,lo,hi] of [['oh',.5,240],['rm',0,1e7],['ds',1,1e5],['f1',0,1e5],['f2',0,1e5],['f3',0,1e5]]){ const v=g(k,lo,hi); if(v!=null)s[k]=v; }
+      const kq=Q.get('k'); if(kq&&/^[01]{5}$/.test(kq)) s.k=kq.split('').map(Number);
+      $('bk').value=s.bk; $('od').value=s.od; $('oh').value=s.oh; $('rm').value=s.rm; $('ds').value=s.ds; $('f1').value=s.f1; $('f2').value=s.f2; $('f3').value=s.f3; s.k.forEach((v,i)=>$('k'+(i+1)).checked=!!v);
+      drawBills(); if(RENDER||OG){ paint(); return; }
+      ['bk','od','oh','rm','ds','f1','f2','f3','lt','k1','k2','k3','k4','k5'].forEach(id=>{ $(id).oninput=()=>{readAll();$('letter').dataset.edited='';paint();}; $(id).onchange=$(id).oninput; });
+      ['nm','ac','et','ea','bn','bf'].forEach(id=>{ $(id).oninput=()=>{ $('letter').dataset.edited=''; buildLetter(); }; $(id).onchange=$(id).oninput; });
+      $('letter').oninput=()=>{ $('letter').dataset.edited='1'; };
+      $('addb').onclick=()=>{ if(bills.length<6){ bills.push({n:'',a:0,d:s.od,ap:0}); drawBills(); paint(); } };
+      $('clrb').onclick=()=>{ bills=[{n:'',a:0,d:s.od,ap:0}]; drawBills(); paint(); };
+      $('copyl').onclick=async()=>{ const t=$('letter').value; try{await navigator.clipboard.writeText(t);$('lstatus').textContent='Letter copied to the clipboard.';}catch(e){$('letter').select();$('lstatus').textContent='Select all and copy.';} };
+      $('dll').onclick=()=>{ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([$('letter').value],{type:'text/plain'})); a.download='bank-outage-letter.txt'; a.click(); $('lstatus').textContent='Downloaded.'; };
+      paint(); },
+    film(){ const c=calc(); return {kick:'Nov 16 Chase disruption, as reported',hook:'The trouble ended. Your due dates did not move.',rows:[
+        {l:'Reported window',n:'11:30 am to 6:30 pm',t:'ET, from the first error reports to Chase\'s restoration statement'},
+        {l:'Due inside the window',n:$$(c.risk),t:c.nrisk+' bills in this sample, '+$$(c.exp)+' not covered by backup money',hi:c.exp>0},
+        {l:'Fees to ask back',n:$$(c.fees),t:'CFPB: you can ask the bank to credit outage fees. Letter included.',hi:true}],
+        cue:'Enter your own bills',src:'Information, not legal advice. Sample numbers. Image: AI-generated, illustrative.'}; },
+    og(){ const c=calc(); return {k:'Nov 16 Chase disruption, as reported',h:'The bank had a bad day. Your due dates didn\'t.',boxes:[[$$(c.risk),'due in the window (sample)'],[$$(c.fees),'fees you can ask back'],['3 letters','fee, late fee, Reg E templates']],s:'iggym.github.io/p/bank-outage-kit - information, not legal advice. Illustrative image.'}; },
+    shareUrl(){ const u=new URL(DATA.PAGE_URL); u.searchParams.set('bk',s.bk); u.searchParams.set('od',s.od); u.searchParams.set('oh',s.oh); u.searchParams.set('rm',s.rm); u.searchParams.set('ds',s.ds); u.searchParams.set('k',s.k.join('')); return u.toString(); }
+  }; return api; })();
+
+
+const $ = id => document.getElementById(id);
+const RENDER = document.documentElement.classList.contains('render');
+const OG = document.documentElement.classList.contains('og');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q = new URLSearchParams(location.search);
+const NS='http://www.w3.org/2000/svg';
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+function S(tag,attrs,parent,text){ const e=document.createElementNS(NS,tag); for(const k in (attrs||{}))e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; if(parent)parent.appendChild(e); return e; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x), lerp=(a,b,k)=>a+(b-a)*k;
+const prevVals={};
+function tween(node,key,to,fmt){ const from=prevVals[key]; prevVals[key]=to; if(REDUCE||RENDER||OG||from==null||from===to){node.textContent=fmt(to);return;}
+  const t0=performance.now(), d=550; (function f(now){ const k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3); node.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f); })(t0); }
+let liveTimer=0; function announce(txt){ clearTimeout(liveTimer); liveTimer=setTimeout(()=>{$('live').textContent=txt;},400); }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro; $('note').textContent=DATA.note;
+(function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
+const F = DATA.film;
+const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+card.style.backgroundImage='url(scene.jpg)';
+const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const fviz=S('svg',{id:'fviz',viewBox:APP.vb,'aria-hidden':'true'}); fviz.style.height=APP.fvh+'px'; fviz.setAttribute('preserveAspectRatio','xMidYMid meet');
+const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
+const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
+card.append(top0,fviz,rowsEl,foot);
+function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'72px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+let curT=0;
+function setTime(t){
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0; curT=t;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*60)+'px)'; top0.style.opacity=.2+.8*seg(t,0,.5);
+  crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  APP.draw(fviz,{t,p:ease(seg(t,.6,F.stepStarts[2]+1-.6)),film:true,reduce:false});
+  foot.style.opacity=seg(t,F.posterStart,F.posterFade);
+}
+let raf=0;
+function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return;} const t0=performance.now();
+  (function tick(now){const t=(now-t0)/1000; if(t>=F.holdEnd){setTime(F.holdEnd);return;} setTime(t); raf=requestAnimationFrame(tick);})(t0); }
+window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
+function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
+addEventListener('resize',fit); fit();
+(function(){ const o=$('ogcard'), g=APP.og(); o.style.backgroundImage='url(hero.jpg)'; o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(RENDER) setTime(0); else if(REDUCE) setTime(F.holdEnd); };
+// live viz loop, runs only while the diagram is on screen
+const lv=$('viz'); let vis=false, vStart=0, vLast=0, vraf=0;
+function vloop(now){ if(!vis)return; const t=(now-vStart)/1000, dt=Math.min(.05,(now-vLast)/1000); vLast=now; APP.draw(lv,{t,dt,p:ease(seg(t,.2,1.8)),film:false,reduce:false}); vraf=requestAnimationFrame(vloop); }
+if(lv && !RENDER && !OG){
+  lv.setAttribute('viewBox',APP.vb); lv.setAttribute('aria-hidden','true');
+  if(REDUCE){ APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); APP.redraw=()=>APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); }
+  else if('IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting&&!vis){vis=true;vStart=vLast=performance.now();vraf=requestAnimationFrame(vloop);} else if(!e.isIntersecting){vis=false;cancelAnimationFrame(vraf);} }); },{threshold:.15}).observe(lv); }
+  else { vis=true; vStart=vLast=performance.now(); vraf=requestAnimationFrame(vloop); }
+}
+// scroll reveals + hero parallax
+if(!RENDER && !OG){
+  if(!REDUCE && 'IntersectionObserver' in window){ document.documentElement.classList.add('rv-on'); const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12}); document.querySelectorAll('.rv').forEach(x=>io.observe(x)); }
+  const him=document.querySelector('.hero img'); if(him&&!REDUCE){ let tick=false; addEventListener('scroll',()=>{ if(tick)return; tick=true; requestAnimationFrame(()=>{ const y=Math.min(scrollY,700); him.style.transform='translateY('+(y*.18)+'px) scale('+(1+y*.0002)+')'; tick=false; }); },{passive:true}); }
+  $('replay').onclick=play;
+  $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
+}
+APP.init(); renderFilm(); setTime(0);
+const preload=src=>new Promise(r=>{const i=new Image(); i.onload=i.onerror=()=>r(); i.src=src;});
+Promise.race([Promise.all([preload('scene.jpg'),preload('hero.jpg'),(document.fonts&&document.fonts.ready)||Promise.resolve()]),new Promise(r=>setTimeout(r,2500))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+
+</script>
+</body>
+</html>
