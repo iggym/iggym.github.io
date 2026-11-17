@@ -1,0 +1,18 @@
+# Agent Access Map
+
+> Free in-browser map of the accounts an AI agent would sign into: what each touches, what the bot could do, how you sign in and whether it gets its own login, ranked by this page's own rubric with least-privilege first steps, a checklist (.md) and JSON. It cannot see real accounts and is not a security audit or advice. Stores nothing. Defaults are invented accounts. Built from the replies to a Nov 17 2026 post by Elon Musk asking how Grok Bot can be more helpful; independent of xAI.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/agent-access-map/): takes up to eight accounts (name, what it touches, bot permission, sign-in method, separate login); returns ranked list, level, first steps, .md, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: ranking where a mistake would cost most and listing common first steps.
+- Not for: auditing real permissions or replacing your security rules.
+- Information, not security advice.
+
+## Sources
+
+- NIST glossary, least privilege: https://csrc.nist.gov/glossary/term/least_privilege
+- The Verge on Grok Bot launch: https://www.theverge.com/ai-artificial-intelligence/978666/spacexai-grok-bot-ai-agent-beta-launch

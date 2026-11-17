@@ -1,0 +1,18 @@
+# Agent Usage Pace
+
+> Free in-browser calculator that turns two readings of a weekly usage percentage and a reset time into a burn rate, a straight-line projection at the reset, the time the pool would run out and the daily pace that lasts. It outputs a .ics reminder and JSON. For anyone using a metered AI agent. It works in percent of your own usage view, does not know your plan, stores nothing and is not plan advice. Defaults are illustrative. Built from the replies to a Nov 17 2026 post by Elon Musk asking how Grok Bot can be more helpful; independent of xAI.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/agent-usage-pace/): takes two usage readings with times, the reset time, optional routine interval; returns burn rate, projection at reset, run-out time, pace that lasts, .ics, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: straight-line pace arithmetic from two readings.
+- Not for: knowing your plan, pool size or what a task costs; real usage varies by task; a drop between readings means a reset or top-up.
+- Information, not plan advice.
+
+## Sources
+
+- xAI pricing FAQ: https://x.ai/pricing
+- xAI docs, Grok Bot usage: https://docs.x.ai/x-subscription/grok-bot

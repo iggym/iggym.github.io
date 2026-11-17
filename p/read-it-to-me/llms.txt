@@ -1,0 +1,18 @@
+# Read It To Me
+
+> Free in-browser reader for long AI agent reports: paste up to 2,000 characters, see decisions, dates, amounts and links marked with a text label as well as a color, hear it read aloud with the browser's built-in voice (everything or only marked sentences), and take an action checklist (.md) and JSON. Marking is simple pattern matching and can miss things. Text stays on your device. Defaults are invented. Built from the replies to a Nov 17 2026 post by Elon Musk asking how Grok Bot can be more helpful; independent of xAI.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/read-it-to-me/): takes pasted report text, reading speed, read-all or marked-only; returns marked report, counts, reading time, spoken audio via the browser voice, checklist .md, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: surfacing questions, dates, amounts and links in a long text.
+- Not for: understanding meaning; it can miss or over-mark; read the original for anything that matters.
+- Voice depends on your browser; marks and checklist work without it.
+
+## Sources
+
+- WCAG 2.2 Use of Color: https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html
+- MDN Web Speech API: https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API

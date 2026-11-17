@@ -1,0 +1,17 @@
+# Handoff Brief
+
+> Free in-browser builder for a written handoff to an AI agent: task, what done looks like, tools, limits, approval points and proof, with a six-check completeness score, vague-word flags, a pasteable brief, a due-date .ics and JSON. For anyone delegating work to a bot. The score is this page's own rubric; a written limit is a request, not a technical block. Stores nothing. Defaults are an invented sample. Built from the replies to a Nov 17 2026 post by Elon Musk asking how Grok Bot can be more helpful; independent of xAI.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/handoff-brief/): takes task, definition of done, tools, limits, approvals, due date, proof wanted; returns score out of 6, fixes, brief text, .md, .ics, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: spotting missing or vague parts of a handoff.
+- Not for: judging whether a bot can do the job or enforcing limits.
+- Information only.
+
+## Sources
+
+- xAI launch post: https://x.ai/news/introducing-grok-bot

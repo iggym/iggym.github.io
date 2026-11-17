@@ -1,0 +1,17 @@
+# Agent Work Receipt
+
+> Free in-browser receipt for AI agent output: list what the bot says it did, where, the result claimed, proof and undo steps, tick what you checked, and get verified / proof-not-checked / no-proof counts, a receipt with open items, and .md, .csv and JSON exports. The page cannot check any claim itself. Stores nothing. Defaults are invented. Built from the replies to a Nov 17 2026 post by Elon Musk asking how Grok Bot can be more helpful; independent of xAI.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/agent-work-receipt/): takes date, job title, up to ten claims (action, where, result, proof, undo, checked); returns status counts, receipt text, .md, .csv, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: keeping claims, proof and open items in one place.
+- Not for: verifying work; it records what you checked.
+- Information only.
+
+## Sources
+
+- xAI launch post: https://x.ai/news/introducing-grok-bot

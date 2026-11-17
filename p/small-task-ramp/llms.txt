@@ -1,0 +1,17 @@
+# Small Task Ramp
+
+> Free in-browser planner for starting with an AI agent: list jobs with minutes, weekly count and risk, get a ranking by risk then net minutes saved, a four-week ramp with weekly .ics reminders, a markdown plan and JSON. Formula: times a week x (minutes minus checking minutes). It does not know whether a bot can do a job well. Stores nothing. Defaults are invented. Built from the replies to a Nov 17 2026 post by Elon Musk asking how Grok Bot can be more helpful; independent of xAI.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/small-task-ramp/): takes up to six jobs (name, minutes, times a week, risk), minutes spent checking, start date; returns ranked four-week ramp, minutes back a week, .ics, .md, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: ordering jobs by risk and net time saved.
+- Not for: judging bot capability or your real risk; risk is your own call.
+- Information only.
+
+## Sources
+
+- xAI launch post: https://x.ai/news/introducing-grok-bot
