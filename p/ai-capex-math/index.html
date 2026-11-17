@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The AI boom's math needs a payroll</title>
+<meta name="description" content="John Hempton's what-has-to-be-true math on AI capex, as a calculator. Change the capex, lifespan and margin and see the revenue and wage savings it implies.">
+<link rel="canonical" href="https://iggym.github.io/p/ai-capex-math/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Iggy Mwangi">
+<meta property="og:title" content="The AI boom's math needs a payroll">
+<meta property="og:description" content="John Hempton's what-has-to-be-true math on AI capex, as a calculator. Change the capex, lifespan and margin and see the revenue and wage savings it implies.">
+<meta property="og:url" content="https://iggym.github.io/p/ai-capex-math/">
+<meta property="og:image" content="https://iggym.github.io/p/ai-capex-math/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustrative AI-generated photo: a data hall with rows of blue-lit server racks on the left fading into empty bare metal frames on the right.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iggym">
+<meta name="twitter:title" content="The AI boom's math needs a payroll">
+<meta name="twitter:description" content="John Hempton's what-has-to-be-true math on AI capex, as a calculator. Change the capex, lifespan and margin and see the revenue and wage savings it implies.">
+<meta name="twitter:image" content="https://iggym.github.io/p/ai-capex-math/og.jpg">
+<link rel="preload" as="image" href="hero.jpg">
+<script>
+  var Q0 = new URLSearchParams(location.search);
+  if (Q0.get('render') === '1') document.documentElement.classList.add('render');
+  if (Q0.get('og') === '1') document.documentElement.classList.add('og');
+</script>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+  :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero{position:relative;color:#fff;background:#0b1530;overflow:hidden;min-height:22rem;display:flex;align-items:flex-end}
+  .hero img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,48,.15) 0,rgba(11,21,48,.55) 45%,rgba(11,21,48,.92) 100%)}
+  .hero .in{position:relative;z-index:1;max-width:40rem;margin:0 auto;padding:6rem 1rem 1.2rem;width:100%}
+  .hero .by{color:#fdba74;font-weight:600}
+  .hero h1{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero .intro{color:#e2e8f0}
+  .cap{font-size:.75rem;color:#cbd5e1;margin:.4rem 0 0}
+  .wrap{max-width:40rem;margin:0 auto;padding:1rem 1rem 2.5rem}
+  .by{font-size:.875rem;color:#475569;margin:0}
+  h1{font-size:2rem;line-height:1.12;margin:.25rem 0 .5rem;font-weight:800}
+  h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 .6rem}
+  .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
+  label{display:block;font-weight:700;margin:.6rem 0 .2rem}
+  input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
+  textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  input[type=range]{width:100%;min-height:48px;accent-color:#c2410c}
+  button{font:inherit;min-height:48px;min-width:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a;transition:transform .12s,background .2s}
+  button:active{transform:scale(.96)}
+  button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
+  button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
+  .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}h1{font-size:1.65rem}}
+  .out{display:grid;gap:.6rem;margin-top:1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem;animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+  .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+  .card .d{font-size:.95rem;color:#334155}
+  .card.hi{border-color:#c2410c;background:#fff7ed}
+  .card.bad{border-color:#b91c1c;background:#fef2f2}
+  .card.good{border-color:#15803d;background:#f0fdf4}
+  .small{font-size:.875rem;color:#475569}
+  .vizbox{margin-top:1rem;border-radius:1rem;overflow:hidden;background:#0b1530;border:2px solid #0b1530}
+  .vizbox svg{display:block;width:100%;height:auto}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
+  th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
+  a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
+  li,.card .d,p{overflow-wrap:anywhere}
+  pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  html.rv-on .rv.in{opacity:1;transform:none}
+  #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530 center/cover;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:24px}
+  #card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,34,.55),rgba(8,14,34,.35) 40%,rgba(8,14,34,.8))}
+  #card>*{position:relative}
+  .kick{font-size:44px;font-weight:600;color:#fdba74}
+  .hook{font-size:80px;line-height:1.05;font-weight:800;letter-spacing:-1px;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+  #fviz{background:rgba(8,14,34,.72);border-radius:28px;width:920px;display:block}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:rgba(255,255,255,.96);color:#0b1020;border-radius:24px;padding:20px 40px;border-left:20px solid #cbd5e1}
+  .row.hi{border-left-color:#f97316}
+  .rl{font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1.05;font-weight:900;margin:2px 0 8px;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.2;font-weight:500}
+  .foot{margin-top:auto}
+  .cue{font-size:46px;font-weight:800}
+  .src{font-size:30px;line-height:1.25;color:#e2e8f0;margin-top:10px}
+  .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .hero{display:none}
+  .render .wrap{max-width:none;padding:0;margin:0}
+  .render .wrap>:not(.stagewrap){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0;display:block}
+  .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
+  .og .wrap,.og .hero{display:none}
+  #ogcard{display:none}
+  .og #ogcard{display:flex;position:relative;width:1200px;height:630px;padding:56px 64px;background:#0b1530 center/cover;color:#fff;flex-direction:column;gap:22px}
+  #ogcard::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,34,.86) 0,rgba(8,14,34,.55) 58%,rgba(8,14,34,.12))}
+  #ogcard>*{position:relative}
+  #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
+  #ogcard .h{font-size:76px;line-height:1.05;font-weight:800;letter-spacing:-1px;max-width:900px}
+  #ogcard .b{display:flex;gap:24px}
+  #ogcard .b div{background:rgba(255,255,255,.96);color:#0b1020;border-radius:18px;padding:14px 26px;font-size:28px;font-weight:600}
+  #ogcard .b b{display:block;font-size:58px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:24px;color:#e2e8f0;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <img src="hero.jpg" width="1280" height="720" alt="Illustrative AI-generated photo: a data hall with rows of blue-lit server racks on the left fading into empty bare metal frames on the right." fetchpriority="high">
+  <div class="in">
+    <p class="by" id="byline"></p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <p class="cap">Illustrative AI-generated image, not a photograph of real events or places.</p>
+  </div>
+</header>
+<div class="wrap">
+  <p class="sr" id="live" aria-live="polite"></p>
+
+  <section class="panel rv" aria-labelledby="t0">
+    <h2 id="t0">What has to be true</h2>
+    <div class="vizbox"><svg id="viz" role="presentation"></svg></div>
+    <p class="small">Bars are drawn to one scale. Changing a slider redraws them. Illustrative model, not a forecast.</p>
+  </section>
+  <section class="panel rv" aria-labelledby="t1">
+    <h2 id="t1">Pick a capex base, then change anything</h2>
+    <div class="btns" role="group" aria-label="Capex base">
+      <button id="pH" type="button" aria-pressed="true">Hempton: $7.0T</button>
+      <button id="pB" type="button" aria-pressed="false">SemiAnalysis before: $5.1T</button>
+      <button id="pA" type="button" aria-pressed="false">SemiAnalysis after: $3.5T</button>
+    </div>
+    <p class="small" id="basisnote"></p>
+    <label for="cap">Capex to recover: <span id="capV"></span></label>
+    <input id="cap" type="range" min="1" max="10" step="0.1" value="7">
+    <label for="life">Useful life of the equipment: <span id="lifeV"></span></label>
+    <input id="life" type="range" min="3" max="8" step="1" value="5">
+    <label for="mar">EBITDA margin on the new revenue (our assumption): <span id="marV"></span></label>
+    <input id="mar" type="range" min="40" max="95" step="1" value="70">
+    <label for="mul">Wage savings per dollar of AI spend, Hempton's rule is 2: <span id="mulV"></span></label>
+    <input id="mul" type="range" min="1" max="3" step="0.1" value="2">
+    <div class="out" id="out"></div>
+  </section>
+  <section class="panel rv" aria-labelledby="t2">
+    <h2 id="t2">The SemiAnalysis cut, year by year</h2>
+    <p class="small">Global AI accelerator capex forecast, before and after the Nov 13 2026 model update, as reported. Chips only. Totals are our arithmetic.</p>
+    <div class="out" id="tbl"></div>
+  </section>
+  <section aria-label="Share" class="rv">
+    <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
+    <p class="small" id="sstatus" aria-live="polite"></p>
+  </section>
+  <div class="stagewrap rv"><div id="stage"><div id="card"></div></div></div>
+  <p class="small rv" id="note" style="margin-top:1.5rem"></p>
+  <footer class="rv" style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+    <h2>Sources</h2>
+    <ul class="small" id="sources"></ul>
+    <p class="small">Images: AI-generated illustrations made for this page (no real people, logos or official surfaces), compressed for the web.</p>
+  </footer>
+</div>
+<div id="ogcard"></div>
+<script>
+const DATA = {
+ "PAGE_URL": "https://iggym.github.io/p/ai-capex-math/",
+ "byline": "By Iggy Mwangi (@iggym)",
+ "title": "The AI boom's math needs a payroll",
+ "intro": "Hempton argues that the AI capex forecast only pays back if businesses save about 10% of the OECD wage bill. Change his numbers, or use SemiAnalysis's cut, and see what has to be true.",
+ "note": "This is a what-has-to-be-true calculator, not a prediction. The chain (capex over lifespan, then EBITDA margin, then a savings-to-spend multiple, then share of the wage bill) follows John Hempton's argument in his Joe Walker interview. Hempton did not state an EBITDA margin: the 70% default is our assumption, chosen so that $1.4T a year of cost recovery gives about the $2T revenue he cites. SemiAnalysis's figures are accelerator (chip) spend only, not buildings or power, so the two bases are not directly comparable. The $40 trillion OECD wage bill is the figure Hempton cites. Runs in your browser; nothing is sent anywhere.",
+ "sources": [
+  {
+   "label": "John Hempton interviewed by Joe Walker (interview page with summary and transcript excerpts):",
+   "url": "https://josephnoelwalker.com/john-hempton/"
+  },
+  {
+   "label": "Arnaud Bertrand on X, Nov 13 2026, sharing Hempton's argument (6,062 likes, 364k views as returned by X on 2026-11-16):",
+   "url": "https://x.com/RnaudBertrand/status/2121107082082668754"
+  },
+  {
+   "label": "SemiAnalysis Nov 13 2026 accelerator capex forecast cut, as reported by Tiger Brokers:",
+   "url": "https://www.itiger.com/news/1126271736"
+  },
+  {
+   "label": "Wall Street Engine on X summarising the SemiAnalysis cut (704 likes, 196k views as returned by X on 2026-11-16):",
+   "url": "https://x.com/wallstengine/status/2122353777605071101"
+  }
+ ],
+ "shareText": "Hempton's math: $7T of AI capex needs about $4T a year in wage savings. Change the numbers:",
+ "film": {
+  "alt": "Short film: $7 trillion of capex over five years is $1.4 trillion a year, needs about $2 trillion of revenue, which at twice the spend means about $4 trillion of wage savings, 10% of the $40 trillion OECD wage bill.",
+  "hookEnd": 1.5,
+  "stepStarts": [
+   1.6,
+   3.7,
+   5.8
+  ],
+  "dur": 0.8,
+  "posterStart": 8,
+  "posterFade": 0.5,
+  "holdEnd": 9.5,
+  "loopAt": 10
+ }
+};
+
+const APP=(function(){
+  const WAGE=40;
+  let s={cap:7,life:5,mar:70,mul:2,basis:'H'};
+  const disp={};
+  const BASIS={H:'Hempton: about $7 trillion of global AI and data-centre capex to 2030, his figure from the interview.',B:'SemiAnalysis, before the Nov 13 cut: accelerator capex 2026-30 summed to about $5.10 trillion. Chips only, not buildings or power.',A:'SemiAnalysis, after the Nov 13 cut: accelerator capex 2026-30 summed to about $3.50 trillion. Chips only, not buildings or power. A floor for total build cost, not a total.'};
+  const PRE={H:7,B:5.1,A:3.5};
+  const YEARS=[['2026',392,392],['2027',770,627],['2028',1054,758],['2029',1352,796],['2030',1531,923]];
+  const fT=x=>'$'+x.toFixed(x<1?2:1)+'T';
+  function calc(o){ o=o||s; const ann=o.cap/o.life, rev=ann/(o.mar/100), sav=rev*o.mul, sh=sav/WAGE*100; return {cap:o.cap,ann,rev,sav,sh}; }
+  function paint(){ const c=calc();
+    $('capV').textContent=fT(s.cap); $('lifeV').textContent=s.life+' years'; $('marV').textContent=s.mar+'%'; $('mulV').textContent=s.mul.toFixed(1)+'x';
+    ['H','B','A'].forEach(k=>$('p'+k).setAttribute('aria-pressed',String(s.basis===k))); $('basisnote').textContent=s.basis?BASIS[s.basis]:'Custom capex: your own number.';
+    const o=$('out'); o.textContent='';
+    const add=(cls,l,num,f,d,key)=>{const x=el('div','card '+cls); const v=el('div','v'); x.append(el('div','l',l),v,el('div','d',d)); o.append(x); tween(v,key,num,f);};
+    add('','Cost to recover each year',c.ann,fT,fT(c.cap)+' spread over '+s.life+' years of equipment life.','ann');
+    add('','Revenue needed each year',c.rev,fT,'If that cost has to come out of EBITDA at a '+s.mar+'% margin.','rev');
+    add('hi','Wage savings needed each year',c.sav,fT,'At '+s.mul.toFixed(1)+'x the revenue, because firms rarely cut staff for a small saving (Hempton\'s argument).','sav');
+    add('bad','Share of the OECD wage bill',c.sh,x=>x.toFixed(1)+'%','Of about $40T. Whether that is plausible is the question, not an answer.','sh');
+    const t=$('tbl'); if(!t.firstChild){ const b=YEARS.reduce((a,y)=>a+y[1],0), a=YEARS.reduce((q,y)=>q+y[2],0);
+      YEARS.forEach(y=>{ const ch=y[2]===y[1]?'unchanged':Math.round((y[2]/y[1]-1)*100)+'%'; const x=el('div','card'); x.append(el('div','l',y[0]),el('div','v',y[1]===y[2]?'$'+y[1]+'B':'$'+y[1]+'B to $'+y[2]+'B'),el('div','d',ch)); t.append(x); });
+      const x=el('div','card hi'); x.append(el('div','l','2026-30 total'),el('div','v','$'+(b/1000).toFixed(2)+'T to $'+(a/1000).toFixed(2)+'T'),el('div','d','Cut of about $'+((b-a)/1000).toFixed(2)+'T. Reported reasons: slower new ARR growth at frontier labs and tighter financing.')); t.append(x); }
+    announce('Cost to recover '+fT(c.ann)+' a year, revenue needed '+fT(c.rev)+', wage savings '+fT(c.sav)+', '+c.sh.toFixed(1)+' percent of the OECD wage bill.');
+    api.onChange&&api.onChange(); api.redraw&&api.redraw(); }
+  function draw(svg,ctx){ svg.textContent=''; const c=calc(); const k=(ctx.film||ctx.reduce||ctx.dt==null)?1:Math.min(1,ctx.dt*5);
+    ['cap','ann','rev','sav','sh'].forEach(n=>{ disp[n]=(disp[n]==null||k===1)?c[n]:disp[n]+(c[n]-disp[n])*k; });
+    const mx=Math.max(c.cap,c.ann,c.rev,c.sav,0.1), base=285, H=190;
+    const st=ctx.film?[0.7,0.7+0,F.stepStarts[0],F.stepStarts[1],F.stepStarts[2]]:null;
+    const rv=i=>ctx.film?ease(seg(ctx.t,[0.7,F.stepStarts[0],F.stepStarts[1],F.stepStarts[2]][i],.9)):ease(seg(ctx.p,i*.2,.5));
+    S('text',{x:30,y:30,'font-size':19,'font-weight':800,fill:'#fdba74'},svg,ctx.film?'Who has to pay it back?':'Live: your numbers');
+    const cols=[['cap',['Capex'],'',  '#38bdf8'],['ann',['Cost per','year'],'÷ '+s.life+' years','#a78bfa'],['rev',['Revenue','needed'],'÷ '+s.mar+'% margin','#fbbf24'],['sav',['Wage','savings'],'× '+s.mul.toFixed(1)+' rule','#fb923c']];
+    S('line',{x1:20,y1:base,x2:580,y2:base,stroke:'#475569','stroke-width':2},svg);
+    cols.forEach((cl,i)=>{ const x=30+i*140, r=rv(i), h=Math.max(3,disp[cl[0]]/mx*H*r);
+      S('rect',{x:x,y:base-h,width:100,height:h,rx:8,fill:cl[3],opacity:.95},svg);
+      if(r>.4) S('text',{x:x+50,y:base-h-10,'text-anchor':'middle','font-size':24,'font-weight':900,fill:'#fff',opacity:Math.min(1,(r-.4)/.4)},svg,fT(disp[cl[0]]));
+      cl[1].forEach((ln,j)=>S('text',{x:x+50,y:308+j*21,'text-anchor':'middle','font-size':18,'font-weight':800,fill:'#e2e8f0'},svg,ln));
+      if(cl[2]) S('text',{x:x+50,y:352,'text-anchor':'middle','font-size':15,fill:'#94a3b8'},svg,cl[2]);
+      if(i<3){ const ax=x+100+20; S('path',{d:'M'+(ax-7)+' '+(base-60)+'L'+(ax+7)+' '+(base-48)+'L'+(ax-7)+' '+(base-36)+'',stroke:'#64748b','stroke-width':3,fill:'none','stroke-linecap':'round',opacity:r>.9?1:0},svg);
+        if(!ctx.reduce&&!ctx.film&&ctx.p>=1){ for(let q=0;q<3;q++){ const ph=((ctx.t*.6)+q/3+i*.2)%1; S('circle',{cx:x+104+ph*32,cy:base-30,r:4,fill:cl[3],opacity:.9},svg); } } }
+    });
+    const r3=rv(3), tx=30, tw=520; S('rect',{x:tx,y:392,width:tw,height:26,rx:13,fill:'#1e293b',stroke:'#475569'},svg);
+    S('rect',{x:tx,y:392,width:Math.max(0,tw*Math.min(1,disp.sh/100)*r3),height:26,rx:13,fill:'#fb923c'},svg);
+    S('text',{x:tx,y:384,'font-size':15,fill:'#cbd5e1'},svg,'OECD wage bill, about $40T (the figure Hempton cites)');
+    if(r3>.5) S('text',{x:tx+tw-10,y:411,'text-anchor':'end','font-size':18,'font-weight':900,fill:'#fff'},svg,disp.sh.toFixed(1)+'% of it'); }
+  function setBasis(k){ s.basis=k; s.cap=PRE[k]; $('cap').value=s.cap; paint(); }
+  const api={ vb:'0 0 600 440', fvh:500, draw,
+    init(){ const g=(k,lo,hi)=>{ const v=parseFloat(Q.get(k)); return isFinite(v)&&v>=lo&&v<=hi?v:null; };
+      const c=g('c',1,10), l=g('l',3,8), m=g('m',40,95), x=g('x',1,3); if(c!=null){s.cap=c; s.basis=null;} if(l!=null)s.life=Math.round(l); if(m!=null)s.mar=Math.round(m); if(x!=null)s.mul=x;
+      ['cap','life','mar','mul'].forEach(id=>$(id).value=s[id]);
+      if(c!=null){ for(const k in PRE) if(Math.abs(PRE[k]-c)<.001) s.basis=k; }
+      if(RENDER||OG){ paint(); return; }
+      $('cap').oninput=e=>{s.cap=parseFloat(e.target.value); s.basis=null; for(const k in PRE) if(Math.abs(PRE[k]-s.cap)<.001) s.basis=k; paint();};
+      $('life').oninput=e=>{s.life=parseInt(e.target.value,10); paint();};
+      $('mar').oninput=e=>{s.mar=parseInt(e.target.value,10); paint();};
+      $('mul').oninput=e=>{s.mul=parseFloat(e.target.value); paint();};
+      $('pH').onclick=()=>setBasis('H'); $('pB').onclick=()=>setBasis('B'); $('pA').onclick=()=>setBasis('A');
+      paint(); },
+    film(){ const c=calc(); return {kick:'Hempton\'s what-has-to-be-true math',hook:'The AI boom needs a payroll.',rows:[
+        {l:'Capex to recover',n:fT(c.cap),t:'Over '+s.life+' years: '+fT(c.ann)+' a year'},
+        {l:'Revenue needed',n:fT(c.rev)+'/yr',t:'At a '+s.mar+'% EBITDA margin (our assumption)'},
+        {l:'Wage savings at '+s.mul.toFixed(1)+'x',n:fT(c.sav)+'/yr',t:c.sh.toFixed(1)+'% of the $40T OECD wage bill',hi:true}],
+        cue:'Change the numbers yourself',src:'Hempton\'s argument as reported; margin is our assumption. Image: AI-generated, illustrative.'}; },
+    og(){ const c=calc(); return {k:'What has to be true',h:'The AI boom\'s math needs a payroll',boxes:[[fT(c.rev),'revenue needed a year'],[fT(c.sav),'wage savings at '+s.mul.toFixed(1)+'x'],[c.sh.toFixed(0)+'%','of the OECD wage bill']],s:'iggym.github.io/p/ai-capex-math - Hempton\'s argument, our calculator. Illustrative image.'}; },
+    shareUrl(){ const u=new URL(DATA.PAGE_URL); u.searchParams.set('c',s.cap); u.searchParams.set('l',s.life); u.searchParams.set('m',s.mar); u.searchParams.set('x',s.mul); return u.toString(); }
+  }; return api; })();
+
+
+const $ = id => document.getElementById(id);
+const RENDER = document.documentElement.classList.contains('render');
+const OG = document.documentElement.classList.contains('og');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q = new URLSearchParams(location.search);
+const NS='http://www.w3.org/2000/svg';
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+function S(tag,attrs,parent,text){ const e=document.createElementNS(NS,tag); for(const k in (attrs||{}))e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; if(parent)parent.appendChild(e); return e; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x), lerp=(a,b,k)=>a+(b-a)*k;
+const prevVals={};
+function tween(node,key,to,fmt){ const from=prevVals[key]; prevVals[key]=to; if(REDUCE||RENDER||OG||from==null||from===to){node.textContent=fmt(to);return;}
+  const t0=performance.now(), d=550; (function f(now){ const k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3); node.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f); })(t0); }
+let liveTimer=0; function announce(txt){ clearTimeout(liveTimer); liveTimer=setTimeout(()=>{$('live').textContent=txt;},400); }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro; $('note').textContent=DATA.note;
+(function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
+const F = DATA.film;
+const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+card.style.backgroundImage='url(scene.jpg)';
+const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const fviz=S('svg',{id:'fviz',viewBox:APP.vb,'aria-hidden':'true'}); fviz.style.height=APP.fvh+'px'; fviz.setAttribute('preserveAspectRatio','xMidYMid meet');
+const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
+const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
+card.append(top0,fviz,rowsEl,foot);
+function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'72px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+let curT=0;
+function setTime(t){
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0; curT=t;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*60)+'px)'; top0.style.opacity=.2+.8*seg(t,0,.5);
+  crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  APP.draw(fviz,{t,p:ease(seg(t,.6,F.stepStarts[2]+1-.6)),film:true,reduce:false});
+  foot.style.opacity=seg(t,F.posterStart,F.posterFade);
+}
+let raf=0;
+function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return;} const t0=performance.now();
+  (function tick(now){const t=(now-t0)/1000; if(t>=F.holdEnd){setTime(F.holdEnd);return;} setTime(t); raf=requestAnimationFrame(tick);})(t0); }
+window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
+function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
+addEventListener('resize',fit); fit();
+(function(){ const o=$('ogcard'), g=APP.og(); o.style.backgroundImage='url(hero.jpg)'; o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(RENDER) setTime(0); else if(REDUCE) setTime(F.holdEnd); };
+// live viz loop, runs only while the diagram is on screen
+const lv=$('viz'); let vis=false, vStart=0, vLast=0, vraf=0;
+function vloop(now){ if(!vis)return; const t=(now-vStart)/1000, dt=Math.min(.05,(now-vLast)/1000); vLast=now; APP.draw(lv,{t,dt,p:ease(seg(t,.2,1.8)),film:false,reduce:false}); vraf=requestAnimationFrame(vloop); }
+if(lv && !RENDER && !OG){
+  lv.setAttribute('viewBox',APP.vb); lv.setAttribute('aria-hidden','true');
+  if(REDUCE){ APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); APP.redraw=()=>APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); }
+  else if('IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting&&!vis){vis=true;vStart=vLast=performance.now();vraf=requestAnimationFrame(vloop);} else if(!e.isIntersecting){vis=false;cancelAnimationFrame(vraf);} }); },{threshold:.15}).observe(lv); }
+  else { vis=true; vStart=vLast=performance.now(); vraf=requestAnimationFrame(vloop); }
+}
+// scroll reveals + hero parallax
+if(!RENDER && !OG){
+  if(!REDUCE && 'IntersectionObserver' in window){ document.documentElement.classList.add('rv-on'); const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12}); document.querySelectorAll('.rv').forEach(x=>io.observe(x)); }
+  const him=document.querySelector('.hero img'); if(him&&!REDUCE){ let tick=false; addEventListener('scroll',()=>{ if(tick)return; tick=true; requestAnimationFrame(()=>{ const y=Math.min(scrollY,700); him.style.transform='translateY('+(y*.18)+'px) scale('+(1+y*.0002)+')'; tick=false; }); },{passive:true}); }
+  $('replay').onclick=play;
+  $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
+}
+APP.init(); renderFilm(); setTime(0);
+const preload=src=>new Promise(r=>{const i=new Image(); i.onload=i.onerror=()=>r(); i.src=src;});
+Promise.race([Promise.all([preload('scene.jpg'),preload('hero.jpg'),(document.fonts&&document.fonts.ready)||Promise.resolve()]),new Promise(r=>setTimeout(r,2500))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+
+</script>
+</body>
+</html>

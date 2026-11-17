@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The agent waits. The memory meter doesn't.</title>
+<meta name="description" content="A calculator for what an AI agent sandbox bill is made of. Enter your agents, CPU, memory and how often the CPU is busy. Default rates are Vercel's published Sandbox rates.">
+<link rel="canonical" href="https://iggym.github.io/p/agent-sandbox-bill/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Iggy Mwangi">
+<meta property="og:title" content="The agent waits. The memory meter doesn't.">
+<meta property="og:description" content="A calculator for what an AI agent sandbox bill is made of. Enter your agents, CPU, memory and how often the CPU is busy. Default rates are Vercel's published Sandbox rates.">
+<meta property="og:url" content="https://iggym.github.io/p/agent-sandbox-bill/">
+<meta property="og:image" content="https://iggym.github.io/p/agent-sandbox-bill/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustrative AI-generated photo: a large grid of dark server boxes in a dim room with a few glowing orange.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iggym">
+<meta name="twitter:title" content="The agent waits. The memory meter doesn't.">
+<meta name="twitter:description" content="A calculator for what an AI agent sandbox bill is made of. Enter your agents, CPU, memory and how often the CPU is busy. Default rates are Vercel's published Sandbox rates.">
+<meta name="twitter:image" content="https://iggym.github.io/p/agent-sandbox-bill/og.jpg">
+<link rel="preload" as="image" href="hero.jpg">
+<script>
+  var Q0 = new URLSearchParams(location.search);
+  if (Q0.get('render') === '1') document.documentElement.classList.add('render');
+  if (Q0.get('og') === '1') document.documentElement.classList.add('og');
+</script>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+  :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero{position:relative;color:#fff;background:#0b1530;overflow:hidden;min-height:22rem;display:flex;align-items:flex-end}
+  .hero img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,48,.15) 0,rgba(11,21,48,.55) 45%,rgba(11,21,48,.92) 100%)}
+  .hero .in{position:relative;z-index:1;max-width:40rem;margin:0 auto;padding:6rem 1rem 1.2rem;width:100%}
+  .hero .by{color:#fdba74;font-weight:600}
+  .hero h1{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero .intro{color:#e2e8f0}
+  .cap{font-size:.75rem;color:#cbd5e1;margin:.4rem 0 0}
+  .wrap{max-width:40rem;margin:0 auto;padding:1rem 1rem 2.5rem}
+  .by{font-size:.875rem;color:#475569;margin:0}
+  h1{font-size:2rem;line-height:1.12;margin:.25rem 0 .5rem;font-weight:800}
+  h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 .6rem}
+  .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
+  label{display:block;font-weight:700;margin:.6rem 0 .2rem}
+  input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
+  textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  input[type=range]{width:100%;min-height:48px;accent-color:#c2410c}
+  button{font:inherit;min-height:48px;min-width:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a;transition:transform .12s,background .2s}
+  button:active{transform:scale(.96)}
+  button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
+  button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
+  .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}h1{font-size:1.65rem}}
+  .out{display:grid;gap:.6rem;margin-top:1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem;animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+  .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+  .card .d{font-size:.95rem;color:#334155}
+  .card.hi{border-color:#c2410c;background:#fff7ed}
+  .card.bad{border-color:#b91c1c;background:#fef2f2}
+  .card.good{border-color:#15803d;background:#f0fdf4}
+  .small{font-size:.875rem;color:#475569}
+  .vizbox{margin-top:1rem;border-radius:1rem;overflow:hidden;background:#0b1530;border:2px solid #0b1530}
+  .vizbox svg{display:block;width:100%;height:auto}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
+  th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
+  a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
+  li,.card .d,p{overflow-wrap:anywhere}
+  pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  html.rv-on .rv.in{opacity:1;transform:none}
+  #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530 center/cover;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:24px}
+  #card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,34,.55),rgba(8,14,34,.35) 40%,rgba(8,14,34,.8))}
+  #card>*{position:relative}
+  .kick{font-size:44px;font-weight:600;color:#fdba74}
+  .hook{font-size:80px;line-height:1.05;font-weight:800;letter-spacing:-1px;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+  #fviz{background:rgba(8,14,34,.72);border-radius:28px;width:920px;display:block}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:rgba(255,255,255,.96);color:#0b1020;border-radius:24px;padding:20px 40px;border-left:20px solid #cbd5e1}
+  .row.hi{border-left-color:#f97316}
+  .rl{font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1.05;font-weight:900;margin:2px 0 8px;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.2;font-weight:500}
+  .foot{margin-top:auto}
+  .cue{font-size:46px;font-weight:800}
+  .src{font-size:30px;line-height:1.25;color:#e2e8f0;margin-top:10px}
+  .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .hero{display:none}
+  .render .wrap{max-width:none;padding:0;margin:0}
+  .render .wrap>:not(.stagewrap){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0;display:block}
+  .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
+  .og .wrap,.og .hero{display:none}
+  #ogcard{display:none}
+  .og #ogcard{display:flex;position:relative;width:1200px;height:630px;padding:56px 64px;background:#0b1530 center/cover;color:#fff;flex-direction:column;gap:22px}
+  #ogcard::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,34,.86) 0,rgba(8,14,34,.55) 58%,rgba(8,14,34,.12))}
+  #ogcard>*{position:relative}
+  #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
+  #ogcard .h{font-size:76px;line-height:1.05;font-weight:800;letter-spacing:-1px;max-width:900px}
+  #ogcard .b{display:flex;gap:24px}
+  #ogcard .b div{background:rgba(255,255,255,.96);color:#0b1020;border-radius:18px;padding:14px 26px;font-size:28px;font-weight:600}
+  #ogcard .b b{display:block;font-size:58px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:24px;color:#e2e8f0;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <img src="hero.jpg" width="1280" height="720" alt="Illustrative AI-generated photo: a large grid of dark server boxes in a dim room with a few glowing orange." fetchpriority="high">
+  <div class="in">
+    <p class="by" id="byline"></p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <p class="cap">Illustrative AI-generated image, not a photograph of real events or places.</p>
+  </div>
+</header>
+<div class="wrap">
+  <p class="sr" id="live" aria-live="polite"></p>
+
+  <section class="panel rv" aria-labelledby="t0">
+    <h2 id="t0">Your fleet, live</h2>
+    <div class="vizbox"><svg id="viz" role="presentation"></svg></div>
+    <p class="small">Each square is a sandbox. Orange: memory reserved the whole time. Blue flash: the CPU is busy. Illustrative pattern, not measured data.</p>
+  </section>
+  <section class="panel rv" aria-labelledby="t1">
+    <h2 id="t1">Enter your fleet</h2>
+    <div class="grid2">
+      <div><label for="n">Sandboxes running</label><input id="n" type="number" inputmode="numeric" min="1" max="100000" step="1" value="100"></div>
+      <div><label for="h">Hours</label><input id="h" type="number" inputmode="decimal" min="0.01" max="10000" step="any" value="1"></div>
+      <div><label for="v">vCPUs per sandbox</label><input id="v" type="number" inputmode="decimal" min="0.5" max="64" step="any" value="2"></div>
+      <div><label for="g">GB of memory per sandbox</label><input id="g" type="number" inputmode="decimal" min="0.5" max="512" step="any" value="4"></div>
+    </div>
+    <label for="a">CPU actually busy: <span id="aV"></span></label>
+    <input id="a" type="range" min="1" max="100" step="1" value="5">
+    <div class="grid2">
+      <div><label for="rc">Active CPU, $ per vCPU-hour</label><input id="rc" type="number" inputmode="decimal" min="0" step="any" value="0.128"></div>
+      <div><label for="rm">Provisioned memory, $ per GB-hour</label><input id="rm" type="number" inputmode="decimal" min="0" step="any" value="0.0212"></div>
+      <div><label for="fp">Optional: a flat $ per sandbox-hour you were quoted</label><input id="fp" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 0.10"></div>
+    </div>
+    <p class="small">Defaults are Vercel's published Pro rates. Change them to model any provider that bills CPU while busy and memory while allocated.</p>
+    <div class="out" id="out"></div>
+  </section>
+  <section class="panel rv" aria-labelledby="t2">
+    <h2 id="t2">The same scenario, as reported</h2>
+    <p class="small">100 sandboxes, 5% active CPU, one hour. Figures from the Agent37 post (Agent37's own comparison). The first card is our arithmetic on Vercel's published rates.</p>
+    <div class="out">
+      <div class="card hi"><div class="l">Our arithmetic, Vercel's rates (2 vCPU, 4 GB)</div><div class="v">$9.76</div><div class="d">CPU $1.28 plus memory $8.48. The post says $9.75, a rounding difference.</div></div>
+      <div class="card"><div class="l">Reported by Agent37</div><div class="v">$9.75 / $16.56 / $0.68</div><div class="d">Vercel / E2B and Daytona / Agent37 per hour. These are Agent37's figures, not verified here, and depend on plans and hardware this page does not model.</div></div>
+      <div class="card"><div class="l">Context</div><div class="v" style="font-size:1.2rem">The method was disputed before</div><div class="d">Vercel's CEO disputed an earlier Agent37 cost claim on Nov 3 over active CPU time. The Nov 16 post says it corrects for that. Read both and check your own rates.</div></div>
+    </div>
+  </section>
+  <section aria-label="Share" class="rv">
+    <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
+    <p class="small" id="sstatus" aria-live="polite"></p>
+  </section>
+  <div class="stagewrap rv"><div id="stage"><div id="card"></div></div></div>
+  <p class="small rv" id="note" style="margin-top:1.5rem"></p>
+  <footer class="rv" style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+    <h2>Sources</h2>
+    <ul class="small" id="sources"></ul>
+    <p class="small">Images: AI-generated illustrations made for this page (no real people, logos or official surfaces), compressed for the web.</p>
+  </footer>
+</div>
+<div id="ogcard"></div>
+<script>
+const DATA = {
+ "PAGE_URL": "https://iggym.github.io/p/agent-sandbox-bill/",
+ "byline": "By Iggy Mwangi (@iggym)",
+ "title": "The agent waits. The memory meter doesn't.",
+ "intro": "On Vercel's published Sandbox rates, you pay for CPU only while it is busy, but memory counts the whole time. Enter your own fleet and see which one is your bill.",
+ "note": "Model only. Default rates are Vercel Sandbox's published Pro rates for the iad1 region (Active CPU $0.128 per hour; provisioned memory $0.0212 per GB-hour), copied from its pricing docs on 2026-11-16 and editable here. Other providers bill differently, so type in your own rates. It excludes plan fees, credits, egress, storage and model-token costs. The Agent37, E2B and Daytona figures in the panel above are Agent37's own, from its post; this page does not recompute them and recommends no provider. Runs in your browser; nothing is sent anywhere.",
+ "sources": [
+  {
+   "label": "Vercel Sandbox pricing (Active CPU, provisioned memory, what counts as idle):",
+   "url": "https://vercel.com/docs/sandbox/pricing"
+  },
+  {
+   "label": "Vishnu Krishnaprasad (Agent37) on X, Nov 16 2026: 100 sandboxes at 5% active CPU (1,229 likes, 1.16M views as returned by X on 2026-11-16):",
+   "url": "https://x.com/an_engineer_log/status/2122360362712395943"
+  },
+  {
+   "label": "Guillermo Rauch (Vercel) on X, Nov 3 2026, disputing an earlier Agent37 cost claim over active CPU time (404 likes as returned by X on 2026-11-16):",
+   "url": "https://x.com/rauchg/status/2117662578457575497"
+  },
+  {
+   "label": "Agent37 comparison page (how it describes its own billing and what its list-price comparison excludes):",
+   "url": "https://www.agent37.com/blog/best-sandbox-for-ai-agents"
+  }
+ ],
+ "shareText": "100 agent sandboxes, CPU busy 5% of the time: which part of the bill is it? Try your own numbers:",
+ "film": {
+  "alt": "Short film: 100 sandboxes with 2 vCPU and 4 GB each, CPU busy 5% of an hour. Active CPU costs $1.28, provisioned memory $8.48, about 87% of a $9.76 bill.",
+  "hookEnd": 1.5,
+  "stepStarts": [
+   1.6,
+   3.7,
+   5.8
+  ],
+  "dur": 0.8,
+  "posterStart": 8,
+  "posterFade": 0.5,
+  "holdEnd": 9.5,
+  "loopAt": 10
+ }
+};
+
+const APP=(function(){
+  let s={n:100,h:1,v:2,g:4,a:5,rc:.128,rm:.0212,fp:null};
+  const fU=x=>'$'+(x>=100?Math.round(x).toLocaleString('en-US'):x.toFixed(2));
+  function calc(o){ o=o||s; const cpu=o.n*o.v*(o.a/100)*o.rc*o.h, mem=o.n*o.g*o.rm*o.h, tot=cpu+mem, full=o.n*o.v*o.rc*o.h+mem;
+    return {cpu,mem,tot,full,ms:tot>0?mem/tot*100:0,per:o.n*o.h>0?tot/(o.n*o.h):0,flat:o.fp!=null?o.fp*o.n*o.h:null}; }
+  function paint(){ const c=calc(); $('aV').textContent=s.a+'% of the time';
+    const o=$('out'); o.textContent='';
+    const add=(cls,l,num,f,d,key)=>{const x=el('div','card '+cls); const v=el('div','v'); x.append(el('div','l',l),v,el('div','d',d)); o.append(x); tween(v,key,num,f);};
+    add('hi','Total for '+s.h+' hour'+(s.h===1?'':'s'),c.tot,fU,'About '+fU(c.per)+' per sandbox-hour on these rates.','tot');
+    add('','Active CPU',c.cpu,fU,'Only while the CPU is busy ('+s.a+'% of the time here).','cpu');
+    add('bad','Provisioned memory',c.mem,fU,c.ms.toFixed(0)+'% of the bill. Counted whether the agent is busy or waiting.','mem');
+    add('','If the CPU were busy all the time',c.full,fU,'Same fleet at 100% CPU: memory is then '+(c.full>0?(c.mem/c.full*100).toFixed(0):0)+'% of the bill.','full');
+    if(c.flat!=null) add(c.flat<c.tot?'good':'','Your flat quote',c.flat,fU,c.flat<c.tot?'Below the usage-billed total above by '+fU(c.tot-c.flat)+'.':'At or above the usage-billed total above by '+fU(c.flat-c.tot)+'. Check what the flat price includes.','flat');
+    announce('Total '+fU(c.tot)+'. Active CPU '+fU(c.cpu)+'. Provisioned memory '+fU(c.mem)+', '+c.ms.toFixed(0)+' percent of the bill.');
+    api.onChange&&api.onChange(); api.redraw&&api.redraw(); }
+  const hash=i=>{ const x=Math.sin(i*127.1+311.7)*43758.5453; return x-Math.floor(x); };
+  function draw(svg,ctx){ svg.textContent=''; const c=calc(); const cells=Math.min(s.n,100), per=Math.max(1,s.n/cells); const k=(ctx.film||ctx.reduce||ctx.dt==null)?1:Math.min(1,ctx.dt*5);
+    ['cpu','mem','full','tot'].forEach(n=>{ dispv[n]=(dispv[n]==null||k===1)?c[n]:dispv[n]+(c[n]-dispv[n])*k; });
+    const rvP=ctx.film?ease(seg(ctx.t,.6,.8)):ease(seg(ctx.p,0,.5));
+    const cpuP=ctx.film?ease(seg(ctx.t,F.stepStarts[1],.9)):ease(seg(ctx.p,.3,.5));
+    const memP=ctx.film?ease(seg(ctx.t,F.stepStarts[2],.9)):ease(seg(ctx.p,.55,.5));
+    S('text',{x:20,y:30,'font-size':19,'font-weight':800,fill:'#fdba74'},svg,ctx.film?'What the meter is made of':'Live: your fleet');
+    const cols=10, rows=Math.ceil(cells/cols), cs=Math.min(28,Math.floor(300/Math.max(rows,1))-4), st=cs+4, gx=20, gy=52;
+    for(let i=0;i<cells;i++){ const r=Math.floor(i/cols), q=i%cols, x=gx+q*st, y=gy+r*st, hh=hash(i);
+      const vis=Math.min(1,Math.max(0,rvP*1.6-i/cells*.6));
+      let busy; if(ctx.reduce||ctx.film&&false) busy=hh<s.a/100; else { const T=ctx.t||0; busy=((T/(1.1+hh*1.4)+hh*9)%1)<s.a/100; }
+      S('rect',{x:x,y:y,width:cs,height:cs,rx:5,fill:'rgba(251,146,60,.28)',stroke:'#fb923c','stroke-width':1.5,opacity:vis},svg);
+      if(busy&&vis>.5){ S('rect',{x:x+3,y:y+3,width:cs-6,height:cs-6,rx:3,fill:'#38bdf8'},svg); }
+    }
+    S('text',{x:20,y:gy+rows*st+22,'font-size':15,fill:'#cbd5e1'},svg,per>1?'Each square = '+per.toFixed(0)+' sandboxes':'Each square = 1 sandbox');
+    S('text',{x:20,y:gy+rows*st+42,'font-size':15,fill:'#94a3b8'},svg,'Orange: memory held. Blue: CPU busy.');
+    // bill bar
+    const bx=400, bw=80, base=345, H=250, fullH=H;
+    S('rect',{x:bx-3,y:base-fullH-3,width:bw+6,height:fullH+6,rx:8,fill:'none',stroke:'#64748b','stroke-width':2,'stroke-dasharray':'6 6'},svg);
+    S('text',{x:bx+bw/2,y:base-fullH-12,'text-anchor':'middle','font-size':14.5,fill:'#94a3b8'},svg,'if CPU 100% busy: '+fU(c.full));
+    const ch=dispv.cpu/Math.max(c.full,1e-9)*H*cpuP, mh=dispv.mem/Math.max(c.full,1e-9)*H*memP;
+    S('rect',{x:bx,y:base-ch,width:bw,height:Math.max(0,ch),rx:4,fill:'#38bdf8'},svg);
+    S('rect',{x:bx,y:base-ch-mh,width:bw,height:Math.max(0,mh),rx:4,fill:'#fb923c'},svg);
+    S('text',{x:bx+bw+14,y:base-Math.max(ch,8)/2+6,'font-size':19,'font-weight':800,fill:'#7dd3fc',opacity:cpuP},svg,'CPU '+fU(dispv.cpu));
+    S('text',{x:bx+bw+14,y:Math.min(base-ch-mh/2,298),'font-size':19,'font-weight':800,fill:'#fdba74',opacity:memP},svg,'Memory');
+    S('text',{x:bx+bw+14,y:Math.min(base-ch-mh/2,298)+22,'font-size':19,'font-weight':800,fill:'#fdba74',opacity:memP},svg,fU(dispv.mem));
+    S('text',{x:bx+bw/2,y:base+24,'text-anchor':'middle','font-size':16,'font-weight':800,fill:'#e2e8f0'},svg,'Bill for '+s.h+' hr');
+    // running meter
+    let frac=1; if(!ctx.reduce&&!ctx.film){ frac=Math.min(1,((ctx.t||0)%8)/6); }
+    S('text',{x:320,y:400,'font-size':20,'font-weight':900,fill:'#fff'},svg,'Meter: '+fU(c.tot*frac*Math.max(cpuP,memP>0?1:0)));
+    S('text',{x:320,y:424,'font-size':14.5,fill:'#94a3b8'},svg,'CPU + memory at your rates'); }
+  const dispv={};
+  const num=(id,lo,hi,def)=>{ const v=parseFloat($(id).value); return isFinite(v)&&v>=lo&&v<=hi?v:def; };
+  function read(){ s.n=Math.round(num('n',1,100000,s.n)); s.h=num('h',.01,10000,s.h); s.v=num('v',.5,64,s.v); s.g=num('g',.5,512,s.g); s.a=parseInt($('a').value,10); s.rc=num('rc',0,1000,s.rc); s.rm=num('rm',0,1000,s.rm); const f=parseFloat($('fp').value); s.fp=isFinite(f)&&f>=0?f:null; }
+  const api={ vb:'0 0 600 440', fvh:500, draw,
+    init(){ const g=(k,lo,hi)=>{ const v=parseFloat(Q.get(k)); return isFinite(v)&&v>=lo&&v<=hi?v:null; };
+      const m={n:['n',1,100000],h:['h',.01,10000],v:['v',.5,64],g:['g',.5,512],a:['a',1,100]}; for(const k in m){ const v=g(m[k][0],m[k][1],m[k][2]); if(v!=null){ s[k]=v; } }
+      ['n','h','v','g','a'].forEach(id=>$(id).value=s[id]);
+      if(RENDER||OG){ paint(); return; }
+      ['n','h','v','g','rc','rm','fp'].forEach(id=>$(id).oninput=()=>{read();paint();}); $('a').oninput=()=>{read();paint();};
+      paint(); },
+    film(){ const c=calc(); return {kick:'Vercel\'s published Pro rates',hook:'The agent waits. The memory still bills.',rows:[
+        {l:'The fleet',n:s.n+' sandboxes',t:s.v+' vCPU, '+s.g+' GB each, CPU busy '+s.a+'% for '+s.h+' hr'},
+        {l:'Active CPU',n:fU(c.cpu),t:'Billed only while the CPU is busy'},
+        {l:'Provisioned memory',n:fU(c.mem),t:c.ms.toFixed(0)+'% of the bill, busy or idle',hi:true}],
+        cue:'Enter your own fleet',src:'Rates: Vercel Sandbox docs, Pro, iad1. Model only; excludes fees, credits and egress. Image: AI-generated, illustrative.'}; },
+    og(){ const c=calc(); return {k:'Reported Nov 16 2026: agent sandbox pricing',h:'The agent waits. The memory meter doesn\'t.',boxes:[[fU(c.tot),s.n+' sandboxes, '+s.h+' hour'],[c.ms.toFixed(0)+'%','is provisioned memory'],[s.a+'%','of the time the CPU is busy']],s:'iggym.github.io/p/agent-sandbox-bill - Vercel\'s published rates, our arithmetic. Illustrative image.'}; },
+    shareUrl(){ const u=new URL(DATA.PAGE_URL); ['n','h','v','g','a'].forEach(k=>u.searchParams.set(k,s[k])); return u.toString(); }
+  }; return api; })();
+
+
+const $ = id => document.getElementById(id);
+const RENDER = document.documentElement.classList.contains('render');
+const OG = document.documentElement.classList.contains('og');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q = new URLSearchParams(location.search);
+const NS='http://www.w3.org/2000/svg';
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+function S(tag,attrs,parent,text){ const e=document.createElementNS(NS,tag); for(const k in (attrs||{}))e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; if(parent)parent.appendChild(e); return e; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x), lerp=(a,b,k)=>a+(b-a)*k;
+const prevVals={};
+function tween(node,key,to,fmt){ const from=prevVals[key]; prevVals[key]=to; if(REDUCE||RENDER||OG||from==null||from===to){node.textContent=fmt(to);return;}
+  const t0=performance.now(), d=550; (function f(now){ const k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3); node.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f); })(t0); }
+let liveTimer=0; function announce(txt){ clearTimeout(liveTimer); liveTimer=setTimeout(()=>{$('live').textContent=txt;},400); }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro; $('note').textContent=DATA.note;
+(function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
+const F = DATA.film;
+const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+card.style.backgroundImage='url(scene.jpg)';
+const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const fviz=S('svg',{id:'fviz',viewBox:APP.vb,'aria-hidden':'true'}); fviz.style.height=APP.fvh+'px'; fviz.setAttribute('preserveAspectRatio','xMidYMid meet');
+const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
+const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
+card.append(top0,fviz,rowsEl,foot);
+function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'72px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+let curT=0;
+function setTime(t){
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0; curT=t;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*60)+'px)'; top0.style.opacity=.2+.8*seg(t,0,.5);
+  crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  APP.draw(fviz,{t,p:ease(seg(t,.6,F.stepStarts[2]+1-.6)),film:true,reduce:false});
+  foot.style.opacity=seg(t,F.posterStart,F.posterFade);
+}
+let raf=0;
+function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return;} const t0=performance.now();
+  (function tick(now){const t=(now-t0)/1000; if(t>=F.holdEnd){setTime(F.holdEnd);return;} setTime(t); raf=requestAnimationFrame(tick);})(t0); }
+window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
+function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
+addEventListener('resize',fit); fit();
+(function(){ const o=$('ogcard'), g=APP.og(); o.style.backgroundImage='url(hero.jpg)'; o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(RENDER) setTime(0); else if(REDUCE) setTime(F.holdEnd); };
+// live viz loop, runs only while the diagram is on screen
+const lv=$('viz'); let vis=false, vStart=0, vLast=0, vraf=0;
+function vloop(now){ if(!vis)return; const t=(now-vStart)/1000, dt=Math.min(.05,(now-vLast)/1000); vLast=now; APP.draw(lv,{t,dt,p:ease(seg(t,.2,1.8)),film:false,reduce:false}); vraf=requestAnimationFrame(vloop); }
+if(lv && !RENDER && !OG){
+  lv.setAttribute('viewBox',APP.vb); lv.setAttribute('aria-hidden','true');
+  if(REDUCE){ APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); APP.redraw=()=>APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); }
+  else if('IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting&&!vis){vis=true;vStart=vLast=performance.now();vraf=requestAnimationFrame(vloop);} else if(!e.isIntersecting){vis=false;cancelAnimationFrame(vraf);} }); },{threshold:.15}).observe(lv); }
+  else { vis=true; vStart=vLast=performance.now(); vraf=requestAnimationFrame(vloop); }
+}
+// scroll reveals + hero parallax
+if(!RENDER && !OG){
+  if(!REDUCE && 'IntersectionObserver' in window){ document.documentElement.classList.add('rv-on'); const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12}); document.querySelectorAll('.rv').forEach(x=>io.observe(x)); }
+  const him=document.querySelector('.hero img'); if(him&&!REDUCE){ let tick=false; addEventListener('scroll',()=>{ if(tick)return; tick=true; requestAnimationFrame(()=>{ const y=Math.min(scrollY,700); him.style.transform='translateY('+(y*.18)+'px) scale('+(1+y*.0002)+')'; tick=false; }); },{passive:true}); }
+  $('replay').onclick=play;
+  $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
+}
+APP.init(); renderFilm(); setTime(0);
+const preload=src=>new Promise(r=>{const i=new Image(); i.onload=i.onerror=()=>r(); i.src=src;});
+Promise.race([Promise.all([preload('scene.jpg'),preload('hero.jpg'),(document.fonts&&document.fonts.ready)||Promise.resolve()]),new Promise(r=>setTimeout(r,2500))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+
+</script>
+</body>
+</html>
