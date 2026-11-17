@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>One database node down. Zero zones to spare.</title>
+<meta name="description" content="Majority-quorum math you can click: place nodes in zones, knock one out, then fail a zone. See when writes freeze.">
+<link rel="canonical" href="https://iggym.github.io/p/quorum-failover/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Iggy Mwangi">
+<meta property="og:title" content="One database node down. Zero zones to spare.">
+<meta property="og:description" content="Majority-quorum math you can click: place nodes in zones, knock one out, then fail a zone. See when writes freeze.">
+<meta property="og:url" content="https://iggym.github.io/p/quorum-failover/">
+<meta property="og:image" content="https://iggym.github.io/p/quorum-failover/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iggym">
+<meta name="twitter:title" content="One database node down. Zero zones to spare.">
+<meta name="twitter:description" content="Majority-quorum math you can click: place nodes in zones, knock one out, then fail a zone. See when writes freeze.">
+<meta name="twitter:image" content="https://iggym.github.io/p/quorum-failover/og.jpg">
+<script>
+  var Q0 = new URLSearchParams(location.search);
+  if (Q0.get('render') === '1') document.documentElement.classList.add('render');
+  if (Q0.get('og') === '1') document.documentElement.classList.add('og');
+</script>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+  :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+  .wrap{max-width:40rem;margin:0 auto;padding:1.5rem 1rem 2.5rem}
+  .by{font-size:.875rem;color:#475569;margin:0}
+  h1{font-size:1.9rem;line-height:1.15;margin:.25rem 0 .5rem;font-weight:800}
+  h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 1rem}
+  .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
+  label{display:block;font-weight:700;margin:.6rem 0 .2rem}
+  input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
+  textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  input[type=range]{width:100%;min-height:48px}
+  button{font:inherit;min-height:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a}
+  button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
+  button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
+  .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}}
+  .out{display:grid;gap:.6rem;margin-top:1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem}
+  .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1}
+  .card .d{font-size:.95rem;color:#334155}
+  .card.hi{border-color:#c2410c;background:#fff7ed}
+  .card.bad{border-color:#b91c1c;background:#fef2f2}
+  .card.good{border-color:#15803d;background:#f0fdf4}
+  .small{font-size:.875rem;color:#475569}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
+  th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
+  a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
+  li,.card .d,p{overflow-wrap:anywhere}
+  pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:28px}
+  .kick{font-size:44px;font-weight:600;color:#fdba74}
+  .hook{font-size:84px;line-height:1.06;font-weight:800;letter-spacing:-1px}
+  .rows{display:flex;flex-direction:column;gap:22px;margin-top:20px}
+  .row{background:#fff;color:#0b1020;border-radius:24px;padding:24px 40px;border-left:20px solid #cbd5e1}
+  .row.hi{border-left-color:#f97316}
+  .rl{font-size:34px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:104px;line-height:1.05;font-weight:900;margin:4px 0 10px;transform-origin:0 60%}
+  .rt{font-size:38px;line-height:1.22;font-weight:500}
+  .foot{margin-top:auto}
+  .cue{font-size:46px;font-weight:800}
+  .src{font-size:32px;line-height:1.25;color:#cbd5e1;margin-top:12px}
+  .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .wrap{max-width:none;padding:0;margin:0}
+  .render .wrap>:not(#stage){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0}
+  .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
+  .og .wrap{display:none}
+  #ogcard{display:none}
+  .og #ogcard{display:flex;width:1200px;height:630px;padding:56px 64px;background:#0b1530;color:#fff;flex-direction:column;gap:22px}
+  #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
+  #ogcard .h{font-size:84px;line-height:1.05;font-weight:800;letter-spacing:-1px}
+  #ogcard .b{display:flex;gap:24px}
+  #ogcard .b div{background:#fff;color:#0b1020;border-radius:18px;padding:14px 26px;font-size:30px;font-weight:600}
+  #ogcard .b b{display:block;font-size:60px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:26px;color:#cbd5e1;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="by" id="byline"></p>
+  <h1 id="title"></h1>
+  <p class="intro" id="intro"></p>
+
+  <section class="panel" aria-labelledby="t1">
+    <h2 id="t1">Place nodes, then break things</h2>
+    <div class="btns" role="group" aria-label="Presets">
+      <button id="p221" type="button">5 nodes, 2-2-1</button>
+      <button id="p111" type="button">3 nodes, 1-1-1</button>
+      <button id="p33" type="button">6 nodes, 3-3 (two zones)</button>
+      <button id="p322" type="button">7 nodes, 3-2-2</button>
+    </div>
+    <p class="small">Each zone is a row. Press a node to mark it down for maintenance or failure. Use + and - to change how many nodes a zone holds.</p>
+    <div id="zones"></div>
+    <div class="btns"><button id="addz" type="button">Add a zone</button><button id="rmz" type="button">Remove last zone</button><button id="heal" type="button">Bring all nodes up</button></div>
+    <div class="out" id="out" aria-live="polite"></div>
+    <h2 style="margin-top:1rem">If a whole zone fails right now</h2>
+    <div id="zres" class="out"></div>
+  </section>
+  <section aria-label="Share">
+    <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
+    <p class="small" id="sstatus" aria-live="polite"></p>
+  </section>
+  <div id="stage"><div id="card"></div></div>
+  <p class="small" id="note" style="margin-top:1.5rem"></p>
+  <footer style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+    <h2>Sources</h2>
+    <ul class="small" id="sources"></ul>
+  </footer>
+</div>
+<div id="ogcard"></div>
+<script>
+const DATA = {
+ "PAGE_URL": "https://iggym.github.io/p/quorum-failover/",
+ "byline": "By Iggy Mwangi (@iggym)",
+ "title": "One database node down. Zero zones to spare.",
+ "intro": "Five nodes across three zones sounds safe. Click one node down, then fail a zone. The math decides whether writes survive.",
+ "note": "Model: a database or consensus group (Raft, Paxos or etcd style) with fixed membership that needs a majority of its configured nodes up to accept writes. Not every system works this way; read your own system's rules. The 2-2-1 split is an assumption: the post below says 5 nodes across 3 regions but not the split. This is not Revolut's real topology. Runs in your browser.",
+ "sources": [
+  {
+   "label": "Gergely Orosz on X, Nov 14 2026 (1,345 likes, 211k views as returned by X on 2026-11-16), summarising Revolut's postmortem of a 5-hour global cards outage: no monitoring on database nodes going down; 5 nodes across 3 regions, so one node down meant no zonal resilience:",
+   "url": "https://x.com/GergelyOrosz/status/2121637812613333292"
+  },
+  {
+   "label": "Raft paper, majority quorum (Ongaro and Ousterhout):",
+   "url": "https://raft.github.io/raft.pdf"
+  }
+ ],
+ "shareText": "5 nodes, 3 zones, 1 node already down. Then one zone fails. Do writes survive? Click it:",
+ "film": {
+  "alt": "Short film: five database nodes in three zones need three up. With one node already down, losing a two-node zone leaves two up and writes freeze.",
+  "hookEnd": 1.5,
+  "stepStarts": [
+   1.6,
+   3.7,
+   5.8
+  ],
+  "dur": 0.8,
+  "posterStart": 8,
+  "posterFade": 0.5,
+  "holdEnd": 9.5,
+  "loopAt": 10
+ }
+};
+
+const APP=(function(){
+  let z=[2,2,1], down=new Set(['1:0']); // down keys "zone:index"
+  const key=(a,b)=>a+':'+b;
+  function calc(){ const N=z.reduce((a,b)=>a+b,0); const M=Math.floor(N/2)+1; let up=0; const upBy=z.map((n,i)=>{let c=0; for(let j=0;j<n;j++) if(!down.has(key(i,j)))c++; up+=c; return c;});
+    const per=z.map((n,i)=>({zone:i,left:up-upBy[i]})); const worst=per.reduce((m,x)=>x.left<m.left?x:m,per[0]||{left:up});
+    // zone-failure resilience with all nodes up, and nodes whose single loss breaks it
+    const fullUp=N, zr=z.every(n=>fullUp-n>=M);
+    let fragile=0; const total=z.reduce((a,b)=>a+b,0);
+    z.forEach((n,i)=>{ for(let j=0;j<n;j++){ const left=z.map((m,k)=>m-(k===i?1:0)); const all=left.reduce((a,b)=>a+b,0); if(z.length&&left.every((m,k)=>all-m>=M)){} else if(zr) fragile++; } });
+    return {N,M,up,upBy,per,worst,zr,fragile,hasQ:up>=M,spare:up-M}; }
+  function zname(i){return String.fromCharCode(65+i);}
+  function drawZones(){ const h=$('zones'); h.textContent='';
+    z.forEach((n,i)=>{ const row=el('div','card'); row.style.display='flex'; row.style.flexWrap='wrap'; row.style.alignItems='center'; row.style.gap='.5rem'; row.append(el('strong',null,'Zone '+zname(i)));
+      for(let j=0;j<n;j++){ const b=el('button',null,down.has(key(i,j))?'down':'up'); b.type='button'; b.setAttribute('aria-pressed',String(down.has(key(i,j)))); b.setAttribute('aria-label','Zone '+zname(i)+' node '+(j+1)+': '+(down.has(key(i,j))?'down':'up')+'. Press to toggle.');
+        b.onclick=()=>{const k=key(i,j); down.has(k)?down.delete(k):down.add(k); drawZones(); paint();}; row.append(b); }
+      const mn=el('button',null,'-'); mn.type='button'; mn.setAttribute('aria-label','Remove a node from zone '+zname(i)); mn.disabled=n<=0; mn.onclick=()=>{down.delete(key(i,n-1)); z[i]--; drawZones(); paint();};
+      const pl=el('button',null,'+'); pl.type='button'; pl.setAttribute('aria-label','Add a node to zone '+zname(i)); pl.disabled=n>=5; pl.onclick=()=>{z[i]++; drawZones(); paint();}; row.append(mn,pl); h.append(row); }); }
+  function paint(){ const c=calc(); const o=$('out'); o.textContent='';
+    const add=(p,cls,l,v,d)=>{const x=el('div','card '+cls); x.append(el('div','l',l),el('div','v',v),el('div','d',d)); p.append(x);};
+    add(o,'','Configured',c.N+' nodes in '+z.length+' zones','Writes need '+c.M+' up (a majority of '+c.N+').');
+    add(o,c.hasQ?'good':'bad','Right now',c.up+' up of '+c.N,c.hasQ?'Quorum holds with '+c.spare+' to spare. Writes accepted.':'Below '+c.M+'. Writes freeze.');
+    add(o,c.zr?'good':'bad','All nodes up, one zone lost',c.zr?'Survives':'Freezes',c.zr?'Any single zone can fail and a majority remains.':'At least one zone holds too many nodes: its loss leaves fewer than '+c.M+'.');
+    if(c.zr&&c.fragile) add(o,'hi','Hidden fragility',c.fragile+' of '+c.N+' nodes','Losing any one of these nodes first removes your ability to survive a zone failure, and nothing alerts you unless you monitor node health.');
+    const zr=$('zres'); zr.textContent='';
+    c.per.forEach(p=>{ const ok=p.left>=c.M; add(zr,ok?'good':'bad','Lose zone '+zname(p.zone),p.left+' up of '+c.M+' needed',ok?'Quorum holds.':'Quorum lost. Writes freeze.'); });
+    api.onChange&&api.onChange(); }
+  function setZ(a,d){ z=a.slice(); down=new Set(d||[]); drawZones(); paint(); }
+  const api={
+    init(){ const q=Q.get('z'); if(q&&/^[1-5](-[1-5]){0,5}$/.test(q)) z=q.split('-').map(Number); const dq=Q.get('down'); if(dq!==null) down=new Set(dq.split(',').filter(x=>/^\d:\d$/.test(x)));
+      if(RENDER||OG){paint();return;} drawZones(); paint();
+      $('p221').onclick=()=>setZ([2,2,1],['1:0']); $('p111').onclick=()=>setZ([1,1,1],[]); $('p33').onclick=()=>setZ([3,3],[]); $('p322').onclick=()=>setZ([3,2,2],[]);
+      $('addz').onclick=()=>{ if(z.length<6){z.push(1);drawZones();paint();} }; $('rmz').onclick=()=>{ if(z.length>1){const i=z.length-1; for(let j=0;j<z[i];j++)down.delete(key(i,j)); z.pop();drawZones();paint();} };
+      $('heal').onclick=()=>{down.clear();drawZones();paint();}; },
+    film(){ const c=calc(); const w=c.worst; const lost=w&&w.left<c.M;
+      return {kick:'Majority-quorum math',hook:c.zr&&c.up<c.N?'One node down. No zone to spare.':(c.zr?'Healthy. For now.':'This layout cannot lose a zone.'),rows:[
+        {l:'Layout',n:c.N+' nodes, '+z.length+' zones',t:'Split '+z.join('-')+'. Writes need '+c.M+' up.'},
+        {l:'Right now',n:c.up+' up of '+c.N,t:c.hasQ?'Quorum holds with '+c.spare+' to spare.':'Below the '+c.M+' needed.',hi:!c.hasQ||c.up<c.N},
+        {l:'Then the worst zone fails',n:w?w.left+' up, need '+c.M:'-',t:lost?'Quorum lost. Writes freeze.':'Quorum holds.',hi:lost}],
+        cue:'Click your own layout',src:'Model: majority quorum, fixed membership. 2-2-1 split is assumed, not Revolut\'s.'}; },
+    og(){ return {k:'Majority-quorum math',h:'One node down. No zone to spare.',boxes:[['5 nodes','across 3 zones'],['3 needed','for a majority'],['2 left','after a zone fails']],s:'iggym.github.io/p/quorum-failover - 2-2-1 split assumed, not Revolut\'s real layout'}; },
+    shareUrl(){ const u=new URL(DATA.PAGE_URL); u.searchParams.set('z',z.join('-')); u.searchParams.set('down',[...down].join(',')); return u.toString(); }
+  }; return api; })();
+
+
+const $ = id => document.getElementById(id);
+const RENDER = document.documentElement.classList.contains('render');
+const OG = document.documentElement.classList.contains('og');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q = new URLSearchParams(location.search);
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro;
+$('note').textContent=DATA.note;
+(function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
+const F = DATA.film;
+const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
+const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
+card.append(top0,rowsEl,foot);
+function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'78px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x);
+function setTime(t){
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*420)+'px)';
+  crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  foot.style.opacity=seg(t,F.posterStart,F.posterFade);
+}
+let raf=0;
+function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return;} const t0=performance.now();
+  (function tick(now){const t=(now-t0)/1000; if(t>=F.holdEnd){setTime(F.holdEnd);return;} setTime(t); raf=requestAnimationFrame(tick);})(t0); }
+window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
+function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
+addEventListener('resize',fit); fit();
+(function(){ const o=$('ogcard'), g=APP.og(); o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(REDUCE||RENDER) setTime(RENDER?0:F.holdEnd); };
+if(!RENDER && !OG){
+  $('replay').onclick=play;
+  $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
+}
+APP.init(); renderFilm(); setTime(0);
+Promise.race([(document.fonts&&document.fonts.ready)||Promise.resolve(),new Promise(r=>setTimeout(r,800))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+
+</script>
+</body>
+</html>
