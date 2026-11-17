@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Larry Page",
+    "slug": "larry-page",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File%3ALarry_Page_%28cropped%29.jpg",
+    "license": "CC BY 2.0",
+    "author": "Schmidt-Brin-Page-20080520.jpg : Joi Ito derivative work: Bonnifac ( talk )"
+  },
+  {
+    "name": "Sergey Brin",
+    "slug": "sergey-brin",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File%3ASergey_Brin_Ted_2010_%28cropped%29.jpg",
+    "license": "CC BY 2.0",
+    "author": "Steve Jurvetson"
+  },
+  {
+    "name": "Sundar Pichai",
+    "slug": "sundar-pichai",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File%3ASundar_Pichai_-_2023_%28cropped%29.jpg",
+    "license": "CC BY 4.0",
+    "author": "Photographer: Lukasz Kobus (European Commission)"
+  },
+  {
+    "name": "John L. Hennessy",
+    "slug": "john-hennessy",
+    "file_page_url": "https://commons.wikimedia.org/wiki/File%3AJohn_L._Hennessy_by_Christopher_Michel_in_2024_01.jpg",
+    "license": "CC BY-SA 4.0",
+    "author": "Christopher Michel"
+  }
+]
