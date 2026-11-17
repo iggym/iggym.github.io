@@ -14,11 +14,13 @@
 <meta property="og:image" content="https://iggym.github.io/p/anthropic-ipo-slice/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustrative AI-generated photo: two antique brass balance scales side by side, one holding a small stack of gold coins and the other a much taller stack.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@iggym">
 <meta name="twitter:title" content="Same $78 share price. Two Anthropic valuations, $384B apart.">
 <meta name="twitter:description" content="Anthropic's IPO range implies $1.021T on shares outstanding or $1.405T fully diluted. Pick a price, pick a basis, see what a stake is worth.">
 <meta name="twitter:image" content="https://iggym.github.io/p/anthropic-ipo-slice/og.jpg">
+<link rel="preload" as="image" href="hero.jpg">
 <script>
   var Q0 = new URLSearchParams(location.search);
   if (Q0.get('render') === '1') document.documentElement.classList.add('render');
@@ -26,76 +28,110 @@
 </script>
 <style>
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
   :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
-  .wrap{max-width:40rem;margin:0 auto;padding:1.5rem 1rem 2.5rem}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero{position:relative;color:#fff;background:#0b1530;overflow:hidden;min-height:22rem;display:flex;align-items:flex-end}
+  .hero img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,48,.15) 0,rgba(11,21,48,.55) 45%,rgba(11,21,48,.92) 100%)}
+  .hero .in{position:relative;z-index:1;max-width:40rem;margin:0 auto;padding:6rem 1rem 1.2rem;width:100%}
+  .hero .by{color:#fdba74;font-weight:600}
+  .hero h1{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero .intro{color:#e2e8f0}
+  .cap{font-size:.75rem;color:#cbd5e1;margin:.4rem 0 0}
+  .wrap{max-width:40rem;margin:0 auto;padding:1rem 1rem 2.5rem}
   .by{font-size:.875rem;color:#475569;margin:0}
-  h1{font-size:1.9rem;line-height:1.15;margin:.25rem 0 .5rem;font-weight:800}
+  h1{font-size:2rem;line-height:1.12;margin:.25rem 0 .5rem;font-weight:800}
   h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
-  .intro{font-size:1.1rem;color:#334155;margin:0 0 1rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 .6rem}
   .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
   label{display:block;font-weight:700;margin:.6rem 0 .2rem}
   input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
   textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
-  input[type=range]{width:100%;min-height:48px}
-  button{font:inherit;min-height:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a}
+  input[type=range]{width:100%;min-height:48px;accent-color:#c2410c}
+  button{font:inherit;min-height:48px;min-width:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a;transition:transform .12s,background .2s}
+  button:active{transform:scale(.96)}
   button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
   button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
   .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-  @media(max-width:30rem){.grid2{grid-template-columns:1fr}}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}h1{font-size:1.65rem}}
   .out{display:grid;gap:.6rem;margin-top:1rem}
-  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem;animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
   .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
-  .card .v{font-size:2rem;font-weight:900;line-height:1.1}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
   .card .d{font-size:.95rem;color:#334155}
   .card.hi{border-color:#c2410c;background:#fff7ed}
   .card.bad{border-color:#b91c1c;background:#fef2f2}
   .card.good{border-color:#15803d;background:#f0fdf4}
   .small{font-size:.875rem;color:#475569}
+  .vizbox{margin-top:1rem;border-radius:1rem;overflow:hidden;background:#0b1530;border:2px solid #0b1530}
+  .vizbox svg{display:block;width:100%;height:auto}
   table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
   th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
   a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
   li,.card .d,p{overflow-wrap:anywhere}
   pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  html.rv-on .rv.in{opacity:1;transform:none}
   #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
-  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:28px}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530 center/cover;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:24px}
+  #card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,34,.55),rgba(8,14,34,.35) 40%,rgba(8,14,34,.8))}
+  #card>*{position:relative}
   .kick{font-size:44px;font-weight:600;color:#fdba74}
-  .hook{font-size:84px;line-height:1.06;font-weight:800;letter-spacing:-1px}
-  .rows{display:flex;flex-direction:column;gap:22px;margin-top:20px}
-  .row{background:#fff;color:#0b1020;border-radius:24px;padding:24px 40px;border-left:20px solid #cbd5e1}
+  .hook{font-size:80px;line-height:1.05;font-weight:800;letter-spacing:-1px;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+  #fviz{background:rgba(8,14,34,.72);border-radius:28px;width:920px;display:block}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:rgba(255,255,255,.96);color:#0b1020;border-radius:24px;padding:20px 40px;border-left:20px solid #cbd5e1}
   .row.hi{border-left-color:#f97316}
-  .rl{font-size:34px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
-  .rn{font-size:104px;line-height:1.05;font-weight:900;margin:4px 0 10px;transform-origin:0 60%}
-  .rt{font-size:38px;line-height:1.22;font-weight:500}
+  .rl{font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1.05;font-weight:900;margin:2px 0 8px;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.2;font-weight:500}
   .foot{margin-top:auto}
   .cue{font-size:46px;font-weight:800}
-  .src{font-size:32px;line-height:1.25;color:#cbd5e1;margin-top:12px}
+  .src{font-size:30px;line-height:1.25;color:#e2e8f0;margin-top:10px}
   .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .hero{display:none}
   .render .wrap{max-width:none;padding:0;margin:0}
-  .render .wrap>:not(#stage){display:none}
-  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0}
+  .render .wrap>:not(.stagewrap){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0;display:block}
   .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
-  .og .wrap{display:none}
+  .og .wrap,.og .hero{display:none}
   #ogcard{display:none}
-  .og #ogcard{display:flex;width:1200px;height:630px;padding:56px 64px;background:#0b1530;color:#fff;flex-direction:column;gap:22px}
+  .og #ogcard{display:flex;position:relative;width:1200px;height:630px;padding:56px 64px;background:#0b1530 center/cover;color:#fff;flex-direction:column;gap:22px}
+  #ogcard::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,34,.86) 0,rgba(8,14,34,.55) 58%,rgba(8,14,34,.12))}
+  #ogcard>*{position:relative}
   #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
-  #ogcard .h{font-size:84px;line-height:1.05;font-weight:800;letter-spacing:-1px}
+  #ogcard .h{font-size:76px;line-height:1.05;font-weight:800;letter-spacing:-1px;max-width:900px}
   #ogcard .b{display:flex;gap:24px}
-  #ogcard .b div{background:#fff;color:#0b1020;border-radius:18px;padding:14px 26px;font-size:30px;font-weight:600}
-  #ogcard .b b{display:block;font-size:60px;line-height:1.05;font-weight:900}
-  #ogcard .s{font-size:26px;color:#cbd5e1;margin-top:auto}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  #ogcard .b div{background:rgba(255,255,255,.96);color:#0b1020;border-radius:18px;padding:14px 26px;font-size:28px;font-weight:600}
+  #ogcard .b b{display:block;font-size:58px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:24px;color:#e2e8f0;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
+<header class="hero">
+  <img src="hero.jpg" width="1280" height="720" alt="Illustrative AI-generated photo: two antique brass balance scales side by side, one holding a small stack of gold coins and the other a much taller stack." fetchpriority="high">
+  <div class="in">
+    <p class="by" id="byline"></p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <p class="cap">Illustrative AI-generated image, not a photograph of real events or places.</p>
+  </div>
+</header>
 <div class="wrap">
-  <p class="by" id="byline"></p>
-  <h1 id="title"></h1>
-  <p class="intro" id="intro"></p>
+  <p class="sr" id="live" aria-live="polite"></p>
 
-  <section class="panel" aria-labelledby="t1">
-    <h2 id="t1">Your slice</h2>
+  <section class="panel rv" aria-labelledby="t1">
+    <h2 id="t1">The gap, drawn</h2>
+    <div class="vizbox"><svg id="viz" role="presentation"></svg></div>
+    <p class="small">Bars scale to the company value at the price you pick. The hatched piece is the extra shares counted only on the fully diluted basis.</p>
+  </section>
+  <section class="panel rv" aria-labelledby="t2">
+    <h2 id="t2">Your slice</h2>
     <div class="btns" role="group" aria-label="Presets">
       <button id="pSound" type="button">Sound Ventures (reported)</button>
       <button id="pEmp" type="button">10,000 shares I hold</button>
@@ -111,17 +147,18 @@
       <div><label for="inv">Money invested ($, optional)</label><input id="inv" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 435000000"></div>
     </div>
     <p class="small">If you fill both a % and a share count, the share count is used.</p>
-    <div class="out" aria-live="polite" id="out"></div>
+    <div class="out" id="out"></div>
   </section>
-  <section aria-label="Share">
+  <section aria-label="Share" class="rv">
     <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
     <p class="small" id="sstatus" aria-live="polite"></p>
   </section>
-  <div id="stage"><div id="card"></div></div>
-  <p class="small" id="note" style="margin-top:1.5rem"></p>
-  <footer style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+  <div class="stagewrap rv"><div id="stage"><div id="card"></div></div></div>
+  <p class="small rv" id="note" style="margin-top:1.5rem"></p>
+  <footer class="rv" style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
     <h2>Sources</h2>
     <ul class="small" id="sources"></ul>
+    <p class="small">Images: AI-generated illustrations made for this page (no real people, logos or official surfaces), compressed for the web.</p>
   </footer>
 </div>
 <div id="ogcard"></div>
@@ -163,8 +200,7 @@ const DATA = {
   "posterStart": 8,
   "posterFade": 0.5,
   "holdEnd": 9.5,
-  "loopAt": 10,
-  "kicker": ""
+  "loopAt": 10
  },
  "s": {
   "out": 13086672593,
@@ -175,44 +211,65 @@ const DATA = {
 };
 
 const APP=(function(){
-  const S=DATA.s; const st={price:78,basis:'fd',pct:'',shares:'',inv:''};
+  const S0=DATA.s; const st={price:78,basis:'fd',pct:'',shares:'',inv:''};
   const fmt=x=>{ const a=Math.abs(x); if(a>=1e12)return '$'+(x/1e12).toFixed(3)+'T'; if(a>=1e9)return '$'+(x/1e9).toFixed(a>=1e11?0:2)+'B'; if(a>=1e6)return '$'+(x/1e6).toFixed(2)+'M'; return '$'+Math.round(x).toLocaleString('en-US'); };
   const money=x=>'$'+x.toLocaleString('en-US',{maximumFractionDigits:2});
-  function calc(){ const p=st.price, out=p*S.out, fd=p*S.fd; let slice=null, how='';
+  function calc(){ const p=st.price, out=p*S0.out, fd=p*S0.fd; let slice=null, how='';
     const sh=parseFloat(st.shares), pc=parseFloat(st.pct);
     if(sh>0){ slice=sh*p; how=sh.toLocaleString('en-US')+' shares x '+money(p); }
     else if(pc>0){ const base=st.basis==='fd'?fd:out; slice=base*pc/100; how=pc+'% of '+fmt(base)+' ('+(st.basis==='fd'?'fully diluted':'outstanding')+')'; }
     const inv=parseFloat(st.inv); const mult=(slice!=null&&inv>0)?slice/inv:null;
     return {out,fd,gap:fd-out,slice,how,mult,inv}; }
   function paint(){ const c=calc(); const o=$('out'); o.textContent='';
-    const add=(cls,l,v,d)=>{const x=el('div','card '+cls); x.append(el('div','l',l),el('div','v',v),el('div','d',d)); o.append(x);};
-    add('','Company value at '+money(st.price)+', shares outstanding',fmt(c.out),'13,086,672,593 shares x price');
-    add('hi','Company value at '+money(st.price)+', fully diluted',fmt(c.fd),'18,012,993,381 shares x price (adds options, RSUs, convertible-note shares and more)');
-    add('','Gap between the two',fmt(c.gap),'4,926,320,788 potential shares x price');
-    if(c.slice!=null){ add('good','Your slice, gross',fmt(c.slice),c.how+(c.mult?'; '+c.mult.toFixed(1)+'x the money invested':'')); }
-    add('','Offering proceeds to Anthropic (primary shares)',fmt(S.primary*st.price),'801,351,354 shares x price; the other 23,648,646 shares ('+fmt(S.secondary*st.price)+') are sold by existing holders');
+    const add=(cls,l,num,f,d,key)=>{const x=el('div','card '+cls); const v=el('div','v'); x.append(el('div','l',l),v,el('div','d',d)); o.append(x); tween(v,key,num,f);};
+    add('','Company value at '+money(st.price)+', shares outstanding',c.out,fmt,'13,086,672,593 shares x price','out');
+    add('hi','Company value at '+money(st.price)+', fully diluted',c.fd,fmt,'18,012,993,381 shares x price (adds options, RSUs, convertible-note shares and more)','fd');
+    add('','Gap between the two',c.gap,fmt,'4,926,320,788 potential shares x price','gap');
+    if(c.slice!=null){ add('good','Your slice, gross',c.slice,fmt,c.how+(c.mult?'; '+c.mult.toFixed(1)+'x the money invested':''),'slice'); }
+    add('','Offering proceeds to Anthropic (primary shares)',S0.primary*st.price,fmt,'801,351,354 shares x price; the other 23,648,646 shares ('+fmt(S0.secondary*st.price)+') are sold by existing holders','prim');
     $('priceV').textContent=money(st.price);
+    announce('At '+money(st.price)+': '+fmt(c.out)+' on shares outstanding, '+fmt(c.fd)+' fully diluted'+(c.slice!=null?'; your slice '+fmt(c.slice):'')+'.');
     api.onChange&&api.onChange(); }
   function sync(){ $('price').value=st.price; $('basis').value=st.basis; $('pct').value=st.pct; $('shares').value=st.shares; $('inv').value=st.inv; }
+  // drawing: bars scale to fd value at max price
+  const MAXV=78*S0.fd; let cur=null;
+  function draw(svg,ctx){ const c=calc(); const W=410, X0=30; svg.textContent='';
+    const tgt={out:c.out,fd:c.fd};
+    if(ctx.film){ cur=tgt; } else { if(!cur||ctx.reduce)cur={...tgt}; else { const k=Math.min(1,ctx.dt*7); cur={out:lerp(cur.out,tgt.out,k),fd:lerp(cur.fd,tgt.fd,k)}; } }
+    const p=ctx.p; const pOut=ease(seg(p,0,.45)), pGap=ease(seg(p,.45,.5));
+    const defs=S('defs',{},svg); defs.innerHTML='<pattern id="hat" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#f97316"/><rect width="5" height="10" fill="#fdba74"/></pattern>';
+    const lab=(y,t)=>S('text',{x:X0,y,fill:'#cbd5e1','font-size':19,'font-weight':700},svg,t);
+    const wOut=W*cur.out/MAXV, wFd=W*cur.fd/MAXV;
+    lab(40,'Shares outstanding'); S('rect',{x:X0,y:50,width:Math.max(0,wOut*pOut),height:48,rx:9,fill:'#93c5fd'},svg);
+    S('text',{x:X0+wOut*pOut+10,y:84,fill:'#fff','font-size':26,'font-weight':900},svg,fmt(cur.out*pOut));
+    lab(150,'Fully diluted'); S('rect',{x:X0,y:160,width:Math.max(0,wOut*pOut),height:48,rx:9,fill:'#93c5fd'},svg);
+    const gw=(wFd-wOut)*pGap;
+    S('rect',{x:X0+wOut*pOut,y:160,width:Math.max(0,gw),height:48,rx:5,fill:'url(#hat)'},svg);
+    S('text',{x:X0+wOut*pOut+gw+10,y:194,fill:'#fff','font-size':26,'font-weight':900},svg,fmt(cur.fd*Math.max(pOut,pGap)));
+    if(pGap>.5){ const t=S('text',{x:X0+wOut*pOut+gw/2,y:232,fill:'#fdba74','font-size':20,'font-weight':800,'text-anchor':'middle',opacity:seg(pGap,.5,.5)},svg,'gap '+fmt(c.gap*pGap)); }
+    if(c.slice!=null && pGap>.9){ const sw=Math.max(3,W*c.slice/MAXV); S('rect',{x:X0,y:262,width:sw,height:10,rx:5,fill:'#86efac'},svg); S('text',{x:X0+sw+10,y:273,fill:'#86efac','font-size':19,'font-weight':700},svg,'your slice '+fmt(c.slice)); }
+  }
   const api={
+    vb:'0 0 600 300', fvh:430, draw,
     init(){ const p=parseFloat(Q.get('price')); if(p>=70&&p<=78)st.price=p; if(Q.get('basis')==='out')st.basis='out';
       st.pct=Q.get('pct')||''; st.shares=Q.get('shares')||''; st.inv=Q.get('inv')||'';
       if(!Q.has('pct')&&!Q.has('shares'))Object.assign(st,{pct:'0.5',inv:'435000000'});
       sync(); paint();
       if(RENDER||OG) return;
-      $('price').oninput=e=>{st.price=parseFloat(e.target.value);paint();};
-      $('basis').onchange=e=>{st.basis=e.target.value;paint();};
-      $('pct').oninput=e=>{st.pct=e.target.value;paint();}; $('shares').oninput=e=>{st.shares=e.target.value;paint();}; $('inv').oninput=e=>{st.inv=e.target.value;paint();};
-      $('pSound').onclick=()=>{Object.assign(st,{basis:'fd',pct:'0.5',shares:'',inv:'435000000'});sync();paint();};
-      $('pEmp').onclick=()=>{Object.assign(st,{shares:'10000',pct:'',inv:''});sync();paint();};
-      $('pReset').onclick=()=>{Object.assign(st,{shares:'',pct:'',inv:''});sync();paint();}; },
+      const rp=()=>{paint(); api.redraw&&api.redraw();};
+      $('price').oninput=e=>{st.price=parseFloat(e.target.value);rp();};
+      $('basis').onchange=e=>{st.basis=e.target.value;rp();};
+      $('pct').oninput=e=>{st.pct=e.target.value;rp();}; $('shares').oninput=e=>{st.shares=e.target.value;rp();}; $('inv').oninput=e=>{st.inv=e.target.value;rp();};
+      $('pSound').onclick=()=>{Object.assign(st,{basis:'fd',pct:'0.5',shares:'',inv:'435000000'});sync();rp();};
+      $('pEmp').onclick=()=>{Object.assign(st,{shares:'10000',pct:'',inv:''});sync();rp();};
+      $('pReset').onclick=()=>{Object.assign(st,{shares:'',pct:'',inv:''});sync();rp();}; },
     film(){ const c=calc(), p=st.price; const rows=[
       {l:'Shares outstanding x '+money(p),n:fmt(c.out),t:'What the company is worth counting only shares that exist after the offering.'},
       {l:'Fully diluted x '+money(p),n:fmt(c.fd),t:'Adds options, RSUs, convertible-note shares and more: about 4.9 billion extra shares.',hi:true}];
       if(c.slice!=null) rows.push({l:'Your slice, gross',n:fmt(c.slice),t:c.how+(c.mult?'. '+c.mult.toFixed(1)+'x the money in.':'.'),hi:true});
       else rows.push({l:'The gap',n:fmt(c.gap),t:'Same price. Different share count.'});
-      return {kick:'Anthropic IPO range: $70 to $78',hook:'One price. Two valuations.',rows,cue:'Try your own stake',src:'Source: Anthropic S-1/A as reported 2026-11-16. Gross, before strike, tax and lock-ups.'}; },
-    og(){ return {k:'Anthropic IPO, $78 a share',h:'One price. Two valuations.',boxes:[['$1.021T','shares outstanding'],['$1.405T','fully diluted'],['$384B','the gap']],s:'iggym.github.io/p/anthropic-ipo-slice - S-1/A share counts as reported 2026-11-16'}; },
+      return {kick:'Anthropic IPO range: $70 to $78',hook:'One price. Two valuations.',rows,cue:'Try your own stake',src:'Source: Anthropic S-1/A as reported 2026-11-16. Gross, before strike, tax and lock-ups. Image: AI-generated, illustrative.'}; },
+    og(){ return {k:'Anthropic IPO, $78 a share',h:'One price. Two valuations.',boxes:[['$1.021T','shares outstanding'],['$1.405T','fully diluted'],['$384B','the gap']],s:'iggym.github.io/p/anthropic-ipo-slice - S-1/A share counts as reported 2026-11-16. Illustrative image.'}; },
     shareUrl(){ const u=new URL(DATA.PAGE_URL); u.searchParams.set('price',st.price); if(st.basis!=='fd')u.searchParams.set('basis',st.basis); if(st.shares)u.searchParams.set('shares',st.shares); else if(st.pct)u.searchParams.set('pct',st.pct); if(st.inv)u.searchParams.set('inv',st.inv); return u.toString(); }
   }; return api; })();
 
@@ -222,23 +279,32 @@ const RENDER = document.documentElement.classList.contains('render');
 const OG = document.documentElement.classList.contains('og');
 const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const Q = new URLSearchParams(location.search);
+const NS='http://www.w3.org/2000/svg';
 function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
-$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro;
-$('note').textContent=DATA.note;
+function S(tag,attrs,parent,text){ const e=document.createElementNS(NS,tag); for(const k in (attrs||{}))e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; if(parent)parent.appendChild(e); return e; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x), lerp=(a,b,k)=>a+(b-a)*k;
+const prevVals={};
+function tween(node,key,to,fmt){ const from=prevVals[key]; prevVals[key]=to; if(REDUCE||RENDER||OG||from==null||from===to){node.textContent=fmt(to);return;}
+  const t0=performance.now(), d=550; (function f(now){ const k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3); node.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f); })(t0); }
+let liveTimer=0; function announce(txt){ clearTimeout(liveTimer); liveTimer=setTimeout(()=>{$('live').textContent=txt;},400); }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro; $('note').textContent=DATA.note;
 (function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
 const F = DATA.film;
 const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+card.style.backgroundImage='url(scene.jpg)';
 const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const fviz=S('svg',{id:'fviz',viewBox:APP.vb,'aria-hidden':'true'}); fviz.style.height=APP.fvh+'px'; fviz.setAttribute('preserveAspectRatio','xMidYMid meet');
 const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
 const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
-card.append(top0,rowsEl,foot);
+card.append(top0,fviz,rowsEl,foot);
 function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
-  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'78px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
-const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x);
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'72px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+let curT=0;
 function setTime(t){
-  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0;
-  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*420)+'px)';
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0; curT=t;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*60)+'px)'; top0.style.opacity=.2+.8*seg(t,0,.5);
   crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  APP.draw(fviz,{t,p:ease(seg(t,.6,F.stepStarts[2]+1-.6)),film:true,reduce:false});
   foot.style.opacity=seg(t,F.posterStart,F.posterFade);
 }
 let raf=0;
@@ -247,14 +313,27 @@ function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return
 window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
 function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
 addEventListener('resize',fit); fit();
-(function(){ const o=$('ogcard'), g=APP.og(); o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
-APP.onChange=()=>{ renderFilm(); if(REDUCE||RENDER) setTime(RENDER?0:F.holdEnd); };
+(function(){ const o=$('ogcard'), g=APP.og(); o.style.backgroundImage='url(hero.jpg)'; o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(RENDER) setTime(0); else if(REDUCE) setTime(F.holdEnd); };
+// live viz loop, runs only while the diagram is on screen
+const lv=$('viz'); let vis=false, vStart=0, vLast=0, vraf=0;
+function vloop(now){ if(!vis)return; const t=(now-vStart)/1000, dt=Math.min(.05,(now-vLast)/1000); vLast=now; APP.draw(lv,{t,dt,p:ease(seg(t,.2,1.8)),film:false,reduce:false}); vraf=requestAnimationFrame(vloop); }
+if(lv && !RENDER && !OG){
+  lv.setAttribute('viewBox',APP.vb); lv.setAttribute('aria-hidden','true');
+  if(REDUCE){ APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); APP.redraw=()=>APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); }
+  else if('IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting&&!vis){vis=true;vStart=vLast=performance.now();vraf=requestAnimationFrame(vloop);} else if(!e.isIntersecting){vis=false;cancelAnimationFrame(vraf);} }); },{threshold:.15}).observe(lv); }
+  else { vis=true; vStart=vLast=performance.now(); vraf=requestAnimationFrame(vloop); }
+}
+// scroll reveals + hero parallax
 if(!RENDER && !OG){
+  if(!REDUCE && 'IntersectionObserver' in window){ document.documentElement.classList.add('rv-on'); const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12}); document.querySelectorAll('.rv').forEach(x=>io.observe(x)); }
+  const him=document.querySelector('.hero img'); if(him&&!REDUCE){ let tick=false; addEventListener('scroll',()=>{ if(tick)return; tick=true; requestAnimationFrame(()=>{ const y=Math.min(scrollY,700); him.style.transform='translateY('+(y*.18)+'px) scale('+(1+y*.0002)+')'; tick=false; }); },{passive:true}); }
   $('replay').onclick=play;
   $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
 }
 APP.init(); renderFilm(); setTime(0);
-Promise.race([(document.fonts&&document.fonts.ready)||Promise.resolve(),new Promise(r=>setTimeout(r,800))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+const preload=src=>new Promise(r=>{const i=new Image(); i.onload=i.onerror=()=>r(); i.src=src;});
+Promise.race([Promise.all([preload('scene.jpg'),preload('hero.jpg'),(document.fonts&&document.fonts.ready)||Promise.resolve()]),new Promise(r=>setTimeout(r,2500))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
 
 </script>
 </body>

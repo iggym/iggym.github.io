@@ -14,11 +14,13 @@
 <meta property="og:image" content="https://iggym.github.io/p/script-blast-radius/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustrative AI-generated photo: a small shopfront at night with dozens of thin glowing orange threads running from its doorway out across a wet street.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@iggym">
 <meta name="twitter:title" content="How many strangers can run code on your website?">
 <meta name="twitter:description" content="Paste your page's HTML. See every third-party host that can run JavaScript on it, which tags have no integrity pin, and a starting-point CSP. Runs in your browser.">
 <meta name="twitter:image" content="https://iggym.github.io/p/script-blast-radius/og.jpg">
+<link rel="preload" as="image" href="hero.jpg">
 <script>
   var Q0 = new URLSearchParams(location.search);
   if (Q0.get('render') === '1') document.documentElement.classList.add('render');
@@ -26,95 +28,130 @@
 </script>
 <style>
   *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
   body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
   :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
-  .wrap{max-width:40rem;margin:0 auto;padding:1.5rem 1rem 2.5rem}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero{position:relative;color:#fff;background:#0b1530;overflow:hidden;min-height:22rem;display:flex;align-items:flex-end}
+  .hero img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,48,.15) 0,rgba(11,21,48,.55) 45%,rgba(11,21,48,.92) 100%)}
+  .hero .in{position:relative;z-index:1;max-width:40rem;margin:0 auto;padding:6rem 1rem 1.2rem;width:100%}
+  .hero .by{color:#fdba74;font-weight:600}
+  .hero h1{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero .intro{color:#e2e8f0}
+  .cap{font-size:.75rem;color:#cbd5e1;margin:.4rem 0 0}
+  .wrap{max-width:40rem;margin:0 auto;padding:1rem 1rem 2.5rem}
   .by{font-size:.875rem;color:#475569;margin:0}
-  h1{font-size:1.9rem;line-height:1.15;margin:.25rem 0 .5rem;font-weight:800}
+  h1{font-size:2rem;line-height:1.12;margin:.25rem 0 .5rem;font-weight:800}
   h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
-  .intro{font-size:1.1rem;color:#334155;margin:0 0 1rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 .6rem}
   .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
   label{display:block;font-weight:700;margin:.6rem 0 .2rem}
   input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
   textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
-  input[type=range]{width:100%;min-height:48px}
-  button{font:inherit;min-height:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a}
+  input[type=range]{width:100%;min-height:48px;accent-color:#c2410c}
+  button{font:inherit;min-height:48px;min-width:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a;transition:transform .12s,background .2s}
+  button:active{transform:scale(.96)}
   button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
   button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
   .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-  @media(max-width:30rem){.grid2{grid-template-columns:1fr}}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}h1{font-size:1.65rem}}
   .out{display:grid;gap:.6rem;margin-top:1rem}
-  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem;animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
   .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
-  .card .v{font-size:2rem;font-weight:900;line-height:1.1}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
   .card .d{font-size:.95rem;color:#334155}
   .card.hi{border-color:#c2410c;background:#fff7ed}
   .card.bad{border-color:#b91c1c;background:#fef2f2}
   .card.good{border-color:#15803d;background:#f0fdf4}
   .small{font-size:.875rem;color:#475569}
+  .vizbox{margin-top:1rem;border-radius:1rem;overflow:hidden;background:#0b1530;border:2px solid #0b1530}
+  .vizbox svg{display:block;width:100%;height:auto}
   table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
   th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
   a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
   li,.card .d,p{overflow-wrap:anywhere}
   pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  html.rv-on .rv.in{opacity:1;transform:none}
   #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
-  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:28px}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530 center/cover;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:24px}
+  #card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,34,.55),rgba(8,14,34,.35) 40%,rgba(8,14,34,.8))}
+  #card>*{position:relative}
   .kick{font-size:44px;font-weight:600;color:#fdba74}
-  .hook{font-size:84px;line-height:1.06;font-weight:800;letter-spacing:-1px}
-  .rows{display:flex;flex-direction:column;gap:22px;margin-top:20px}
-  .row{background:#fff;color:#0b1020;border-radius:24px;padding:24px 40px;border-left:20px solid #cbd5e1}
+  .hook{font-size:80px;line-height:1.05;font-weight:800;letter-spacing:-1px;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+  #fviz{background:rgba(8,14,34,.72);border-radius:28px;width:920px;display:block}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:rgba(255,255,255,.96);color:#0b1020;border-radius:24px;padding:20px 40px;border-left:20px solid #cbd5e1}
   .row.hi{border-left-color:#f97316}
-  .rl{font-size:34px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
-  .rn{font-size:104px;line-height:1.05;font-weight:900;margin:4px 0 10px;transform-origin:0 60%}
-  .rt{font-size:38px;line-height:1.22;font-weight:500}
+  .rl{font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1.05;font-weight:900;margin:2px 0 8px;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.2;font-weight:500}
   .foot{margin-top:auto}
   .cue{font-size:46px;font-weight:800}
-  .src{font-size:32px;line-height:1.25;color:#cbd5e1;margin-top:12px}
+  .src{font-size:30px;line-height:1.25;color:#e2e8f0;margin-top:10px}
   .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .hero{display:none}
   .render .wrap{max-width:none;padding:0;margin:0}
-  .render .wrap>:not(#stage){display:none}
-  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0}
+  .render .wrap>:not(.stagewrap){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0;display:block}
   .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
-  .og .wrap{display:none}
+  .og .wrap,.og .hero{display:none}
   #ogcard{display:none}
-  .og #ogcard{display:flex;width:1200px;height:630px;padding:56px 64px;background:#0b1530;color:#fff;flex-direction:column;gap:22px}
+  .og #ogcard{display:flex;position:relative;width:1200px;height:630px;padding:56px 64px;background:#0b1530 center/cover;color:#fff;flex-direction:column;gap:22px}
+  #ogcard::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,34,.86) 0,rgba(8,14,34,.55) 58%,rgba(8,14,34,.12))}
+  #ogcard>*{position:relative}
   #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
-  #ogcard .h{font-size:84px;line-height:1.05;font-weight:800;letter-spacing:-1px}
+  #ogcard .h{font-size:76px;line-height:1.05;font-weight:800;letter-spacing:-1px;max-width:900px}
   #ogcard .b{display:flex;gap:24px}
-  #ogcard .b div{background:#fff;color:#0b1020;border-radius:18px;padding:14px 26px;font-size:30px;font-weight:600}
-  #ogcard .b b{display:block;font-size:60px;line-height:1.05;font-weight:900}
-  #ogcard .s{font-size:26px;color:#cbd5e1;margin-top:auto}
-  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  #ogcard .b div{background:rgba(255,255,255,.96);color:#0b1020;border-radius:18px;padding:14px 26px;font-size:28px;font-weight:600}
+  #ogcard .b b{display:block;font-size:58px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:24px;color:#e2e8f0;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
+<header class="hero">
+  <img src="hero.jpg" width="1280" height="720" alt="Illustrative AI-generated photo: a small shopfront at night with dozens of thin glowing orange threads running from its doorway out across a wet street." fetchpriority="high">
+  <div class="in">
+    <p class="by" id="byline"></p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <p class="cap">Illustrative AI-generated image, not a photograph of real events or places.</p>
+  </div>
+</header>
 <div class="wrap">
-  <p class="by" id="byline"></p>
-  <h1 id="title"></h1>
-  <p class="intro" id="intro"></p>
+  <p class="sr" id="live" aria-live="polite"></p>
 
-  <section class="panel" aria-labelledby="t1">
+  <section class="panel rv" aria-labelledby="t0">
+    <h2 id="t0">Who can run code on this page</h2>
+    <div class="vizbox"><svg id="viz" role="presentation"></svg></div>
+    <p class="small" id="vizcap">Orange: outside host, no integrity pin. Green: pinned with an integrity hash. Blue: same site. Press "Simulate compromise" on a host in the table to see what that host can reach.</p>
+  </section>
+  <section class="panel rv" aria-labelledby="t1">
     <h2 id="t1">Audit a page</h2>
     <label for="html">Paste the page HTML (view-source, copy all)</label>
     <textarea id="html" spellcheck="false" placeholder="&lt;html&gt;&#10;&lt;head&gt;&#10;&lt;script src=&quot;https://...&quot;&gt;"></textarea>
     <label for="dom">Your site's domain (auto-filled from canonical if found)</label>
     <input id="dom" type="text" inputmode="url" placeholder="shop.example.com" autocomplete="off">
     <div class="btns"><button id="sample" type="button">Load a made-up sample</button><button id="clear" type="button">Clear</button></div>
-    <div class="out" id="out" aria-live="polite"></div>
-    <div id="tbl"></div>
+    <div class="out" id="out"></div>
+    <div id="tbl" style="overflow-x:auto;margin-top:1rem"></div>
     <h2 style="margin-top:1rem">Starting-point CSP (report-only first)</h2>
     <pre id="csp" tabindex="0"></pre>
   </section>
-  <section aria-label="Share">
+  <section aria-label="Share" class="rv">
     <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
     <p class="small" id="sstatus" aria-live="polite"></p>
   </section>
-  <div id="stage"><div id="card"></div></div>
-  <p class="small" id="note" style="margin-top:1.5rem"></p>
-  <footer style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+  <div class="stagewrap rv"><div id="stage"><div id="card"></div></div></div>
+  <p class="small rv" id="note" style="margin-top:1.5rem"></p>
+  <footer class="rv" style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
     <h2>Sources</h2>
     <ul class="small" id="sources"></ul>
+    <p class="small">Images: AI-generated illustrations made for this page (no real people, logos or official surfaces), compressed for the web.</p>
   </footer>
 </div>
 <div id="ogcard"></div>
@@ -123,7 +160,7 @@ const DATA = {
  "PAGE_URL": "https://iggym.github.io/p/script-blast-radius/",
  "byline": "By Iggy Mwangi (@iggym)",
  "title": "How many strangers can run code on your website?",
- "intro": "Last week a script host took down trust on hundreds of big sites at once. Count the outside hosts your own page already trusts. Nothing leaves your browser.",
+ "intro": "On Nov 16 a security researcher reported a breach of one third-party script host that hit hundreds of high-value websites. Count the outside hosts your own page already trusts. Nothing leaves your browser.",
  "note": "This reads only the HTML you paste. It cannot see scripts that other scripts load later, so the real number is higher than what it shows. 'Same site' is a simple guess from the last two parts of the domain. Integrity (SRI) pins one exact file, so it cannot be used on files a vendor changes. The CSP is a starting point to test in report-only mode, not a finished policy. Not security advice.",
  "sources": [
   {
@@ -164,7 +201,7 @@ const DATA = {
 const APP=(function(){
   const SLD=new Set(['co','com','org','net','gov','ac','edu']);
   const reg=h=>{ const p=h.split('.'); if(p.length<=2)return h; const n=p.length; return (p[n-1].length===2&&SLD.has(p[n-2]))?p.slice(-3).join('.'):p.slice(-2).join('.'); };
-  let sampleMode=true, last=null;
+  let sampleMode=true, last=null, sel=null;
   function analyze(html,domIn){
     const doc=new DOMParser().parseFromString(html,'text/html');
     let dom=(domIn||'').trim().replace(/^https?:\/\//,'').replace(/\/.*$/,'').toLowerCase();
@@ -172,9 +209,9 @@ const APP=(function(){
     const baseHost=dom||'example.invalid'; const baseUrl='https://'+baseHost+'/';
     const hosts={}; let inline=0, tp=0, tpNoSri=0, total=0, ifr=0;
     const hit=(u,kind,sri)=>{ let url; try{url=new URL(u,baseUrl);}catch(e){return;} if(!/^https?:$/.test(url.protocol))return;
-      const h=url.hostname.toLowerCase(); const first=!!dom&&reg(h)===reg(baseHost); const o=hosts[h]||(hosts[h]={host:h,first,scripts:0,sri:0,css:0,iframes:0}); 
+      const h=url.hostname.toLowerCase(); const first=!!dom&&reg(h)===reg(baseHost); const o=hosts[h]||(hosts[h]={host:h,first,scripts:0,sri:0,css:0,iframes:0});
       if(kind==='script'){o.scripts++; total++; if(sri)o.sri++; if(!first){tp++; if(!sri)tpNoSri++;}} else if(kind==='css')o.css++; else {o.iframes++; if(!first)ifr++;} };
-    doc.querySelectorAll('script').forEach(s=>{ if(s.src||s.getAttribute('src')) hit(s.getAttribute('src'),'script',!!s.getAttribute('integrity')); else if((s.textContent||'').trim()) inline++; });
+    doc.querySelectorAll('script').forEach(s=>{ if(s.getAttribute('src')) hit(s.getAttribute('src'),'script',!!s.getAttribute('integrity')); else if((s.textContent||'').trim()) inline++; });
     doc.querySelectorAll('link[rel~=modulepreload][href],link[rel~=preload][as=script][href]').forEach(l=>hit(l.getAttribute('href'),'script',!!l.getAttribute('integrity')));
     doc.querySelectorAll('link[rel~=stylesheet][href]').forEach(l=>hit(l.getAttribute('href'),'css',false));
     doc.querySelectorAll('iframe[src]').forEach(f=>hit(f.getAttribute('src'),'iframe',false));
@@ -183,32 +220,62 @@ const APP=(function(){
     return {dom,list,tpHosts,tp,tpNoSri,inline,total,ifr}; }
   function paint(){
     const html=sampleMode?DATA.sample:$('html').value; const r=last=analyze(html,sampleMode?'':$('dom').value);
+    if(sel&&!r.list.some(h=>h.host===sel))sel=null;
     if(!RENDER&&!OG&&!$('dom').value&&r.dom&&!sampleMode)$('dom').placeholder=r.dom+' (auto)';
     const o=$('out'); o.textContent='';
-    const add=(cls,l,v,d)=>{const x=el('div','card '+cls); x.append(el('div','l',l),el('div','v',v),el('div','d',d)); o.append(x);};
-    if(!html.trim()){ add('','Waiting','0','Paste HTML above, or load the sample.'); $('tbl').textContent=''; $('csp').textContent=''; api.onChange&&api.onChange(); return; }
-    add('hi','Outside hosts that can run script on this page',String(r.tpHosts.length),r.tpHosts.map(h=>h.host).join(', ')||'none found in the HTML you pasted');
-    add(r.tpNoSri?'bad':'good','Outside script tags with no integrity pin',r.tpNoSri+' of '+r.tp,r.tp?'Each can change what it serves, and your page runs it with full privileges.':'No outside script tags found.');
-    add('','Inline script blocks',String(r.inline),'Inline code needs a nonce or hash under a strict CSP.');
-    if(r.ifr)add('','Outside iframes',String(r.ifr),'Sandboxed by the browser, but still third-party content on your page.');
-    const t=$('tbl'); t.textContent=''; const tb=el('table'); const hd=el('tr'); ['Host','Scripts','With integrity','Other'].forEach(x=>hd.append(el('th',null,x))); tb.append(hd);
-    r.list.forEach(h=>{ const tr=el('tr'); tr.append(el('td',null,h.host+(h.first?' (same site)':'')),el('td',null,String(h.scripts)),el('td',null,h.scripts?h.sri+' of '+h.scripts:'-'),el('td',null,[h.css?h.css+' stylesheet':'',h.iframes?h.iframes+' iframe':''].filter(Boolean).join(', ')||'-')); tb.append(tr); });
-    t.append(tb); const cap=el('p','small','Stylesheets and iframes are counted but are lower risk than scripts.'); t.append(cap);
+    const add=(cls,l,num,f,d,key)=>{const x=el('div','card '+cls); const v=el('div','v'); x.append(el('div','l',l),v,el('div','d',d)); o.append(x); tween(v,key,num,f);};
+    const tbl=$('tbl'); tbl.textContent='';
+    if(!html.trim()){ add('','Waiting',0,String,'Paste HTML above, or load the sample.','w'); $('csp').textContent=''; announce('No HTML yet.'); api.onChange&&api.onChange(); return; }
+    add('hi','Outside hosts that can run script on this page',r.tpHosts.length,x=>String(Math.round(x)),r.tpHosts.map(h=>h.host).join(', ')||'none found in the HTML you pasted','h');
+    add(r.tpNoSri?'bad':'good','Outside script tags with no integrity pin',r.tpNoSri,x=>Math.round(x)+' of '+r.tp,r.tp?'Each can change what it serves, and your page runs it with full privileges.':'No outside script tags found.','n');
+    add('','Inline script blocks',r.inline,x=>String(Math.round(x)),'Inline code needs a nonce or hash under a strict CSP.','i');
+    if(r.ifr)add('','Outside iframes',r.ifr,x=>String(Math.round(x)),'Sandboxed by the browser, but still third-party content on your page.','f');
+    const tb=el('table'); const hd=el('tr'); ['Host','Scripts','With integrity','Other','What if it is compromised?'].forEach(x=>hd.append(el('th',null,x))); tb.append(hd);
+    r.list.forEach(h=>{ const tr=el('tr'); tr.append(el('td',null,h.host+(h.first?' (same site)':'')),el('td',null,String(h.scripts)),el('td',null,h.scripts?h.sri+' of '+h.scripts:'-'),el('td',null,[h.css?h.css+' stylesheet':'',h.iframes?h.iframes+' iframe':''].filter(Boolean).join(', ')||'-'));
+      const td=el('td'); if(h.scripts){ const b=el('button',null,sel===h.host?'Stop':'Simulate compromise'); b.type='button'; b.setAttribute('aria-pressed',String(sel===h.host)); b.onclick=()=>{sel=(sel===h.host)?null:h.host; paint(); api.redraw&&api.redraw();}; td.append(b); } else td.textContent='-'; tr.append(td); tb.append(tr); });
+    tbl.append(tb); tbl.append(el('p','small','Stylesheets and iframes are counted but are lower risk than scripts.'));
+    if(sel){ const h=r.list.find(x=>x.host===sel); const n=el('p',null,'If '+h.host+' were compromised, the '+h.scripts+' script tag'+(h.scripts>1?'s':'')+' you load from it would run attacker-chosen code on this page, with the same access as your own code. Nothing in your HTML would change.'); n.style.fontWeight='700'; tbl.prepend(n); }
     const own=r.list.filter(h=>h.first&&h.scripts>0).map(h=>h.host);
     $('csp').textContent="Content-Security-Policy-Report-Only: script-src 'self'"+(r.tpHosts.length?' '+r.tpHosts.map(h=>'https://'+h.host).join(' '):'')+(r.inline?" 'nonce-REPLACE_PER_REQUEST'":'')+"; report-to csp-endpoint\n"+(own.length?'/* same-site script hosts seen: '+own.join(', ')+' */':'');
+    announce(r.tpHosts.length+' outside script hosts; '+r.tpNoSri+' of '+r.tp+' outside script tags have no integrity pin.');
     api.onChange&&api.onChange(); }
+  // radial diagram, pure function of (analysis, selection, ctx)
+  function draw(svg,ctx){ const r=last||analyze(DATA.sample,''); svg.textContent=''; const cx=300, cy=275, p=ctx.p, t=ctx.t;
+    const MAX=10; const hs=r.list.filter(h=>h.scripts>0||h.iframes>0).slice(0,MAX); const more=r.list.filter(h=>h.scripts>0||h.iframes>0).length-hs.length;
+    // rings
+    [105,215].forEach((rad,i)=>S('ellipse',{cx,cy,rx:rad*1.12,ry:rad,fill:'none',stroke:'#1e2a4a','stroke-width':2,'stroke-dasharray':'4 8'},svg));
+    const tpList=hs.filter(h=>!h.first), fpList=hs.filter(h=>h.first);
+    const pos=new Map(); const place=(arr,rad,off)=>arr.forEach((h,i)=>{ const a=-Math.PI/2+off+i/arr.length*Math.PI*2; pos.set(h.host,{x:cx+Math.cos(a)*rad*1.12,y:cy+Math.sin(a)*rad,a}); });
+    place(tpList,215,.35); place(fpList,105,.9);
+    const dim=sel?.35:1;
+    hs.forEach((h,i)=>{ const q=pos.get(h.host); const pr=ease(seg(p,.1+i*.06,.4)); if(pr<=0)return; const isSel=h.host===sel; const col=h.first?'#60a5fa':(h.scripts&&h.sri===h.scripts?'#22c55e':'#f97316');
+      const x=lerp(cx,q.x,pr), y=lerp(cy,q.y,pr); const op=(sel&&!isSel)?dim:1;
+      S('line',{x1:cx,y1:cy,x2:x,y2:y,stroke:isSel?'#ef4444':col,'stroke-width':isSel?4:2.5,opacity:op,'stroke-dasharray':'7 7','stroke-dashoffset':String(-t*(isSel?60:28))},svg);
+      if(pr>.95&&!ctx.reduce){ const k=((t*.45+i*.17)%1); S('circle',{cx:lerp(q.x,cx,k),cy:lerp(q.y,cy,k),r:isSel?6:4,fill:isSel?'#fecaca':'#fff',opacity:op*.95},svg); } // code travelling host -> page
+      if(isSel&&!ctx.reduce){ const k=(t*.8)%1; S('circle',{cx:q.x,cy:q.y,r:12+k*30,fill:'none',stroke:'#ef4444','stroke-width':3,opacity:1-k},svg); }
+      S('circle',{cx:x,cy:y,r:isSel?13:10,fill:isSel?'#ef4444':col,stroke:'#0b1530','stroke-width':3,opacity:op},svg);
+      if(pr>.9){ let lbl=h.host.length>22?h.host.slice(0,21)+'…':h.host; const w=lbl.length*9.6+14; const lx=Math.max(w/2+4,Math.min(600-w/2-4,q.x)); const ly=q.y+(q.y<cy?-24:34);
+        S('rect',{x:lx-w/2,y:ly-17,width:w,height:24,rx:8,fill:'rgba(8,14,34,.85)',opacity:op},svg); S('text',{x:lx,y:ly,fill:'#fff','font-size':17,'font-weight':700,'text-anchor':'middle',opacity:op},svg,lbl); } });
+    // page node
+    const pulse=ctx.reduce?0:(Math.sin(t*3)+1)/2;
+    S('circle',{cx,cy,r:44+pulse*5,fill:'rgba(251,146,60,.18)'},svg);
+    S('rect',{x:cx-56,y:cy-34,width:112,height:68,rx:14,fill:'#fff',stroke:'#fb923c','stroke-width':4},svg);
+    S('text',{x:cx,y:cy-4,'text-anchor':'middle','font-size':22,'font-weight':900,fill:'#0b1020'},svg,'your page'); S('text',{x:cx,y:cy+20,'text-anchor':'middle','font-size':16,'font-weight':700,fill:'#475569'},svg,r.dom||'');
+    if(more>0) S('text',{x:590,y:548,'text-anchor':'end','font-size':17,fill:'#cbd5e1'},svg,'+'+more+' more hosts not drawn');
+    S('text',{x:12,y:30,'font-size':19,'font-weight':800,fill:'#fdba74'},svg,ctx.film?(sel?'':'Each line is a script:'):'Each line is a script tag'); }
   const api={
-    init(){ paint(); if(RENDER||OG)return;
-      $('html').addEventListener('input',()=>{sampleMode=false;paint();}); $('dom').addEventListener('input',()=>{sampleMode=false;paint();});
-      $('sample').onclick=()=>{sampleMode=true;$('html').value=DATA.sample;$('dom').value='';paint();};
-      $('clear').onclick=()=>{sampleMode=false;$('html').value='';$('dom').value='';paint();}; $('html').value=DATA.sample; },
+    vb:'0 0 600 560', fvh:500, draw,
+    init(){ if(RENDER||OG){paint();return;} paint();
+      $('html').addEventListener('input',()=>{sampleMode=false;paint();api.redraw&&api.redraw();}); $('dom').addEventListener('input',()=>{sampleMode=false;paint();api.redraw&&api.redraw();});
+      $('sample').onclick=()=>{sampleMode=true;sel=null;$('html').value=DATA.sample;$('dom').value='';paint();api.redraw&&api.redraw();};
+      $('clear').onclick=()=>{sampleMode=false;sel=null;$('html').value='';$('dom').value='';paint();api.redraw&&api.redraw();}; $('html').value=DATA.sample; },
     film(){ const r=last||analyze(DATA.sample,''); const mine=!sampleMode&&$('html').value.trim();
       return {kick:mine?'Your page':'A made-up sample page',hook:'Who can run code on your site?',rows:[
         {l:'Outside script hosts',n:String(r.tpHosts.length),t:'Every one runs with your page\'s full privileges.'},
         {l:'Outside script tags, no integrity pin',n:r.tpNoSri+' of '+r.tp,t:'Nothing checks that the file is the one you meant to load.',hi:true},
         {l:'Reported on Nov 16 2026',n:'178',t:'organisations affected by malicious JavaScript served through Optimizely, per Scott Helme (@Scott_Helme).'}],
-        cue:'Paste your own page',src:'Source: Scott Helme on X, 2026-11-16. Sample page is invented.'}; },
-    og(){ return {k:'Reported Nov 16 2026: one script host, hundreds of sites',h:'How many strangers can run code on your site?',boxes:[['178','organisations affected, per Scott Helme'],['Free','paste HTML, runs in your browser']],s:'iggym.github.io/p/script-blast-radius'}; },
+        cue:'Paste your own page',src:'Source: Scott Helme on X, 2026-11-16. Sample page is invented. Image: AI-generated, illustrative.'}; },
+    og(){ return {k:'Reported Nov 16 2026: one script host, hundreds of sites',h:'How many strangers can run code on your site?',boxes:[['178','organisations affected, per Scott Helme'],['Free','paste HTML, runs in your browser']],s:'iggym.github.io/p/script-blast-radius - illustrative image'}; },
     shareUrl(){ return DATA.PAGE_URL; }
   }; return api; })();
 
@@ -218,23 +285,32 @@ const RENDER = document.documentElement.classList.contains('render');
 const OG = document.documentElement.classList.contains('og');
 const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const Q = new URLSearchParams(location.search);
+const NS='http://www.w3.org/2000/svg';
 function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
-$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro;
-$('note').textContent=DATA.note;
+function S(tag,attrs,parent,text){ const e=document.createElementNS(NS,tag); for(const k in (attrs||{}))e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; if(parent)parent.appendChild(e); return e; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x), lerp=(a,b,k)=>a+(b-a)*k;
+const prevVals={};
+function tween(node,key,to,fmt){ const from=prevVals[key]; prevVals[key]=to; if(REDUCE||RENDER||OG||from==null||from===to){node.textContent=fmt(to);return;}
+  const t0=performance.now(), d=550; (function f(now){ const k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3); node.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f); })(t0); }
+let liveTimer=0; function announce(txt){ clearTimeout(liveTimer); liveTimer=setTimeout(()=>{$('live').textContent=txt;},400); }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro; $('note').textContent=DATA.note;
 (function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
 const F = DATA.film;
 const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+card.style.backgroundImage='url(scene.jpg)';
 const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const fviz=S('svg',{id:'fviz',viewBox:APP.vb,'aria-hidden':'true'}); fviz.style.height=APP.fvh+'px'; fviz.setAttribute('preserveAspectRatio','xMidYMid meet');
 const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
 const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
-card.append(top0,rowsEl,foot);
+card.append(top0,fviz,rowsEl,foot);
 function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
-  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'78px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
-const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x);
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'72px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+let curT=0;
 function setTime(t){
-  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0;
-  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*420)+'px)';
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0; curT=t;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*60)+'px)'; top0.style.opacity=.2+.8*seg(t,0,.5);
   crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  APP.draw(fviz,{t,p:ease(seg(t,.6,F.stepStarts[2]+1-.6)),film:true,reduce:false});
   foot.style.opacity=seg(t,F.posterStart,F.posterFade);
 }
 let raf=0;
@@ -243,14 +319,27 @@ function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return
 window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
 function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
 addEventListener('resize',fit); fit();
-(function(){ const o=$('ogcard'), g=APP.og(); o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
-APP.onChange=()=>{ renderFilm(); if(REDUCE||RENDER) setTime(RENDER?0:F.holdEnd); };
+(function(){ const o=$('ogcard'), g=APP.og(); o.style.backgroundImage='url(hero.jpg)'; o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(RENDER) setTime(0); else if(REDUCE) setTime(F.holdEnd); };
+// live viz loop, runs only while the diagram is on screen
+const lv=$('viz'); let vis=false, vStart=0, vLast=0, vraf=0;
+function vloop(now){ if(!vis)return; const t=(now-vStart)/1000, dt=Math.min(.05,(now-vLast)/1000); vLast=now; APP.draw(lv,{t,dt,p:ease(seg(t,.2,1.8)),film:false,reduce:false}); vraf=requestAnimationFrame(vloop); }
+if(lv && !RENDER && !OG){
+  lv.setAttribute('viewBox',APP.vb); lv.setAttribute('aria-hidden','true');
+  if(REDUCE){ APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); APP.redraw=()=>APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); }
+  else if('IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting&&!vis){vis=true;vStart=vLast=performance.now();vraf=requestAnimationFrame(vloop);} else if(!e.isIntersecting){vis=false;cancelAnimationFrame(vraf);} }); },{threshold:.15}).observe(lv); }
+  else { vis=true; vStart=vLast=performance.now(); vraf=requestAnimationFrame(vloop); }
+}
+// scroll reveals + hero parallax
 if(!RENDER && !OG){
+  if(!REDUCE && 'IntersectionObserver' in window){ document.documentElement.classList.add('rv-on'); const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12}); document.querySelectorAll('.rv').forEach(x=>io.observe(x)); }
+  const him=document.querySelector('.hero img'); if(him&&!REDUCE){ let tick=false; addEventListener('scroll',()=>{ if(tick)return; tick=true; requestAnimationFrame(()=>{ const y=Math.min(scrollY,700); him.style.transform='translateY('+(y*.18)+'px) scale('+(1+y*.0002)+')'; tick=false; }); },{passive:true}); }
   $('replay').onclick=play;
   $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
 }
 APP.init(); renderFilm(); setTime(0);
-Promise.race([(document.fonts&&document.fonts.ready)||Promise.resolve(),new Promise(r=>setTimeout(r,800))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+const preload=src=>new Promise(r=>{const i=new Image(); i.onload=i.onerror=()=>r(); i.src=src;});
+Promise.race([Promise.all([preload('scene.jpg'),preload('hero.jpg'),(document.fonts&&document.fonts.ready)||Promise.resolve()]),new Promise(r=>setTimeout(r,2500))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
 
 </script>
 </body>
