@@ -1,0 +1,17 @@
+# SAFE Ownership Map
+
+> Free in-browser calculator that shows who owns what before and after post-money SAFEs convert and after a priced round. It takes issued shares, the unissued pool, up to three post-money SAFEs and round terms, and returns animated ownership bars, a cap table, CSV and JSON. For founders and early employees. It models post-money SAFEs at the cap only, stores nothing, and is not legal, tax or investment advice. Defaults are an illustrative company. Pro features are not available yet.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/safe-ownership-map/): takes issued shares, unissued pool, up to three post-money SAFEs (amount, cap), new money, pre-money, target pool; returns ownership today / after SAFEs / after the round, round price, cap table CSV, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: post-money SAFE arithmetic at the cap, pool top-up inside the pre-money, warning when the round price is below a SAFE's price.
+- Not for: discount, MFN or uncapped SAFEs, pro rata rights, pre-money SAFEs, convertible notes, option exercises, real term-sheet conventions that differ from the stated assumption.
+- Information, not legal, tax or investment advice. Read your own documents.
+
+## Sources
+
+- Y Combinator documents page (SAFE): https://www.ycombinator.com/documents

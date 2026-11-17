@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your 99.9% allows 44 minutes. Check your month.</title>
+<meta name="description" content="Free uptime and SLA credit calculator: enter a month and your outages, see the real uptime, how much each 'nine' allows, the credit tier you hit, the claim deadline, and a claim letter. Runs in your browser.">
+<link rel="canonical" href="https://iggym.github.io/p/downtime-budget/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Iggy Mwangi">
+<meta property="og:title" content="Your 99.9% allows 44 minutes. Check your month.">
+<meta property="og:description" content="Free uptime and SLA credit calculator: enter a month and your outages, see the real uptime, how much each 'nine' allows, the credit tier you hit, the claim deadline, and a claim letter. Runs in your browser.">
+<meta property="og:url" content="https://iggym.github.io/p/downtime-budget/">
+<meta property="og:image" content="https://iggym.github.io/p/downtime-budget/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Illustrative AI-generated photo: a dim operations desk at night with two monitors showing blurred green and red status bars and a timeline graph, a keyboard and a coffee mug.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@iggym">
+<meta name="twitter:title" content="Your 99.9% allows 44 minutes. Check your month.">
+<meta name="twitter:description" content="Free uptime and SLA credit calculator: enter a month and your outages, see the real uptime, how much each 'nine' allows, the credit tier you hit, the claim deadline, and a claim letter. Runs in your browser.">
+<meta name="twitter:image" content="https://iggym.github.io/p/downtime-budget/og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='%230b1530'/%3E%3Cpath d='M16 8v9l6 3' stroke='%23fb923c' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0b1530">
+<script>
+  var Q0 = new URLSearchParams(location.search);
+  if (Q0.get('render') === '1') document.documentElement.classList.add('render');
+  if (Q0.get('og') === '1') document.documentElement.classList.add('og');
+</script>
+<style>
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#f8fafc;color:#0f172a}
+  :focus-visible{outline:3px solid #c2410c;outline-offset:2px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .hero{position:relative;color:#fff;background:#0b1530;overflow:hidden;min-height:22rem;display:flex;align-items:flex-end}
+  .hero img{position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;will-change:transform}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,48,.15) 0,rgba(11,21,48,.55) 45%,rgba(11,21,48,.92) 100%)}
+  .hero .in{position:relative;z-index:1;max-width:40rem;margin:0 auto;padding:6rem 1rem 1.2rem;width:100%}
+  .hero .by{color:#fdba74;font-weight:600}
+  .hero h1{color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+  .hero .intro{color:#e2e8f0}
+  .cap{font-size:.75rem;color:#cbd5e1;margin:.4rem 0 0}
+  .wrap{max-width:40rem;margin:0 auto;padding:1rem 1rem 2.5rem}
+  .by{font-size:.875rem;color:#475569;margin:0}
+  h1{font-size:2rem;line-height:1.12;margin:.25rem 0 .5rem;font-weight:800}
+  h2{font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:#475569;margin:0 0 .5rem}
+  .intro{font-size:1.1rem;color:#334155;margin:0 0 .6rem}
+  .panel{margin-top:1rem;border:2px solid #cbd5e1;background:#f1f5f9;border-radius:1rem;padding:1rem}
+  label{display:block;font-weight:700;margin:.6rem 0 .2rem}
+  input[type=number],input[type=text],select,textarea{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
+  textarea{min-height:11rem;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem}
+  input[type=range]{width:100%;min-height:48px;accent-color:#c2410c}
+  button{font:inherit;min-height:48px;min-width:48px;padding:.5rem 1rem;border-radius:.6rem;border:2px solid #64748b;background:#fff;font-weight:700;cursor:pointer;color:#0f172a;transition:transform .12s,background .2s}
+  button:active{transform:scale(.96)}
+  button.pri{background:#0f172a;color:#fff;border-color:#0f172a}
+  button[aria-pressed=true]{background:#0f172a;color:#fff;border-color:#0f172a}
+  .btns{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+  @media(max-width:30rem){.grid2{grid-template-columns:1fr}h1{font-size:1.65rem}}
+  .out{display:grid;gap:.6rem;margin-top:1rem}
+  .card{background:#fff;border:2px solid #94a3b8;border-radius:.8rem;padding:.7rem 1rem;animation:pop .45s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+  .card .l{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569}
+  .card .v{font-size:2rem;font-weight:900;line-height:1.1;font-variant-numeric:tabular-nums}
+  .card .d{font-size:.95rem;color:#334155}
+  .card.hi{border-color:#c2410c;background:#fff7ed}
+  .card.bad{border-color:#b91c1c;background:#fef2f2}
+  .card.good{border-color:#15803d;background:#f0fdf4}
+  .small{font-size:.875rem;color:#475569}
+  .vizbox{margin-top:1rem;border-radius:1rem;overflow:hidden;background:#0b1530;border:2px solid #0b1530}
+  .vizbox svg{display:block;width:100%;height:auto}
+  table{border-collapse:collapse;width:100%;font-size:.95rem;background:#fff}
+  th,td{border:1px solid #94a3b8;padding:.4rem .5rem;text-align:left;vertical-align:top;word-break:break-all}
+  a{color:#0f172a;font-weight:600;overflow-wrap:anywhere}
+  li,.card .d,p{overflow-wrap:anywhere}
+  pre{background:#0f172a;color:#e2e8f0;padding:.8rem;border-radius:.6rem;overflow:auto;font-size:.85rem;white-space:pre-wrap;word-break:break-all}
+  html.rv-on .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+  html.rv-on .rv.in{opacity:1;transform:none}
+  #stage{position:relative;width:min(100%,340px);aspect-ratio:9/16;margin:1.5rem auto 0;overflow:hidden;border-radius:16px;background:#0b1530}
+  #card{position:absolute;left:0;top:0;width:1080px;height:1920px;padding:70px 80px;background:#0b1530 center/cover;color:#fff;transform-origin:0 0;transform:scale(var(--s,1));display:flex;flex-direction:column;gap:24px}
+  #card::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,14,34,.55),rgba(8,14,34,.35) 40%,rgba(8,14,34,.8))}
+  #card>*{position:relative}
+  .kick{font-size:44px;font-weight:600;color:#fdba74}
+  .hook{font-size:80px;line-height:1.05;font-weight:800;letter-spacing:-1px;text-shadow:0 3px 18px rgba(0,0,0,.6)}
+  #fviz{background:rgba(8,14,34,.72);border-radius:28px;width:920px;display:block}
+  .rows{display:flex;flex-direction:column;gap:20px}
+  .row{background:rgba(255,255,255,.96);color:#0b1020;border-radius:24px;padding:20px 40px;border-left:20px solid #cbd5e1}
+  .row.hi{border-left-color:#f97316}
+  .rl{font-size:32px;font-weight:800;text-transform:uppercase;letter-spacing:2px;color:#334155}
+  .rn{font-size:96px;line-height:1.05;font-weight:900;margin:2px 0 8px;transform-origin:0 60%}
+  .rt{font-size:36px;line-height:1.2;font-weight:500}
+  .foot{margin-top:auto}
+  .cue{font-size:46px;font-weight:800}
+  .src{font-size:30px;line-height:1.25;color:#e2e8f0;margin-top:10px}
+  .render,.render body{margin:0;background:#0b1530!important;overflow:hidden}
+  .render .hero{display:none}
+  .render .wrap{max-width:none;padding:0;margin:0}
+  .render .wrap>:not(.stagewrap){display:none}
+  .render #stage{position:fixed;left:0;top:0;width:1080px;height:1920px;border-radius:0;aspect-ratio:auto;margin:0;display:block}
+  .og,.og body{margin:0;background:#0b1530!important;overflow:hidden}
+  .og .wrap,.og .hero{display:none}
+  #ogcard{display:none}
+  .og #ogcard{display:flex;position:relative;width:1200px;height:630px;padding:56px 64px;background:#0b1530 center/cover;color:#fff;flex-direction:column;gap:22px}
+  #ogcard::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,14,34,.86) 0,rgba(8,14,34,.55) 58%,rgba(8,14,34,.12))}
+  #ogcard>*{position:relative}
+  #ogcard .k{font-size:30px;font-weight:600;color:#fdba74}
+  #ogcard .h{font-size:76px;line-height:1.05;font-weight:800;letter-spacing:-1px;max-width:900px}
+  #ogcard .b{display:flex;gap:24px}
+  #ogcard .b div{background:rgba(255,255,255,.96);color:#0b1020;border-radius:18px;padding:14px 26px;font-size:28px;font-weight:600}
+  #ogcard .b b{display:block;font-size:58px;line-height:1.05;font-weight:900}
+  #ogcard .s{font-size:24px;color:#e2e8f0;margin-top:auto}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+
+  input[type=date]{font:inherit;width:100%;min-height:48px;padding:.5rem .7rem;border:2px solid #64748b;border-radius:.6rem;background:#fff;color:#0f172a}
+  fieldset{min-width:0}
+  .btns button{flex:1 1 auto}
+  table th{background:#e2e8f0}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;word-break:normal}
+  .tw{overflow-x:auto}
+  .card,.card *,.evrow>*{min-width:0;overflow-wrap:anywhere}
+  .card{max-width:100%;overflow:hidden}
+  .skiplink{position:absolute;left:-9999px;top:0;background:#0f172a;color:#fff;padding:.7rem 1rem;z-index:10}
+  .skiplink:focus{left:.5rem;top:.5rem}
+  .soon li{margin:.25rem 0}
+  @media(max-width:34rem){.evrow{grid-template-columns:1fr 1fr!important}}
+  .tw:focus-visible{outline:3px solid #c2410c}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skiplink" href="#t1">Skip to the tool</a>
+<header class="hero">
+  <img id="heroimg" src="data:image/jpeg;base64,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" width="1280" height="720" alt="Illustrative AI-generated photo: a dim operations desk at night with two monitors showing blurred green and red status bars and a timeline graph, a keyboard and a coffee mug." fetchpriority="high">
+  <div class="in">
+    <p class="by" id="byline"></p>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
+    <p class="cap">Illustrative AI-generated image, not a photograph of real events or places.</p>
+  </div>
+</header>
+<noscript><p style="max-width:40rem;margin:1rem auto;padding:0 1rem"><strong>This tool needs JavaScript.</strong> It runs entirely in your browser, is free, and sends nothing anywhere.</p></noscript>
+<div class="wrap">
+  <p class="sr" id="live" aria-live="polite"></p>
+
+  <section class="panel rv" aria-labelledby="t0">
+    <h2 id="t0">The nines ladder</h2>
+    <div class="vizbox"><svg id="viz" role="presentation"></svg></div>
+    <p class="small">Each bar is the minutes a target allows in your month. The line is the downtime you entered. Sample month until you change it.</p>
+  </section>
+  <section class="panel rv" aria-labelledby="t1">
+    <h2 id="t1">Your month</h2>
+    <div class="grid2">
+      <div><label for="mo">Month (YYYY-MM)</label><input id="mo" type="month" placeholder="2026-10" pattern="\d{4}-\d{2}"></div>
+      <div><label for="sla">Uptime target in your contract, %</label><input id="sla" type="number" inputmode="decimal" min="50" max="99.9999" step="any"></div>
+    </div>
+    <div class="btns" role="group" aria-label="Target presets"><button id="s1" type="button">99%</button><button id="s2" type="button">99.5%</button><button id="s3" type="button">99.9%</button><button id="s4" type="button">99.95%</button><button id="s5" type="button">99.99%</button></div>
+    <fieldset style="border:2px solid #cbd5e1;border-radius:.6rem;margin:.6rem 0;padding:.5rem .9rem"><legend><strong>Downtime you recorded</strong></legend>
+      <div id="inc"></div>
+      <div class="btns"><button id="addi" type="button">Add a blank row</button></div>
+      <p class="small">Or add a recent public window as a starting point (minutes only; edit the label and the share that affected you):</p>
+      <div class="btns" role="group" aria-label="Add a recent outage"><button id="p1" type="button">Cloudflare Oct 23: 176 min</button><button id="p2" type="button">Square Nov 4: 85 min</button><button id="p3" type="button">Azure networking: 345 min</button><button id="p4" type="button">Microsoft 365: about 24 h</button></div>
+    </fieldset>
+    <fieldset style="border:2px solid #cbd5e1;border-radius:.6rem;margin:.6rem 0;padding:.5rem .9rem"><legend><strong>Credit terms from your contract (example numbers, replace)</strong></legend>
+      <div class="grid2">
+        <div><label for="fee">Monthly fee, $</label><input id="fee" type="number" inputmode="decimal" min="0" step="any"></div>
+        <div><label for="cw">Days after month end to file a claim (yours)</label><input id="cw" type="number" inputmode="numeric" min="0" max="365" step="1"></div>
+        <div><label for="th1">Tier 1: uptime below, %</label><input id="th1" type="number" inputmode="decimal" min="0" max="100" step="any"></div>
+        <div><label for="cr1">Tier 1 credit, % of monthly fee</label><input id="cr1" type="number" inputmode="decimal" min="0" max="100" step="any"></div>
+        <div><label for="th2">Tier 2: uptime below, %</label><input id="th2" type="number" inputmode="decimal" min="0" max="100" step="any"></div>
+        <div><label for="cr2">Tier 2 credit, %</label><input id="cr2" type="number" inputmode="decimal" min="0" max="100" step="any"></div>
+        <div><label for="th3">Tier 3: uptime below, %</label><input id="th3" type="number" inputmode="decimal" min="0" max="100" step="any"></div>
+        <div><label for="cr3">Tier 3 credit, %</label><input id="cr3" type="number" inputmode="decimal" min="0" max="100" step="any"></div>
+        <div><label for="cph">What an hour down costs you, $ (optional)</label><input id="cph" type="number" inputmode="decimal" min="0" step="any"></div>
+      </div>
+    </fieldset>
+    <div class="out" id="out"></div>
+    <h2 style="margin-top:1rem">What each nine allows in this month</h2>
+    <div class="tw" tabindex="0" role="region" aria-label="Table, scrollable"><table><caption class="sr">Allowed downtime minutes per uptime target for the chosen month, and whether your entered downtime fits</caption><thead><tr><th scope="col">Target</th><th scope="col" class="num">Allowed minutes</th><th scope="col">Your downtime</th></tr></thead><tbody id="tb"></tbody></table></div>
+    <div class="btns" role="group" aria-label="Result actions"><button id="cpr" type="button">Copy result</button><button id="dlj" type="button">Download .json</button><button id="cpl" type="button">Copy link to this result</button></div><p class="small" id="ractst" aria-live="polite"></p>
+  </section>
+  <section class="panel rv" aria-labelledby="t2">
+    <h2 id="t2">Take the evidence with you</h2>
+    <div class="btns"><button id="ics" type="button" class="pri">Download claim-deadline reminder (.ics)</button></div>
+    <p class="small">Needs a claim window above. <span id="icsst" aria-live="polite"></span></p>
+    <p class="small"><strong>Template, not legal advice.</strong> Your contract controls: exclusions, notice rules and how to claim. Edit the brackets.</p>
+    <label for="letter">Claim letter (editable)</label>
+    <textarea id="letter" rows="16"></textarea>
+    <div class="btns"><button id="copyl" type="button" class="pri">Copy the letter</button><button id="dll" type="button">Download as .txt</button></div>
+    <p class="small" id="lstatus" aria-live="polite"></p>
+  </section>
+  <section class="panel rv soon" aria-labelledby="t3">
+    <h2 id="t3">Coming soon</h2>
+    <p class="small">Everything above is free. These are planned and not available yet:</p>
+    <ul>
+      <li>Saved months and a running uptime history <span class="small">(coming soon)</span></li>
+      <li>Status-page import for the providers you use <span class="small">(coming soon)</span></li>
+      <li>Credit-terms reader for common contracts <span class="small">(coming soon)</span></li>
+      <li>One-page evidence packet as a PDF <span class="small">(coming soon)</span></li>
+    </ul>
+  </section>
+  <section aria-label="Share" class="rv">
+    <p class="btns"><button id="share" type="button" class="pri">Copy a share link</button> <button id="replay" type="button">Replay the film</button></p>
+    <p class="small" id="sstatus" aria-live="polite"></p>
+  </section>
+  <div class="stagewrap rv"><div id="stage"><div id="card"></div></div></div>
+  <p class="small rv" id="note" style="margin-top:1.5rem"></p>
+  <footer class="rv" style="margin-top:1rem;border-top:2px solid #cbd5e1;padding-top:1rem">
+    <h2>Sources</h2>
+    <ul class="small" id="sources"></ul>
+    <p class="small">Images: AI-generated illustrations made for this page (no real people, logos or official surfaces), compressed for the web.</p>
+  </footer>
+</div>
+<div id="ogcard"></div>
+<script>
+const DATA = {
+ "PAGE_URL": "https://iggym.github.io/p/downtime-budget/",
+ "byline": "By Iggy Mwangi (@iggym)",
+ "title": "Your 99.9% allows 44 minutes. Check your month.",
+ "intro": "A status page says 'resolved'. Your contract says what a month may lose. Enter the month and the minutes, see the uptime, the credit tier and the claim date, and take the evidence with you.",
+ "note": "Information, not legal advice. This page does arithmetic on the minutes you enter; nothing is sent anywhere and nothing is stored. Uptime = 1 minus counted downtime divided by the minutes in the month. Allowed minutes for a target are the month's minutes times (1 minus the target). Your contract decides what counts: scheduled maintenance, partial outages, exclusions, notice deadlines and how the credit is claimed. The default credit tiers are an invented example, not any provider's terms; replace them with yours. The claim window is also a placeholder to replace. The preset durations are the status-page or reported windows listed under Sources and say nothing about whether any customer was entitled to a credit. The sample cost per hour is the default from the cost-clock page and is illustrative.",
+ "sources": [
+  {
+   "label": "Cloudflare status, Oct 23 2026: network connectivity issues in North America, 15:47 to 18:43 UTC (176 minutes):",
+   "url": "https://www.cloudflarestatus.com/incidents/sufgcbe8rrwt"
+  },
+  {
+   "label": "Square status, Nov 4 2026: Payment Acceptance and Point of Sale listed 2:27 PM to 3:52 PM, no time zone or cause (85 minutes):",
+   "url": "https://www.issquareup.com/united-states/incidents/01M6M0FDVW2CYP6309QYE7JR7R"
+  },
+  {
+   "label": "Azure status history, Sep 30 to Oct 1 2026 networking incident, about 5 hours 45 minutes per Azure's review:",
+   "url": "https://azure.status.microsoft/en-us/status/history/"
+  },
+  {
+   "label": "The Guardian, Microsoft root-cause report, Nov 16 2026 (what it calls a 24-hour blackout of Outlook, Exchange and other software):",
+   "url": "https://www.theguardian.com/technology/2026/nov/16/microsoft-global-outage-cause"
+  }
+ ],
+ "shareText": "A '99.9%' month only has room for about 44 minutes. Check yours:",
+ "film": {
+  "alt": "Short film: a 99.9 percent target allows 44.6 minutes in October 2026; one sample incident of 176 minutes, the Cloudflare status-page window on Oct 23, means 99.606 percent uptime that month.",
+  "hookEnd": 1.5,
+  "stepStarts": [
+   1.6,
+   3.7,
+   5.8
+  ],
+  "dur": 0.8,
+  "posterStart": 8,
+  "posterFade": 0.5,
+  "holdEnd": 9.5,
+  "loopAt": 10
+ },
+ "slug": "downtime-budget"
+};
+
+function dlFile(name,text,mime){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type:mime||'text/plain'})); a.download=name; document.body.appendChild(a); a.click(); a.remove(); }
+async function copyText(t,st,ok,fail){ try{await navigator.clipboard.writeText(t); st.textContent=ok;}catch(e){st.textContent=fail;} }
+function icsEsc(s){return String(s).replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');}
+function ymd(d){return d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');}
+function makeIcs(events,prodid){ const L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//iggym//'+prodid+'//EN','CALSCALE:GREGORIAN']; const stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+/,'');
+  events.forEach(e=>{ const d0=new Date(e.date+'T12:00:00'), d1=new Date(e.date+'T12:00:00'); d1.setDate(d1.getDate()+1);
+    L.push('BEGIN:VEVENT','UID:'+e.uid+'@iggym.github.io','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+ymd(d0),'DTEND;VALUE=DATE:'+ymd(d1),'SUMMARY:'+icsEsc(e.title),'DESCRIPTION:'+icsEsc(e.desc||''));
+    (e.alarms||[]).forEach(a=>{L.push('BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+icsEsc(e.title),'TRIGGER:-P'+a+'D','END:VALARM');}); L.push('END:VEVENT'); });
+  L.push('END:VCALENDAR'); return L.join('\r\n'); }
+function syncUrl(params){ try{ const u=new URL(location.href); const keep=new URLSearchParams(); for(const k of ['x','render','og']) if(u.searchParams.has(k)) keep.set(k,u.searchParams.get(k)); for(const k in params) keep.set(k,String(params[k])); history.replaceState(null,'',u.pathname+'?'+keep.toString()); }catch(e){} }
+function wireResultActions(getResult,getText){ const st=$('ractst');
+  $('cpr').onclick=()=>copyText(getText(),st,'Result copied.','Copy blocked here. Select the text in the cards and copy it.');
+  $('dlj').onclick=()=>{ dlFile(DATA.slug+'.json',JSON.stringify(getResult(),null,2),'application/json'); st.textContent='Downloaded '+DATA.slug+'.json'; };
+  $('cpl').onclick=()=>copyText(location.href,st,'Link copied. It opens with these answers.','The address bar holds the same link. Copy it from there.'); }
+
+const APP=(function(){
+  const num=v=>{const n=parseFloat(v); return isFinite(n)&&n>=0?Math.min(n,1e12):0;};
+  const $$=x=>'$'+Math.round(x).toLocaleString('en-US'), mf=x=>x>=100?Math.round(x).toLocaleString('en-US'):Number.isInteger(x)?String(x):x>=10?x.toFixed(1):x.toFixed(2);
+  const pct=(u,d)=>u.toFixed(d==null?3:d)+'%';
+  const pad=n=>String(n).padStart(2,'0'), iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  let s={mo:'2026-10',sla:99.9,fee:500,cw:30,cph:234,th:[99.9,99,95],cr:[10,25,100],inc:[{l:'Sample: Cloudflare status-page window, Oct 23',m:176,p:100,c:1}]};
+  const LADDER=[99,99.5,99.9,99.95,99.99];
+  function monthInfo(){ const mm=/^(\d{4})-(\d{2})$/.exec(s.mo); if(!mm) return null; const y=+mm[1], m=+mm[2]; if(m<1||m>12) return null; const d=new Date(y,m,0).getDate(); return {y,m,days:d,min:d*1440,name:new Date(y,m-1,15).toLocaleDateString('en-US',{month:'long',year:'numeric'}),end:new Date(y,m,0,12)}; }
+  function calc(){ const mi=monthInfo(); if(!mi) return {err:'Enter the month as YYYY-MM, for example 2026-10.'}; const o={mi}; o.used=s.inc.reduce((a,x)=>a+(x.c?x.m*x.p/100:0),0); o.upt=Math.max(0,100*(1-o.used/mi.min)); o.budget=mi.min*(1-s.sla/100); o.over=o.used-o.budget; o.met=o.used<=o.budget+1e-9;
+    let best=-1,bi=-1; for(let i=0;i<3;i++){ if(s.th[i]>0&&o.upt<s.th[i]&&s.cr[i]>best){best=s.cr[i];bi=i;} } o.tier=bi; o.credPct=bi>=0?best:0; o.cred=s.fee*o.credPct/100; o.cost=s.cph*o.used/60;
+    o.claim=s.cw>0?new Date(mi.end.getTime()+s.cw*86400000):null; return o; }
+  function res(){ const o=calc(); if(o.err) return {error:o.err}; return {tool:'downtime-budget',notAdvice:true,inputs:s,month:o.mi.name,minutesInMonth:o.mi.min,countedDowntimeMinutes:+o.used.toFixed(2),uptimePercent:+o.upt.toFixed(4),allowedMinutesAtTarget:+o.budget.toFixed(2),withinTarget:o.met,creditTierHit:o.tier>=0?o.tier+1:null,creditPercent:o.credPct,creditDollars:+o.cred.toFixed(2),claimDeadline:o.claim?iso(o.claim):null,ladder:LADDER.map(t=>({target:t,allowedMinutes:+(o.mi.min*(1-t/100)).toFixed(2)})),sources:DATA.sources.map(x=>x.url)}; }
+  function resText(){ const o=calc(); if(o.err) return o.err; return 'Downtime budget, '+o.mi.name+' (information, not legal advice)\nUptime '+pct(o.upt)+' with '+mf(o.used)+' counted minutes of '+o.mi.min.toLocaleString('en-US')+'. Target '+s.sla+'% allows '+mf(o.budget)+' minutes: '+(o.met?'within target':'over by '+mf(o.over)+' minutes')+'.\n'+(o.tier>=0?'Credit tier '+(o.tier+1)+': '+o.credPct+'% = '+$$(o.cred)+'. ':'No credit tier hit. ')+(o.claim?'Claim by '+o.claim.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'})+'.':'')+'\n'+location.href; }
+  function letter(){ const o=calc(); const ta=$('letter'); if(o.err){ ta.value=o.err; return; } const lines=s.inc.filter(x=>x.m>0).map(x=>'- '+(x.l||'[incident]')+': '+mf(x.m)+' minutes'+(x.p<100?' at '+x.p+'% impact':'')+(x.c?'':' (not counted: excluded under my reading of the agreement)')).join('\n')||'- [incident]: [minutes]';
+    ta.value='Subject: Service credit claim, account [account number], '+o.mi.name+'\n\nTo [Provider] support,\n\nI am claiming the service credit available under my agreement for '+o.mi.name+'.\n\nMonthly uptime, calculated from my own records: '+pct(o.upt)+' (target '+s.sla+'%). Counted downtime: '+mf(o.used)+' minutes of '+o.mi.min.toLocaleString('en-US')+' in the month.\n\nIncidents:\n'+lines+'\n\n'+(o.tier>=0?'Under the tier I read in my agreement (uptime below '+s.th[o.tier]+'%), I calculate a credit of '+o.credPct+'% of the monthly fee, '+$$(o.cred)+'. ':'')+'Please confirm the credit amount and the clause you applied. If you exclude any incident, tell me which one and why. Please also send the incident reports for these dates.\n\nAccount: [account number]\nName: [your name]\n\nThank you,\n[your name]\n\n---\nTemplate from an information tool. It is not legal advice. Check your own contract for exclusions, notice rules and the claim deadline.'; }
+  function drawRows(){ const h=$('inc'); h.textContent=''; s.inc.forEach((x,i)=>{ const row=el('div'); row.style.cssText='display:grid;grid-template-columns:2fr 1fr 1fr auto auto;gap:.4rem;align-items:end;margin-bottom:.5rem'; row.className='evrow';
+      const mk=(lbl,type,val,cb,ph)=>{ const d=el('div'); const l=el('label',null,lbl); l.style.cssText='font-size:.8rem;margin:.1rem 0'; const inp=el('input'); inp.type=type; if(type==='number'){inp.min='0'; inp.step='any'; inp.inputMode='decimal';} inp.value=val; if(ph)inp.placeholder=ph; inp.setAttribute('aria-label',lbl+' row '+(i+1)); inp.oninput=()=>{cb(inp.value); paint(true);}; d.append(l,inp); return d; };
+      const cdiv=el('div'); const cl=el('label',null,'Counts'); cl.style.cssText='font-size:.8rem;margin:.1rem 0'; const cb=el('input'); cb.type='checkbox'; cb.checked=!!x.c; cb.style.cssText='min-height:auto;width:1.4rem;height:1.4rem'; cb.setAttribute('aria-label','Counts toward the SLA, row '+(i+1)); cb.onchange=()=>{x.c=cb.checked?1:0; paint(true);}; cdiv.append(cl,cb);
+      const rm=el('button',null,'x'); rm.type='button'; rm.setAttribute('aria-label','Remove row '+(i+1)); rm.onclick=()=>{ s.inc.splice(i,1); drawRows(); paint(true); };
+      row.append(mk('What happened','text',x.l,v=>x.l=v,'e.g. provider outage'),mk('Minutes down','number',x.m,v=>x.m=Math.min(1e9,num(v))),mk('Share affecting you, %','number',x.p,v=>x.p=Math.min(100,num(v))),cdiv,rm); h.append(row); }); }
+  function paint(skipRows){ if(!skipRows) read(); const o=calc(); const out=$('out'); out.textContent=''; const tb=$('tb'); tb.textContent='';
+    const add=(cls,l,node,d)=>{const x=el('div','card '+cls); const v=el('div','v'); x.append(el('div','l',l),v,el('div','d',d)); out.append(x); node(v);};
+    if(o.err){ out.append(el('div','card bad',o.err)); letter(); announce(o.err); api.onChange&&api.onChange(); return; }
+    add(o.met?'good':'bad','Uptime in '+o.mi.name,v=>tween(v,'upt',o.upt,x=>x.toFixed(3)+'%'),mf(o.used)+' counted minutes of '+o.mi.min.toLocaleString('en-US')+' in the month. Target '+s.sla+'% allows '+mf(o.budget)+': '+(o.met?'within target.':'over by '+mf(o.over)+' minutes.'));
+    add(o.tier>=0?'hi':'',o.tier>=0?'Credit tier '+(o.tier+1)+' (your terms)':'Credit tier',v=>tween(v,'cred',o.cred,$$),o.tier>=0?o.credPct+'% of a '+$$(s.fee)+' monthly fee. Uptime is below '+s.th[o.tier]+'%. Check your contract for exclusions.':'Uptime is not below any tier you entered, so no credit under these terms.');
+    if(o.claim){ const dl=Math.round((o.claim-new Date(new Date().getFullYear(),new Date().getMonth(),new Date().getDate(),12))/86400000); add(dl<0?'bad':'','Claim by',v=>{v.textContent=o.claim.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'});},s.cw+' days after the month ends, as you entered. '+(dl<0?'That date has passed.':dl+' days from today.')); }
+    if(s.cph>0&&o.used>0) add('','Your cost of that downtime',v=>tween(v,'cost',o.cost,$$),'About '+mf(o.used/60)+' hours at '+$$(s.cph)+' an hour'+(o.tier>=0?'. The credit above covers '+Math.round(o.cred/Math.max(o.cost,1e-9)*100)+'% of it.':'. No credit under these terms.'));
+    LADDER.forEach(t=>{ const a=o.mi.min*(1-t/100), ok=o.used<=a+1e-9; const tr=el('tr'); const th=el('th',null,t+'%'); th.scope='row'; tr.append(th,el('td','num',mf(a)+' min'),el('td',null,ok?'Fits ('+mf(a-o.used)+' min to spare)':'Over by '+mf(o.used-a)+' min')); tb.append(tr); });
+    letter(); syncUrl(params()); announce('Uptime '+pct(o.upt)+'. '+(o.met?'Within target.':'Over target by '+mf(o.over)+' minutes.')); api.onChange&&api.onChange(); }
+  function params(){ const p={mo:s.mo,sla:s.sla,fee:s.fee,cw:s.cw,cph:s.cph}; s.th.forEach((v,i)=>{p['t'+(i+1)]=v+'|'+s.cr[i];}); s.inc.forEach((x,i)=>{p['in'+i]=x.m+'|'+x.p+'|'+x.c+'|'+x.l;}); return p; }
+  function read(){ s.mo=$('mo').value.trim(); s.sla=Math.max(50,Math.min(99.9999,num($('sla').value)||99.9)); s.fee=num($('fee').value); s.cw=Math.round(num($('cw').value)); s.cph=num($('cph').value); for(let i=0;i<3;i++){ s.th[i]=Math.min(100,num($('th'+(i+1)).value)); s.cr[i]=Math.min(100,num($('cr'+(i+1)).value)); } }
+  function fill(){ $('mo').value=s.mo; $('sla').value=s.sla; $('fee').value=s.fee; $('cw').value=s.cw; $('cph').value=s.cph; for(let i=0;i<3;i++){ $('th'+(i+1)).value=s.th[i]; $('cr'+(i+1)).value=s.cr[i]; } drawRows(); }
+  function draw(svg,ctx){ svg.textContent=''; const o=calc(), T=ctx.t||0; let p; if(ctx.film) p=ease(seg(ctx.t,.6,F.stepStarts[2]+1.4)); else if(ctx.reduce) p=1; else p=ease(seg(T%10,.4,5.6));
+    S('text',{x:20,y:30,'font-size':19,'font-weight':800,fill:'#fdba74'},svg,ctx.film?'The nines ladder':'Live: your month'); if(o.err){ S('text',{x:20,y:80,'font-size':16,fill:'#fca5a5'},svg,o.err); return; }
+    S('text',{x:20,y:92,'font-size':44,'font-weight':900,fill:o.met?'#86efac':'#fca5a5'},svg,(100-(100-o.upt)*p).toFixed(3)+'%'); S('text',{x:20,y:114,'font-size':14,fill:'#94a3b8'},svg,'uptime in '+o.mi.name+' with '+mf(o.used)+' counted minutes');
+    const maxA=o.mi.min*(1-LADDER[0]/100), X0=100, W=470; LADDER.forEach((t,i)=>{ const y=150+i*46, a=o.mi.min*(1-t/100), w=Math.max(3,W*a/maxA)*p, ok=o.used<=a+1e-9; S('text',{x:20,y:y+24,'font-size':16,'font-weight':800,fill:'#e2e8f0'},svg,t+'%'); S('rect',{x:X0,y:y+6,width:W,height:26,rx:8,fill:'#1e293b'},svg); S('rect',{x:X0,y:y+6,width:w,height:26,rx:8,fill:ok?'#4ade80':'#f87171'},svg); const lab=mf(a*p)+' min'; const tx=X0+w+8; if(tx<X0+W-60) S('text',{x:tx,y:y+25,'font-size':13,'font-weight':700,fill:'#cbd5e1'},svg,lab); else S('text',{x:X0+w-8,y:y+25,'text-anchor':'end','font-size':13,'font-weight':800,fill:'#0b1020'},svg,lab); });
+    const ux=X0+Math.min(W,W*o.used/maxA)*p; S('line',{x1:ux,y1:138,x2:ux,y2:390,stroke:'#fde68a','stroke-width':3,'stroke-dasharray':'6 4'},svg); const ua=ux>X0+W*0.6?'end':'start'; S('text',{x:ua==='end'?ux-6:ux+6,y:408,'text-anchor':ua,'font-size':15,'font-weight':800,fill:'#fde68a'},svg,'Your '+mf(o.used*p)+' min'+(o.used>maxA?' (off the scale)':'')); }
+  const api={ vb:'0 0 600 430', fvh:480, draw,
+    init(){ const q=k=>Q.get(k); if(/^\d{4}-\d{2}$/.test(q('mo')||'')) s.mo=q('mo'); for(const k of ['sla','fee','cw','cph']){ const v=parseFloat(q(k)); if(isFinite(v)&&v>=0) s[k]=Math.min(v,1e12); }
+      for(let i=1;i<=3;i++){ const t=q('t'+i); if(t){ const [a,b]=t.split('|').map(parseFloat); if(isFinite(a)&&isFinite(b)){ s.th[i-1]=a; s.cr[i-1]=b; } } }
+      const inc=[]; for(let i=0;i<8;i++){ const v=q('in'+i); if(v==null) break; const a=v.split('|'); const m=parseFloat(a[0]), p=parseFloat(a[1]); if(isFinite(m)&&m>=0) inc.push({m:Math.min(m,1e9),p:isFinite(p)?Math.min(100,Math.max(0,p)):100,c:a[2]==='0'?0:1,l:a.slice(3).join('|').slice(0,80)}); } if(inc.length||q('in0')!=null) s.inc=inc;
+      fill(); if(RENDER||OG){ paint(true); return; }
+      ['mo','sla','fee','cw','cph','th1','cr1','th2','cr2','th3','cr3'].forEach(id=>{ $(id).oninput=()=>paint(); $(id).onchange=()=>paint(); });
+      [['s1',99],['s2',99.5],['s3',99.9],['s4',99.95],['s5',99.99]].forEach(([id,v])=>$(id).onclick=()=>{ $('sla').value=v; paint(); });
+      $('addi').onclick=()=>{ if(s.inc.length<8){ s.inc.push({l:'',m:0,p:100,c:1}); drawRows(); paint(true); } };
+      [['p1','Cloudflare status-page window, Oct 23',176],['p2','Square status-page window, Nov 4',85],['p3','Azure networking incident, Sep 30 to Oct 1',345],['p4','Microsoft 365, about 24 hours as reported',1440]].forEach(([id,l,m])=>$(id).onclick=()=>{ if(s.inc.length<8){ s.inc.push({l,m,p:100,c:1}); drawRows(); paint(true); } });
+      $('copyl').onclick=()=>copyText($('letter').value,$('lstatus'),'Letter copied.','Select all and copy.'); $('dll').onclick=()=>{ dlFile('service-credit-claim.txt',$('letter').value); $('lstatus').textContent='Downloaded.'; };
+      $('ics').onclick=()=>{ const o=calc(); if(o.err||!o.claim){ $('icsst').textContent='Enter the month and a claim window first.'; return; } dlFile('claim-deadline.ics',makeIcs([{uid:'claim-'+s.mo,date:iso(o.claim),title:'Service credit claim deadline ('+o.mi.name+')',desc:'Claim window of '+s.cw+' days after month end, as entered. Check your contract.',alarms:[7,2]}],'downtime-budget'),'text/calendar'); $('icsst').textContent='Downloaded.'; };
+      wireResultActions(res,resText); paint(true); },
+    film(){ const o=calc(); if(o.err) return {kick:'Check the month',hook:o.err,rows:[{l:'-',n:'-',t:''},{l:'-',n:'-',t:''},{l:'-',n:'-',t:''}],cue:'',src:''}; return {kick:'Illustrative month, one status-page incident',hook:s.sla+'% allows '+mf(o.budget)+' minutes in '+o.mi.name.split(' ')[0]+'.',rows:[
+        {l:'The target allows',n:mf(o.budget)+' min',t:o.mi.min.toLocaleString('en-US')+' minutes in '+o.mi.name},
+        {l:'One sample incident',n:mf(o.used)+' min',t:'The Cloudflare status-page window on Oct 23'},
+        {l:'Uptime that month',n:pct(o.upt),t:'If every minute counted against you. Your contract decides.',hi:true}],
+        cue:'Check your own month',src:'Arithmetic on sample numbers, not a finding about any contract. Image: AI-generated, illustrative.'}; },
+    og(){ const o=calc(); return {k:'Illustrative month, one status-page incident',h:'Your 99.9% allows 44 minutes.',boxes:o.err?[['-','check month']]:[[mf(o.budget)+' min','allowed at '+s.sla+'%'],[mf(o.used)+' min','sample incident'],[pct(o.upt),'uptime that month']],s:'iggym.github.io/p/downtime-budget - arithmetic on sample numbers. Illustrative image.'}; },
+    shareUrl(){ const u=new URL(DATA.PAGE_URL); const p=params(); for(const k in p) u.searchParams.set(k,p[k]); return u.toString(); }
+  }; return api; })();
+
+
+const $ = id => document.getElementById(id);
+const RENDER = document.documentElement.classList.contains('render');
+const OG = document.documentElement.classList.contains('og');
+const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const Q = new URLSearchParams(location.search);
+const NS='http://www.w3.org/2000/svg';
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e; }
+function S(tag,attrs,parent,text){ const e=document.createElementNS(NS,tag); for(const k in (attrs||{}))e.setAttribute(k,attrs[k]); if(text!=null)e.textContent=text; if(parent)parent.appendChild(e); return e; }
+const seg=(t,a,d)=>Math.max(0,Math.min(1,(t-a)/d)), ease=x=>x*x*(3-2*x), lerp=(a,b,k)=>a+(b-a)*k;
+const prevVals={};
+function tween(node,key,to,fmt){ const from=prevVals[key]; prevVals[key]=to; if(REDUCE||RENDER||OG||from==null||from===to){node.textContent=fmt(to);return;}
+  const t0=performance.now(), d=550; (function f(now){ const k=Math.min(1,(now-t0)/d), e=1-Math.pow(1-k,3); node.textContent=fmt(from+(to-from)*e); if(k<1)requestAnimationFrame(f); })(t0); }
+let liveTimer=0; function announce(txt){ clearTimeout(liveTimer); liveTimer=setTimeout(()=>{$('live').textContent=txt;},400); }
+$('byline').textContent=DATA.byline; $('title').textContent=DATA.title; $('intro').textContent=DATA.intro; $('note').textContent=DATA.note;
+(function(){ const ul=$('sources'); DATA.sources.forEach(s=>{ const li=el('li'); li.append(document.createTextNode(s.label+' ')); const a=el('a',null,s.url); a.href=s.url; a.rel='noopener'; li.append(a); ul.append(li); }); })();
+const HERO=document.getElementById('heroimg').src;
+const F = DATA.film;
+const card=$('card'), stage=$('stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label',F.alt);
+card.style.backgroundImage='url('+HERO+')';
+const kickEl=el('div','kick'), hookEl=el('div','hook'); const top0=el('div'); top0.append(kickEl,hookEl);
+const fviz=S('svg',{id:'fviz',viewBox:APP.vb,'aria-hidden':'true'}); fviz.style.height=APP.fvh+'px'; fviz.setAttribute('preserveAspectRatio','xMidYMid meet');
+const rowsEl=el('div','rows'); const crow=[0,1,2].map(i=>{const r=el('div','row'); const l=el('div','rl'), n=el('div','rn'), t=el('div','rt'); r.append(l,n,t); rowsEl.append(r); return {r,l,n,t};});
+const foot=el('div','foot'), cueEl=el('div','cue'), srcEl=el('div','src'); foot.append(cueEl,srcEl);
+card.append(top0,fviz,rowsEl,foot);
+function renderFilm(){ const f=APP.film(); kickEl.textContent=f.kick; hookEl.textContent=f.hook;
+  f.rows.forEach((r,i)=>{const c=crow[i]; c.l.textContent=r.l; c.n.textContent=r.n; c.n.style.fontSize=r.n.length>13?'72px':''; c.t.textContent=r.t; c.r.classList.toggle('hi',!!r.hi);}); cueEl.textContent=f.cue; srcEl.textContent=f.src; }
+let curT=0;
+function setTime(t){
+  t=Math.max(0,Math.min(F.loopAt,Number(t)||0)); if(t>=F.loopAt)t=0; curT=t;
+  const m=ease(seg(t,F.hookEnd-.4,.4)); top0.style.transform='translateY('+((1-m)*60)+'px)'; top0.style.opacity=.2+.8*seg(t,0,.5);
+  crow.forEach((c,i)=>{const o=ease(seg(t,F.stepStarts[i],F.dur)); c.r.style.opacity=o; c.r.style.transform='translateY('+((1-o)*40)+'px)'; c.n.style.transform='scale('+(.6+.4*o)+')';});
+  APP.draw(fviz,{t,p:ease(seg(t,.6,F.stepStarts[2]+1-.6)),film:true,reduce:false});
+  foot.style.opacity=seg(t,F.posterStart,F.posterFade);
+}
+let raf=0;
+function play(){ cancelAnimationFrame(raf); if(REDUCE){setTime(F.holdEnd);return;} const t0=performance.now();
+  (function tick(now){const t=(now-t0)/1000; if(t>=F.holdEnd){setTime(F.holdEnd);return;} setTime(t); raf=requestAnimationFrame(tick);})(t0); }
+window.__setTime=t=>{cancelAnimationFrame(raf); setTime(t);};
+function fit(){ stage.style.setProperty('--s', RENDER?1:stage.clientWidth/1080); }
+addEventListener('resize',fit); fit();
+(function(){ const o=$('ogcard'), g=APP.og(); o.style.backgroundImage='url('+HERO+')'; o.append(el('div','k',g.k),el('div','h',g.h)); const b=el('div','b'); g.boxes.forEach(x=>{const d=el('div'); d.append(el('b',null,x[0]),document.createTextNode(x[1])); b.append(d);}); o.append(b,el('div','s',g.s)); })();
+APP.onChange=()=>{ renderFilm(); if(RENDER) setTime(0); else if(REDUCE) setTime(F.holdEnd); };
+// live viz loop, runs only while the diagram is on screen
+const lv=$('viz'); let vis=false, vStart=0, vLast=0, vraf=0;
+function vloop(now){ if(!vis)return; const t=(now-vStart)/1000, dt=Math.min(.05,(now-vLast)/1000); vLast=now; APP.draw(lv,{t,dt,p:ease(seg(t,.2,1.8)),film:false,reduce:false}); vraf=requestAnimationFrame(vloop); }
+if(lv && !RENDER && !OG){
+  lv.setAttribute('viewBox',APP.vb); lv.setAttribute('aria-hidden','true');
+  if(REDUCE){ APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); APP.redraw=()=>APP.draw(lv,{t:0,dt:1,p:1,film:false,reduce:true}); }
+  else if('IntersectionObserver' in window){ new IntersectionObserver(es=>{ es.forEach(e=>{ if(e.isIntersecting&&!vis){vis=true;vStart=vLast=performance.now();vraf=requestAnimationFrame(vloop);} else if(!e.isIntersecting){vis=false;cancelAnimationFrame(vraf);} }); },{threshold:.15}).observe(lv); }
+  else { vis=true; vStart=vLast=performance.now(); vraf=requestAnimationFrame(vloop); }
+}
+// scroll reveals + hero parallax
+if(!RENDER && !OG){
+  if(!REDUCE && 'IntersectionObserver' in window){ document.documentElement.classList.add('rv-on'); const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.12}); document.querySelectorAll('.rv').forEach(x=>io.observe(x)); }
+  const him=document.querySelector('.hero img'); if(him&&!REDUCE){ let tick=false; addEventListener('scroll',()=>{ if(tick)return; tick=true; requestAnimationFrame(()=>{ const y=Math.min(scrollY,700); him.style.transform='translateY('+(y*.18)+'px) scale('+(1+y*.0002)+')'; tick=false; }); },{passive:true}); }
+  $('replay').onclick=play;
+  $('share').onclick=async()=>{ const t=DATA.shareText+' '+APP.shareUrl(); try{await navigator.clipboard.writeText(t);$('sstatus').textContent='Copied to the clipboard.';}catch(e){$('sstatus').textContent='Copy this: '+t;} };
+}
+APP.init(); renderFilm(); setTime(0);
+const preload=src=>new Promise(r=>{const i=new Image(); i.onload=i.onerror=()=>r(); i.src=src;});
+Promise.race([Promise.all([preload(HERO),(document.fonts&&document.fonts.ready)||Promise.resolve()]),new Promise(r=>setTimeout(r,2500))]).then(()=>{fit();window.__ready=true;if(!RENDER&&!OG)play();});
+
+</script>
+</body>
+</html>

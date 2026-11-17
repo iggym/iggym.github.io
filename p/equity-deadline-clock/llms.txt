@@ -1,0 +1,19 @@
+# Equity Deadline Clock
+
+> Free in-browser tool that dates the deadlines on startup equity: the 83(b) election day-30 date, the option exercise window and the ISO 3-month mark, from dates you enter. It outputs a calendar file (.ics), a JSON result and an editable 83(b) statement template. It is for people receiving restricted stock or options. It does not file anything, store anything or give tax or legal advice. Defaults are sample dates. Pro features are not available yet.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/equity-deadline-clock/): takes grant/transfer date, last day of service, your option agreement's exercise window, vesting terms; returns dates, days left, income an election would report, vested options and exercise cost, .ics, JSON, statement template. Free, no account.
+
+## Accuracy and limits
+
+- Good at: counting 30 days from a transfer date, the weekend/holiday postmark rule, vesting arithmetic, a statement template that follows the headings in Treas. Reg. 1.83-2.
+- Not for: confirming that an election is available or wise, state tax, AMT, non-US rules, special ISO cases such as disability.
+- Information, not tax or legal advice. Check dates with the IRS Form 15620 instructions and a tax professional.
+
+## Sources
+
+- IRS Form 15620 instructions: https://www.irs.gov/pub/irs-pdf/f15620.pdf
+- Treas. Reg. 1.83-2: https://www.law.cornell.edu/cfr/text/26/1.83-2
+- 26 U.S.C. 422: https://www.law.cornell.edu/uscode/text/26/422

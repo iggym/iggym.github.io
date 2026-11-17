@@ -1,0 +1,18 @@
+# Downtime Budget
+
+> Free in-browser tool that turns an uptime target into minutes for a chosen month, adds up the downtime you record, and shows which credit tier your own numbers hit and the claim-by date. It outputs a claim letter template, a calendar reminder (.ics) and JSON. For anyone who buys a service with an uptime target. Default credit tiers are an invented example, not any provider's terms. It stores nothing, sends nothing, and is not legal advice. Pro features are not available yet.
+
+## Where to start
+
+- [Run the tool](https://iggym.github.io/p/downtime-budget/): takes month, uptime target, downtime windows (minutes, share affecting you, counts toward SLA), your own credit tiers and claim window; returns uptime %, allowed minutes per target, credit tier hit, claim-by date, cost of downtime, letter template, .ics, JSON. Free, no account.
+
+## Accuracy and limits
+
+- Good at: minutes-per-target arithmetic for any month, applying your own tiers, claim-window dates.
+- Not for: reading your contract; what counts as downtime, exclusions and notice rules come from your contract.
+- Presets are public status-page windows (Cloudflare, Square, Azure) used as examples; the default credit tiers are invented. Information, not legal advice.
+
+## Sources
+
+- Cloudflare status incident: https://www.cloudflarestatus.com/incidents/sufgcbe8rrwt
+- Azure status history: https://azure.status.microsoft/en-us/status/history/
